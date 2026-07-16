@@ -18,9 +18,13 @@ const Profile = lazy(() => import('../pages/Profile'));
 const SavedWorkflows = lazy(() => import('../pages/SavedWorkflows'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 
+import PageTransition from '../components/common/PageTransition';
+
 const suspenseWrapper = (Component: React.ComponentType) => (
   <Suspense fallback={<LoadingPage />}>
-    <Component />
+    <PageTransition>
+      <Component />
+    </PageTransition>
   </Suspense>
 );
 

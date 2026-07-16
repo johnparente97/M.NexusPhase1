@@ -21,6 +21,15 @@ export function useAuth(): AuthState {
   const { user: clerkUser, isLoaded: clerkLoaded, isSignedIn: clerkSignedIn } = useUser();
   const { signOut: clerkSignOut } = useClerkAuth();
 
+  const [clerkTimeout, setClerkTimeout] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setClerkTimeout(true);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
   const [demoUser, setDemoUser] = useState<string | null>(() => {
     return localStorage.getItem('nexus_demo_user');
   });
@@ -67,7 +76,7 @@ export function useAuth(): AuthState {
     setDemoUser(roleKey);
   };
 
-  const isLoaded = clerkLoaded && !loadingDb;
+  const isLoaded = (clerkLoaded || clerkTimeout) && !loadingDb;
   const isSignedIn = !!clerkSignedIn || !!demoUser;
 
   let user: AuthState['user'] = null;

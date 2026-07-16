@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { cn } from '../../utils/cn';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -12,23 +13,30 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'secondary', size = 'md', isLoading, leftIcon, rightIcon, children, ...props }, ref) => {
     return (
-      <button
-        ref={ref}
+      <motion.button
+        ref={ref as any}
+        whileHover={{ scale: 1.02, y: -1 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 18 }}
         className={cn(
-          'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98]',
+          'inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#27F293]/50 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer',
           {
             // Variants
-            'bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white shadow-md shadow-indigo-950/20 border border-indigo-500/10':
+            'bg-[#27F293] hover:bg-[#1fe285] text-zinc-950 font-semibold shadow-[0_4px_20px_0_rgba(39,242,147,0.18),inset_0_1px_0_0_rgba(255,255,255,0.4)] border border-[#27F293]/20 rounded-full':
               variant === 'primary',
-            'bg-zinc-800 hover:bg-zinc-700 text-zinc-100 border border-zinc-700': variant === 'secondary',
-            'border border-zinc-700 hover:bg-zinc-900 text-zinc-300': variant === 'outline',
-            'hover:bg-zinc-900 text-zinc-400 hover:text-zinc-100': variant === 'ghost',
-            'bg-rose-950/30 border border-rose-900/50 hover:bg-rose-950/50 text-rose-300': variant === 'danger',
+            'bg-[#1E1E20] hover:bg-[#252528] text-zinc-100 border border-zinc-800 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)] rounded-lg': 
+              variant === 'secondary',
+            'border border-zinc-800 hover:border-zinc-700 bg-transparent text-zinc-300 hover:text-zinc-100 rounded-lg': 
+              variant === 'outline',
+            'hover:bg-zinc-900/40 text-zinc-400 hover:text-zinc-100 rounded-lg': 
+              variant === 'ghost',
+            'bg-rose-950/20 border border-rose-900/30 hover:bg-rose-950/40 text-rose-400 rounded-lg': 
+              variant === 'danger',
             
             // Sizes
-            'px-3 py-1.5 text-xs gap-1.5': size === 'sm',
-            'px-4.5 py-2 text-sm gap-2': size === 'md',
-            'px-6 py-3 text-base gap-2.5': size === 'lg',
+            'px-3.5 py-1.5 text-xs gap-1.5': size === 'sm',
+            'px-5 py-2 text-sm gap-2': size === 'md',
+            'px-7 py-3 text-base gap-2.5': size === 'lg',
             
             // Loading
             'relative !text-transparent pointer-events-none': isLoading,
@@ -36,7 +44,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           className
         )}
         disabled={isLoading || props.disabled}
-        {...props}
+        {...(props as any)}
       >
         {isLoading && (
           <span className="absolute inset-0 flex items-center justify-center">
@@ -64,7 +72,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {leftIcon && <span className="inline-flex shrink-0">{leftIcon}</span>}
         <span>{children}</span>
         {rightIcon && <span className="inline-flex shrink-0">{rightIcon}</span>}
-      </button>
+      </motion.button>
     );
   }
 );

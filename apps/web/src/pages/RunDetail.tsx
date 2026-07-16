@@ -94,8 +94,8 @@ export default function RunDetail() {
         <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-5">
           <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
             <h3 className="font-semibold text-sm text-zinc-200 flex items-center gap-1.5">
-              <ShieldCheck className="h-4.5 w-4.5 text-indigo-400" />
-              Settlement Authorization Receipt
+              <ShieldCheck className="h-4.5 w-4.5 text-emerald-400" />
+              Outcome Receipt
             </h3>
             <DemoLabel />
           </div>
@@ -118,6 +118,14 @@ export default function RunDetail() {
               <span className="text-zinc-300 font-semibold">{formatCurrency(run.settlement.amount)}</span>
             </div>
             <div className="flex justify-between border-b border-zinc-800 pb-2">
+              <span className="text-zinc-500">Creator Earnings Split (80%):</span>
+              <span className="text-zinc-300 font-semibold">{formatCurrency(run.settlement.amount * 0.8)}</span>
+            </div>
+            <div className="flex justify-between border-b border-zinc-800 pb-2">
+              <span className="text-zinc-500">Platform Protocol Fee (20%):</span>
+              <span className="text-zinc-300 font-semibold">{formatCurrency(run.settlement.amount * 0.2)}</span>
+            </div>
+            <div className="flex justify-between border-b border-zinc-800 pb-2">
               <span className="text-zinc-500">Settled network:</span>
               <span className="text-zinc-300 font-semibold">{run.settlement.network}</span>
             </div>
@@ -125,6 +133,20 @@ export default function RunDetail() {
               <span className="text-zinc-500">Billing Mode:</span>
               <span className="text-zinc-300 font-semibold uppercase">{run.settlement.mode}</span>
             </div>
+            <div className="flex justify-between border-b border-zinc-800 pb-2">
+              <span className="text-zinc-500">Origin Chain ID:</span>
+              <span className="font-mono text-zinc-300">{run.settlement.originChain || 'eip155:8453'}</span>
+            </div>
+            <div className="flex justify-between border-b border-zinc-800 pb-2">
+              <span className="text-zinc-500">Destination Chain ID:</span>
+              <span className="font-mono text-zinc-300">{run.settlement.destinationChain || 'eip155:8453'}</span>
+            </div>
+            {run.settlement.mrdnCashbackEligible && (
+              <div className="flex justify-between border-b border-zinc-800 pb-2 col-span-1 sm:col-span-2">
+                <span className="text-emerald-400 font-semibold">MRDN Cashback Payout:</span>
+                <span className="text-emerald-400 font-bold">{run.settlement.mrdnCashbackAmount} MRDN (2% base reward)</span>
+              </div>
+            )}
           </div>
         </Card>
       )}

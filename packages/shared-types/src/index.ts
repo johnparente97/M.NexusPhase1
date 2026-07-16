@@ -328,6 +328,10 @@ export interface SettlementReceipt {
   refundEligible: boolean;
   settledAt: string;
   createdAt: string;
+  originChain?: string;
+  destinationChain?: string;
+  mrdnCashbackAmount?: number;
+  mrdnCashbackEligible?: boolean;
 }
 
 // ── Social ──

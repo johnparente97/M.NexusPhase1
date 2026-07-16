@@ -42,8 +42,8 @@ export default function Landing() {
       {/* 1. Hero Section */}
       <section className="relative py-24 sm:py-32 px-6 flex flex-col items-center text-center justify-center min-h-[80vh]">
         {/* Ambient background glows */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[350px] w-[500px] bg-indigo-500/10 blur-[100px] rounded-full pointer-events-none" />
-        <div className="absolute top-1/3 left-1/3 h-[250px] w-[350px] bg-blue-500/10 blur-[80px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[350px] w-[500px] bg-emerald-500/10 blur-[100px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/3 left-1/3 h-[250px] w-[350px] bg-teal-500/10 blur-[80px] rounded-full pointer-events-none" />
 
         <motion.div
           variants={containerVariants}
@@ -52,18 +52,19 @@ export default function Landing() {
           className="max-w-4xl mx-auto flex flex-col items-center gap-6 z-10"
         >
           <motion.div variants={itemVariants}>
-            <Badge variant="outline" className="text-[9px] border-indigo-500/30 text-indigo-400 bg-indigo-500/5 px-2.5 py-1 rounded-full font-bold">
+            <Badge variant="outline" className="text-[9px] border-emerald-500/30 text-emerald-400 bg-emerald-500/5 px-2.5 py-1 rounded-full font-bold">
               Now Live: Meridian Nexus Phase 1 MVP
             </Badge>
           </motion.div>
 
           <motion.h1
             variants={itemVariants}
-            className="text-4xl sm:text-6xl font-display font-bold text-zinc-100 tracking-tight leading-[1.1] max-w-3xl"
+            className="text-4xl sm:text-5xl font-display font-bold text-zinc-100 tracking-tight leading-[1.2] max-w-3xl"
           >
-            Turn strategic goals into{' '}
-            <span className="bg-gradient-to-r from-indigo-400 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
-              intelligent workflows
+            Build intelligence. <br />
+            Market capabilities. <br />
+            <span className="bg-gradient-to-r from-emerald-400 via-emerald-500 to-teal-500 bg-clip-text text-transparent">
+              Synthesize outcomes.
             </span>
           </motion.h1>
 
@@ -71,7 +72,7 @@ export default function Landing() {
             variants={itemVariants}
             className="text-sm sm:text-base text-zinc-400 max-w-xl leading-relaxed font-sans"
           >
-            Discover, configure, and execute trusted AI capabilities through one outcome-first interface. Powered by Meridian infrastructure with secure credentials.
+            The open creation, marketplace, workflow, and Intelligence Synthesis layer built on Meridian. Nexus coordinates intelligence, Meridian coordinates value.
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex items-center gap-3.5 mt-2">
@@ -104,7 +105,7 @@ export default function Landing() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-4">
-            <div className="p-2.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 rounded-lg w-fit shrink-0">
+            <div className="p-2.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-lg w-fit shrink-0">
               <Cpu className="h-5 w-5" />
             </div>
             <h3 className="font-semibold text-sm text-zinc-200">Outcome-First Interface</h3>
@@ -114,7 +115,7 @@ export default function Landing() {
           </Card>
 
           <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-4">
-            <div className="p-2.5 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-lg w-fit shrink-0">
+            <div className="p-2.5 bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-lg w-fit shrink-0">
               <Lock className="h-5 w-5" />
             </div>
             <h3 className="font-semibold text-sm text-zinc-200">Zero Key Exposure</h3>

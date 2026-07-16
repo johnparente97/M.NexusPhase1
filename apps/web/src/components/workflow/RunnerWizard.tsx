@@ -208,7 +208,7 @@ export const RunnerWizard: React.FC<RunnerWizardProps> = ({ workflow }) => {
             </div>
             <Link to={`/activity/${runRecord.id}`}>
               <Button variant="secondary" size="sm" className="font-bold">
-                View Settlement Receipt
+                View Outcome Receipt
               </Button>
             </Link>
           </div>

@@ -29,7 +29,7 @@ export async function fetchApi<T>(
     // If we do, we can construct a Bearer demo token so auth middleware works seamlessly in demo mode!
     const demoUser = localStorage.getItem('nexus_demo_user');
     if (demoUser) {
-      headers.set('Authorization', `Bearer demo_user_${demoUser}`);
+      headers.set('Authorization', `Bearer demo_${demoUser}`);
     }
   }
 

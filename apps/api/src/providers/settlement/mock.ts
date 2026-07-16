@@ -55,6 +55,10 @@ export class MockMeridianSettlementProvider implements SettlementProvider {
       refundEligible: true,
       settledAt,
       createdAt: settledAt,
+      originChain: 'eip155:8453',
+      destinationChain: 'eip155:8453',
+      mrdnCashbackAmount: Number((input.amount * 0.02).toFixed(4)),
+      mrdnCashbackEligible: input.amount > 0,
     };
   }
 
@@ -77,6 +81,10 @@ export class MockMeridianSettlementProvider implements SettlementProvider {
       refundEligible: true,
       settledAt: now,
       createdAt: now,
+      originChain: 'eip155:8453',
+      destinationChain: 'eip155:8453',
+      mrdnCashbackAmount: 0.0998,
+      mrdnCashbackEligible: true,
     };
   }
 
