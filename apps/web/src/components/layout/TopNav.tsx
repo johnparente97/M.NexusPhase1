@@ -2,8 +2,9 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
 import { UserButton } from '@clerk/clerk-react';
-import { Compass, BookOpen, Layers, History, Settings, Award } from 'lucide-react';
+import { Compass, Layers, History, Award, LayoutDashboard } from 'lucide-react';
 import { cn } from '../../utils/cn';
+import { motion } from 'framer-motion';
 import DemoLabel from '../common/DemoLabel';
 
 export default function TopNav() {
@@ -15,18 +16,29 @@ export default function TopNav() {
     navigate('/dashboard');
   };
 
+  const navItemVariants = {
+    hover: { y: -1, scale: 1.03 },
+    tap: { scale: 0.97 }
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-900 hidden md:block">
       <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         
         {/* Brand Logo */}
         <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-2.5">
-            <svg className="h-6 w-6 text-indigo-500" viewBox="0 0 100 100" fill="none">
-              <rect width="100" height="100" rx="22" fill="#09090b" />
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <motion.svg 
+              whileHover={{ rotate: 5, scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="h-7 w-7 text-[#27F293]" 
+              viewBox="0 0 100 100" 
+              fill="none"
+            >
+              <rect width="100" height="100" rx="22" fill="#1B1B1C" />
               <path d="M 30,30 L 30,70 L 42,70 L 42,48 L 58,70 L 70,70 L 70,30 L 58,30 L 58,52 L 42,30 Z" fill="currentColor" />
-            </svg>
-            <span className="font-display font-bold text-base tracking-tight bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent">
+            </motion.svg>
+            <span className="font-display font-bold text-base tracking-tight bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent group-hover:text-white transition-colors">
               Meridian Nexus
             </span>
           </Link>
@@ -35,57 +47,68 @@ export default function TopNav() {
 
         {/* Center Nav Links */}
         <nav className="flex items-center gap-6">
-          <NavLink
-            to="/exchange"
-            className={({ isActive }) =>
-              cn(
-                'flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-100 transition-colors',
-                { 'text-indigo-400 font-bold': isActive }
-              )
-            }
-          >
-            <Compass className="h-4 w-4" />
-            Exchange
-          </NavLink>
+          <motion.div whileHover="hover" whileTap="tap" variants={navItemVariants}>
+            <NavLink
+              to="/exchange"
+              className={({ isActive }) =>
+                cn(
+                  'flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-100 transition-colors py-1.5 px-3 rounded-full hover:bg-zinc-900/40',
+                  { 'text-[#27F293] font-bold bg-[#27F293]/10': isActive }
+                )
+              }
+            >
+              <Compass className="h-4 w-4" />
+              Exchange
+            </NavLink>
+          </motion.div>
+
           {isSignedIn && (
             <>
-              <NavLink
-                to="/studio"
-                className={({ isActive }) =>
-                  cn(
-                    'flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-100 transition-colors',
-                    { 'text-indigo-400 font-bold': isActive }
-                  )
-                }
-              >
-                <Layers className="h-4 w-4" />
-                Studio
-              </NavLink>
-              <NavLink
-                to="/activity"
-                className={({ isActive }) =>
-                  cn(
-                    'flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-100 transition-colors',
-                    { 'text-indigo-400 font-bold': isActive }
-                  )
-                }
-              >
-                <History className="h-4 w-4" />
-                Activity
-              </NavLink>
-              {user?.role === 'creator' && (
+              <motion.div whileHover="hover" whileTap="tap" variants={navItemVariants}>
                 <NavLink
-                  to="/creator"
+                  to="/studio"
                   className={({ isActive }) =>
                     cn(
-                      'flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-100 transition-colors',
-                      { 'text-indigo-400 font-bold': isActive }
+                      'flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-100 transition-colors py-1.5 px-3 rounded-full hover:bg-zinc-900/40',
+                      { 'text-[#27F293] font-bold bg-[#27F293]/10': isActive }
                     )
                   }
                 >
-                  <Award className="h-4 w-4" />
-                  Creator Portal
+                  <Layers className="h-4 w-4" />
+                  Studio
                 </NavLink>
+              </motion.div>
+
+              <motion.div whileHover="hover" whileTap="tap" variants={navItemVariants}>
+                <NavLink
+                  to="/activity"
+                  className={({ isActive }) =>
+                    cn(
+                      'flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-100 transition-colors py-1.5 px-3 rounded-full hover:bg-zinc-900/40',
+                      { 'text-[#27F293] font-bold bg-[#27F293]/10': isActive }
+                    )
+                  }
+                >
+                  <History className="h-4 w-4" />
+                  Activity
+                </NavLink>
+              </motion.div>
+
+              {user?.role === 'creator' && (
+                <motion.div whileHover="hover" whileTap="tap" variants={navItemVariants}>
+                  <NavLink
+                    to="/creator"
+                    className={({ isActive }) =>
+                      cn(
+                        'flex items-center gap-1.5 text-xs font-semibold text-zinc-400 hover:text-zinc-100 transition-colors py-1.5 px-3 rounded-full hover:bg-zinc-900/40',
+                        { 'text-[#27F293] font-bold bg-[#27F293]/10': isActive }
+                      )
+                    }
+                  >
+                    <Award className="h-4 w-4" />
+                    Creator Portal
+                  </NavLink>
+                </motion.div>
               )}
             </>
           )}
@@ -95,10 +118,13 @@ export default function TopNav() {
         <div className="flex items-center gap-3">
           {isSignedIn ? (
             <div className="flex items-center gap-4">
-              <Link to="/dashboard" className="text-xs font-semibold text-zinc-300 hover:text-zinc-100">
-                Dashboard
-              </Link>
-              <Button variant="ghost" size="sm" onClick={signOut} className="text-zinc-400 hover:text-zinc-100">
+              <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                <Link to="/dashboard" className="text-xs font-semibold text-zinc-300 hover:text-[#27F293] transition-colors flex items-center gap-1">
+                  <LayoutDashboard className="h-3.5 w-3.5" />
+                  Dashboard
+                </Link>
+              </motion.div>
+              <Button variant="ghost" size="sm" onClick={signOut} className="text-zinc-400 hover:text-zinc-100 text-xs">
                 Log Out
               </Button>
               <UserButton afterSignOutUrl="/" />
@@ -106,20 +132,24 @@ export default function TopNav() {
           ) : (
             <div className="flex items-center gap-2">
               {/* Quick Demo Logins per Role */}
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => handleDemoLogin('user')}
-                className="text-[10px] font-bold text-zinc-500 hover:text-zinc-300 border border-zinc-800 hover:border-zinc-700 px-2 py-1 rounded"
+                className="text-[10px] font-semibold text-zinc-400 hover:text-[#27F293] border border-zinc-800 hover:border-[#27F293]/30 px-2.5 py-1 rounded-full bg-zinc-900/40 hover:bg-[#27F293]/5 transition-all duration-150 cursor-pointer"
               >
                 User Demo
-              </button>
-              <button
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 onClick={() => handleDemoLogin('creator')}
-                className="text-[10px] font-bold text-zinc-500 hover:text-zinc-300 border border-zinc-800 hover:border-zinc-700 px-2 py-1 rounded"
+                className="text-[10px] font-semibold text-zinc-400 hover:text-[#27F293] border border-zinc-800 hover:border-[#27F293]/30 px-2.5 py-1 rounded-full bg-zinc-900/40 hover:bg-[#27F293]/5 transition-all duration-150 cursor-pointer"
               >
                 Creator Demo
-              </button>
+              </motion.button>
               <Link to="/exchange">
-                <Button variant="primary" size="sm">
+                <Button variant="primary" size="sm" className="font-semibold text-xs">
                   Explore Workflows
                 </Button>
               </Link>
