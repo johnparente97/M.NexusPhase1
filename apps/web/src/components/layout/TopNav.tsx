@@ -2,12 +2,16 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
 import { UserButton } from '@clerk/clerk-react';
-import { Compass, Layers, History, Award, LayoutDashboard } from 'lucide-react';
+import { Compass, Layers, History, Award, LayoutDashboard, Search } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { motion } from 'framer-motion';
 import DemoLabel from '../common/DemoLabel';
 
-export default function TopNav() {
+export interface TopNavProps {
+  onSearchClick?: () => void;
+}
+
+export default function TopNav({ onSearchClick }: TopNavProps) {
   const { isSignedIn, user, signOut, signInAsDemo } = useAuth();
   const navigate = useNavigate();
 
@@ -116,6 +120,17 @@ export default function TopNav() {
 
         {/* Right Auth controls */}
         <div className="flex items-center gap-3">
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={onSearchClick}
+            className="flex items-center gap-2 text-xs text-zinc-400 hover:text-zinc-200 border border-zinc-800 bg-zinc-900/40 rounded-lg px-3 py-1.5 transition-colors cursor-pointer select-none"
+          >
+            <Search className="h-3.5 w-3.5" />
+            <span>Search...</span>
+            <kbd className="text-[10px] text-zinc-500 bg-zinc-950 border border-zinc-800 px-1 py-0.2 rounded font-mono">⌘K</kbd>
+          </motion.button>
+
           {isSignedIn ? (
             <div className="flex items-center gap-4">
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
