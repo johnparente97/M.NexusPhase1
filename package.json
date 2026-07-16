@@ -1,0 +1,30 @@
+{
+  "name": "meridian-nexus",
+  "private": true,
+  "packageManager": "pnpm@9.15.0",
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:web": "turbo run dev --filter=@meridian-nexus/web",
+    "dev:api": "turbo run dev --filter=@meridian-nexus/api",
+    "build": "turbo run build",
+    "build:web": "turbo run build --filter=@meridian-nexus/web",
+    "build:api": "turbo run build --filter=@meridian-nexus/api",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "test:unit": "turbo run test:unit",
+    "test:integration": "turbo run test:integration",
+    "test:e2e": "turbo run test:e2e",
+    "db:migrate:local": "cd apps/api && npx wrangler d1 migrations apply meridian-nexus-db --local",
+    "db:migrate:remote": "cd apps/api && npx wrangler d1 migrations apply meridian-nexus-db --remote",
+    "db:seed:local": "cd apps/api && npx wrangler d1 execute meridian-nexus-db --local --file=seed/seed.sql",
+    "db:seed:remote": "cd apps/api && npx wrangler d1 execute meridian-nexus-db --remote --file=seed/seed.sql",
+    "deploy:api": "cd apps/api && npx wrangler deploy",
+    "clean": "turbo run clean && rm -rf node_modules"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.7.0",
+    "prettier": "^3.4.0"
+  }
+}
