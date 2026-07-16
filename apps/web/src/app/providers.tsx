@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ClerkProvider } from '@clerk/clerk-react';
+import { WalletProvider } from '../hooks/useWallet';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,7 +18,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ClerkProvider publishableKey={publishableKey}>
       <QueryClientProvider client={queryClient}>
-        {children}
+        <WalletProvider>
+          {children}
+        </WalletProvider>
       </QueryClientProvider>
     </ClerkProvider>
   );

@@ -92,13 +92,15 @@ export function useAuth(): AuthState {
       avatarUrl: clerkUser.imageUrl,
     };
   } else if (demoUser) {
-    const role = demoUser.split('_')[0] as any;
-    userId = `usr-${role}`;
+    const parts = demoUser.split('_');
+    const role = parts[0] as any;
+    const address = parts[1] || '';
+    userId = address ? `usr-${address}` : `usr-${role}`;
     user = {
       id: userId,
-      email: `${role}@nexus.dev`,
-      displayName: role.charAt(0).toUpperCase() + role.slice(1) + ' Account',
-      role: role || 'user',
+      email: address ? `${address}@meridian.finance` : `${role}@nexus.dev`,
+      displayName: dbUser?.displayName || dbUser?.user?.displayName || (address ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}` : (role.charAt(0).toUpperCase() + role.slice(1) + ' Account')),
+      role: dbUser?.role || dbUser?.user?.role || role || 'user',
       avatarUrl: null,
     };
   }

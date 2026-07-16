@@ -1,0 +1,309 @@
+import { useState, useEffect, useCallback, createContext, useContext } from 'react';
+import { BASE_SEPOLIA_CONFIG } from '../utils/network-config';
+import { fetchApi } from '../services/api-client';
+
+// Safe window.ethereum reference
+const getEthereum = () => {
+  if (typeof window !== 'undefined' && (window as any).ethereum) {
+    return (window as any).ethereum;
+  }
+  return null;
+};
+
+export interface WalletState {
+  walletAddress: string | null;
+  chainId: number | null;
+  isConnected: boolean;
+  isConnecting: boolean;
+  usdcBalance: string;
+  connectWallet: () => Promise<void>;
+  disconnectWallet: () => void;
+  switchNetwork: () => Promise<void>;
+  personalSign: (message: string) => Promise<string>;
+  signPaymentAuthorization: (recipient: string, amount: number, nonce: string) => Promise<string>;
+  signInWithEthereum: () => Promise<void>;
+}
+
+// Simple ERC20 balanceOf encoder helper
+const encodeBalanceOf = (address: string): string => {
+  const cleanAddress = address.replace(/^0x/, '').toLowerCase();
+  const padded = cleanAddress.padStart(64, '0');
+  return '0x70a08231' + padded;
+};
+
+export const useWalletInternal = (): WalletState => {
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [chainId, setChainId] = useState<number | null>(null);
+  const [usdcBalance, setUsdcBalance] = useState<string>('0.00');
+  const [isConnecting, setIsConnecting] = useState(false);
+
+  const fetchUsdcBalance = useCallback(async (address: string) => {
+    const ethereum = getEthereum();
+    if (!ethereum) return;
+    try {
+      const data = encodeBalanceOf(address);
+      const hexBalance = await ethereum.request({
+        method: 'eth_call',
+        params: [
+          {
+            to: BASE_SEPOLIA_CONFIG.usdcAddress,
+            data: data,
+          },
+          'latest',
+        ],
+      });
+      if (hexBalance && hexBalance !== '0x') {
+        const raw = BigInt(hexBalance);
+        // Base Sepolia USDC has 6 decimals
+        const formatted = (Number(raw) / 1000000).toFixed(2);
+        setUsdcBalance(formatted);
+      } else {
+        setUsdcBalance('0.00');
+      }
+    } catch (err) {
+      console.warn('Failed to query USDC balance:', err);
+      setUsdcBalance('0.00');
+    }
+  }, []);
+
+  const handleAccountsChanged = useCallback((accounts: string[]) => {
+    if (accounts.length > 0) {
+      setWalletAddress(accounts[0]);
+      localStorage.setItem('wallet_connected', 'true');
+      fetchUsdcBalance(accounts[0]);
+    } else {
+      setWalletAddress(null);
+      setUsdcBalance('0.00');
+      localStorage.removeItem('wallet_connected');
+    }
+  }, [fetchUsdcBalance]);
+
+  const handleChainChanged = useCallback((hexChainId: string) => {
+    const parsed = parseInt(hexChainId, 16);
+    setChainId(parsed);
+    if (walletAddress) {
+      fetchUsdcBalance(walletAddress);
+    }
+  }, [walletAddress, fetchUsdcBalance]);
+
+  // Connect injected provider
+  const connectWallet = useCallback(async () => {
+    const ethereum = getEthereum();
+    if (!ethereum) {
+      alert('No Web3 wallet detected. Please install MetaMask to interact with the Meridian testnet.');
+      return;
+    }
+    setIsConnecting(true);
+    try {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      const rawChainId = await ethereum.request({ method: 'eth_chainId' });
+      
+      setChainId(parseInt(rawChainId, 16));
+      handleAccountsChanged(accounts);
+    } catch (err) {
+      console.error('Wallet connection rejected:', err);
+    } finally {
+      setIsConnecting(false);
+    }
+  }, [handleAccountsChanged]);
+
+  const disconnectWallet = useCallback(() => {
+    setWalletAddress(null);
+    setUsdcBalance('0.00');
+    localStorage.removeItem('wallet_connected');
+  }, []);
+
+  const switchNetwork = useCallback(async () => {
+    const ethereum = getEthereum();
+    if (!ethereum) return;
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: BASE_SEPOLIA_CONFIG.hexChainId }],
+      });
+    } catch (switchError: any) {
+      // Chain not added to user's wallet
+      if (switchError.code === 4902) {
+        try {
+          await ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: BASE_SEPOLIA_CONFIG.hexChainId,
+                chainName: BASE_SEPOLIA_CONFIG.name,
+                rpcUrls: [BASE_SEPOLIA_CONFIG.rpcUrl],
+                blockExplorerUrls: [BASE_SEPOLIA_CONFIG.explorerUrl],
+                nativeCurrency: BASE_SEPOLIA_CONFIG.nativeCurrency,
+              },
+            ],
+          });
+        } catch (addError) {
+          console.error('Failed to add Base Sepolia network:', addError);
+        }
+      } else {
+        console.error('Failed to switch network:', switchError);
+      }
+    }
+  }, []);
+
+  // SIWE Personal Sign Challenge
+  const personalSign = useCallback(async (message: string): Promise<string> => {
+    const ethereum = getEthereum();
+    if (!ethereum || !walletAddress) throw new Error('Wallet not connected');
+    return ethereum.request({
+      method: 'personal_sign',
+      params: [message, walletAddress],
+    });
+  }, [walletAddress]);
+
+  // x402 payment requirements signer (EIP-712 / EIP-3009 structure)
+  const signPaymentAuthorization = useCallback(async (
+    recipient: string,
+    amount: number,
+    nonce: string
+  ): Promise<string> => {
+    const ethereum = getEthereum();
+    if (!ethereum || !walletAddress) throw new Error('Wallet not connected');
+
+    // USDC amount in integer base units (6 decimals)
+    const rawAmount = Math.round(amount * 1000000).toString();
+    const validAfter = 0;
+    // Set 1-hour expiration
+    const validBefore = Math.floor(Date.now() / 1000) + 3600; 
+
+    const eip712Data = {
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+          { name: 'verifyingContract', type: 'address' }
+        ],
+        TransferWithAuthorization: [
+          { name: 'from', type: 'address' },
+          { name: 'to', type: 'address' },
+          { name: 'value', type: 'uint256' },
+          { name: 'validAfter', type: 'uint256' },
+          { name: 'validBefore', type: 'uint256' },
+          { name: 'nonce', type: 'bytes32' }
+        ]
+      },
+      primaryType: 'TransferWithAuthorization',
+      domain: {
+        name: 'USD Coin',
+        version: '2',
+        chainId: BASE_SEPOLIA_CONFIG.chainId,
+        verifyingContract: BASE_SEPOLIA_CONFIG.usdcAddress
+      },
+      message: {
+        from: walletAddress,
+        to: recipient,
+        value: rawAmount,
+        validAfter,
+        validBefore,
+        nonce
+      }
+    };
+
+    return ethereum.request({
+      method: 'eth_signTypedData_v4',
+      params: [walletAddress, JSON.stringify(eip712Data)],
+    });
+  }, [walletAddress]);
+
+  // Eager connection hook
+  useEffect(() => {
+    const ethereum = getEthereum();
+    if (ethereum && localStorage.getItem('wallet_connected') === 'true') {
+      ethereum.request({ method: 'eth_accounts' })
+        .then((accounts: string[]) => {
+          if (accounts.length > 0) {
+            handleAccountsChanged(accounts);
+            ethereum.request({ method: 'eth_chainId' })
+              .then((hexChain: string) => setChainId(parseInt(hexChain, 16)));
+          }
+        })
+        .catch(console.warn);
+
+      // Listen for account and chain switches
+      ethereum.on('accountsChanged', handleAccountsChanged);
+      ethereum.on('chainChanged', handleChainChanged);
+
+      return () => {
+        ethereum.removeListener('accountsChanged', handleAccountsChanged);
+        ethereum.removeListener('chainChanged', handleChainChanged);
+      };
+    }
+  }, [handleAccountsChanged, handleChainChanged]);
+
+  const signInWithEthereum = useCallback(async () => {
+    let activeAddress = walletAddress;
+    const ethereum = getEthereum();
+    if (!ethereum) {
+      alert('No Web3 wallet detected.');
+      return;
+    }
+    if (!activeAddress) {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      activeAddress = accounts[0];
+      setWalletAddress(activeAddress);
+      localStorage.setItem('wallet_connected', 'true');
+    }
+
+    try {
+      const { nonce } = await fetchApi<{ nonce: string }>('/api/auth/web3/nonce');
+      const message = `mrdn.finance wants you to sign in with your Ethereum account:\n${activeAddress}\n\nI accept the Meridian Nexus Terms of Service and Privacy Policy.\n\nURI: https://mrdn.finance\nVersion: 1\nChain ID: ${chainId || BASE_SEPOLIA_CONFIG.chainId}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
+
+      const signature = await ethereum.request({
+        method: 'personal_sign',
+        params: [message, activeAddress],
+      });
+
+      const response = await fetchApi<{ success: boolean; token: string; user: any }>('/api/auth/web3/verify', {
+        method: 'POST',
+        body: JSON.stringify({
+          address: activeAddress,
+          message,
+          signature,
+        }),
+      });
+
+      if (response.success && response.token) {
+        localStorage.setItem('nexus_demo_user', `user_${activeAddress.toLowerCase()}`);
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error('Sign-in with Ethereum failed:', err);
+      alert('SIWE Signature request rejected or verification failed.');
+    }
+  }, [walletAddress, chainId]);
+
+  return {
+    walletAddress,
+    chainId,
+    isConnected: !!walletAddress,
+    isConnecting,
+    usdcBalance,
+    connectWallet,
+    disconnectWallet,
+    switchNetwork,
+    personalSign,
+    signPaymentAuthorization,
+    signInWithEthereum,
+  };
+};
+
+const WalletContext = createContext<WalletState | undefined>(undefined);
+
+export const WalletProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const wallet = useWalletInternal();
+  return <WalletContext.Provider value={wallet}>{children}</WalletContext.Provider>;
+};
+
+export const useWallet = () => {
+  const context = useContext(WalletContext);
+  if (!context) {
+    throw new Error('useWallet must be used within a WalletProvider');
+  }
+  return context;
+};
