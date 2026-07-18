@@ -10,7 +10,7 @@
     {
       "binding": "DB",
       "database_name": "meridian-nexus-db",
-      "database_id": "local-db-id"
+      "database_id": "3bee722c-861e-4d3a-9da0-31e8d8c38b76"
     }
   ],
   "observability": {
