@@ -58,11 +58,12 @@ export function useRun(runId: string) {
   });
 }
 
-export function useRunResult(runId: string, isCompleted = false) {
+export function useRunResult(runId: string, enabled = true) {
   return useQuery({
     queryKey: ['run-result', runId],
     queryFn: () => fetchApi<WorkflowResult>(`/api/runs/${runId}/result`),
-    enabled: !!runId && isCompleted,
+    enabled: !!runId && enabled,
+    retry: false, // Don't retry if result not ready yet
   });
 }
 

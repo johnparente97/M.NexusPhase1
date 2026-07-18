@@ -14,7 +14,7 @@ export default function RunDetail() {
   const { id } = useParams<{ id: string }>();
 
   const { data: run, isLoading: loadingRun, error: runError } = useRun(id || '');
-  const { data: result, isLoading: loadingResult } = useRunResult(id || '');
+  const { data: result, isLoading: loadingResult } = useRunResult(id || '', run?.status === 'completed');
 
   if (loadingRun) return <LoadingPage />;
   if (runError || !run) return <NotFound />;

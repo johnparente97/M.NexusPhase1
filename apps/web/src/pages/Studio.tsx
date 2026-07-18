@@ -1,13 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Badge } from '../components/ui/Badge';
 import { useCreatorWorkflows, useCreatorAnalytics } from '../hooks/useCreator';
 import EmptyState from '../components/ui/EmptyState';
 import LoadingPage from '../components/common/LoadingPage';
-import { Layers, Plus, Settings, Play, CheckCircle, BarChart3, Eye } from 'lucide-react';
+import { Layers, Plus, Settings, CheckCircle, Eye } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
-import { usePublishWorkflow, useUnpublishWorkflow } from '../hooks/useWorkflows';
 import { useToast } from '../components/ui/Toast';
 
 export default function Studio() {
@@ -16,23 +16,37 @@ export default function Studio() {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const publishMutation = usePublishWorkflow('');
-  const unpublishMutation = useUnpublishWorkflow('');
+  const queryClient = useQueryClient();
 
-  if (isLoading) return <LoadingPage />;
-
-  const handlePublish = (id: string, e: React.MouseEvent) => {
+  const handlePublish = async (id: string, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
-    // Inject correct ID into mutation dynamically by calling mutate on a custom instance
-    // (We can use a simpler approach of invalidating query inside hooks)
-    publishMutation.mutateAsync(undefined, {
-      onSuccess: () => {
-        toast('Workflow published successfully!', 'success');
-      },
-    });
+    try {
+      await import('../services/api-client').then(({ fetchApi }) =>
+        fetchApi(`/api/workflows/${id}/publish`, { method: 'POST' })
+      );
+      await queryClient.invalidateQueries({ queryKey: ['creator-workflows'] });
+      toast('Workflow published successfully!', 'success');
+    } catch (err: any) {
+      toast(err.message || 'Failed to publish workflow.', 'error');
+    }
   };
+
+  const handleUnpublish = async (id: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await import('../services/api-client').then(({ fetchApi }) =>
+        fetchApi(`/api/workflows/${id}/unpublish`, { method: 'POST' })
+      );
+      await queryClient.invalidateQueries({ queryKey: ['creator-workflows'] });
+      toast('Workflow unpublished.', 'success');
+    } catch (err: any) {
+      toast(err.message || 'Failed to unpublish workflow.', 'error');
+    }
+  };
+
+  if (isLoading) return <LoadingPage />;
 
   return (
     <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full px-6 py-6 gap-6 select-none pb-16">
@@ -115,7 +129,7 @@ export default function Studio() {
                     <Button
                       variant="outline"
                       size="sm"
-                      onClick={() => navigate(`/studio/${w.id}/edit`)} // Redirect to edit to publish cleanly
+                      onClick={(e) => handlePublish(w.id, e)}
                       className="font-semibold border-emerald-900/30 text-emerald-400 hover:bg-emerald-950/10"
                     >
                       Publish
