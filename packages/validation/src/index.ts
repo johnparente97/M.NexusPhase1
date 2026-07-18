@@ -120,6 +120,8 @@ export const executeWorkflowSchema = z.object({
   paymentSignature: z.string().optional(),
   paymentNonce: z.string().optional(),
   paymentValidBefore: z.number().optional(),
+  paymentIntentId: z.string().optional(),
+  idempotencyKey: z.string().optional(),
 });
 
 // ── Review Schemas ──

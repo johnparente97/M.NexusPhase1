@@ -20,12 +20,19 @@ router.get('/me', requireAuth(), async (c) => {
   const profile = await repo.getProfile(authUser.id);
   const creator = await repo.getCreatorProfile(authUser.id);
 
+  const { results: linkedWallets } = await c.env.DB.prepare(
+    'SELECT wallet_address as walletAddress, verified_at as verifiedAt FROM linked_wallets WHERE user_id = ?'
+  )
+    .bind(authUser.id)
+    .all<{ walletAddress: string; verifiedAt: string }>();
+
   return c.json({
     success: true,
     data: {
       user,
       profile,
       creator,
+      linkedWallets: linkedWallets || [],
     },
   });
 });

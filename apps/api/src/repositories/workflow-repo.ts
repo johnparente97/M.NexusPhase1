@@ -22,7 +22,7 @@ export class D1WorkflowRepository implements WorkflowRepository {
   }
 
   async list(params: WorkflowListParams): Promise<{ workflows: Workflow[]; total: number }> {
-    let whereClauses: string[] = ['w.deleted_at IS NULL'];
+    const whereClauses: string[] = ['w.deleted_at IS NULL'];
     const bindings: any[] = [];
     let bindIndex = 1;
 

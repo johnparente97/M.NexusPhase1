@@ -7,23 +7,23 @@ export function useExecuteWorkflow(workflowId: string) {
   return useMutation({
     mutationFn: ({ 
       inputs, 
+      paymentIntentId,
       paymentSignature,
-      paymentNonce,
-      paymentValidBefore
+      idempotencyKey
     }: { 
       inputs: Record<string, unknown>; 
+      paymentIntentId?: string;
       paymentSignature?: string;
-      paymentNonce?: string;
-      paymentValidBefore?: number;
+      idempotencyKey?: string;
     }) =>
       fetchApi<WorkflowRun>(`/api/workflows/${workflowId}/run`, {
         method: 'POST',
         body: JSON.stringify({ 
           workflowId, 
           inputs, 
+          paymentIntentId,
           paymentSignature,
-          paymentNonce,
-          paymentValidBefore
+          idempotencyKey
         }),
       }),
     onSuccess: (data) => {
@@ -48,14 +48,21 @@ export function useRun(runId: string) {
     queryKey: ['run', runId],
     queryFn: () => fetchApi<WorkflowRun>(`/api/runs/${runId}`),
     enabled: !!runId,
+    refetchInterval: (query) => {
+      const data = query.state.data as WorkflowRun | undefined;
+      if (data && (data.status === 'completed' || data.status === 'failed' || data.status === 'cancelled')) {
+        return false;
+      }
+      return 1500; // Poll every 1.5 seconds if run is running/pending
+    },
   });
 }
 
-export function useRunResult(runId: string) {
+export function useRunResult(runId: string, isCompleted = false) {
   return useQuery({
     queryKey: ['run-result', runId],
     queryFn: () => fetchApi<WorkflowResult>(`/api/runs/${runId}/result`),
-    enabled: !!runId,
+    enabled: !!runId && isCompleted,
   });
 }
 

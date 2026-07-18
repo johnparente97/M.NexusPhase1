@@ -13,6 +13,7 @@ export interface AuthState {
     role: 'user' | 'creator' | 'admin';
     avatarUrl: string | null;
   } | null;
+  linkedWallets?: Array<{ walletAddress: string; verifiedAt: string }>;
   signOut: () => void;
   signInAsDemo: (role: 'user' | 'creator' | 'admin') => void;
 }
@@ -110,6 +111,7 @@ export function useAuth(): AuthState {
     isLoaded,
     userId,
     user,
+    linkedWallets: dbUser?.linkedWallets || [],
     signOut,
     signInAsDemo,
   };

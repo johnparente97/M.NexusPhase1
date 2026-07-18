@@ -1,10 +1,12 @@
 import { MiddlewareHandler } from 'hono';
 import { AppEnv } from '../types';
 import { AuthError } from '../utils/errors';
+import { importSPKI, jwtVerify } from 'jose';
 
 export function authMiddleware(options: { required: boolean }): MiddlewareHandler<AppEnv> {
   return async (c, next) => {
     const authHeader = c.req.header('Authorization');
+    const isProd = c.env.ENVIRONMENT === 'production';
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       if (options.required) {
@@ -17,6 +19,9 @@ export function authMiddleware(options: { required: boolean }): MiddlewareHandle
 
     // Dynamic demo login mode bypass
     if (token.startsWith('demo_')) {
+      if (isProd) {
+        throw new AuthError('Demo authentication is disabled in production environments.');
+      }
       const parts = token.split('_');
       const role = (parts[1] || 'user') as 'user' | 'creator' | 'admin';
       c.set('user', {
@@ -28,32 +33,61 @@ export function authMiddleware(options: { required: boolean }): MiddlewareHandle
       return next();
     }
 
-    try {
-      // Decode Clerk JWT token using Jose library if Clerk keys are present
-      // For simple MVP without real Clerk keys set up yet, we check the token payload.
-      // If CLERK_SECRET_KEY is provided, we can fetch public JWKS or verify.
-      // For now, we will perform a lightweight base64 decode of the JWT payload
-      // to extract user claims if the token looks like a JWT, else default to demo.
-      const jwtParts = token.split('.');
-      if (jwtParts.length === 3) {
-        const payloadJson = atob(jwtParts[1]!.replace(/-/g, '+').replace(/_/g, '/'));
-        const payload = JSON.parse(payloadJson) as {
-          sub: string;
-          email?: string;
-          name?: string;
-          role?: string;
-        };
+    // Try cryptographic validation of Clerk JWT token
+    const clerkJwtKey = c.env.CLERK_JWT_KEY;
+    if (clerkJwtKey) {
+      try {
+        // Format public key PEM if it is missing head/foot blocks
+        let pem = clerkJwtKey.trim();
+        if (!pem.startsWith('-----BEGIN PUBLIC KEY-----')) {
+          pem = `-----BEGIN PUBLIC KEY-----\n${pem}\n-----END PUBLIC KEY-----`;
+        }
+        const publicKey = await importSPKI(pem, 'RS256');
+        const { payload } = await jwtVerify(token, publicKey);
+
+        const email = (payload as any).email || (payload as any).email_address || `${payload.sub}@nexus.dev`;
+        const displayName = (payload as any).name || (payload as any).display_name || 'Nexus User';
+        const role = ((payload as any).role || 'user') as 'user' | 'creator' | 'admin';
 
         c.set('user', {
-          id: payload.sub,
-          email: payload.email || `${payload.sub}@nexus.dev`,
-          displayName: payload.name || 'Nexus User',
-          role: (payload.role || 'user') as 'user' | 'creator' | 'admin',
+          id: payload.sub!,
+          email,
+          displayName,
+          role,
         });
         return next();
+      } catch (err: any) {
+        console.error('Cryptographic Clerk JWT verification failed:', err);
+        if (isProd) {
+          throw new AuthError('Invalid or expired authentication signature.');
+        }
       }
-    } catch (e) {
-      console.warn('JWT parse failed, falling back to unauthorized', e);
+    }
+
+    // Fallback for non-production environment local development if keys are not configured
+    if (!isProd) {
+      try {
+        const jwtParts = token.split('.');
+        if (jwtParts.length === 3) {
+          const payloadJson = atob(jwtParts[1]!.replace(/-/g, '+').replace(/_/g, '/'));
+          const payload = JSON.parse(payloadJson) as {
+            sub: string;
+            email?: string;
+            name?: string;
+            role?: string;
+          };
+
+          c.set('user', {
+            id: payload.sub,
+            email: payload.email || `${payload.sub}@nexus.dev`,
+            displayName: payload.name || 'Nexus User',
+            role: (payload.role || 'user') as 'user' | 'creator' | 'admin',
+          });
+          return next();
+        }
+      } catch (e) {
+        console.warn('JWT parse failed during local fallback check:', e);
+      }
     }
 
     if (options.required) {

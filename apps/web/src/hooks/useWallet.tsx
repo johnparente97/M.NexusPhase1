@@ -21,7 +21,9 @@ export interface WalletState {
   switchNetwork: () => Promise<void>;
   personalSign: (message: string) => Promise<string>;
   signPaymentAuthorization: (recipient: string, amount: number, nonce: string) => Promise<string>;
+  signTypedData: (domain: any, types: any, value: any) => Promise<string>;
   signInWithEthereum: () => Promise<void>;
+  linkWalletAddress: () => Promise<void>;
 }
 
 // Simple ERC20 balanceOf encoder helper
@@ -212,6 +214,37 @@ export const useWalletInternal = (): WalletState => {
     });
   }, [walletAddress]);
 
+  const signTypedData = useCallback(async (
+    domain: any,
+    types: any,
+    value: any
+  ): Promise<string> => {
+    const ethereum = getEthereum();
+    if (!ethereum || !walletAddress) {
+      throw new Error('Wallet not connected or ethereum provider missing');
+    }
+
+    const payload = {
+      types: {
+        EIP712Domain: [
+          { name: 'name', type: 'string' },
+          { name: 'version', type: 'string' },
+          { name: 'chainId', type: 'uint256' },
+          { name: 'verifyingContract', type: 'address' }
+        ],
+        ...types
+      },
+      primaryType: Object.keys(types)[0],
+      domain,
+      message: value
+    };
+
+    return ethereum.request({
+      method: 'eth_signTypedData_v4',
+      params: [walletAddress, JSON.stringify(payload)],
+    });
+  }, [walletAddress]);
+
   // Eager connection hook
   useEffect(() => {
     const ethereum = getEthereum();
@@ -288,6 +321,64 @@ export const useWalletInternal = (): WalletState => {
     }
   }, [walletAddress, chainId]);
 
+  const linkWalletAddress = useCallback(async (): Promise<void> => {
+    let activeAddress = walletAddress;
+    const ethereum = getEthereum();
+    if (!ethereum) {
+      alert('No Web3 wallet detected.');
+      return;
+    }
+    if (!activeAddress) {
+      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+      if (accounts && accounts[0]) {
+        activeAddress = accounts[0];
+        setWalletAddress(activeAddress);
+        localStorage.setItem('wallet_connected', 'true');
+      }
+    }
+
+    if (!activeAddress) {
+      alert('No active wallet account connected.');
+      return;
+    }
+
+    try {
+      // 1. Fetch challenge from API
+      const responseChallenge = await fetchApi<{ challengeId: string; challenge: string }>(
+        '/api/auth/web3/challenge',
+        {
+          method: 'POST',
+          body: JSON.stringify({ walletAddress: activeAddress }),
+        }
+      );
+
+      // 2. Request user signature
+      const signature = await ethereum.request({
+        method: 'personal_sign',
+        params: [responseChallenge.challenge, activeAddress],
+      });
+
+      // 3. Post signature for linking
+      const responseLink = await fetchApi<{ message: string; walletAddress: string }>(
+        '/api/auth/web3/link',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            challengeId: responseChallenge.challengeId,
+            signature,
+            walletAddress: activeAddress,
+          }),
+        }
+      );
+
+      alert(responseLink.message || 'Wallet linked successfully!');
+      window.location.reload();
+    } catch (err: any) {
+      console.error('Wallet linking signature failed:', err);
+      alert(err.message || 'Verification rejected.');
+    }
+  }, [walletAddress]);
+
   return {
     walletAddress,
     chainId,
@@ -299,7 +390,9 @@ export const useWalletInternal = (): WalletState => {
     switchNetwork,
     personalSign,
     signPaymentAuthorization,
+    signTypedData,
     signInWithEthereum,
+    linkWalletAddress,
   };
 };
 

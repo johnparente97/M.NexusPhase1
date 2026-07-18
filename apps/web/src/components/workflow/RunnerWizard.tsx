@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -11,7 +11,7 @@ import SettlementModal from './SettlementModal';
 import { Workflow, WorkflowRun, WorkflowVersion } from '@meridian-nexus/shared-types';
 import { formatCurrency, formatDuration } from '../../utils/format';
 import { ArrowLeft, ArrowRight, Play, CheckCircle2, FileText, AlertCircle } from 'lucide-react';
-import { useExecuteWorkflow } from '../../hooks/useWorkflowRun';
+import { useExecuteWorkflow, useRun } from '../../hooks/useWorkflowRun';
 
 export interface RunnerWizardProps {
   workflow: Workflow;
@@ -30,6 +30,26 @@ export const RunnerWizard: React.FC<RunnerWizardProps> = ({ workflow }) => {
   const executeMutation = useExecuteWorkflow(workflow.id);
   const version = workflow.currentVersion!;
 
+  // 1. Hook up real-time database polling for background execution steps
+  const { data: polledRun } = useRun(runRecord?.id || '');
+
+  useEffect(() => {
+    if (polledRun) {
+      setRunRecord(polledRun);
+
+      if (polledRun.status === 'completed') {
+        setStep('result');
+        toast('Workflow completed execution successfully!', 'success');
+      } else if (polledRun.status === 'failed') {
+        setStep('configure');
+        toast(polledRun.errorMessage || 'Execution run failed. Please try again.', 'error');
+      } else if (polledRun.status === 'cancelled') {
+        setStep('configure');
+        toast('Execution was cancelled.', 'warning');
+      }
+    }
+  }, [polledRun, toast]);
+
   const handleStartConfigure = () => {
     setStep('configure');
   };
@@ -40,27 +60,49 @@ export const RunnerWizard: React.FC<RunnerWizardProps> = ({ workflow }) => {
   };
 
   const handleAuthorize = () => {
-    setShowSettlement(true);
+    if (workflow.isFree || workflow.pricePerRun === 0) {
+      // Free workflows bypass signature checks and execute directly
+      setStep('executing');
+      const idempotencyKey = crypto.randomUUID();
+
+      executeMutation.mutate({ 
+        inputs: formData, 
+        idempotencyKey,
+      }, {
+        onSuccess: (data) => {
+          setRunRecord(data);
+          toast('Workflow execution queued successfully.', 'info');
+        },
+        onError: (err) => {
+          setStep('configure');
+          toast(err.message || 'Execution request failed.', 'error');
+        },
+      });
+    } else {
+      setShowSettlement(true);
+    }
   };
 
-  const handleConfirmSettlement = (signature: string, nonce: string, validBefore: number) => {
+  const handleConfirmSettlement = (paymentIntentId: string, signature: string) => {
     setShowSettlement(false);
     setStep('executing');
     
-    // Trigger mutation execute
+    // Generate a single-use de-duplication key for execution replay safety
+    const idempotencyKey = crypto.randomUUID();
+
+    // Trigger execution with signature details
     executeMutation.mutate({ 
       inputs: formData, 
+      paymentIntentId,
       paymentSignature: signature,
-      paymentNonce: nonce,
-      paymentValidBefore: validBefore
+      idempotencyKey,
     }, {
       onSuccess: (data) => {
         setRunRecord(data);
-        setStep('result');
-        toast('Workflow completed execution successfully!', 'success');
+        toast('Workflow execution queued successfully.', 'info');
       },
       onError: (err) => {
-        setStep('configure'); // Reset back to form
+        setStep('configure');
         toast(err.message || 'Execution run failed. Please try again.', 'error');
       },
     });
@@ -198,8 +240,9 @@ export const RunnerWizard: React.FC<RunnerWizardProps> = ({ workflow }) => {
       {step === 'executing' && (
         <Card className="bg-zinc-900 border-zinc-800 min-h-[300px] flex items-center justify-center">
           <ExecutionProgress
-            runStatus={executeMutation.isPending ? 'running' : 'completed'}
+            runStatus={runRecord?.status || 'running'}
             estimatedDuration={workflow.estimatedDurationSeconds}
+            steps={runRecord?.steps}
           />
         </Card>
       )}
@@ -239,6 +282,7 @@ export const RunnerWizard: React.FC<RunnerWizardProps> = ({ workflow }) => {
         isOpen={showSettlement}
         onClose={() => setShowSettlement(false)}
         amount={workflow.pricePerRun}
+        workflowId={workflow.id}
         onConfirm={handleConfirmSettlement}
       />
 

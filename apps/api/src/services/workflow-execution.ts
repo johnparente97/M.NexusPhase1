@@ -7,7 +7,7 @@ import {
 } from '@meridian-nexus/shared-types';
 import { WorkflowRepository, RunRepository } from '../repositories/interfaces';
 import { createModelProvider } from '../providers/model/factory';
-import { MockMeridianSettlementProvider } from '../providers/settlement/mock';
+import { createSettlementProvider } from '../providers/settlement/factory';
 import { generateId } from '../utils/id';
 import { getIsoTimestamp } from '../utils/time';
 import { ValidationError, AppError } from '../utils/errors';
@@ -30,12 +30,9 @@ export class WorkflowExecutionService {
     workflowId: string, 
     userId: string, 
     inputs: Record<string, unknown>,
-    paymentDetails?: {
-      signature?: string;
-      nonce?: string;
-      validBefore?: number;
-    }
-  ): Promise<WorkflowRun> {
+    paymentIntentId?: string,
+    signature?: string
+  ): Promise<{ run: WorkflowRun; steps: WorkflowRunStep[]; version: any; workflow: Workflow }> {
     const workflow = await this.workflowRepo.getById(workflowId);
     if (!workflow) throw new ValidationError('Workflow not found');
     if (workflow.status !== 'published') throw new ValidationError('Workflow is not published');
@@ -53,10 +50,127 @@ export class WorkflowExecutionService {
       throw new ValidationError('Workflow input validation failed.', fieldErrors);
     }
 
+    // 2. Validate Payment Intent & signature cryptographically if workflow is paid
+    if (workflow.pricePerRun > 0) {
+      if (!paymentIntentId || !signature) {
+        throw new ValidationError('A valid payment intent and cryptographic signature authorization are required for paid workflows.');
+      }
+
+      // Fetch payment intent from DB
+      const intent = await this.env.DB.prepare(
+        'SELECT * FROM payment_intents WHERE id = ?'
+      )
+        .bind(paymentIntentId)
+        .first<{
+          id: string;
+          user_id: string;
+          linked_wallet: string;
+          workflow_id: string;
+          amount: number;
+          token: string;
+          chain_id: number;
+          recipient: string;
+          nonce: string;
+          valid_after: number;
+          valid_before: number;
+          status: string;
+        }>();
+
+      if (!intent) {
+        throw new ValidationError('The specified payment intent was not found.');
+      }
+
+      if (intent.user_id !== userId) {
+        throw new ValidationError('This payment intent belongs to a different user profile.');
+      }
+
+      if (intent.workflow_id !== workflowId) {
+        throw new ValidationError('Payment intent does not match the execution workflow.');
+      }
+
+      if (intent.status !== 'pending') {
+        throw new ValidationError(`Payment intent has an invalid status: ${intent.status}`);
+      }
+
+      const nowUnix = Math.floor(Date.now() / 1000);
+      if (intent.valid_before <= nowUnix) {
+        throw new ValidationError('The payment intent has expired.');
+      }
+
+      // Replay Protection: Check if nonce was already consumed
+      const existingNonce = await this.env.DB.prepare(
+        'SELECT nonce FROM payment_nonces WHERE nonce = ?'
+      )
+        .bind(intent.nonce)
+        .first<{ nonce: string }>();
+
+      if (existingNonce) {
+        throw new ValidationError('This payment authorization nonce has already been consumed. Replay detected.');
+      }
+
+      // Verify EIP-712 USDC TransferWithAuthorization signature using viem
+      let isValidSignature = false;
+      try {
+        const walletAddress = intent.linked_wallet as `0x${string}`;
+        const rawAmount = Math.round(intent.amount * 1000000).toString();
+
+        isValidSignature = await verifyTypedData({
+          address: walletAddress,
+          domain: {
+            name: 'USD Coin',
+            version: '2',
+            chainId: intent.chain_id,
+            verifyingContract: intent.token as `0x${string}`,
+          },
+          types: {
+            TransferWithAuthorization: [
+              { name: 'from', type: 'address' },
+              { name: 'to', type: 'address' },
+              { name: 'value', type: 'uint256' },
+              { name: 'validAfter', type: 'uint256' },
+              { name: 'validBefore', type: 'uint256' },
+              { name: 'nonce', type: 'bytes32' },
+            ],
+          },
+          primaryType: 'TransferWithAuthorization',
+          message: {
+            from: walletAddress,
+            to: intent.recipient as `0x${string}`,
+            value: BigInt(rawAmount),
+            validAfter: BigInt(intent.valid_after),
+            validBefore: BigInt(intent.valid_before),
+            nonce: intent.nonce as `0x${string}`,
+          },
+          signature: signature as `0x${string}`,
+        });
+      } catch (e: any) {
+        console.error('USDC typed data verification failed:', e);
+        throw new ValidationError('Payment signature verification failed: ' + e.message);
+      }
+
+      if (!isValidSignature) {
+        throw new ValidationError('Cryptographic payment signature mismatch. Invalid authorization payload.');
+      }
+
+      // Register consumed nonce to prevent replay attacks
+      await this.env.DB.prepare(
+        'INSERT INTO payment_nonces (nonce) VALUES (?)'
+      )
+        .bind(intent.nonce)
+        .run();
+
+      // Update payment intent status to signed
+      await this.env.DB.prepare(
+        'UPDATE payment_intents SET status = ?, signature = ?, updated_at = ? WHERE id = ?'
+      )
+        .bind('signed', signature, getIsoTimestamp(), paymentIntentId)
+        .run();
+    }
+
     const runId = generateId('run');
     const version = workflow.currentVersion;
     
-    // 2. Create Run Record
+    // 3. Create Run Record
     const run: WorkflowRun = {
       id: runId,
       workflowId,
@@ -81,7 +195,7 @@ export class WorkflowExecutionService {
 
     await this.runRepo.create(run);
 
-    // 3. Create Steps
+    // 4. Create Steps
     const stepKeys = ['validate', 'prepare', 'authorize', 'context', 'generate', 'validate-output', 'save', 'finalize'];
     const steps: WorkflowRunStep[] = stepKeys.map((key, idx) => ({
       id: generateId('step'),
@@ -100,22 +214,17 @@ export class WorkflowExecutionService {
       await this.runRepo.createStep(step);
     }
 
-    // Run execution in background (non-blocking for Worker, or synchronous for execution timing)
-    return this.runExecutionLoop(runId, userId, steps, workflow, version, parsedInputs.data, paymentDetails);
+    return { run, steps, version, workflow };
   }
 
-  private async runExecutionLoop(
+  public async runExecutionLoop(
     runId: string,
     userId: string,
     steps: WorkflowRunStep[],
     workflow: Workflow,
     version: any,
     inputs: Record<string, any>,
-    paymentDetails?: {
-      signature?: string;
-      nonce?: string;
-      validBefore?: number;
-    }
+    paymentIntentId?: string
   ): Promise<WorkflowRun> {
     const startTime = Date.now();
     await this.runRepo.updateStatus(runId, 'running', { startedAt: getIsoTimestamp() });
@@ -134,61 +243,9 @@ export class WorkflowExecutionService {
       // Step 3: Authorize Settlement
       let receipt: any = null;
       await this.runStep(steps, 'authorize', async () => {
-        // Cryptographically verify EIP-712 payment authorization if workflow is paid and signature details are provided
-        if (workflow.pricePerRun > 0) {
-          if (!paymentDetails || !paymentDetails.signature || !paymentDetails.nonce || !paymentDetails.validBefore) {
-            throw new ValidationError('A valid testnet payment signature and nonce authorization are required for paid capabilities.');
-          }
+        const environment = this.env.ENVIRONMENT || 'local';
+        const settlement = createSettlementProvider(environment);
 
-          const { signature, nonce, validBefore } = paymentDetails;
-          
-          // Reconstruct and verify the signature using viem
-          let isValidSignature = false;
-          try {
-            // Extract the user's primary wallet address from the authenticated user.id (which is formatted as usr-0x...)
-            const walletAddress = userId.replace(/^usr-/, '') as `0x${string}`;
-            const rawAmount = Math.round(workflow.pricePerRun * 1000000).toString();
-
-            isValidSignature = await verifyTypedData({
-              address: walletAddress,
-              domain: {
-                name: 'USD Coin',
-                version: '2',
-                chainId: 84532, // Base Sepolia Chain ID
-                verifyingContract: '0x036cbd53842c3db6650800b2854ef71e213fd2db' // USDC Proxy
-              },
-              types: {
-                TransferWithAuthorization: [
-                  { name: 'from', type: 'address' },
-                  { name: 'to', type: 'address' },
-                  { name: 'value', type: 'uint256' },
-                  { name: 'validAfter', type: 'uint256' },
-                  { name: 'validBefore', type: 'uint256' },
-                  { name: 'nonce', type: 'bytes32' }
-                ]
-              },
-              primaryType: 'TransferWithAuthorization',
-              message: {
-                from: walletAddress,
-                to: '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4', // Meridian Facilitator
-                value: BigInt(rawAmount),
-                validAfter: 0n,
-                validBefore: BigInt(validBefore),
-                nonce: nonce as `0x${string}`
-              },
-              signature: signature as `0x${string}`
-            });
-          } catch (e: any) {
-            console.error('USDC typed data signature verification failed:', e);
-            throw new ValidationError('Payment signature verification failed: ' + e.message);
-          }
-
-          if (!isValidSignature) {
-            throw new ValidationError('Cryptographic payment signature mismatch. Invalid authorization payload.');
-          }
-        }
-
-        const settlement = new MockMeridianSettlementProvider();
         const auth = await settlement.createAuthorization({
           userId: userId,
           runId,
@@ -206,6 +263,15 @@ export class WorkflowExecutionService {
         });
 
         await this.runRepo.createSettlementReceipt(receipt);
+
+        // Consume payment intent if applicable
+        if (paymentIntentId) {
+          await this.env.DB.prepare(
+            'UPDATE payment_intents SET status = ?, updated_at = ? WHERE id = ?'
+          )
+            .bind('consumed', getIsoTimestamp(), paymentIntentId)
+            .run();
+        }
       });
 
       // Step 4: Context
@@ -216,7 +282,6 @@ export class WorkflowExecutionService {
       // Step 5: Generate Output (Call AI Provider)
       let modelResult: any = null;
       await this.runStep(steps, 'generate', async () => {
-        // Build prompts
         const userPrompt = this.constructPrompt(version.inputDefinitions, inputs || {});
         const systemPrompt = version.systemInstructions;
 
@@ -246,7 +311,6 @@ export class WorkflowExecutionService {
         if (modelResult.parsedSections) {
           sections = modelResult.parsedSections;
         } else {
-          // Fallback parsing logic if returned raw text format
           sections = [
             {
               key: 'summary',
@@ -296,6 +360,19 @@ export class WorkflowExecutionService {
       console.error(`Execution run ${runId} failed:`, error);
       const durationMs = Date.now() - startTime;
       
+      // Attempt to mark intent as failed in payment history
+      if (paymentIntentId) {
+        try {
+          await this.env.DB.prepare(
+            'UPDATE payment_intents SET status = ?, updated_at = ? WHERE id = ?'
+          )
+            .bind('failed', getIsoTimestamp(), paymentIntentId)
+            .run();
+        } catch (dbErr) {
+          console.error('Failed to update payment intent status to failed:', dbErr);
+        }
+      }
+
       return await this.runRepo.updateStatus(runId, 'failed', {
         completedAt: getIsoTimestamp(),
         durationMs,

@@ -4,15 +4,17 @@ import { Button } from '../ui/Button';
 import { ShieldAlert, Check, Wallet, HelpCircle, ArrowUpRight } from 'lucide-react';
 import { formatCurrency } from '../../utils/format';
 import { useWallet } from '../../hooks/useWallet';
+import { fetchApi } from '../../services/api-client';
 
 export interface SettlementModalProps {
   isOpen: boolean;
   onClose: () => void;
   amount: number;
-  onConfirm: (signature: string, nonce: string, validBefore: number) => void;
+  workflowId: string;
+  onConfirm: (paymentIntentId: string, signature: string) => void;
 }
 
-export const SettlementModal: React.FC<SettlementModalProps> = ({ isOpen, onClose, amount, onConfirm }) => {
+export const SettlementModal: React.FC<SettlementModalProps> = ({ isOpen, onClose, amount, workflowId, onConfirm }) => {
   const {
     walletAddress,
     chainId,
@@ -21,7 +23,7 @@ export const SettlementModal: React.FC<SettlementModalProps> = ({ isOpen, onClos
     usdcBalance,
     connectWallet,
     switchNetwork,
-    signPaymentAuthorization
+    signTypedData
   } = useWallet();
 
   const [isSigning, setIsSigning] = useState(false);
@@ -37,16 +39,29 @@ export const SettlementModal: React.FC<SettlementModalProps> = ({ isOpen, onClos
     setSigningError(null);
 
     try {
-      // 1. Generate unique mock facilitator destination and unique nonce
-      const recipient = '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4'; 
-      const nonce = '0x' + crypto.randomUUID().replace(/-/g, '').padEnd(64, '0').substring(0, 64);
-      const validBefore = Math.floor(Date.now() / 1000) + 3600;
+      // 1. Fetch server-side calculated payment intent parameter specifications
+      const intent = await fetchApi<{
+        paymentIntentId: string;
+        domain: any;
+        types: any;
+        value: any;
+      }>('/api/payment/intent', {
+        method: 'POST',
+        body: JSON.stringify({
+          workflowId,
+          walletAddress: walletAddress.toLowerCase(),
+        }),
+      });
 
-      // 2. Request EIP-712 signature from injected wallet provider
-      const signature = await signPaymentAuthorization(recipient, amount, nonce);
+      // 2. Request EIP-712 typed signature from wallet provider
+      const signature = await signTypedData(
+        intent.domain,
+        intent.types,
+        intent.value
+      );
       
-      // 3. Confirm with parent (passes signature to runner)
-      onConfirm(signature, nonce, validBefore);
+      // 3. Confirm with parent
+      onConfirm(intent.paymentIntentId, signature);
     } catch (err: any) {
       console.error('Payment authorization rejected:', err);
       setSigningError(err.message || 'Signature request rejected by user.');

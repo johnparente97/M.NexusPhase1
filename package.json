@@ -9,7 +9,7 @@
     "build": "npm run build --prefix apps/web",
     "build:web": "npm run build --prefix apps/web",
     "build:api": "npm run build --prefix apps/api",
-    "lint": "npm run lint --prefix apps/web",
+    "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "npx tsc --noEmit --project apps/web/tsconfig.json && npx tsc --noEmit --project apps/api/tsconfig.json",
     "test": "npm run test --prefix apps/api",
     "db:migrate:local": "npx wrangler d1 migrations apply meridian-nexus-db --local --config apps/api/wrangler.jsonc",
@@ -22,6 +22,9 @@
   "devDependencies": {
     "turbo": "^2.5.0",
     "typescript": "^5.7.0",
-    "prettier": "^3.4.0"
+    "prettier": "^3.4.0",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "@typescript-eslint/eslint-plugin": "^6.21.0"
   }
 }

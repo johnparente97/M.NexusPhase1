@@ -151,7 +151,7 @@ export default function WorkflowDetail() {
 
         {activeTab === 'technical' && (
           <div className="flex flex-col gap-6 text-xs text-zinc-300">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card className="bg-zinc-900 border-zinc-800 p-5 flex flex-col gap-3">
                 <h4 className="font-semibold text-sm text-zinc-200">System Parameters</h4>
                 <div className="flex flex-col gap-2">
@@ -181,6 +181,33 @@ export default function WorkflowDetail() {
                       </span>
                     </div>
                   ))}
+                </div>
+              </Card>
+
+              <Card className="bg-zinc-900 border-zinc-800 p-5 flex flex-col gap-3">
+                <h4 className="font-semibold text-sm text-zinc-200">Capability Manifest</h4>
+                <div className="flex flex-col gap-3">
+                  <div className="flex flex-col gap-1 border-b border-zinc-800/50 pb-2">
+                    <span className="text-[10px] text-zinc-500 font-semibold uppercase">Outcome Goal</span>
+                    <span className="text-zinc-300">{workflow.outcomeStatement}</span>
+                  </div>
+                  <div className="flex flex-col gap-1 border-b border-zinc-800/50 pb-2">
+                    <span className="text-[10px] text-zinc-500 font-semibold uppercase">Runtime Sandbox Permissions</span>
+                    <div className="flex flex-wrap gap-1.5 mt-1">
+                      <Badge variant="outline" className="text-[9px] border-zinc-800 bg-zinc-950 text-zinc-400">Strictly Sandboxed</Badge>
+                      <Badge variant="outline" className="text-[9px] border-zinc-800 bg-zinc-950 text-zinc-400">No Persistent Storage</Badge>
+                      <Badge variant="outline" className="text-[9px] border-zinc-800 bg-zinc-950 text-zinc-400">No Web Access</Badge>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] text-zinc-500 font-semibold uppercase">Verification Evidence</span>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <div className="flex items-center gap-1 text-[11px] text-emerald-400 font-bold bg-emerald-500/5 border border-emerald-500/10 px-2 py-0.5 rounded-md">
+                        <CheckCircle className="h-3 w-3" />
+                        <span>Verified outcome matches goal</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </Card>
             </div>

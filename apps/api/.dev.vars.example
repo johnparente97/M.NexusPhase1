@@ -1,0 +1,30 @@
+# ─────────────────────────────────────────────────────────────
+# Cloudflare Worker Local Environment Secret Variables
+# Copy this to apps/api/.dev.vars for local wrangler dev execution.
+# NEVER commit .dev.vars containing real secret keys.
+# ─────────────────────────────────────────────────────────────
+
+# Gemini AI Studio key (optional if using live AI model)
+GEMINI_API_KEY=your-gemini-api-key-here
+
+# Clerk secret credentials (required for user authentication)
+CLERK_SECRET_KEY=sk_test_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+CLERK_PUBLISHABLE_KEY=pk_test_XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+# Clerk PEM public key (used for offline cryptographically secure JWT verification)
+# Find this in Clerk Dashboard -> API Keys -> Advanced -> JWT Verification Key
+CLERK_JWT_KEY=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+
+# Bot protection settings (optional)
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+
+# Running context (local, preview, staging, production)
+ENVIRONMENT=local
+
+# Base Sepolia network config (optional overrides)
+CHAIN_ID=84532
+USDC_ADDRESS=0x036cbd53842c3db6650800b2854ef71e213fd2db
+MERIDIAN_FACILITATOR_ADDRESS=0x5B38Da6a701c568545dCfcB03FcB875f56beddC4
+RPC_URL=https://sepolia.base.org
+CORS_ORIGIN=http://localhost:5173
+ENABLE_LIVE_AI=false

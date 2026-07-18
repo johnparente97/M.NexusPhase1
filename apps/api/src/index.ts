@@ -14,6 +14,7 @@ import { usersRouter } from './routes/users';
 import { creatorRouter } from './routes/creator';
 import { settlementRouter } from './routes/settlement';
 import web3authRouter from './routes/web3auth';
+import { paymentRouter } from './routes/payment';
 
 const app = new Hono<AppEnv>();
 
@@ -26,6 +27,7 @@ app.use('/api/*', apiRateLimit());
 app.route('/api/health', healthRouter);
 app.route('/api/auth', authRouter);
 app.route('/api/auth/web3', web3authRouter);
+app.route('/api/payment', paymentRouter);
 app.route('/api/workflows', workflowsRouter);
 app.route('/api', runsRouter); // handles workflows/:id/run and runs/*
 app.route('/api/favorites', favoritesRouter);

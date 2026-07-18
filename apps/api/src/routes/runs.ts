@@ -26,7 +26,26 @@ router.post('/workflows/:id/run', requireAuth(), runRateLimit(), zValidator('jso
   const executionService = new WorkflowExecutionService(workflowRepo, runRepo, c.env);
   const usageService = new UsageService(db);
 
-  // 1. Verify Turnstile token if enabled via feature flag
+  // 1. Idempotency Key validation
+  if (body.idempotencyKey) {
+    const existingRunId = await db.prepare(
+      'SELECT run_id FROM idempotency_keys WHERE key = ?'
+    )
+      .bind(body.idempotencyKey)
+      .first<{ run_id: string }>();
+
+    if (existingRunId) {
+      const run = await runRepo.getById(existingRunId.run_id);
+      if (run) {
+        return c.json({
+          success: true,
+          data: run,
+        }, 200);
+      }
+    }
+  }
+
+  // 2. Verify Turnstile token if enabled via feature flag
   const turnstileFlag = await db.prepare("SELECT value FROM feature_flags WHERE key = 'ENABLE_TURNSTILE'").first<{ value: string }>();
   if (turnstileFlag?.value === 'true') {
     const turnstileSecret = c.env.TURNSTILE_SECRET_KEY;
@@ -42,18 +61,42 @@ router.post('/workflows/:id/run', requireAuth(), runRateLimit(), zValidator('jso
     }
   }
 
-  // 2. Enforce limits
+  // 3. Enforce limits
   await usageService.checkUserLimits(authUser.id);
 
-  // 3. Trigger execution
-  const run = await executionService.execute(id, authUser.id, body.inputs, {
-    signature: body.paymentSignature,
-    nonce: body.paymentNonce,
-    validBefore: body.paymentValidBefore,
-  });
+  // 4. Trigger execution validation & configuration setup
+  const { run, steps, version, workflow } = await executionService.execute(
+    id,
+    authUser.id,
+    body.inputs,
+    body.paymentIntentId,
+    body.paymentSignature
+  );
 
-  // 4. Update usage metric counters
+  // Write idempotency key mapping
+  if (body.idempotencyKey) {
+    await db.prepare(
+      'INSERT INTO idempotency_keys (key, run_id) VALUES (?, ?)'
+    )
+      .bind(body.idempotencyKey, run.id)
+      .run();
+  }
+
+  // 5. Update usage metric counters
   await usageService.incrementUsage(authUser.id, run.actualPrice === 0, run.actualPrice);
+
+  // 6. Run long-running AI workflow in background context (non-blocking)
+  c.executionCtx.waitUntil(
+    executionService.runExecutionLoop(
+      run.id,
+      authUser.id,
+      steps,
+      workflow,
+      version,
+      run.inputs,
+      body.paymentIntentId
+    )
+  );
 
   return c.json({
     success: true,
