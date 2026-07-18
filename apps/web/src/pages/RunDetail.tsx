@@ -118,12 +118,20 @@ export default function RunDetail() {
               <span className="text-zinc-300 font-semibold">{formatCurrency(run.settlement.amount)}</span>
             </div>
             <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Creator Earnings Split (80%):</span>
-              <span className="text-zinc-300 font-semibold">{formatCurrency(run.settlement.amount * 0.8)}</span>
+              <span className="text-zinc-500">Creator Earnings Split:</span>
+              <span className="text-zinc-300 font-semibold">
+                {run.settlement.creatorEarnings !== undefined
+                  ? formatCurrency(run.settlement.creatorEarnings)
+                  : formatCurrency(run.settlement.amount * 0.99)}
+              </span>
             </div>
             <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Platform Protocol Fee (20%):</span>
-              <span className="text-zinc-300 font-semibold">{formatCurrency(run.settlement.amount * 0.2)}</span>
+              <span className="text-zinc-500">Platform Protocol Fee (1%):</span>
+              <span className="text-zinc-300 font-semibold">
+                {run.settlement.protocolFee !== undefined
+                  ? formatCurrency(run.settlement.protocolFee)
+                  : formatCurrency(run.settlement.amount * 0.01)}
+              </span>
             </div>
             <div className="flex justify-between border-b border-zinc-800 pb-2">
               <span className="text-zinc-500">Settled network:</span>

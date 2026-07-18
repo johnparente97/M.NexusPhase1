@@ -129,6 +129,12 @@ export class D1RunRepository implements RunRepository {
         refundEligible: receiptRow.refund_eligible === 1,
         settledAt: receiptRow.settled_at,
         createdAt: receiptRow.created_at,
+        originChain: receiptRow.origin_chain,
+        destinationChain: receiptRow.destination_chain,
+        mrdnCashbackAmount: receiptRow.mrdn_cashback_amount,
+        mrdnCashbackEligible: receiptRow.mrdn_cashback_eligible === 1,
+        protocolFee: receiptRow.protocol_fee,
+        creatorEarnings: receiptRow.creator_earnings,
       } : undefined,
       workflow: workflowRow ? {
         id: workflowRow.id,
@@ -441,13 +447,15 @@ export class D1RunRepository implements RunRepository {
       now
     ).run();
 
-    // 2. Save Receipt
+    // 2. Save Receipt with project ledger extension fields
     await this.db.prepare(`
       INSERT INTO settlement_receipts (
         id, authorization_id, run_id, amount, currency, status, payment_method,
         payer_reference, receiver_reference, transaction_reference,
-        receipt_identifier, network, mode, refund_eligible, settled_at, created_at
-      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16)
+        receipt_identifier, network, mode, refund_eligible, settled_at, created_at,
+        origin_chain, destination_chain, mrdn_cashback_eligible, mrdn_cashback_amount,
+        protocol_fee, creator_earnings
+      ) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22)
     `).bind(
       receipt.id,
       authId,
@@ -464,7 +472,13 @@ export class D1RunRepository implements RunRepository {
       receipt.mode,
       receipt.refundEligible ? 1 : 0,
       receipt.settledAt,
-      receipt.createdAt
+      receipt.createdAt,
+      receipt.originChain || 'eip155:84532',
+      receipt.destinationChain || 'eip155:84532',
+      receipt.mrdnCashbackEligible ? 1 : 0,
+      receipt.mrdnCashbackAmount || 0.0,
+      receipt.amount * 0.01, // 1% fee mentioned in PDF
+      receipt.amount * 0.99  // 99% creator share
     ).run();
   }
 
@@ -492,6 +506,12 @@ export class D1RunRepository implements RunRepository {
       refundEligible: row.refund_eligible === 1,
       settledAt: row.settled_at,
       createdAt: row.created_at,
+      originChain: row.origin_chain,
+      destinationChain: row.destination_chain,
+      mrdnCashbackAmount: row.mrdn_cashback_amount,
+      mrdnCashbackEligible: row.mrdn_cashback_eligible === 1,
+      protocolFee: row.protocol_fee,
+      creatorEarnings: row.creator_earnings,
     };
   }
 }

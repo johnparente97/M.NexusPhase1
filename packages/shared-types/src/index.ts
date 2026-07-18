@@ -332,6 +332,8 @@ export interface SettlementReceipt {
   destinationChain?: string;
   mrdnCashbackAmount?: number;
   mrdnCashbackEligible?: boolean;
+  protocolFee?: number;
+  creatorEarnings?: number;
 }
 
 // ── Social ──
