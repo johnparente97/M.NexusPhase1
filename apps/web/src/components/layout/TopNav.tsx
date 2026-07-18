@@ -1,7 +1,7 @@
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
-import { UserButton } from '@clerk/clerk-react';
+
 import { Compass, Layers, History, Award, LayoutDashboard, Search, Wallet, LogOut as LogOutIcon, Copy } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { motion } from 'framer-motion';
@@ -190,17 +190,21 @@ export default function TopNav({ onSearchClick }: TopNavProps) {
           )}
 
           {isSignedIn ? (
-            <div className="flex items-center gap-4 border-l border-zinc-800 pl-3">
+            <div className="flex items-center gap-3 border-l border-zinc-800 pl-3">
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Link to="/dashboard" className="text-xs font-semibold text-zinc-300 hover:text-[#27F293] transition-colors flex items-center gap-1">
                   <LayoutDashboard className="h-3.5 w-3.5" />
                   Dashboard
                 </Link>
               </motion.div>
+              <Link to="/profile" title="Profile">
+                <div className="h-7 w-7 rounded-full bg-gradient-to-br from-indigo-500 to-[#27F293] flex items-center justify-center text-[10px] font-bold text-zinc-950 cursor-pointer hover:opacity-90 transition-opacity">
+                  {user?.displayName?.charAt(0)?.toUpperCase() || 'U'}
+                </div>
+              </Link>
               <Button variant="ghost" size="sm" onClick={signOut} className="text-zinc-400 hover:text-zinc-100 text-xs">
                 Log Out
               </Button>
-              <UserButton afterSignOutUrl="/" />
             </div>
           ) : (
             <div className="flex items-center gap-2 border-l border-zinc-800 pl-3">

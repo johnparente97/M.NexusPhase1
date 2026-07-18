@@ -70,7 +70,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </span>
         )}
         {leftIcon && <span className="inline-flex shrink-0">{leftIcon}</span>}
-        <span>{children}</span>
+        <span className="inline-flex items-center gap-1.5 whitespace-nowrap">{children}</span>
         {rightIcon && <span className="inline-flex shrink-0">{rightIcon}</span>}
       </motion.button>
     );
