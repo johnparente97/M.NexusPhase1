@@ -14,8 +14,37 @@ router.get('/me', requireAuth(), async (c) => {
   const authUser = c.get('user')!;
   const repo = new D1UserRepository(c.env.DB);
   
-  const user = await repo.getById(authUser.id);
-  if (!user) throw new NotFoundError('User record not found.');
+  let user = await repo.getById(authUser.id);
+
+  // Auto-provision demo/local users that don't yet have a DB record
+  if (!user) {
+    const now = new Date().toISOString();
+    await c.env.DB.prepare(
+      'INSERT OR IGNORE INTO users (id, clerk_id, email, display_name, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+    ).bind(
+      authUser.id,
+      authUser.id,
+      authUser.email,
+      authUser.displayName,
+      authUser.role,
+      now,
+      now
+    ).run();
+
+    await c.env.DB.prepare(
+      'INSERT OR IGNORE INTO user_profiles (id, user_id, theme, notifications_enabled, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)'
+    ).bind(
+      `prof-${authUser.id}`,
+      authUser.id,
+      'dark',
+      1,
+      now,
+      now
+    ).run();
+
+    user = await repo.getById(authUser.id);
+    if (!user) throw new NotFoundError('User record not found.');
+  }
 
   const profile = await repo.getProfile(authUser.id);
   const creator = await repo.getCreatorProfile(authUser.id);
@@ -36,6 +65,7 @@ router.get('/me', requireAuth(), async (c) => {
     },
   });
 });
+
 
 // ── PUT /api/users/me (Update Profile settings) ──
 router.put('/me', requireAuth(), zValidator('json', updateProfileSchema), async (c) => {
