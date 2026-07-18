@@ -137,72 +137,99 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({ initialData })
           
           {/* Node 1: Inputs */}
           <div className="flex flex-col items-center gap-2 shrink-0">
-            <div className="bg-[#1E1E20] border border-zinc-800 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/30 transition-colors shadow-lg">
+            <div 
+              onClick={() => setActiveTab('inputs')}
+              className="bg-[#1E1E20] border border-zinc-800 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/50 hover:bg-[#1E1E20]/80 cursor-pointer hover:scale-105 active:scale-97 transition-all shadow-lg select-none"
+            >
               <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-[#27F293]/10 text-[#27F293] border border-[#27F293]/20 text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">
                 1. Inputs Gate
               </div>
               <p className="text-xs font-bold text-zinc-200 mt-1">{formValues.inputDefinitions?.length || 0} Fields</p>
               <p className="text-[10px] text-zinc-500 mt-0.5">Parameters Definition</p>
-              <div className="absolute top-1/2 -translate-y-1/2 -right-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293]" />
+              <div className="absolute top-1/2 -translate-y-1/2 -right-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293] transition-colors" />
             </div>
           </div>
 
-          <div className="hidden sm:block text-zinc-650 font-bold">➜</div>
+          <div className="hidden sm:block text-zinc-650 font-bold select-none">➜</div>
 
           {/* Node 2: AI Processor */}
           <div className="flex flex-col items-center gap-2 shrink-0">
-            <div className="bg-[#1E1E20] border border-zinc-800 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/30 transition-colors shadow-lg">
+            <div 
+              onClick={() => {
+                setActiveTab('basics');
+                setTimeout(() => {
+                  const el = document.getElementById('modelProvider') || document.getElementsByName('modelProvider')[0];
+                  el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 50);
+              }}
+              className="bg-[#1E1E20] border border-zinc-800 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/50 hover:bg-[#1E1E20]/80 cursor-pointer hover:scale-105 active:scale-97 transition-all shadow-lg select-none"
+            >
               <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-[#27F293]/10 text-[#27F293] border border-[#27F293]/20 text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">
                 2. AI Synthesis
               </div>
               <p className="text-xs font-bold text-zinc-200 mt-1 uppercase">{formValues.modelProvider || 'gemini'}</p>
               <p className="text-[10px] text-zinc-500 mt-0.5 truncate max-w-full px-1">{formValues.modelId || 'gemini-2.5-flash'}</p>
-              <div className="absolute top-1/2 -translate-y-1/2 -left-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293]" />
-              <div className="absolute top-1/2 -translate-y-1/2 -right-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293]" />
+              <div className="absolute top-1/2 -translate-y-1/2 -left-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293] transition-colors" />
+              <div className="absolute top-1/2 -translate-y-1/2 -right-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293] transition-colors" />
             </div>
           </div>
 
-          <div className="hidden sm:block text-zinc-650 font-bold">➜</div>
+          <div className="hidden sm:block text-zinc-650 font-bold select-none">➜</div>
 
           {/* Node 3: Verification */}
           <div className="flex flex-col items-center gap-2 shrink-0">
-            <div className="bg-[#1E1E20] border border-zinc-800 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/30 transition-colors shadow-lg">
+            <div 
+              onClick={() => setActiveTab('inputs')}
+              className="bg-[#1E1E20] border border-zinc-800 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/50 hover:bg-[#1E1E20]/80 cursor-pointer hover:scale-105 active:scale-97 transition-all shadow-lg select-none"
+            >
               <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-[#27F293]/10 text-[#27F293] border border-[#27F293]/20 text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">
                 3. Trust Engine
               </div>
               <p className="text-xs font-bold text-zinc-200 mt-1">Grounded Audit</p>
               <p className="text-[10px] text-zinc-500 mt-0.5">Zod Schema Validation</p>
-              <div className="absolute top-1/2 -translate-y-1/2 -left-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293]" />
-              <div className="absolute top-1/2 -translate-y-1/2 -right-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293]" />
+              <div className="absolute top-1/2 -translate-y-1/2 -left-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293] transition-colors" />
+              <div className="absolute top-1/2 -translate-y-1/2 -right-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293] transition-colors" />
             </div>
           </div>
 
-          <div className="hidden sm:block text-zinc-650 font-bold">➜</div>
+          <div className="hidden sm:block text-zinc-650 font-bold select-none">➜</div>
 
           {/* Node 4: Settlement */}
           <div className="flex flex-col items-center gap-2 shrink-0">
-            <div className="bg-[#1E1E20] border border-[#27F293]/20 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/55 transition-colors shadow-[0_4px_20px_0_rgba(39,242,147,0.05)]">
+            <div 
+              onClick={() => {
+                setActiveTab('basics');
+                setTimeout(() => {
+                  const el = document.getElementById('pricePerRun') || document.getElementsByName('pricePerRun')[0];
+                  el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 50);
+              }}
+              className="bg-[#1E1E20] border border-[#27F293]/20 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/60 hover:bg-[#1E1E20]/80 cursor-pointer hover:scale-105 active:scale-97 transition-all shadow-[0_4px_20px_0_rgba(39,242,147,0.05)] select-none"
+            >
               <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-[#27F293]/15 text-[#27F293] border border-[#27F293]/35 text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">
                 4. Mpay Settlement
               </div>
               <p className="text-xs font-bold text-[#27F293] mt-1">${formValues.pricePerRun || '0.00'}</p>
               <p className="text-[10px] text-zinc-500 mt-0.5">Simulated x402 Rail</p>
-              <div className="absolute top-1/2 -translate-y-1/2 -left-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293]" />
-              <div className="absolute top-1/2 -translate-y-1/2 -right-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293]" />
+              <div className="absolute top-1/2 -translate-y-1/2 -left-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293] transition-colors" />
+              <div className="absolute top-1/2 -translate-y-1/2 -right-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293] transition-colors" />
             </div>
           </div>
 
-          <div className="hidden sm:block text-zinc-650 font-bold">➜</div>
+          <div className="hidden sm:block text-zinc-650 font-bold select-none">➜</div>
 
           {/* Node 5: Output */}
           <div className="flex flex-col items-center gap-2 shrink-0">
-            <div className="bg-[#1E1E20] border border-zinc-800 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/30 transition-colors shadow-lg">
+            <div 
+              onClick={() => setActiveTab('outputs')}
+              className="bg-[#1E1E20] border border-zinc-800 rounded-lg p-3 w-40 text-center relative group hover:border-[#27F293]/50 hover:bg-[#1E1E20]/80 cursor-pointer hover:scale-105 active:scale-97 transition-all shadow-lg select-none"
+            >
               <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-[#27F293]/10 text-[#27F293] border border-[#27F293]/20 text-[8px] font-bold px-1.5 py-0.2 rounded-full uppercase tracking-wider">
                 5. Outcome Receipt
               </div>
               <p className="text-xs font-bold text-zinc-200 mt-1">{formValues.outputDefinitions?.length || 0} Sections</p>
               <p className="text-[10px] text-zinc-500 mt-0.5">Structured Markdown</p>
-              <div className="absolute top-1/2 -translate-y-1/2 -left-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293]" />
+              <div className="absolute top-1/2 -translate-y-1/2 -left-1 h-2 w-2 rounded-full bg-zinc-700 group-hover:bg-[#27F293] transition-colors" />
             </div>
           </div>
 
