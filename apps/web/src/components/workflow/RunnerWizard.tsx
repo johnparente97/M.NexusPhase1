@@ -43,12 +43,17 @@ export const RunnerWizard: React.FC<RunnerWizardProps> = ({ workflow }) => {
     setShowSettlement(true);
   };
 
-  const handleConfirmSettlement = () => {
+  const handleConfirmSettlement = (signature: string, nonce: string, validBefore: number) => {
     setShowSettlement(false);
     setStep('executing');
     
     // Trigger mutation execute
-    executeMutation.mutate(formData, {
+    executeMutation.mutate({ 
+      inputs: formData, 
+      paymentSignature: signature,
+      paymentNonce: nonce,
+      paymentValidBefore: validBefore
+    }, {
       onSuccess: (data) => {
         setRunRecord(data);
         setStep('result');

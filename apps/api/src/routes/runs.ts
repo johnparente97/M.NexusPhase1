@@ -46,7 +46,11 @@ router.post('/workflows/:id/run', requireAuth(), runRateLimit(), zValidator('jso
   await usageService.checkUserLimits(authUser.id);
 
   // 3. Trigger execution
-  const run = await executionService.execute(id, authUser.id, body.inputs);
+  const run = await executionService.execute(id, authUser.id, body.inputs, {
+    signature: body.paymentSignature,
+    nonce: body.paymentNonce,
+    validBefore: body.paymentValidBefore,
+  });
 
   // 4. Update usage metric counters
   await usageService.incrementUsage(authUser.id, run.actualPrice === 0, run.actualPrice);

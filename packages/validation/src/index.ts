@@ -117,6 +117,9 @@ export const executeWorkflowSchema = z.object({
   workflowId: z.string().uuid(),
   inputs: z.record(z.unknown()),
   turnstileToken: z.string().optional(),
+  paymentSignature: z.string().optional(),
+  paymentNonce: z.string().optional(),
+  paymentValidBefore: z.number().optional(),
 });
 
 // ── Review Schemas ──

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, createContext, useContext } from 'react';
+import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
 import { BASE_SEPOLIA_CONFIG } from '../utils/network-config';
 import { fetchApi } from '../services/api-client';
 
@@ -67,10 +67,11 @@ export const useWalletInternal = (): WalletState => {
   }, []);
 
   const handleAccountsChanged = useCallback((accounts: string[]) => {
-    if (accounts.length > 0) {
-      setWalletAddress(accounts[0]);
+    if (accounts.length > 0 && accounts[0]) {
+      const activeAcct = accounts[0];
+      setWalletAddress(activeAcct);
       localStorage.setItem('wallet_connected', 'true');
-      fetchUsdcBalance(accounts[0]);
+      fetchUsdcBalance(activeAcct);
     } else {
       setWalletAddress(null);
       setUsdcBalance('0.00');
@@ -245,31 +246,40 @@ export const useWalletInternal = (): WalletState => {
     }
     if (!activeAddress) {
       const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-      activeAddress = accounts[0];
-      setWalletAddress(activeAddress);
-      localStorage.setItem('wallet_connected', 'true');
+      if (accounts && accounts[0]) {
+        activeAddress = accounts[0];
+        setWalletAddress(activeAddress);
+        localStorage.setItem('wallet_connected', 'true');
+      }
     }
+
+    if (!activeAddress) {
+      alert('No active account found.');
+      return;
+    }
+
+    const finalAddress = activeAddress;
 
     try {
       const { nonce } = await fetchApi<{ nonce: string }>('/api/auth/web3/nonce');
-      const message = `mrdn.finance wants you to sign in with your Ethereum account:\n${activeAddress}\n\nI accept the Meridian Nexus Terms of Service and Privacy Policy.\n\nURI: https://mrdn.finance\nVersion: 1\nChain ID: ${chainId || BASE_SEPOLIA_CONFIG.chainId}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
+      const message = `mrdn.finance wants you to sign in with your Ethereum account:\n${finalAddress}\n\nI accept the Meridian Nexus Terms of Service and Privacy Policy.\n\nURI: https://mrdn.finance\nVersion: 1\nChain ID: ${chainId || BASE_SEPOLIA_CONFIG.chainId}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
 
       const signature = await ethereum.request({
         method: 'personal_sign',
-        params: [message, activeAddress],
+        params: [message, finalAddress],
       });
 
       const response = await fetchApi<{ success: boolean; token: string; user: any }>('/api/auth/web3/verify', {
         method: 'POST',
         body: JSON.stringify({
-          address: activeAddress,
+          address: finalAddress,
           message,
           signature,
         }),
       });
 
       if (response.success && response.token) {
-        localStorage.setItem('nexus_demo_user', `user_${activeAddress.toLowerCase()}`);
+        localStorage.setItem('nexus_demo_user', `user_${finalAddress.toLowerCase()}`);
         window.location.reload();
       }
     } catch (err) {

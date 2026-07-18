@@ -13,6 +13,7 @@ import { getIsoTimestamp } from '../utils/time';
 import { ValidationError, AppError } from '../utils/errors';
 import { createDynamicInputSchema } from '@meridian-nexus/validation';
 import { Bindings } from '../types';
+import { verifyTypedData } from 'viem';
 
 export class WorkflowExecutionService {
   private workflowRepo: WorkflowRepository;
@@ -25,7 +26,16 @@ export class WorkflowExecutionService {
     this.env = env;
   }
 
-  async execute(workflowId: string, userId: string, inputs: Record<string, unknown>): Promise<WorkflowRun> {
+  async execute(
+    workflowId: string, 
+    userId: string, 
+    inputs: Record<string, unknown>,
+    paymentDetails?: {
+      signature?: string;
+      nonce?: string;
+      validBefore?: number;
+    }
+  ): Promise<WorkflowRun> {
     const workflow = await this.workflowRepo.getById(workflowId);
     if (!workflow) throw new ValidationError('Workflow not found');
     if (workflow.status !== 'published') throw new ValidationError('Workflow is not published');
@@ -91,15 +101,21 @@ export class WorkflowExecutionService {
     }
 
     // Run execution in background (non-blocking for Worker, or synchronous for execution timing)
-    return this.runExecutionLoop(runId, steps, workflow, version, parsedInputs.data);
+    return this.runExecutionLoop(runId, userId, steps, workflow, version, parsedInputs.data, paymentDetails);
   }
 
   private async runExecutionLoop(
     runId: string,
+    userId: string,
     steps: WorkflowRunStep[],
     workflow: Workflow,
     version: any,
-    inputs: Record<string, any>
+    inputs: Record<string, any>,
+    paymentDetails?: {
+      signature?: string;
+      nonce?: string;
+      validBefore?: number;
+    }
   ): Promise<WorkflowRun> {
     const startTime = Date.now();
     await this.runRepo.updateStatus(runId, 'running', { startedAt: getIsoTimestamp() });
@@ -118,12 +134,66 @@ export class WorkflowExecutionService {
       // Step 3: Authorize Settlement
       let receipt: any = null;
       await this.runStep(steps, 'authorize', async () => {
+        // Cryptographically verify EIP-712 payment authorization if workflow is paid and signature details are provided
+        if (workflow.pricePerRun > 0) {
+          if (!paymentDetails || !paymentDetails.signature || !paymentDetails.nonce || !paymentDetails.validBefore) {
+            throw new ValidationError('A valid testnet payment signature and nonce authorization are required for paid capabilities.');
+          }
+
+          const { signature, nonce, validBefore } = paymentDetails;
+          
+          // Reconstruct and verify the signature using viem
+          let isValidSignature = false;
+          try {
+            // Extract the user's primary wallet address from the authenticated user.id (which is formatted as usr-0x...)
+            const walletAddress = userId.replace(/^usr-/, '') as `0x${string}`;
+            const rawAmount = Math.round(workflow.pricePerRun * 1000000).toString();
+
+            isValidSignature = await verifyTypedData({
+              address: walletAddress,
+              domain: {
+                name: 'USD Coin',
+                version: '2',
+                chainId: 84532, // Base Sepolia Chain ID
+                verifyingContract: '0x036cbd53842c3db6650800b2854ef71e213fd2db' // USDC Proxy
+              },
+              types: {
+                TransferWithAuthorization: [
+                  { name: 'from', type: 'address' },
+                  { name: 'to', type: 'address' },
+                  { name: 'value', type: 'uint256' },
+                  { name: 'validAfter', type: 'uint256' },
+                  { name: 'validBefore', type: 'uint256' },
+                  { name: 'nonce', type: 'bytes32' }
+                ]
+              },
+              primaryType: 'TransferWithAuthorization',
+              message: {
+                from: walletAddress,
+                to: '0x5B38Da6a701c568545dCfcB03FcB875f56beddC4', // Meridian Facilitator
+                value: BigInt(rawAmount),
+                validAfter: 0n,
+                validBefore: BigInt(validBefore),
+                nonce: nonce as `0x${string}`
+              },
+              signature: signature as `0x${string}`
+            });
+          } catch (e: any) {
+            console.error('USDC typed data signature verification failed:', e);
+            throw new ValidationError('Payment signature verification failed: ' + e.message);
+          }
+
+          if (!isValidSignature) {
+            throw new ValidationError('Cryptographic payment signature mismatch. Invalid authorization payload.');
+          }
+        }
+
         const settlement = new MockMeridianSettlementProvider();
         const auth = await settlement.createAuthorization({
-          userId: version.userId ?? 'demo',
+          userId: userId,
           runId,
           amount: workflow.pricePerRun,
-          currency: 'USD',
+          currency: 'USDC',
           workflowId: workflow.id,
           workflowName: workflow.name,
         });
@@ -132,7 +202,7 @@ export class WorkflowExecutionService {
           authorizationId: auth.authorizationId,
           runId,
           amount: workflow.pricePerRun,
-          currency: 'USD',
+          currency: 'USDC',
         });
 
         await this.runRepo.createSettlementReceipt(receipt);

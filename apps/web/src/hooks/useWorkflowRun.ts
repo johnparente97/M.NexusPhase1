@@ -5,10 +5,26 @@ import { WorkflowRun, WorkflowResult } from '@meridian-nexus/shared-types';
 export function useExecuteWorkflow(workflowId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (inputs: Record<string, unknown>) =>
+    mutationFn: ({ 
+      inputs, 
+      paymentSignature,
+      paymentNonce,
+      paymentValidBefore
+    }: { 
+      inputs: Record<string, unknown>; 
+      paymentSignature?: string;
+      paymentNonce?: string;
+      paymentValidBefore?: number;
+    }) =>
       fetchApi<WorkflowRun>(`/api/workflows/${workflowId}/run`, {
         method: 'POST',
-        body: JSON.stringify({ workflowId, inputs }),
+        body: JSON.stringify({ 
+          workflowId, 
+          inputs, 
+          paymentSignature,
+          paymentNonce,
+          paymentValidBefore
+        }),
       }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['runs'] });
