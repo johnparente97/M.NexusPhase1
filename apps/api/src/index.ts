@@ -4,6 +4,7 @@ import { corsMiddleware } from './middleware/cors';
 import { loggerMiddleware } from './middleware/logger';
 import { errorHandlerMiddleware } from './middleware/error-handler';
 import { apiRateLimit } from './middleware/rate-limit';
+import { complianceMiddleware } from './middleware/compliance';
 import { healthRouter } from './routes/health';
 import { authRouter } from './routes/auth';
 import { workflowsRouter } from './routes/workflows';
@@ -21,6 +22,7 @@ const app = new Hono<AppEnv>();
 // ── Mount Global Middlewares ──
 app.use('*', corsMiddleware());
 app.use('*', loggerMiddleware());
+app.use('*', complianceMiddleware());
 app.use('/api/*', apiRateLimit());
 
 // ── Root landing page to avoid raw 404s ──

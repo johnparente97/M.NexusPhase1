@@ -14,6 +14,9 @@ export async function fetchApi<T>(
     headers.set('Content-Type', 'application/json');
   }
 
+  // Inject Terms of Service acceptance header for backend compliance validation
+  headers.set('X-Nexus-Accept-ToS', 'true');
+
   // Inject Clerk session token if Clerk is initialized in the browser
   if (typeof window !== 'undefined' && (window as any).Clerk?.session) {
     try {

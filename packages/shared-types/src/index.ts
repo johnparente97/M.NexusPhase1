@@ -81,6 +81,7 @@ export interface User {
   role: UserRole;
   createdAt: string;
   updatedAt: string;
+  kycStatus?: 'pending' | 'verified' | 'rejected';
 }
 
 export interface UserProfile {
