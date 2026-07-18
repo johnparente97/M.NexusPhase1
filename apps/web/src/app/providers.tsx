@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ClerkProvider } from '@clerk/clerk-react';
 import { WalletProvider } from '../hooks/useWallet';
 
 const queryClient = new QueryClient({
@@ -13,15 +12,11 @@ const queryClient = new QueryClient({
 });
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const publishableKey = (import.meta as any).env.VITE_CLERK_PUBLISHABLE_KEY || 'pk_test_ZGVtby1jbGVyay11c2VyLXN5bmMtODcuY2xlcmsuYWNjb3VudHMuZGV2JA';
-
   return (
-    <ClerkProvider publishableKey={publishableKey}>
-      <QueryClientProvider client={queryClient}>
-        <WalletProvider>
-          {children}
-        </WalletProvider>
-      </QueryClientProvider>
-    </ClerkProvider>
+    <QueryClientProvider client={queryClient}>
+      <WalletProvider>
+        {children}
+      </WalletProvider>
+    </QueryClientProvider>
   );
 }

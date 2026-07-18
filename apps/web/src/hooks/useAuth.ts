@@ -1,4 +1,3 @@
-import { useUser, useAuth as useClerkAuth } from '@clerk/clerk-react';
 import { useState, useEffect } from 'react';
 import { fetchApi } from '../services/api-client';
 
@@ -19,9 +18,6 @@ export interface AuthState {
 }
 
 export function useAuth(): AuthState {
-  const { user: clerkUser, isLoaded: clerkLoaded, isSignedIn: clerkSignedIn } = useUser();
-  const { signOut: clerkSignOut } = useClerkAuth();
-
   const [clerkTimeout, setClerkTimeout] = useState(false);
 
   useEffect(() => {
@@ -38,9 +34,9 @@ export function useAuth(): AuthState {
   const [dbUser, setDbUser] = useState<any>(null);
   const [loadingDb, setLoadingDb] = useState(false);
 
-  // Sync with DB
+  // Sync user record from API on sign-in
   useEffect(() => {
-    if (clerkSignedIn || demoUser) {
+    if (demoUser) {
       setLoadingDb(true);
       fetchApi<any>('/api/users/me')
         .then((data) => {
@@ -48,7 +44,6 @@ export function useAuth(): AuthState {
         })
         .catch((e) => {
           console.error('Failed to load user profile details:', e);
-          // If profile load fails and we are using a demo token, reset it
           if (demoUser) {
             localStorage.removeItem('nexus_demo_user');
             setDemoUser(null);
@@ -60,15 +55,12 @@ export function useAuth(): AuthState {
     } else {
       setDbUser(null);
     }
-  }, [clerkSignedIn, demoUser]);
+  }, [demoUser]);
 
   const signOut = () => {
     localStorage.removeItem('nexus_demo_user');
     setDemoUser(null);
     setDbUser(null);
-    if (clerkSignedIn) {
-      clerkSignOut();
-    }
   };
 
   const signInAsDemo = (role: 'user' | 'creator' | 'admin') => {
@@ -77,22 +69,13 @@ export function useAuth(): AuthState {
     setDemoUser(roleKey);
   };
 
-  const isLoaded = (clerkLoaded || clerkTimeout) && !loadingDb;
-  const isSignedIn = !!clerkSignedIn || !!demoUser;
+  const isLoaded = clerkTimeout && !loadingDb;
+  const isSignedIn = !!demoUser;
 
   let user: AuthState['user'] = null;
   let userId: string | null = null;
 
-  if (clerkSignedIn && clerkUser) {
-    userId = clerkUser.id;
-    user = {
-      id: clerkUser.id,
-      email: clerkUser.primaryEmailAddress?.emailAddress || '',
-      displayName: clerkUser.fullName || 'Clerk User',
-      role: dbUser?.user?.role || 'user',
-      avatarUrl: clerkUser.imageUrl,
-    };
-  } else if (demoUser) {
+  if (demoUser) {
     const parts = demoUser.split('_');
     const role = parts[0] as any;
     const address = parts[1] || '';
@@ -100,7 +83,12 @@ export function useAuth(): AuthState {
     user = {
       id: userId,
       email: address ? `${address}@meridian.finance` : `${role}@nexus.dev`,
-      displayName: dbUser?.displayName || dbUser?.user?.displayName || (address ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}` : (role.charAt(0).toUpperCase() + role.slice(1) + ' Account')),
+      displayName:
+        dbUser?.displayName ||
+        dbUser?.user?.displayName ||
+        (address
+          ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}`
+          : role.charAt(0).toUpperCase() + role.slice(1) + ' Account'),
       role: dbUser?.role || dbUser?.user?.role || role || 'user',
       avatarUrl: null,
     };
