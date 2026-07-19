@@ -2,31 +2,49 @@ import { createHashRouter } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import AppShell from '../components/layout/AppShell';
 import LoadingPage from '../components/common/LoadingPage';
-
-// Lazy load all pages for code-splitting performance
-const Landing = lazy(() => import('../pages/Landing'));
-const Exchange = lazy(() => import('../pages/Exchange'));
-const WorkflowDetail = lazy(() => import('../pages/WorkflowDetail'));
-const WorkflowRunner = lazy(() => import('../pages/WorkflowRunner'));
-const Studio = lazy(() => import('../pages/Studio'));
-const StudioEditor = lazy(() => import('../pages/StudioEditor'));
-const Dashboard = lazy(() => import('../pages/Dashboard'));
-const Activity = lazy(() => import('../pages/Activity'));
-const RunDetail = lazy(() => import('../pages/RunDetail'));
-const CreatorDashboard = lazy(() => import('../pages/CreatorDashboard'));
-const Profile = lazy(() => import('../pages/Profile'));
-const SavedWorkflows = lazy(() => import('../pages/SavedWorkflows'));
-const DolphinChat = lazy(() => import('../pages/DolphinChat'));
-const PaidChat = lazy(() => import('../pages/PaidChat'));
-const ModelMarketplace = lazy(() => import('../pages/ModelMarketplace'));
-const UnifiedBalancePage = lazy(() => import('../pages/UnifiedBalancePage'));
-const AgentBuilder = lazy(() => import('../pages/AgentBuilder'));
-const OrgDashboard = lazy(() => import('../pages/OrgDashboard'));
-const DevConsole = lazy(() => import('../pages/DevConsole'));
-const DocsPage = lazy(() => import('../pages/DocsPage'));
-const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
-
 import PageTransition from '../components/common/PageTransition';
+
+// Standard resilient chunk loader to catch bundle hash updates and reload the client
+const lazyWithRetry = (componentImport: () => Promise<any>) => {
+  return lazy(async () => {
+    const hasRetried = window.sessionStorage.getItem('retry-lazy-load');
+    try {
+      const component = await componentImport();
+      window.sessionStorage.removeItem('retry-lazy-load');
+      return component;
+    } catch (error) {
+      if (!hasRetried) {
+        window.sessionStorage.setItem('retry-lazy-load', 'true');
+        console.warn("Failed to load chunk asset. Performing hard reload...");
+        window.location.reload();
+      }
+      throw error;
+    }
+  });
+};
+
+// Lazy load all pages using the resilient chunk loader
+const Landing = lazyWithRetry(() => import('../pages/Landing'));
+const Exchange = lazyWithRetry(() => import('../pages/Exchange'));
+const WorkflowDetail = lazyWithRetry(() => import('../pages/WorkflowDetail'));
+const WorkflowRunner = lazyWithRetry(() => import('../pages/WorkflowRunner'));
+const Studio = lazyWithRetry(() => import('../pages/Studio'));
+const StudioEditor = lazyWithRetry(() => import('../pages/StudioEditor'));
+const Dashboard = lazyWithRetry(() => import('../pages/Dashboard'));
+const Activity = lazyWithRetry(() => import('../pages/Activity'));
+const RunDetail = lazyWithRetry(() => import('../pages/RunDetail'));
+const CreatorDashboard = lazyWithRetry(() => import('../pages/CreatorDashboard'));
+const Profile = lazyWithRetry(() => import('../pages/Profile'));
+const SavedWorkflows = lazyWithRetry(() => import('../pages/SavedWorkflows'));
+const DolphinChat = lazyWithRetry(() => import('../pages/DolphinChat'));
+const PaidChat = lazyWithRetry(() => import('../pages/PaidChat'));
+const ModelMarketplace = lazyWithRetry(() => import('../pages/ModelMarketplace'));
+const UnifiedBalancePage = lazyWithRetry(() => import('../pages/UnifiedBalancePage'));
+const AgentBuilder = lazyWithRetry(() => import('../pages/AgentBuilder'));
+const OrgDashboard = lazyWithRetry(() => import('../pages/OrgDashboard'));
+const DevConsole = lazyWithRetry(() => import('../pages/DevConsole'));
+const DocsPage = lazyWithRetry(() => import('../pages/DocsPage'));
+const NotFoundPage = lazyWithRetry(() => import('../pages/NotFoundPage'));
 
 const suspenseWrapper = (Component: React.ComponentType) => (
   <Suspense fallback={<LoadingPage />}>

@@ -16,6 +16,7 @@ import { creatorRouter } from './routes/creator';
 import { settlementRouter } from './routes/settlement';
 import web3authRouter from './routes/web3auth';
 import { paymentRouter } from './routes/payment';
+import { chatRouter } from './routes/chat';
 
 const app = new Hono<AppEnv>();
 
@@ -150,6 +151,7 @@ app.route('/api/reviews', reviewsRouter);
 app.route('/api/users', usersRouter);
 app.route('/api/creator', creatorRouter);
 app.route('/api/settlement', settlementRouter);
+app.route('/api/chat', chatRouter);
 
 // ── Catch-all Global Error Handler ──
 app.onError(errorHandlerMiddleware());
