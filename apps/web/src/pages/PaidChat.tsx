@@ -188,9 +188,9 @@ export default function PaidChat() {
         
         {/* Left Title & Stack Badge */}
         <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2">
-            <img src={logoNexus} alt="Meridian" className="h-6 w-6 object-contain mix-blend-screen" />
-            <span className="font-display font-semibold text-sm text-white tracking-tight">
+          <Link to="/" className="flex items-center gap-2.5">
+            <img src={logoNexus} alt="Meridian" className="h-9 w-9 object-contain mix-blend-screen filter drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]" />
+            <span className="font-display font-bold text-base text-white tracking-tight">
               Meridian Inference
             </span>
           </Link>
@@ -278,7 +278,7 @@ export default function PaidChat() {
               animate={{ scale: 1, opacity: 1 }}
               src={logoNexus}
               alt="Meridian"
-              className="h-16 w-16 object-contain mix-blend-screen filter drop-shadow-[0_0_20px_rgba(52,211,153,0.5)]"
+              className="h-28 w-28 object-contain mix-blend-screen filter drop-shadow-[0_0_28px_rgba(52,211,153,0.65)]"
             />
             <div className="flex flex-col gap-1.5">
               <h2 className="font-display font-semibold text-xl text-white">Ask anything</h2>
