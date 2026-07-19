@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { WORKFLOW_CATEGORIES } from '@meridian-nexus/shared-types';
 import { CATEGORY_ICONS } from '../utils/constants';
-import logoSymbol from '../assets/logo-symbol.jpg';
+import logoNexus from '../assets/logo-nexus.png';
 
 export default function Landing() {
   const containerVariants = {
@@ -54,9 +54,9 @@ export default function Landing() {
         >
           <motion.div variants={itemVariants} className="mb-2">
             <img 
-              src={logoSymbol} 
+              src={logoNexus} 
               alt="Meridian Nexus logo" 
-              className="h-16 w-16 rounded-2xl border border-zinc-800 shadow-[0_0_24px_rgba(39,242,147,0.25)] hover:rotate-6 transition-transform duration-300 object-cover cursor-pointer"
+              className="h-20 w-20 object-contain filter drop-shadow-[0_0_20px_rgba(0,245,212,0.45)] hover:rotate-6 transition-transform duration-300 cursor-pointer"
             />
           </motion.div>
 

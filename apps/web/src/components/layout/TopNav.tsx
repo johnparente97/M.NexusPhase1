@@ -7,7 +7,7 @@ import { cn } from '../../utils/cn';
 import { motion } from 'framer-motion';
 import DemoLabel from '../common/DemoLabel';
 import { useWallet } from '../../hooks/useWallet';
-import logoSymbol from '../../assets/logo-symbol.jpg';
+import logoNexus from '../../assets/logo-nexus.png';
 
 export interface TopNavProps {
   onSearchClick?: () => void;
@@ -49,9 +49,9 @@ export default function TopNav({ onSearchClick }: TopNavProps) {
             <motion.img 
               whileHover={{ rotate: 10, scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
-              src={logoSymbol}
+              src={logoNexus}
               alt="Meridian Nexus"
-              className="h-7 w-7 rounded-lg object-cover border border-zinc-800 shadow-[0_0_12px_rgba(39,242,147,0.15)]"
+              className="h-7.5 w-7.5 object-contain filter drop-shadow-[0_0_8px_rgba(0,245,212,0.4)]"
             />
             <span className="font-display font-bold text-base tracking-tight bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent group-hover:text-white transition-colors">
               Meridian Nexus
