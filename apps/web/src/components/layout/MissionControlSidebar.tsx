@@ -1,34 +1,29 @@
 import React, { useState } from 'react';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Compass,
   Layers,
   History,
   LayoutDashboard,
   Award,
-  Bookmark,
-  Settings,
   Search,
   ChevronLeft,
   ChevronRight,
-  Wallet,
   Sparkles,
-  Zap,
-  Star,
   Pin,
-  Clock,
-  LogOut,
-  User,
   Cpu,
   Coins,
   Building2,
   Terminal,
+  BookOpen,
+  Github,
+  Zap,
+  Bot,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useWallet } from '../../hooks/useWallet';
 import { cn } from '../../utils/cn';
-import DemoLabel from '../common/DemoLabel';
 
 export interface MissionControlSidebarProps {
   onSearchClick: () => void;
@@ -53,7 +48,8 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     role?: string;
   }> = [
     { to: '/chat/free', label: 'Dolphin Free Chat', icon: Sparkles },
-    { to: '/marketplace/models', label: 'AntSeed Model Marketplace', icon: Cpu },
+    { to: '/chat/paid', label: 'Meridian Inference (x402)', icon: Bot },
+    { to: '/marketplace/models', label: 'AntSeed Model Catalog', icon: Cpu },
     { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
     { to: '/balance', label: 'Unified AI Balance', icon: Coins, requiresAuth: true },
     { to: '/studio', label: 'Nexus Studio', icon: Layers, requiresAuth: true },
@@ -61,6 +57,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     { to: '/dashboard', label: 'Workspace Dashboard', icon: LayoutDashboard, requiresAuth: true },
     { to: '/organization', label: 'Organization Enterprise', icon: Building2, requiresAuth: true },
     { to: '/developer', label: 'Developer Console', icon: Terminal },
+    { to: '/docs', label: 'Meridian Docs', icon: BookOpen },
   ];
 
   const pinnedWorkflows = [
@@ -110,8 +107,9 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         {/* Core Links */}
         <div className="flex flex-col gap-1">
           {!isCollapsed && (
-            <span className="px-3 text-[10px] font-mono font-semibold text-zinc-500 uppercase tracking-wider mb-1">
-              Mission Control
+            <span className="px-3 text-[10px] font-mono font-semibold text-zinc-500 uppercase tracking-wider mb-1 flex items-center justify-between">
+              <span>Mission Control</span>
+              <span className="text-[9px] text-emerald-400 font-mono">x402</span>
             </span>
           )}
           {navItems.map((item) => {
@@ -161,6 +159,28 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
                 </Link>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Stack Info Footer Widget */}
+        {!isCollapsed && (
+          <div className="bg-zinc-900/40 border border-zinc-800/80 rounded-xl p-3 flex flex-col gap-2">
+            <div className="flex items-center gap-1.5 text-[10px] font-mono font-semibold text-emerald-400">
+              <Zap className="h-3 w-3" />
+              <span>Meridian Protocol Stack</span>
+            </div>
+            <p className="text-[10px] text-zinc-400 leading-normal">
+              Built on x402 payment headers & decentralized AI settlement.
+            </p>
+            <a
+              href="https://github.com/meridian-protocol"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1 text-[10px] text-zinc-400 hover:text-white font-mono transition-colors"
+            >
+              <Github className="h-3 w-3" />
+              <span>meridian-protocol</span>
+            </a>
           </div>
         )}
 
