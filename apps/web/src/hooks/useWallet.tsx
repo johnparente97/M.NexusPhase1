@@ -273,27 +273,41 @@ export const useWalletInternal = (): WalletState => {
   const signInWithEthereum = useCallback(async () => {
     let activeAddress = walletAddress;
     const ethereum = getEthereum();
+
     if (!ethereum) {
-      alert('No Web3 wallet detected.');
-      return;
-    }
-    if (!activeAddress) {
-      const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-      if (accounts && accounts[0]) {
-        activeAddress = accounts[0];
-        setWalletAddress(activeAddress);
+      // Fallback for environments without MetaMask/Coinbase Wallet extensions installed
+      const demoAddress = '0x71C7656EC7ab88b098defB751B7401B5f6d8976F';
+      const useSimulated = confirm(
+        'No Web3 browser extension (e.g. MetaMask) was detected in this browser.\n\n' +
+        'Would you like to connect with a simulated Base Sepolia Testnet Wallet (0x71C7...976F) for local testing?'
+      );
+
+      if (useSimulated) {
+        setWalletAddress(demoAddress);
         localStorage.setItem('wallet_connected', 'true');
+        localStorage.setItem('nexus_demo_user', `user_${demoAddress.toLowerCase()}`);
+        window.location.reload();
       }
-    }
-
-    if (!activeAddress) {
-      alert('No active account found.');
       return;
     }
 
-    const finalAddress = activeAddress;
-
+    setIsConnecting(true);
     try {
+      if (!activeAddress) {
+        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        if (accounts && accounts[0]) {
+          activeAddress = accounts[0];
+          setWalletAddress(activeAddress);
+          localStorage.setItem('wallet_connected', 'true');
+        }
+      }
+
+      if (!activeAddress) {
+        alert('No active wallet account selected.');
+        return;
+      }
+
+      const finalAddress = activeAddress;
       const { nonce } = await fetchApi<{ nonce: string }>('/api/auth/web3/nonce');
       const message = `mrdn.finance wants you to sign in with your Ethereum account:\n${finalAddress}\n\nI accept the Meridian Nexus Terms of Service and Privacy Policy.\n\nURI: https://mrdn.finance\nVersion: 1\nChain ID: ${chainId || BASE_SEPOLIA_CONFIG.chainId}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
 
@@ -315,9 +329,11 @@ export const useWalletInternal = (): WalletState => {
         localStorage.setItem('nexus_demo_user', `user_${finalAddress.toLowerCase()}`);
         window.location.reload();
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Sign-in with Ethereum failed:', err);
-      alert('SIWE Signature request rejected or verification failed.');
+      alert(err?.message || 'SIWE Signature request rejected or verification failed.');
+    } finally {
+      setIsConnecting(false);
     }
   }, [walletAddress, chainId]);
 
