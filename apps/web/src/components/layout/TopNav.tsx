@@ -7,6 +7,7 @@ import { cn } from '../../utils/cn';
 import { motion } from 'framer-motion';
 import DemoLabel from '../common/DemoLabel';
 import { useWallet } from '../../hooks/useWallet';
+import logoSymbol from '../../assets/logo-symbol.jpg';
 
 export interface TopNavProps {
   onSearchClick?: () => void;
@@ -45,16 +46,13 @@ export default function TopNav({ onSearchClick }: TopNavProps) {
         {/* Brand Logo */}
         <div className="flex items-center gap-6">
           <Link to="/" className="flex items-center gap-2.5 group">
-            <motion.svg 
-              whileHover={{ rotate: 5, scale: 1.05 }}
+            <motion.img 
+              whileHover={{ rotate: 10, scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
-              className="h-7 w-7 text-[#27F293]" 
-              viewBox="0 0 100 100" 
-              fill="none"
-            >
-              <rect width="100" height="100" rx="22" fill="#1B1B1C" />
-              <path d="M 30,30 L 30,70 L 42,70 L 42,48 L 58,70 L 70,70 L 70,30 L 58,30 L 58,52 L 42,30 Z" fill="currentColor" />
-            </motion.svg>
+              src={logoSymbol}
+              alt="Meridian Nexus"
+              className="h-7 w-7 rounded-lg object-cover border border-zinc-800 shadow-[0_0_12px_rgba(39,242,147,0.15)]"
+            />
             <span className="font-display font-bold text-base tracking-tight bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent group-hover:text-white transition-colors">
               Meridian Nexus
             </span>

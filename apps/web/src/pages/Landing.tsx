@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { WORKFLOW_CATEGORIES } from '@meridian-nexus/shared-types';
 import { CATEGORY_ICONS } from '../utils/constants';
+import logoSymbol from '../assets/logo-symbol.jpg';
 
 export default function Landing() {
   const containerVariants = {
@@ -51,6 +52,14 @@ export default function Landing() {
           animate="visible"
           className="max-w-4xl mx-auto flex flex-col items-center gap-6 z-10"
         >
+          <motion.div variants={itemVariants} className="mb-2">
+            <img 
+              src={logoSymbol} 
+              alt="Meridian Nexus logo" 
+              className="h-16 w-16 rounded-2xl border border-zinc-800 shadow-[0_0_24px_rgba(39,242,147,0.25)] hover:rotate-6 transition-transform duration-300 object-cover cursor-pointer"
+            />
+          </motion.div>
+
           <motion.div variants={itemVariants}>
             <Badge variant="outline" className="text-[9px] border-emerald-500/30 text-emerald-400 bg-emerald-500/5 px-2.5 py-1 rounded-full font-bold">
               Now Live: Meridian Nexus Phase 1 MVP
