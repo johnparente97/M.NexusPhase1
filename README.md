@@ -1,15 +1,13 @@
 # Meridian Nexus — AI Capability Marketplace & Intelligence Synthesis Platform
 
-[[![Launch Meridian Nexus App](https://img.shields.io/badge/🚀_LAUNCH_APP-MERIDIAN_NEXUS-27F293?style=for-the-badge&logo=rocket&logoColor=000)](https://johnparente97.github.io/M.NexusPhase1/)](https://johnparente97.github.io/M.NexusPhase1/)
+[![Launch Meridian Nexus](https://img.shields.io/badge/LAUNCH_MERIDIAN_NEXUS-27F293?style=for-the-badge&logo=rocket&logoColor=000)](https://johnparente97.github.io/M.NexusPhase1/)
+
+**No installation required — opens the live Meridian Nexus demo in your browser.**
+
+Public Live URL: **[https://johnparente97.github.io/M.NexusPhase1/](https://johnparente97.github.io/M.NexusPhase1/)**
 
 > **Build intelligence. Market capabilities. Synthesize outcomes.**  
 > *Meridian coordinates value. Nexus coordinates capabilities, workflows, and outcomes. MRDN aligns productive participation.*
-
----
-
-## 🚀 Live Application URL
-
-Click the button above or open: **[https://johnparente97.github.io/M.NexusPhase1/](https://johnparente97.github.io/M.NexusPhase1/)**
 
 ---
 
@@ -33,6 +31,8 @@ It provides a unified AI operating system where users can:
 ```
 M.NexusPhase1/
 ├── .github/workflows/deploy.yml # GitHub Actions automated Pages deployment
+├── HOSTING_AUDIT.md            # Hosting & Infrastructure Audit Report
+├── DEPLOYMENT_CHECKLIST.md     # Production Redeployment Checklist
 ├── INTEGRATION_STATUS.md       # Operational status matrix (Live vs Testnet vs Mocks)
 ├── apps/
 │   ├── api/                    # Cloudflare Worker API (Hono + D1 Database)
@@ -48,17 +48,17 @@ M.NexusPhase1/
 
 ### 1. Install Dependencies
 ```bash
-npm install
+pnpm install
 ```
 
 ### 2. Typecheck & Validate
 ```bash
-npm run typecheck
+pnpm typecheck
 ```
 
 ### 3. Launch Development Server
 ```bash
-npm run dev
+pnpm dev
 ```
 - **Web App**: `http://localhost:5173`
 - **API Worker**: `http://localhost:8787` (proxied automatically via `/api`)
@@ -75,9 +75,10 @@ Live URL: **[https://johnparente97.github.io/M.NexusPhase1/](https://johnparente
 ### Backend (Cloudflare Workers)
 Deploy the API Worker to Cloudflare Workers edge network:
 ```bash
-cd apps/api && npx wrangler deploy
+pnpm deploy:api
 ```
 Deployed Worker URL: `https://meridian-nexus-api.jrjohnparente.workers.dev`
+Worker Health Check: `https://meridian-nexus-api.jrjohnparente.workers.dev/api/health`
 
 ---
 

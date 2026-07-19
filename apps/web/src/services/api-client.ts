@@ -1,12 +1,30 @@
 import { ApiError } from '@meridian-nexus/shared-types';
 
-const API_BASE_URL = (import.meta as any).env.VITE_API_URL || '';
+export const PRODUCTION_WORKER_URL = 'https://meridian-nexus-api.jrjohnparente.workers.dev';
+
+export function getApiBaseUrl(): string {
+  const envUrl =
+    (import.meta as any).env.VITE_API_BASE_URL || (import.meta as any).env.VITE_API_URL;
+
+  if (envUrl && envUrl.trim() !== '') {
+    return envUrl.trim().replace(/\/$/, '');
+  }
+
+  // When deployed on GitHub Pages or custom domain, default directly to the Cloudflare Worker
+  if (typeof window !== 'undefined' && window.location.hostname.includes('github.io')) {
+    return PRODUCTION_WORKER_URL;
+  }
+
+  return PRODUCTION_WORKER_URL;
+}
 
 export async function fetchApi<T>(
   path: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const url = `${API_BASE_URL}${path}`;
+  const baseUrl = getApiBaseUrl();
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  const url = `${baseUrl}${cleanPath}`;
 
   // Build default headers
   const headers = new Headers(options.headers);
@@ -17,42 +35,43 @@ export async function fetchApi<T>(
   // Inject Terms of Service acceptance header for backend compliance validation
   headers.set('X-Nexus-Accept-ToS', 'true');
 
-  // Inject Clerk session token if Clerk is initialized in the browser
-  if (typeof window !== 'undefined' && (window as any).Clerk?.session) {
-    try {
-      const token = await (window as any).Clerk.session.getToken();
-      if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
-      }
-    } catch (e) {
-      console.warn('Failed to retrieve Clerk token:', e);
-    }
+  // Inject Bearer token if user is signed in or in demo mode
+  const demoUser = typeof localStorage !== 'undefined' ? localStorage.getItem('nexus_demo_user') : null;
+  if (demoUser) {
+    headers.set('Authorization', `Bearer demo_${demoUser}`);
   } else {
-    // If Clerk is not loaded, check if we have a simulated user email in localStorage.
-    // If we do, we can construct a Bearer demo token so auth middleware works seamlessly in demo mode!
-    const demoUser = localStorage.getItem('nexus_demo_user');
-    if (demoUser) {
-      headers.set('Authorization', `Bearer demo_${demoUser}`);
-    }
+    headers.set('Authorization', 'Bearer demo_guest_user');
   }
 
-  const response = await fetch(url, {
-    ...options,
-    headers,
-  });
+  // Setup abort controller for timeout resilience (8s timeout)
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
 
-  if (!response.ok) {
-    let errorData: any;
-    try {
-      errorData = await response.json();
-    } catch {
-      errorData = { error: { message: `Request failed with status ${response.status}` } };
+  try {
+    const response = await fetch(url, {
+      ...options,
+      headers,
+      signal: options.signal || controller.signal,
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      let errorData: any;
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { error: { message: `API request failed with HTTP ${response.status}` } };
+      }
+
+      const apiError = errorData as ApiError;
+      throw new Error(apiError.error?.message || `API error (${response.status})`);
     }
-    
-    const apiError = errorData as ApiError;
-    throw new Error(apiError.error?.message || 'An unexpected error occurred.');
-  }
 
-  const result = await response.json();
-  return result.data as T;
+    const result = await response.json();
+    return (result.data !== undefined ? result.data : result) as T;
+  } catch (err: any) {
+    clearTimeout(timeoutId);
+    console.warn(`[Nexus API Client] Call to ${url} failed or timed out:`, err?.message || err);
+    throw err;
+  }
 }
