@@ -116,7 +116,7 @@ export default function DolphinChat() {
         {/* Left Title & x402 Stack Badge */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2.5">
-            <img src={logoNexus} alt="Meridian" className="h-9 w-9 object-contain mix-blend-screen filter drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]" />
+            <img src={logoNexus} alt="Meridian" className="h-9 w-9 object-contain filter drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]" />
             <span className="font-display font-bold text-base text-white tracking-tight">
               Meridian Free Inference
             </span>
