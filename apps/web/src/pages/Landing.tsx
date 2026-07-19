@@ -19,6 +19,7 @@ import {
 import { WORKFLOW_CATEGORIES } from '@meridian-nexus/shared-types';
 import { CATEGORY_ICONS } from '../utils/constants';
 import logoNexus from '../assets/logo-nexus.png';
+import { NexusLogoMark } from '../components/common/NexusLogoMark';
 
 export default function Landing() {
   const container = { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } } };
@@ -79,15 +80,14 @@ export default function Landing() {
 
           {/* Nexus Logo with MRDN glow */}
           <motion.div variants={item}>
-            <motion.img
-              src={logoNexus}
-              alt="Meridian Nexus"
-              className="h-40 w-40 sm:h-52 sm:w-52 lg:h-64 lg:w-64 object-contain cursor-pointer"
-              style={{ filter: 'drop-shadow(0 0 32px rgba(52, 211, 153, 0.65)) drop-shadow(0 0 64px rgba(52, 211, 153, 0.35))' }}
+            <motion.div
               whileHover={{ rotate: 8, scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 300, damping: 18 }}
-            />
+              className="cursor-pointer"
+            >
+              <NexusLogoMark className="h-24 w-24 sm:h-32 sm:w-32 lg:h-40 lg:w-40 filter drop-shadow-[0_0_32px_rgba(52,211,153,0.7)]" />
+            </motion.div>
           </motion.div>
 
           {/* Live badge */}

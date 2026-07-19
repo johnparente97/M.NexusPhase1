@@ -27,6 +27,7 @@ import { useToast } from '../components/ui/Toast';
 import { fetchApi } from '../services/api-client';
 import { useWallet } from '../hooks/useWallet';
 import logoNexus from '../assets/logo-nexus.png';
+import { NexusLogoMark } from '../components/common/NexusLogoMark';
 
 export interface PaidChatMessage {
   id: string;
@@ -188,8 +189,8 @@ export default function PaidChat() {
         
         {/* Left Title & Stack Badge */}
         <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2.5">
-            <img src={logoNexus} alt="Meridian" className="h-9 w-9 object-contain filter drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]" />
+          <Link to="/" className="flex items-center gap-2">
+            <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8 filter drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]" />
             <span className="font-display font-bold text-base text-white tracking-tight">
               Meridian Inference
             </span>
@@ -273,13 +274,12 @@ export default function PaidChat() {
         {messages.length === 0 ? (
           /* Empty State — Meridian Inference style */
           <div className="flex-1 flex flex-col items-center justify-center text-center p-8 gap-4 my-auto select-none">
-            <motion.img
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              src={logoNexus}
-              alt="Meridian"
-              className="h-28 w-28 sm:h-36 sm:w-36 object-contain filter drop-shadow-[0_0_32px_rgba(52,211,153,0.65)]"
-            />
+            >
+              <NexusLogoMark className="h-20 w-20 sm:h-28 sm:w-28 filter drop-shadow-[0_0_32px_rgba(52,211,153,0.65)]" />
+            </motion.div>
             <div className="flex flex-col gap-1.5">
               <h2 className="font-display font-semibold text-xl text-white">Ask anything</h2>
               <p className="text-xs text-zinc-400 max-w-sm leading-relaxed">

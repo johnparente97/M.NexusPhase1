@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { DolphinAdapter, DolphinChatMessage } from '../adapters/dolphin/adapter';
 import { Sparkles, Send, Square, Bot, User, ArrowUpRight, RefreshCw, Zap, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import logoNexus from '../assets/logo-nexus.png';
+import { NexusLogoMark } from '../components/common/NexusLogoMark';
 
 export default function DolphinChat() {
   const [messages, setMessages] = useState<DolphinChatMessage[]>(() => {
@@ -115,8 +115,8 @@ export default function DolphinChat() {
         
         {/* Left Title & x402 Stack Badge */}
         <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2.5">
-            <img src={logoNexus} alt="Meridian" className="h-9 w-9 object-contain filter drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]" />
+          <Link to="/" className="flex items-center gap-2">
+            <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8 filter drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]" />
             <span className="font-display font-bold text-base text-white tracking-tight">
               Meridian Free Inference
             </span>
