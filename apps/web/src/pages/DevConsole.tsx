@@ -80,7 +80,7 @@ export default function DevConsole() {
       {/* Code Snippet Example */}
       <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-3">
         <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-          <Code className="h-4 w-4 text-indigo-400" />
+          <Code className="h-4 w-4 text-emerald-400" />
           cURL API Example
         </h3>
         <pre className="bg-zinc-950 border border-zinc-800/80 p-4 rounded-xl text-[11px] font-mono text-emerald-400 overflow-x-auto">

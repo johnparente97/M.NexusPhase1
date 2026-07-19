@@ -45,9 +45,9 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow, isFavorite
               <button
                 onClick={handleSave}
                 disabled={toggleFav.isPending}
-                className="text-zinc-500 hover:text-indigo-400 p-0.5 rounded transition-colors disabled:opacity-50"
+                className="text-zinc-500 hover:text-emerald-400 p-0.5 rounded transition-colors disabled:opacity-50"
               >
-                <Bookmark className={`h-4 w-4 ${isFavorited ? 'fill-indigo-500 text-indigo-500' : ''}`} />
+                <Bookmark className={`h-4 w-4 ${isFavorited ? 'fill-emerald-500 text-emerald-500' : ''}`} />
               </button>
             )}
           </div>
@@ -78,7 +78,7 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow, isFavorite
             </div>
             <span className="truncate text-zinc-300 flex items-center gap-1">
               {creatorName}
-              {workflow.verified && <CheckCircle className="h-3 w-3 text-indigo-400 fill-indigo-950 shrink-0" />}
+              {workflow.verified && <CheckCircle className="h-3 w-3 text-emerald-400 fill-zinc-950 shrink-0" />}
             </span>
           </div>
 

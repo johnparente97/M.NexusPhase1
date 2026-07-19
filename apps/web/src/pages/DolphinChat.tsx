@@ -109,7 +109,7 @@ export default function DolphinChat() {
           return (
             <div className="flex flex-col gap-4 text-xs">
               {sections.map((sec: any, index: number) => (
-                <div key={index} className="flex flex-col gap-1.5 border-l-2 border-[#00F5D4]/40 pl-3">
+                <div key={index} className="flex flex-col gap-1.5 border-l-2 border-[#34D399]/40 pl-3">
                   <span className="font-mono font-bold text-zinc-100 text-xs tracking-tight">{sec.label || sec.key}</span>
                   {Array.isArray(sec.content) ? (
                     <ul className="list-disc pl-4 flex flex-col gap-1 text-[11px] text-zinc-300">
@@ -151,13 +151,13 @@ export default function DolphinChat() {
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-zinc-900/60 border border-zinc-800 p-4 rounded-2xl shrink-0">
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#00F5D4]/20 to-teal-950 border border-[#00F5D4]/40 flex items-center justify-center text-[#00F5D4] shrink-0">
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#34D399]/20 to-teal-950 border border-[#34D399]/40 flex items-center justify-center text-[#34D399] shrink-0">
             <Sparkles className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <h1 className="font-display font-bold text-base text-zinc-100">Dolphin Free Experience</h1>
-              <Badge variant="success" className="text-[9px] font-mono bg-[#00F5D4]/10 border border-[#00F5D4]/30 text-[#00F5D4]">100% FREE</Badge>
+              <Badge variant="success" className="text-[9px] font-mono bg-[#34D399]/10 border border-[#34D399]/30 text-[#34D399]">100% FREE</Badge>
             </div>
             <p className="text-[11px] text-zinc-400">
               Unmetered open-weights AI assistant powered by Dolphin Mixtral 8x7B. Zero cost per prompt.
@@ -192,8 +192,8 @@ export default function DolphinChat() {
             <div
               className={`h-7 w-7 rounded-lg flex items-center justify-center text-xs shrink-0 ${
                 msg.role === 'user'
-                  ? 'bg-gradient-to-br from-indigo-500 to-[#00F5D4] text-zinc-950 font-bold'
-                  : 'bg-zinc-900 border border-zinc-800 text-[#00F5D4]'
+                  ? 'bg-gradient-to-br from-emerald-500 to-[#34D399] text-zinc-950 font-bold'
+                  : 'bg-zinc-900 border border-zinc-800 text-[#34D399]'
               }`}
             >
               {msg.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
@@ -211,7 +211,7 @@ export default function DolphinChat() {
                   renderMessageContent(msg.content)
                 ) : (
                   <span className="text-zinc-500 italic flex items-center gap-1.5">
-                    <Sparkles className="h-3.5 w-3.5 text-[#00F5D4] animate-spin" />
+                    <Sparkles className="h-3.5 w-3.5 text-[#34D399] animate-spin" />
                     Dolphin is generating...
                   </span>
                 )}
@@ -222,7 +222,7 @@ export default function DolphinChat() {
                 {msg.role === 'assistant' && (
                   <>
                     <span>•</span>
-                    <span className="text-[#00F5D4] font-semibold">$0.00 (Free)</span>
+                    <span className="text-[#34D399] font-semibold">$0.00 (Free)</span>
                     {msg.tokensEstimated && (
                       <>
                         <span>•</span>

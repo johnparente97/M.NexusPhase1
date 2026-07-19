@@ -1,39 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: 'Inter', sans-serif;
-  --font-display: 'Outfit', sans-serif;
+  --font-display: 'Funnel Display', 'Outfit', sans-serif;
 
   --color-zinc-950: #1B1B1C;
   --color-zinc-900: #171719;
   --color-zinc-800: #272729;
   
-  --color-indigo-400: #00F5D4;
-  --color-indigo-500: #06B6D4;
-  --color-indigo-600: #0891B2;
+  /* MRDN Brand: Emerald-dominant palette */
+  --color-emerald-300: #6EE7B7;
+  --color-emerald-400: #34D399;
+  --color-emerald-500: #10B981;
+  --color-emerald-600: #059669;
   
-  --color-blue-400: #06B6D4;
-  --color-blue-500: #0891B2;
-  --color-blue-600: #0369a1;
+  /* x402 Protocol Blue Accent */
+  --color-blue-400: #3B82F6;
+  --color-blue-500: #003CFF;
+  --color-blue-600: #0032D6;
 }
 
 :root {
   --background: #1B1B1C;
-  --foreground: #f4f4f5;
+  --foreground: #F0F0F0;
   --card: #171719;
   --card-border: #272729;
-  --accent-primary: #00F5D4;
-  --accent-secondary: #06B6D4;
+  --accent-primary: #34D399;
+  --accent-secondary: #10B981;
+  --accent-protocol: #003CFF;
   --accent-gradient: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  --success: #00F5D4;
+  --success: #34D399;
   --warning: #f59e0b;
   --error: #ef4444;
-  --info: #06B6D4;
+  --info: #3B82F6;
   
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  /* MRDN-aligned radii — softer, more rounded */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-2xl: 32px;
 }
 
 /* Custom base resets */
@@ -64,7 +71,7 @@ body {
   background: var(--accent-primary);
 }
 
-/* Glassmorphism utility */
+/* Glassmorphism utility — MRDN style */
 .glass-panel {
   background: rgba(23, 23, 25, 0.75);
   backdrop-filter: blur(16px);
@@ -72,26 +79,26 @@ body {
   border: 1px solid var(--card-border);
 }
 
-/* Custom premium hover animations */
+/* Premium card hover — aligned with MRDN emerald glow */
 .premium-card {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .premium-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(39, 242, 147, 0.25);
+  border-color: rgba(52, 211, 153, 0.25);
   box-shadow: 
     0 16px 36px -12px rgba(0, 0, 0, 0.95), 
-    0 0 24px -4px rgba(39, 242, 147, 0.03);
+    0 0 24px -4px rgba(52, 211, 153, 0.06);
 }
 
-/* Input styles */
+/* Input styles — emerald focus ring */
 input, textarea, select {
   outline: none;
   transition: all 0.15s ease-in-out;
 }
 input:focus, textarea:focus, select:focus {
-  border-color: rgba(39, 242, 147, 0.4);
-  box-shadow: 0 0 0 2px rgba(39, 242, 147, 0.15);
+  border-color: rgba(52, 211, 153, 0.4);
+  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.15);
 }
 
 /* Fade in entrance animation */

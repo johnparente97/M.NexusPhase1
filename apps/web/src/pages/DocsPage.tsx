@@ -30,7 +30,7 @@ export default function DocsPage() {
 
         <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-3">
           <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-            <Cpu className="h-4 w-4 text-indigo-400" />
+            <Cpu className="h-4 w-4 text-emerald-400" />
             AntSeed Model Marketplace
           </h3>
           <p className="text-xs text-zinc-400 leading-relaxed">

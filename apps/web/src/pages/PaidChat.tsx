@@ -194,7 +194,7 @@ export default function PaidChat() {
         
         {/* Model Switcher Dropdown */}
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-xl bg-indigo-950/60 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0">
+          <div className="h-9 w-9 rounded-xl bg-zinc-900/60 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
             <Cpu className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
@@ -244,8 +244,8 @@ export default function PaidChat() {
             <div
               className={`h-7 w-7 rounded-lg flex items-center justify-center text-xs shrink-0 ${
                 msg.role === 'user'
-                  ? 'bg-gradient-to-br from-indigo-500 to-[#27F293] text-zinc-950 font-bold'
-                  : 'bg-zinc-900 border border-zinc-800 text-indigo-400'
+                  ? 'bg-gradient-to-br from-emerald-500 to-[#27F293] text-zinc-950 font-bold'
+                  : 'bg-zinc-900 border border-zinc-800 text-emerald-400'
               }`}
             >
               {msg.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
@@ -261,7 +261,7 @@ export default function PaidChat() {
               >
                 {msg.content || (
                   <span className="text-zinc-500 italic flex items-center gap-1.5">
-                    <Sparkles className="h-3.5 w-3.5 text-indigo-400 animate-spin" />
+                    <Sparkles className="h-3.5 w-3.5 text-emerald-400 animate-spin" />
                     {selectedModel.name} streaming completion...
                   </span>
                 )}

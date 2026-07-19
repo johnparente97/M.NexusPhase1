@@ -18,7 +18,7 @@ export const ResultRenderer: React.FC<ResultRendererProps> = ({ result, workflow
       {/* Top Banner Control Actions */}
       <Card padding="none" className="p-4 bg-zinc-900 border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-2">
-          <Sparkles className="h-4.5 w-4.5 text-indigo-400" />
+          <Sparkles className="h-4.5 w-4.5 text-emerald-400" />
           <span className="text-xs font-semibold text-zinc-300">
             Model: <span className="text-zinc-100 font-bold">{result.metadata.modelId}</span>
           </span>

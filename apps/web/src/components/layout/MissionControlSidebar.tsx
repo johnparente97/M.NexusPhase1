@@ -72,7 +72,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
   return (
     <aside
       className={cn(
-        'bg-zinc-950/90 border-r border-zinc-900 flex flex-col h-[calc(100vh-4rem)] sticky top-16 select-none transition-all duration-200 z-30 hidden lg:flex',
+        'bg-zinc-950/90 border-r border-zinc-900 flex flex-col h-[calc(100vh-4.5rem)] sticky top-[4.5rem] select-none transition-all duration-200 z-30 hidden lg:flex',
         {
           'w-64': !isCollapsed,
           'w-16': isCollapsed,
@@ -87,7 +87,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
             className="w-full flex items-center justify-between gap-2 bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer shadow-sm group"
           >
             <div className="flex items-center gap-2">
-              <Search className="h-3.5 w-3.5 text-zinc-500 group-hover:text-[#00F5D4]" />
+              <Search className="h-3.5 w-3.5 text-zinc-500 group-hover:text-emerald-400" />
               <span>⌘K Spotlight</span>
             </div>
             <kbd className="text-[9px] font-mono bg-zinc-950 border border-zinc-800 px-1.5 py-0.5 rounded text-zinc-500">
@@ -97,7 +97,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         ) : (
           <button
             onClick={onSearchClick}
-            className="w-full flex items-center justify-center p-2.5 rounded-xl bg-zinc-900/60 border border-zinc-800 text-zinc-400 hover:text-[#00F5D4]"
+            className="w-full flex items-center justify-center p-2.5 rounded-xl bg-zinc-900/60 border border-zinc-800 text-zinc-400 hover:text-emerald-400"
             title="Spotlight Search (⌘K)"
           >
             <Search className="h-4 w-4" />
@@ -127,7 +127,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
                   cn(
                     'flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all group',
                     {
-                      'bg-[#00F5D4]/10 text-[#00F5D4] border border-[#00F5D4]/20': isActive,
+                      'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20': isActive,
                       'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60': !isActive,
                       'justify-center px-0': isCollapsed,
                     }
@@ -156,7 +156,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
                   to={`/exchange/${pw.id}`}
                   className="px-3 py-1.5 rounded-lg text-[11px] text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40 truncate flex items-center gap-2 group"
                 >
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#00F5D4]/60 group-hover:bg-[#00F5D4] shrink-0" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-400/60 group-hover:bg-emerald-400 shrink-0" />
                   <span className="truncate">{pw.name}</span>
                 </Link>
               ))}
@@ -179,7 +179,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
               </button>
               <button
                 onClick={() => handleDemoLogin('creator')}
-                className="flex-1 py-1.5 px-2 bg-[#00F5D4]/10 hover:bg-[#00F5D4]/20 border border-[#00F5D4]/30 text-[#00F5D4] rounded-lg text-[10px] font-semibold text-center transition-colors cursor-pointer"
+                className="flex-1 py-1.5 px-2 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-lg text-[10px] font-semibold text-center transition-colors cursor-pointer"
               >
                 Creator
               </button>
@@ -193,7 +193,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         {!isCollapsed ? (
           <div className="flex items-center justify-between w-full">
             <Link to="/profile" className="flex items-center gap-2 max-w-[140px]">
-              <div className="h-7 w-7 rounded-full bg-gradient-to-br from-indigo-500 to-[#00F5D4] flex items-center justify-center text-[10px] font-bold text-zinc-950 shrink-0">
+              <div className="h-7 w-7 rounded-full bg-gradient-to-br from-emerald-500 to-emerald-300 flex items-center justify-center text-[10px] font-bold text-zinc-950 shrink-0">
                 {user?.displayName?.charAt(0)?.toUpperCase() || 'G'}
               </div>
               <div className="flex flex-col truncate">

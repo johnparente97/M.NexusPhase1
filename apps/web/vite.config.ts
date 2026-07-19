@@ -25,4 +25,23 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    chunkSizeWarningLimit: 600,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Vendor: core React ecosystem
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          // Vendor: UI / animation
+          'vendor-ui': ['framer-motion', 'lucide-react'],
+          // Vendor: data fetching
+          'vendor-query': ['@tanstack/react-query'],
+          // Vendor: forms
+          'vendor-forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          // Vendor: charts
+          'vendor-charts': ['recharts'],
+        },
+      },
+    },
+  },
 });

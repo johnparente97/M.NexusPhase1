@@ -242,7 +242,7 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({ initialData })
           <button
             onClick={() => setActiveTab('basics')}
             className={`text-left text-xs font-semibold px-4 py-3 rounded-lg transition-colors ${
-              activeTab === 'basics' ? 'bg-indigo-500/10 text-indigo-400' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
+              activeTab === 'basics' ? 'bg-emerald-500/10 text-emerald-400' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
             }`}
           >
             1. Basic Information
@@ -250,7 +250,7 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({ initialData })
           <button
             onClick={() => setActiveTab('inputs')}
             className={`text-left text-xs font-semibold px-4 py-3 rounded-lg transition-colors ${
-              activeTab === 'inputs' ? 'bg-indigo-500/10 text-indigo-400' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
+              activeTab === 'inputs' ? 'bg-emerald-500/10 text-emerald-400' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
             }`}
           >
             2. Input parameters definitions
@@ -258,7 +258,7 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({ initialData })
           <button
             onClick={() => setActiveTab('outputs')}
             className={`text-left text-xs font-semibold px-4 py-3 rounded-lg transition-colors ${
-              activeTab === 'outputs' ? 'bg-indigo-500/10 text-indigo-400' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
+              activeTab === 'outputs' ? 'bg-emerald-500/10 text-emerald-400' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
             }`}
           >
             3. Output layout structures
@@ -266,7 +266,7 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({ initialData })
           <button
             onClick={() => setActiveTab('preview')}
             className={`text-left text-xs font-semibold px-4 py-3 rounded-lg transition-colors ${
-              activeTab === 'preview' ? 'bg-indigo-500/10 text-indigo-400' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
+              activeTab === 'preview' ? 'bg-emerald-500/10 text-emerald-400' : 'text-zinc-400 hover:bg-zinc-800 hover:text-zinc-200'
             }`}
           >
             4. Preview & Test

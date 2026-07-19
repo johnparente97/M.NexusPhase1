@@ -16,7 +16,7 @@ export const ActivityList: React.FC<ActivityListProps> = ({ runs = [], limit }) 
 
   const statusIcons = {
     pending: <Circle className="h-4 w-4 text-zinc-500 shrink-0" />,
-    running: <Clock className="h-4 w-4 text-indigo-400 shrink-0 animate-pulse" />,
+    running: <Clock className="h-4 w-4 text-emerald-400 shrink-0 animate-pulse" />,
     completed: <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />,
     failed: <AlertTriangle className="h-4 w-4 text-rose-400 shrink-0" />,
     cancelled: <Circle className="h-4 w-4 text-zinc-600 shrink-0" />,

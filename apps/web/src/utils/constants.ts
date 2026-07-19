@@ -45,7 +45,7 @@ export const CATEGORY_LABELS: Record<string, string> = {
 
 export const CATEGORY_COLORS: Record<string, string> = {
   research: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  marketing: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20',
+  marketing: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
   sales: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20',
   'business-operations': 'bg-zinc-500/10 text-zinc-400 border-zinc-500/20',
   'data-analysis': 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20',

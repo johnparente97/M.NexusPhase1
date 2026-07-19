@@ -15,7 +15,7 @@ export default function MobileNav() {
           className={({ isActive }) =>
             cn(
               'flex flex-col items-center gap-1 text-[10px] font-semibold text-zinc-400',
-              { 'text-[#00F5D4] font-bold': isActive }
+              { 'text-[#34D399] font-bold': isActive }
             )
           }
         >
@@ -32,7 +32,7 @@ export default function MobileNav() {
               className={({ isActive }) =>
                 cn(
                   'flex flex-col items-center gap-1 text-[10px] font-semibold text-zinc-400',
-                  { 'text-[#00F5D4] font-bold': isActive }
+                  { 'text-[#34D399] font-bold': isActive }
                 )
               }
             >
@@ -47,7 +47,7 @@ export default function MobileNav() {
               className={({ isActive }) =>
                 cn(
                   'flex flex-col items-center gap-1 text-[10px] font-semibold text-zinc-400',
-                  { 'text-[#00F5D4] font-bold': isActive }
+                  { 'text-[#34D399] font-bold': isActive }
                 )
               }
             >
@@ -62,7 +62,7 @@ export default function MobileNav() {
               className={({ isActive }) =>
                 cn(
                   'flex flex-col items-center gap-1 text-[10px] font-semibold text-zinc-400',
-                  { 'text-[#00F5D4] font-bold': isActive }
+                  { 'text-[#34D399] font-bold': isActive }
                 )
               }
             >
@@ -78,7 +78,7 @@ export default function MobileNav() {
             className={({ isActive }) =>
               cn(
                 'flex flex-col items-center gap-1 text-[10px] font-semibold text-zinc-400',
-                { 'text-[#00F5D4] font-bold': isActive }
+                { 'text-[#34D399] font-bold': isActive }
               )
             }
           >

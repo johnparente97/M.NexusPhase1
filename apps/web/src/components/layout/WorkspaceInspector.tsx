@@ -76,7 +76,7 @@ export const WorkspaceInspector: React.FC<WorkspaceInspectorProps> = ({
 
       {/* 1. Daily AI Briefing Widget (Default view or general workspace) */}
       <div className="bg-gradient-to-br from-indigo-950/20 via-zinc-900/50 to-zinc-950 border border-indigo-900/30 rounded-2xl p-4 flex flex-col gap-3">
-        <div className="flex items-center gap-2 text-indigo-400">
+        <div className="flex items-center gap-2 text-emerald-400">
           <Sparkles className="h-4 w-4" />
           <span className="text-xs font-bold font-display">Intelligence Briefing</span>
         </div>
@@ -143,7 +143,7 @@ export const WorkspaceInspector: React.FC<WorkspaceInspectorProps> = ({
       {(isActivity || activeRun) && (
         <div className="flex flex-col gap-3 bg-zinc-900/50 border border-zinc-800 rounded-2xl p-4">
           <span className="text-xs font-bold text-zinc-200 flex items-center gap-1.5">
-            <Zap className="h-4 w-4 text-indigo-400" />
+            <Zap className="h-4 w-4 text-emerald-400" />
             Telemetry & Telemetry Trace
           </span>
 

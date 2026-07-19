@@ -120,7 +120,7 @@ export const VisualWorkflowGraph: React.FC<VisualWorkflowGraphProps> = ({
                   isSelected
                     ? 'bg-zinc-900 border-[#27F293] shadow-[0_0_20px_rgba(39,242,147,0.15)]'
                     : isRunning
-                    ? 'bg-zinc-900/90 border-indigo-500/80 shadow-[0_0_15px_rgba(99,102,241,0.2)]'
+                    ? 'bg-zinc-900/90 border-emerald-500/80 shadow-[0_0_15px_rgba(99,102,241,0.2)]'
                     : 'bg-zinc-900/40 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-900/70'
                 }`}
               >
@@ -130,7 +130,7 @@ export const VisualWorkflowGraph: React.FC<VisualWorkflowGraphProps> = ({
                     <Icon className="h-3.5 w-3.5 text-[#27F293]" />
                   </div>
                   {isRunning ? (
-                    <span className="text-[9px] font-bold text-indigo-400 animate-pulse flex items-center gap-1">
+                    <span className="text-[9px] font-bold text-emerald-400 animate-pulse flex items-center gap-1">
                       <Clock className="h-2.5 w-2.5 animate-spin" /> ACTIVE
                     </span>
                   ) : node.status === 'completed' ? (

@@ -34,7 +34,7 @@ export default function AppShell() {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-zinc-950 flex flex-col antialiased selection:bg-[#27F293]/30 selection:text-white">
+      <div className="min-h-screen bg-zinc-950 flex flex-col antialiased selection:bg-emerald-400/30 selection:text-white">
         {/* Top Header Navigation */}
         <TopNav onSearchClick={() => setShowPalette(true)} />
 
@@ -43,8 +43,8 @@ export default function AppShell() {
           {/* 1. Left Mission Control Sidebar */}
           <MissionControlSidebar onSearchClick={() => setShowPalette(true)} />
 
-          {/* 2. Primary Center Workspace View */}
-          <main className="flex-1 flex flex-col min-w-0 pb-20 md:pb-12">
+          {/* 2. Primary Center Workspace View - pt-20 accounts for fixed floating TopNav */}
+          <main className="flex-1 flex flex-col min-w-0 pt-20 pb-20 md:pb-12">
             <Outlet />
           </main>
 

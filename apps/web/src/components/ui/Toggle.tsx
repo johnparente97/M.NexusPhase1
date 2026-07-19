@@ -15,9 +15,9 @@ export const Toggle: React.FC<ToggleProps> = ({ checked, onChange, disabled = fa
       disabled={disabled}
       onClick={() => onChange(!checked)}
       className={cn(
-        'relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-500/50 disabled:opacity-50 disabled:cursor-not-allowed select-none bg-zinc-800',
+        'relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:opacity-50 disabled:cursor-not-allowed select-none bg-zinc-800',
         {
-          'bg-indigo-600': checked,
+          'bg-emerald-600': checked,
         },
         className
       )}

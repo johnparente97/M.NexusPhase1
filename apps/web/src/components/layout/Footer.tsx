@@ -8,7 +8,7 @@ export default function Footer() {
         {/* Branding Info */}
         <div className="flex flex-col gap-3 max-w-xs">
           <Link to="/" className="flex items-center gap-2">
-            <svg className="h-5 w-5 text-indigo-500" viewBox="0 0 100 100" fill="none">
+            <svg className="h-5 w-5 text-emerald-500" viewBox="0 0 100 100" fill="none">
               <rect width="100" height="100" rx="22" fill="#09090b" />
               <path d="M 30,30 L 30,70 L 42,70 L 42,48 L 58,70 L 70,70 L 70,30 L 58,30 L 58,52 L 42,30 Z" fill="currentColor" />
             </svg>

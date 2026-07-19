@@ -115,7 +115,7 @@ export default function WorkflowDetail() {
                 disabled={toggleFav.isPending}
                 className="w-full font-bold flex items-center gap-1.5"
               >
-                <Bookmark className={`h-4 w-4 ${isFav ? 'fill-indigo-400 text-indigo-400' : ''}`} />
+                <Bookmark className={`h-4 w-4 ${isFav ? 'fill-emerald-400 text-emerald-400' : ''}`} />
                 {isFav ? 'Saved' : 'Save to Favorites'}
               </Button>
             )}

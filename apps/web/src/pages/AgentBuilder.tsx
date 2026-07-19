@@ -84,7 +84,7 @@ export default function AgentBuilder() {
         {/* Model Selection & Fallback */}
         <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-5">
           <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-            <Cpu className="h-4 w-4 text-indigo-400" />
+            <Cpu className="h-4 w-4 text-emerald-400" />
             Model & Routing Configuration
           </h3>
 

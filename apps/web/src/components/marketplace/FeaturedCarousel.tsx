@@ -46,7 +46,7 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ workflows })
       <div className="relative p-6 sm:p-8 flex flex-col gap-4.5 z-10 max-w-xl">
         <div className="flex items-center gap-2">
           <Badge variant="info" className="text-[9px]">Featured</Badge>
-          <span className="text-[10px] text-indigo-400 font-semibold tracking-wide uppercase">
+          <span className="text-[10px] text-emerald-400 font-semibold tracking-wide uppercase">
             {current.category}
           </span>
         </div>
@@ -98,7 +98,7 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ workflows })
                 key={idx}
                 onClick={() => setActiveIndex(idx)}
                 className={`h-1.5 rounded-full transition-all duration-200 cursor-pointer ${
-                  idx === activeIndex ? 'w-4 bg-indigo-500' : 'w-1.5 bg-zinc-800 hover:bg-zinc-700'
+                  idx === activeIndex ? 'w-4 bg-emerald-500' : 'w-1.5 bg-zinc-800 hover:bg-zinc-700'
                 }`}
               />
             ))}

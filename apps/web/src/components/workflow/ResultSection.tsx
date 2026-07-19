@@ -35,7 +35,7 @@ export const ResultSection: React.FC<ResultSectionProps> = ({ section }) => {
             <span className="text-[10px] text-zinc-500 font-semibold uppercase tracking-wider">{item.metric}</span>
             <div className="flex items-baseline justify-between gap-2 mt-1">
               <span className="text-base font-bold text-zinc-100">{item.target}</span>
-              <span className="text-[9px] font-bold text-indigo-400 bg-indigo-500/10 px-1.5 py-0.5 rounded uppercase">
+              <span className="text-[9px] font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded uppercase">
                 {item.status}
               </span>
             </div>
@@ -89,7 +89,7 @@ export const ResultSection: React.FC<ResultSectionProps> = ({ section }) => {
             <div className="flex-1 flex flex-col gap-1.5">
               <h4 className="font-semibold text-zinc-200 text-xs">{r.risk}</h4>
               <p className="text-zinc-400 text-[11px] leading-relaxed">
-                <span className="font-semibold text-indigo-400">Mitigation:</span> {r.mitigation}
+                <span className="font-semibold text-emerald-400">Mitigation:</span> {r.mitigation}
               </p>
             </div>
           </div>
@@ -104,8 +104,8 @@ export const ResultSection: React.FC<ResultSectionProps> = ({ section }) => {
       <div className="flex flex-col gap-2.5 w-full">
         {items.map((item, idx) => (
           <div key={idx} className="flex items-center gap-3 bg-zinc-950/60 border border-zinc-900 p-3 rounded-lg">
-            <div className="shrink-0 h-4.5 w-4.5 rounded border border-zinc-700 flex items-center justify-center cursor-pointer hover:border-indigo-500 transition-colors">
-              <CheckCircle2 className="h-3 w-3 text-transparent hover:text-indigo-400" />
+            <div className="shrink-0 h-4.5 w-4.5 rounded border border-zinc-700 flex items-center justify-center cursor-pointer hover:border-emerald-500 transition-colors">
+              <CheckCircle2 className="h-3 w-3 text-transparent hover:text-emerald-400" />
             </div>
             <span className="flex-1 text-zinc-300 leading-normal">{item.item}</span>
             <span className="text-[9px] font-bold text-zinc-400 bg-zinc-800 px-1.5 py-0.5 rounded uppercase shrink-0 select-none">
@@ -124,8 +124,8 @@ export const ResultSection: React.FC<ResultSectionProps> = ({ section }) => {
         {phases.map((p, idx) => (
           <div key={idx} className="relative flex flex-col gap-2">
             {/* Timeline node */}
-            <span className="absolute -left-[30px] top-1 h-3 w-3 rounded-full bg-indigo-500 border-2 border-zinc-900" />
-            <h4 className="font-semibold text-indigo-400 text-xs tracking-tight">{p.phase}</h4>
+            <span className="absolute -left-[30px] top-1 h-3 w-3 rounded-full bg-emerald-500 border-2 border-zinc-900" />
+            <h4 className="font-semibold text-emerald-400 text-xs tracking-tight">{p.phase}</h4>
             <div className="flex flex-col gap-1.5 pl-1.5 text-zinc-400 text-[11px]">
               {p.tasks.map((task, tIdx) => (
                 <p key={tIdx} className="leading-relaxed">

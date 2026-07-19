@@ -97,7 +97,7 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
               onClick={() => setMinRating(val === minRating ? 0 : val)}
               className={`text-xs px-2.5 py-1 rounded font-bold border transition-colors ${
                 minRating === val
-                  ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/30'
+                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
                   : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:text-zinc-200'
               }`}
             >

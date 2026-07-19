@@ -35,7 +35,7 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({ activeCategory, on
             className={cn(
               'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 cursor-pointer whitespace-nowrap',
               {
-                'bg-indigo-500/10 text-indigo-400 border-indigo-500/30 font-bold': isActive,
+                'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 font-bold': isActive,
                 'bg-zinc-900/50 text-zinc-400 border-zinc-800 hover:text-zinc-200 hover:border-zinc-700': !isActive,
               }
             )}
