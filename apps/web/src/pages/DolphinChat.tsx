@@ -146,18 +146,18 @@ export default function DolphinChat() {
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full h-[calc(100vh-4rem)] p-4 sm:p-6 gap-4 select-none">
+    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full h-[calc(100vh-8.5rem)] md:h-[calc(100vh-4.5rem)] p-3 sm:p-6 gap-3 sm:gap-4 select-none">
       
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-zinc-900/60 border border-zinc-800 p-4 rounded-2xl shrink-0">
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#34D399]/20 to-teal-950 border border-[#34D399]/40 flex items-center justify-center text-[#34D399] shrink-0">
+          <div className="h-9 w-9 rounded-xl bg-gradient-to-br from-emerald-500/20 to-emerald-950 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
             <Sparkles className="h-5 w-5" />
           </div>
           <div className="flex flex-col">
             <div className="flex items-center gap-2">
               <h1 className="font-display font-bold text-base text-zinc-100">Dolphin Free Experience</h1>
-              <Badge variant="success" className="text-[9px] font-mono bg-[#34D399]/10 border border-[#34D399]/30 text-[#34D399]">100% FREE</Badge>
+              <Badge variant="success" className="text-[9px] font-mono bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">100% FREE</Badge>
             </div>
             <p className="text-[11px] text-zinc-400">
               Unmetered open-weights AI assistant powered by Dolphin Mixtral 8x7B. Zero cost per prompt.
@@ -211,7 +211,7 @@ export default function DolphinChat() {
                   renderMessageContent(msg.content)
                 ) : (
                   <span className="text-zinc-500 italic flex items-center gap-1.5">
-                    <Sparkles className="h-3.5 w-3.5 text-[#34D399] animate-spin" />
+                    <Sparkles className="h-3.5 w-3.5 text-emerald-400 animate-spin" />
                     Dolphin is generating...
                   </span>
                 )}
@@ -222,7 +222,7 @@ export default function DolphinChat() {
                 {msg.role === 'assistant' && (
                   <>
                     <span>•</span>
-                    <span className="text-[#34D399] font-semibold">$0.00 (Free)</span>
+                    <span className="text-emerald-400 font-semibold">$0.00 (Free)</span>
                     {msg.tokensEstimated && (
                       <>
                         <span>•</span>

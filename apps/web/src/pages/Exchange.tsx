@@ -110,8 +110,8 @@ export default function Exchange() {
 
         {/* Mobile slide drawer filters */}
         {showMobileFilters && (
-          <div className="fixed inset-0 z-50 bg-black/60 md:hidden p-6 flex flex-col justify-end">
-            <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-5 flex flex-col gap-4">
+          <div className="fixed inset-0 z-50 bg-black/70 md:hidden p-4 sm:p-6 flex flex-col justify-end">
+            <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
               <div className="flex justify-between items-center pb-2 border-b border-zinc-900">
                 <span className="text-sm font-semibold text-zinc-200">Adjust Filters</span>
                 <button onClick={() => setShowMobileFilters(false)} className="text-xs text-zinc-500 font-bold">Close</button>

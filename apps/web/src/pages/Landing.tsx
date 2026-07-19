@@ -272,7 +272,7 @@ export default function Landing() {
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="max-w-3xl mx-auto px-6 py-20 text-center flex flex-col items-center gap-6 pb-28">
+      <section className="max-w-3xl mx-auto px-6 py-20 text-center flex flex-col items-center gap-6 pb-32 md:pb-20">
         <span className="text-[11px] font-semibold text-emerald-400 uppercase tracking-widest">Get Started Today</span>
         <h2 className="text-3xl sm:text-4xl font-display font-semibold text-white tracking-tight">
           Ready to build your first AI workflow?

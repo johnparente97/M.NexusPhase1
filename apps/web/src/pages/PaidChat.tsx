@@ -187,7 +187,7 @@ export default function PaidChat() {
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full h-[calc(100vh-4rem)] p-4 sm:p-6 gap-4 select-none">
+    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full h-[calc(100vh-8.5rem)] md:h-[calc(100vh-4.5rem)] p-3 sm:p-6 gap-3 sm:gap-4 select-none">
       
       {/* Top Header Bar with Model Selector & Session Auth Budget Gauge */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-zinc-900/70 border border-zinc-800 p-4 rounded-2xl shrink-0">
