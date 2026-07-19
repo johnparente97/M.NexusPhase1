@@ -3,16 +3,21 @@ import { ApiError } from '@meridian-nexus/shared-types';
 export const PRODUCTION_WORKER_URL = 'https://meridian-nexus-api.jrjohnparente.workers.dev';
 
 export function getApiBaseUrl(): string {
+  // If running in production on a public domain (like github.io),
+  // we must unconditionally route all API traffic to the live Cloudflare Worker
+  if (
+    typeof window !== 'undefined' &&
+    window.location.hostname !== 'localhost' &&
+    window.location.hostname !== '127.0.0.1'
+  ) {
+    return PRODUCTION_WORKER_URL;
+  }
+
   const envUrl =
     (import.meta as any).env.VITE_API_BASE_URL || (import.meta as any).env.VITE_API_URL;
 
   if (envUrl && envUrl.trim() !== '') {
     return envUrl.trim().replace(/\/$/, '');
-  }
-
-  // When deployed on GitHub Pages or custom domain, default directly to the Cloudflare Worker
-  if (typeof window !== 'undefined' && window.location.hostname.includes('github.io')) {
-    return PRODUCTION_WORKER_URL;
   }
 
   return PRODUCTION_WORKER_URL;
