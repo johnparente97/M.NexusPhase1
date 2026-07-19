@@ -9,7 +9,7 @@ export default function Footer() {
         {/* Branding Info */}
         <div className="flex flex-col gap-3 max-w-xs">
           <Link to="/" className="flex items-center gap-2.5">
-            <img src={logoNexus} alt="Meridian Nexus" className="h-9 w-9 object-contain mix-blend-screen filter drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
+            <img src={logoNexus} alt="Meridian Nexus" className="h-8 sm:h-9 w-auto object-contain mix-blend-screen filter drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
             <span className="font-display font-bold text-base tracking-tight text-zinc-100">
               Meridian Nexus
             </span>
