@@ -82,7 +82,7 @@ export default function Landing() {
             <motion.img
               src={logoNexus}
               alt="Meridian Nexus"
-              className="h-32 w-32 sm:h-44 sm:w-44 lg:h-52 lg:w-52 object-contain mix-blend-screen cursor-pointer"
+              className="h-40 w-40 sm:h-52 sm:w-52 lg:h-64 lg:w-64 object-contain mix-blend-screen cursor-pointer"
               style={{ filter: 'drop-shadow(0 0 32px rgba(52, 211, 153, 0.65)) drop-shadow(0 0 64px rgba(52, 211, 153, 0.35))' }}
               whileHover={{ rotate: 8, scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
