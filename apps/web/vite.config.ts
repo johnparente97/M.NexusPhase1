@@ -5,7 +5,7 @@ import path from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './', // Ensures relative asset resolution for GitHub Pages subpath deployment
+  base: '/M.NexusPhase1/', // Explicit GitHub Pages repository path
   plugins: [
     react(),
     tailwindcss(),

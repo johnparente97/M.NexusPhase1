@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createHashRouter } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import AppShell from '../components/layout/AppShell';
 import LoadingPage from '../components/common/LoadingPage';
@@ -36,7 +36,7 @@ const suspenseWrapper = (Component: React.ComponentType) => (
   </Suspense>
 );
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
     path: '/',
     element: <AppShell />,
