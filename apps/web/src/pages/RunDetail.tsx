@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useRun, useRunResult } from '../hooks/useWorkflowRun';
 import ResultRenderer from '../components/workflow/ResultRenderer';
@@ -7,11 +8,13 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { formatDate, formatCurrency, formatDuration } from '../utils/format';
-import { ArrowLeft, Clock, ShieldCheck, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Clock, ShieldCheck, CheckCircle2, XCircle, FileText, Share2 } from 'lucide-react';
 import DemoLabel from '../components/common/DemoLabel';
+import OutcomeReceiptModal from '../components/workflow/OutcomeReceiptModal';
 
 export default function RunDetail() {
   const { id } = useParams<{ id: string }>();
+  const [showReceiptModal, setShowReceiptModal] = useState(false);
 
   const { data: run, isLoading: loadingRun, error: runError } = useRun(id || '');
   const { data: result, isLoading: loadingResult } = useRunResult(id || '', run?.status === 'completed');
@@ -45,7 +48,20 @@ export default function RunDetail() {
               Run ID: <span className="font-mono text-zinc-400">{run.id}</span>
             </span>
           </div>
-          <Badge variant={statusColors[run.status]}>{run.status}</Badge>
+          <div className="flex items-center gap-3">
+            <Badge variant={statusColors[run.status]}>{run.status}</Badge>
+            {run.status === 'completed' && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowReceiptModal(true)}
+                className="text-xs font-semibold flex items-center gap-1.5"
+              >
+                <FileText className="h-3.5 w-3.5 text-[#27F293]" />
+                View Machine Receipt
+              </Button>
+            )}
+          </div>
         </div>
 
         {/* Timelines grid */}
@@ -89,13 +105,13 @@ export default function RunDetail() {
         run.status === 'running' && <LoadingPage />
       )}
 
-      {/* Settlement Receipt Details */}
+      {/* Settlement Receipt Details Card */}
       {run.status === 'completed' && run.settlement && (
         <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-5">
           <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
             <h3 className="font-semibold text-sm text-zinc-200 flex items-center gap-1.5">
-              <ShieldCheck className="h-4.5 w-4.5 text-emerald-400" />
-              Outcome Receipt
+              <ShieldCheck className="h-4.5 w-4.5 text-[#27F293]" />
+              Outcome Receipt Summary
             </h3>
             <DemoLabel />
           </div>
@@ -118,8 +134,8 @@ export default function RunDetail() {
               <span className="text-zinc-300 font-semibold">{formatCurrency(run.settlement.amount)}</span>
             </div>
             <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Creator Earnings Split:</span>
-              <span className="text-zinc-300 font-semibold">
+              <span className="text-zinc-500">Creator Earnings Split (99%):</span>
+              <span className="text-emerald-400 font-semibold">
                 {run.settlement.creatorEarnings !== undefined
                   ? formatCurrency(run.settlement.creatorEarnings)
                   : formatCurrency(run.settlement.amount * 0.99)}
@@ -133,32 +149,19 @@ export default function RunDetail() {
                   : formatCurrency(run.settlement.amount * 0.01)}
               </span>
             </div>
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Settled network:</span>
-              <span className="text-zinc-300 font-semibold">{run.settlement.network}</span>
-            </div>
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Billing Mode:</span>
-              <span className="text-zinc-300 font-semibold uppercase">{run.settlement.mode}</span>
-            </div>
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Origin Chain ID:</span>
-              <span className="font-mono text-zinc-300">{run.settlement.originChain || 'eip155:8453'}</span>
-            </div>
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Destination Chain ID:</span>
-              <span className="font-mono text-zinc-300">{run.settlement.destinationChain || 'eip155:8453'}</span>
-            </div>
-            {run.settlement.mrdnCashbackEligible && (
-              <div className="flex justify-between border-b border-zinc-800 pb-2 col-span-1 sm:col-span-2">
-                <span className="text-emerald-400 font-semibold">MRDN Cashback Payout:</span>
-                <span className="text-emerald-400 font-bold">{run.settlement.mrdnCashbackAmount} MRDN (2% base reward)</span>
-              </div>
-            )}
           </div>
         </Card>
       )}
 
+      {/* Outcome Receipt Modal */}
+      {run && (
+        <OutcomeReceiptModal
+          isOpen={showReceiptModal}
+          onClose={() => setShowReceiptModal(false)}
+          runRecord={run}
+          settlement={run.settlement}
+        />
+      )}
     </div>
   );
 }

@@ -11,9 +11,10 @@ import LoadingPage from '../components/common/LoadingPage';
 import NotFound from '../components/common/NotFound';
 import { formatCurrency, formatDuration } from '../utils/format';
 import { CATEGORY_LABELS } from '../utils/constants';
-import { Bookmark, Clock, User, Shield, Info, ArrowLeft, Star, Play, CheckCircle } from 'lucide-react';
+import { Bookmark, Clock, User, Shield, Info, ArrowLeft, Star, Play, CheckCircle, ShieldCheck, Cpu, Zap } from 'lucide-react';
 import { useToggleFavorite, useFavorites } from '../hooks/useFavorites';
 import { useAuth } from '../hooks/useAuth';
+import VisualWorkflowGraph from '../components/workflow/VisualWorkflowGraph';
 
 export default function WorkflowDetail() {
   const { id } = useParams<{ id: string }>();
@@ -32,7 +33,7 @@ export default function WorkflowDetail() {
   const version = workflow.currentVersion;
 
   const tabOptions = [
-    { key: 'overview', label: 'Overview', icon: <Info className="h-3.5 w-3.5" /> },
+    { key: 'overview', label: 'Overview & Execution Graph', icon: <Info className="h-3.5 w-3.5" /> },
     { key: 'technical', label: 'Technical Details', icon: <Shield className="h-3.5 w-3.5" /> },
     { key: 'reviews', label: 'Reviews', count: reviews?.length || 0, icon: <Star className="h-3.5 w-3.5" /> },
   ];
@@ -50,11 +51,11 @@ export default function WorkflowDetail() {
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 border-b border-zinc-900 pb-8">
         <div className="flex flex-col gap-4 max-w-2xl">
           <div className="flex items-center gap-2">
-            <Badge variant="info">{CATEGORY_LABELS[workflow.category]}</Badge>
+            <Badge variant="info">{CATEGORY_LABELS[workflow.category] || workflow.category}</Badge>
             {workflow.verified && (
               <Badge variant="success" className="flex items-center gap-1">
                 <CheckCircle className="h-3 w-3 fill-emerald-950" />
-                Verified
+                Verified Trust 98/100
               </Badge>
             )}
           </div>
@@ -128,6 +129,9 @@ export default function WorkflowDetail() {
 
         {activeTab === 'overview' && (
           <div className="flex flex-col gap-6 text-xs text-zinc-300 leading-relaxed font-medium">
+            {/* Visual Graph Render */}
+            <VisualWorkflowGraph workflow={workflow} />
+
             <div className="flex flex-col gap-2">
               <h3 className="text-sm font-semibold text-zinc-200">Outcome Goal</h3>
               <p className="bg-zinc-900 border border-zinc-800 rounded-xl p-4.5 italic text-zinc-400 font-sans">

@@ -3,6 +3,9 @@ import { Outlet } from 'react-router-dom';
 import TopNav from './TopNav';
 import MobileNav from './MobileNav';
 import Footer from './Footer';
+import MissionControlSidebar from './MissionControlSidebar';
+import WorkspaceInspector from './WorkspaceInspector';
+import FloatingDock from './FloatingDock';
 import { ToastProvider } from '../ui/Toast';
 import { useAuth } from '../../hooks/useAuth';
 import LoadingPage from '../common/LoadingPage';
@@ -18,7 +21,7 @@ export default function AppShell() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
-        setShowPalette(prev => !prev);
+        setShowPalette((prev) => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -31,22 +34,34 @@ export default function AppShell() {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-zinc-950 flex flex-col antialiased pb-16 md:pb-0">
-        {/* Desktop Top Header Navigation */}
+      <div className="min-h-screen bg-zinc-950 flex flex-col antialiased selection:bg-[#27F293]/30 selection:text-white">
+        {/* Top Header Navigation */}
         <TopNav onSearchClick={() => setShowPalette(true)} />
 
-        {/* Main Content Layout */}
-        <main className="flex-1 flex flex-col">
-          <Outlet />
-        </main>
+        {/* Integrated 3-Pane AI OS Workspace Layout */}
+        <div className="flex-1 flex w-full relative">
+          {/* 1. Left Mission Control Sidebar */}
+          <MissionControlSidebar onSearchClick={() => setShowPalette(true)} />
 
-        {/* Responsive Footer */}
+          {/* 2. Primary Center Workspace View */}
+          <main className="flex-1 flex flex-col min-w-0 pb-20 md:pb-12">
+            <Outlet />
+          </main>
+
+          {/* 3. Right Context Inspector Panel */}
+          <WorkspaceInspector />
+        </div>
+
+        {/* Footer */}
         <Footer />
 
-        {/* Mobile Bottom Navigation Menu */}
+        {/* macOS / VisionOS Style Floating Dock */}
+        <FloatingDock onSearchClick={() => setShowPalette(true)} />
+
+        {/* Mobile Navigation */}
         <MobileNav />
 
-        {/* Global Floating AI Helper and Search Panels */}
+        {/* Floating Intelligence Assistant & Spotlight Search */}
         <AiCopilot />
         <CommandPalette isOpen={showPalette} onClose={() => setShowPalette(false)} />
       </div>
