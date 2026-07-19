@@ -19,10 +19,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         whileTap={{ scale: 0.97 }}
         transition={{ type: 'spring', stiffness: 500, damping: 18 }}
         className={cn(
-          'inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#27F293]/50 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap',
+          'inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00F5D4]/50 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap',
           {
             // Variants
-            'bg-[#27F293] hover:bg-[#1fe285] text-zinc-950 font-semibold shadow-[0_4px_20px_0_rgba(39,242,147,0.18),inset_0_1px_0_0_rgba(255,255,255,0.4)] border border-[#27F293]/20 rounded-full':
+            'bg-[#00F5D4] hover:bg-[#00e1c2] text-zinc-950 font-semibold shadow-[0_4px_20px_0_rgba(0,245,212,0.18),inset_0_1px_0_0_rgba(255,255,255,0.4)] border border-[#00F5D4]/20 rounded-full':
               variant === 'primary',
             'bg-[#1E1E20] hover:bg-[#252528] text-zinc-100 border border-zinc-800 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.03)] rounded-lg': 
               variant === 'secondary',

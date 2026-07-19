@@ -26,7 +26,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({ onSearchClick, activ
         whileHover={{ scale: 1.2, y: -4 }}
         whileTap={{ scale: 0.95 }}
         onClick={onSearchClick}
-        className="p-2.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-[#27F293] hover:border-[#27F293]/40 transition-all cursor-pointer relative group"
+        className="p-2.5 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-[#00F5D4] hover:border-[#00F5D4]/40 transition-all cursor-pointer relative group"
         title="Spotlight Search (⌘K)"
       >
         <Search className="h-4 w-4" />
@@ -51,7 +51,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({ onSearchClick, activ
                   className={cn(
                     'p-2.5 rounded-full transition-all relative group flex items-center justify-center',
                     {
-                      'bg-[#27F293]/15 text-[#27F293] border border-[#27F293]/30 shadow-[0_0_12px_rgba(39,242,147,0.2)]':
+                      'bg-[#00F5D4]/15 text-[#00F5D4] border border-[#00F5D4]/30 shadow-[0_0_12px_rgba(0,245,212,0.2)]':
                         isActive,
                       'bg-zinc-900/60 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/80 border border-zinc-800/60':
                         !isActive,

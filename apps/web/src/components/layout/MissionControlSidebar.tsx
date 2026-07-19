@@ -87,7 +87,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
             className="w-full flex items-center justify-between gap-2 bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer shadow-sm group"
           >
             <div className="flex items-center gap-2">
-              <Search className="h-3.5 w-3.5 text-zinc-500 group-hover:text-[#27F293]" />
+              <Search className="h-3.5 w-3.5 text-zinc-500 group-hover:text-[#00F5D4]" />
               <span>⌘K Spotlight</span>
             </div>
             <kbd className="text-[9px] font-mono bg-zinc-950 border border-zinc-800 px-1.5 py-0.5 rounded text-zinc-500">
@@ -97,7 +97,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         ) : (
           <button
             onClick={onSearchClick}
-            className="w-full flex items-center justify-center p-2.5 rounded-xl bg-zinc-900/60 border border-zinc-800 text-zinc-400 hover:text-[#27F293]"
+            className="w-full flex items-center justify-center p-2.5 rounded-xl bg-zinc-900/60 border border-zinc-800 text-zinc-400 hover:text-[#00F5D4]"
             title="Spotlight Search (⌘K)"
           >
             <Search className="h-4 w-4" />
@@ -127,7 +127,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
                   cn(
                     'flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all group',
                     {
-                      'bg-[#27F293]/10 text-[#27F293] border border-[#27F293]/20': isActive,
+                      'bg-[#00F5D4]/10 text-[#00F5D4] border border-[#00F5D4]/20': isActive,
                       'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-900/60': !isActive,
                       'justify-center px-0': isCollapsed,
                     }
