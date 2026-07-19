@@ -16,6 +16,14 @@ const RunDetail = lazy(() => import('../pages/RunDetail'));
 const CreatorDashboard = lazy(() => import('../pages/CreatorDashboard'));
 const Profile = lazy(() => import('../pages/Profile'));
 const SavedWorkflows = lazy(() => import('../pages/SavedWorkflows'));
+const DolphinChat = lazy(() => import('../pages/DolphinChat'));
+const PaidChat = lazy(() => import('../pages/PaidChat'));
+const ModelMarketplace = lazy(() => import('../pages/ModelMarketplace'));
+const UnifiedBalancePage = lazy(() => import('../pages/UnifiedBalancePage'));
+const AgentBuilder = lazy(() => import('../pages/AgentBuilder'));
+const OrgDashboard = lazy(() => import('../pages/OrgDashboard'));
+const DevConsole = lazy(() => import('../pages/DevConsole'));
+const DocsPage = lazy(() => import('../pages/DocsPage'));
 const NotFoundPage = lazy(() => import('../pages/NotFoundPage'));
 
 import PageTransition from '../components/common/PageTransition';
@@ -46,6 +54,17 @@ export const router = createBrowserRouter([
       { path: 'creator', element: suspenseWrapper(CreatorDashboard) },
       { path: 'profile', element: suspenseWrapper(Profile) },
       { path: 'saved', element: suspenseWrapper(SavedWorkflows) },
+      
+      // New Capabilities Routes
+      { path: 'chat/free', element: suspenseWrapper(DolphinChat) },
+      { path: 'chat/paid', element: suspenseWrapper(PaidChat) },
+      { path: 'marketplace/models', element: suspenseWrapper(ModelMarketplace) },
+      { path: 'balance', element: suspenseWrapper(UnifiedBalancePage) },
+      { path: 'agents/new', element: suspenseWrapper(AgentBuilder) },
+      { path: 'organization', element: suspenseWrapper(OrgDashboard) },
+      { path: 'developer', element: suspenseWrapper(DevConsole) },
+      { path: 'docs', element: suspenseWrapper(DocsPage) },
+
       { path: '*', element: suspenseWrapper(NotFoundPage) },
     ],
   },

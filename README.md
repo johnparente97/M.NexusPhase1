@@ -1,45 +1,81 @@
-# 🌌 Meridian Nexus — Phase 1 Functional MVP
+# Meridian Nexus — AI Capability Marketplace & Intelligence Synthesis Platform
 
-Meridian Nexus is a premium, outcome-first AI workflow marketplace where users can discover, configure, and execute trusted AI workflows safely, with simulated secure payments powered by the Meridian network.
-
-<div align="center" style="margin: 24px 0;">
-  <a href="http://localhost:5173" target="_blank" style="text-decoration:none;">
-    <img src="https://img.shields.io/badge/LAUNCH_LOCAL_MVP-http%3A%2F%2Flocalhost%3A5173-6366f1?style=for-the-badge&logo=rocket&logoColor=white" alt="Launch Local MVP Button" height="40" />
-  </a>
-</div>
+> **Build intelligence. Market capabilities. Synthesize outcomes.**
+> *Meridian coordinates value. Nexus coordinates capabilities, workflows, and outcomes. MRDN aligns productive participation.*
 
 ---
 
-## 🚀 Quick Start Guide
+## 🌟 Overview
 
-Follow these simple steps to launch the entire monorepo locally:
+**Meridian Nexus** is the application, marketplace, orchestration, and distribution layer built on top of Meridian's payment and settlement infrastructure.
 
-### 1. Start the Development Servers
-Run the following command at the root directory of the project to boot up both the **Vite React Frontend** and the **Cloudflare Hono Worker API** concurrently:
-```bash
-npm run dev
-```
-
-* **Vite React Frontend**: [http://localhost:5173](http://localhost:5173) (Proxies `/api/*` requests to the backend)
-* **Cloudflare Hono Worker**: [http://localhost:8787](http://localhost:8787)
-
-### 2. Database Maintenance (Optional)
-If you ever want to reset, re-migrate, or re-seed the local D1 SQLite database, helper scripts are available at the root:
-```bash
-# Re-apply migrations schema
-npm run db:migrate:local
-
-# Re-seed with 15 workflows and demo reviews
-npm run db:seed:local
-```
+It provides a unified AI operating system where users can:
+1. Access the **Dolphin Free Experience** (unmetered, zero cost per prompt AI chat).
+2. Discover, compare, and execute models in the **AntSeed Model Marketplace** (Claude 3.5 Sonnet, GPT-4o, DeepSeek R1, Llama 3.3 70B, Gemini 2.5 Flash, Flux 1.1 Pro).
+3. Fund a **Universal Dollar AI Balance** across EVM networks (Base, Ethereum, Arbitrum, Polygon, Avalanche) with a configurable **1% Meridian Top-Up Fee (`MERIDIAN_TOP_UP_FEE_BPS=100`)**.
+4. Authorize **Session-Based Spending Limits** once without signing a wallet message for every AI prompt.
+5. Track **Usage-Based Token Billing** with real-time input/output token metering (`inputCost + outputCost`) and machine-readable outcome receipts.
+6. Compose agents in **Agent Builder** and outcome workflows in **Nexus Studio**.
+7. Manage enterprise teams, budgets, and member roles in **Organization Dashboard**.
 
 ---
 
 ## 🛠️ Monorepo Architecture
 
-The workspace is structured as a Turborepo monorepo:
+```
+M.NexusPhase1/
+├── .github/workflows/deploy.yml # GitHub Actions automated Pages deployment
+├── INTEGRATION_STATUS.md       # Operational status matrix (Live vs Testnet vs Mocks)
+├── apps/
+│   ├── api/                    # Cloudflare Worker API (Hono + D1 Database)
+│   └── web/                    # Vite + React + Tailwind + Framer Motion UI
+└── packages/
+    ├── shared-types/           # Shared TypeScript contracts and entity types
+    └── validation/             # Zod validation schemas
+```
 
-* `/packages/shared-types` — Common interfaces, enums, and API payload contracts.
-* `/packages/validation` — Zod verification schemas and dynamic form parsed validator builders.
-* `/apps/api` — Cloudflare Hono Worker managing database transactions and Gemini AI completions.
-* `/apps/web` — Premium dark-first React client styled with vanilla Tailwind CSS.
+---
+
+## 🚀 Quick Start (Local Development)
+
+### 1. Install Dependencies
+```bash
+npm install
+```
+
+### 2. Typecheck & Validate
+```bash
+npm run typecheck
+```
+
+### 3. Launch Development Server
+```bash
+npm run dev
+```
+- **Web App**: `http://localhost:5173`
+- **API Worker**: `http://localhost:8787` (proxied automatically via `/api`)
+
+---
+
+## 📦 Production Deployment
+
+### Frontend (GitHub Pages)
+The web application is automatically built and deployed to GitHub Pages via `.github/workflows/deploy.yml` on every push to `main`.
+
+To trigger a manual production build:
+```bash
+npm run build
+```
+
+### Backend (Cloudflare Workers)
+Deploy the API Worker to Cloudflare Workers edge network:
+```bash
+cd apps/api && npx wrangler deploy
+```
+Deployed Worker URL: `https://meridian-nexus-api.jrjohnparente.workers.dev`
+
+---
+
+## 📄 License & Attribution
+
+Built on Meridian Infrastructure. All rights reserved.

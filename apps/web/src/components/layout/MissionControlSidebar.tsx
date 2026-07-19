@@ -20,6 +20,10 @@ import {
   Clock,
   LogOut,
   User,
+  Cpu,
+  Coins,
+  Building2,
+  Terminal,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useWallet } from '../../hooks/useWallet';
@@ -41,13 +45,22 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     navigate('/dashboard');
   };
 
-  const navItems = [
-    { to: '/exchange', label: 'Discover Exchange', icon: Compass },
+  const navItems: Array<{
+    to: string;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    requiresAuth?: boolean;
+    role?: string;
+  }> = [
+    { to: '/chat/free', label: 'Dolphin Free Chat', icon: Sparkles },
+    { to: '/marketplace/models', label: 'AntSeed Model Marketplace', icon: Cpu },
+    { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
+    { to: '/balance', label: 'Unified AI Balance', icon: Coins, requiresAuth: true },
     { to: '/studio', label: 'Nexus Studio', icon: Layers, requiresAuth: true },
     { to: '/activity', label: 'Run Activity', icon: History, requiresAuth: true },
     { to: '/dashboard', label: 'Workspace Dashboard', icon: LayoutDashboard, requiresAuth: true },
-    { to: '/saved', label: 'Saved Workflows', icon: Bookmark, requiresAuth: true },
-    { to: '/creator', label: 'Creator Portal', icon: Award, requiresAuth: true, role: 'creator' },
+    { to: '/organization', label: 'Organization Enterprise', icon: Building2, requiresAuth: true },
+    { to: '/developer', label: 'Developer Console', icon: Terminal },
   ];
 
   const pinnedWorkflows = [
