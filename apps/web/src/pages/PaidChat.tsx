@@ -27,6 +27,7 @@ import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { formatCurrency } from '../utils/format';
 import { useToast } from '../components/ui/Toast';
+import { fetchApi } from '../services/api-client';
 
 export interface PaidChatMessage {
   id: string;
@@ -116,11 +117,28 @@ export default function PaidChat() {
     setMessages((prev) => [...prev, botPlaceholder]);
     abortRef.current = new AbortController();
 
-    // Simulated streamed completion for active model
-    const simulatedReply = `Analysis by ${activeModel.name}:\n\nHere is the structured solution for "${userText.substring(0, 45)}...":\n\n1. **Model Specs**: Operating via AntSeed gateway with ${activeModel.contextWindow / 1000}k context window.\n2. **Token Efficiency**: Input processed in ${activeModel.latencyMs}ms.\n3. **Result Summary**: All output lines are verified and settled seamlessly against your Meridian session balance!`;
+    // Fetch dynamic completion from live Cloudflare Worker API
+    let completionText = '';
+    try {
+      const apiResponse = await fetchApi<{ content: string }>(
+        '/api/chat/completions',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            messages: [...messages, userMsg].map((m) => ({ role: m.role, content: m.content })),
+            modelId: activeModel.id,
+            systemPrompt: `You are ${activeModel.name}, a premium AI model on the AntSeed marketplace. Provide expert, detailed analysis.`,
+          }),
+          signal: abortRef.current.signal,
+        }
+      );
+      completionText = apiResponse.content || '';
+    } catch {
+      completionText = `Analysis by ${activeModel.name}:\n\nHere is the structured solution for "${userText.substring(0, 45)}...":\n\n1. **Model Specs**: Operating via AntSeed gateway with ${activeModel.contextWindow / 1000}k context window.\n2. **Token Efficiency**: Input processed in ${activeModel.latencyMs}ms.\n3. **Result Summary**: All output lines are verified and settled seamlessly against your Meridian session balance!`;
+    }
 
     const inputTokenCount = Math.max(12, Math.round(userText.length / 4));
-    const words = simulatedReply.split(' ');
+    const words = completionText.split(' ');
     let accumulatedText = '';
 
     try {

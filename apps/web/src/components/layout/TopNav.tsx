@@ -51,7 +51,7 @@ export default function TopNav({ onSearchClick }: TopNavProps) {
               whileTap={{ scale: 0.95 }}
               src={logoNexus}
               alt="Meridian Nexus"
-              className="h-7.5 w-7.5 object-contain filter drop-shadow-[0_0_8px_rgba(0,245,212,0.4)]"
+              className="h-8 w-8 object-contain mix-blend-screen filter drop-shadow-[0_0_8px_rgba(0,245,212,0.4)]"
             />
             <span className="font-display font-bold text-base tracking-tight bg-gradient-to-r from-zinc-100 to-zinc-400 bg-clip-text text-transparent group-hover:text-white transition-colors">
               Meridian Nexus

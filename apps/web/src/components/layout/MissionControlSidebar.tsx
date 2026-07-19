@@ -64,9 +64,9 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
   ];
 
   const pinnedWorkflows = [
-    { name: 'Business Intelligence Mission', slug: 'business-intelligence-mission' },
-    { name: 'Financial Model Auditor', slug: 'financial-model-auditor' },
-    { name: 'Autonomous Competitor Tracker', slug: 'autonomous-competitor-tracker' },
+    { name: 'Company Intelligence Brief', id: 'wf-company-intel' },
+    { name: 'Marketing Campaign Builder', id: 'wf-marketing-campaign' },
+    { name: 'Sales Outreach Generator', id: 'wf-sales-outreach' },
   ];
 
   return (
@@ -152,11 +152,11 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
             <div className="flex flex-col gap-1">
               {pinnedWorkflows.map((pw) => (
                 <Link
-                  key={pw.slug}
-                  to={`/exchange/${pw.slug}`}
+                  key={pw.id}
+                  to={`/exchange/${pw.id}`}
                   className="px-3 py-1.5 rounded-lg text-[11px] text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/40 truncate flex items-center gap-2 group"
                 >
-                  <div className="h-1.5 w-1.5 rounded-full bg-[#27F293]/60 group-hover:bg-[#27F293] shrink-0" />
+                  <div className="h-1.5 w-1.5 rounded-full bg-[#00F5D4]/60 group-hover:bg-[#00F5D4] shrink-0" />
                   <span className="truncate">{pw.name}</span>
                 </Link>
               ))}
@@ -179,7 +179,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
               </button>
               <button
                 onClick={() => handleDemoLogin('creator')}
-                className="flex-1 py-1.5 px-2 bg-[#27F293]/10 hover:bg-[#27F293]/20 border border-[#27F293]/30 text-[#27F293] rounded-lg text-[10px] font-semibold text-center transition-colors cursor-pointer"
+                className="flex-1 py-1.5 px-2 bg-[#00F5D4]/10 hover:bg-[#00F5D4]/20 border border-[#00F5D4]/30 text-[#00F5D4] rounded-lg text-[10px] font-semibold text-center transition-colors cursor-pointer"
               >
                 Creator
               </button>
@@ -193,7 +193,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         {!isCollapsed ? (
           <div className="flex items-center justify-between w-full">
             <Link to="/profile" className="flex items-center gap-2 max-w-[140px]">
-              <div className="h-7 w-7 rounded-full bg-gradient-to-br from-indigo-500 to-[#27F293] flex items-center justify-center text-[10px] font-bold text-zinc-950 shrink-0">
+              <div className="h-7 w-7 rounded-full bg-gradient-to-br from-indigo-500 to-[#00F5D4] flex items-center justify-center text-[10px] font-bold text-zinc-950 shrink-0">
                 {user?.displayName?.charAt(0)?.toUpperCase() || 'G'}
               </div>
               <div className="flex flex-col truncate">

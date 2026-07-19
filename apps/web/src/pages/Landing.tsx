@@ -56,7 +56,7 @@ export default function Landing() {
             <img 
               src={logoNexus} 
               alt="Meridian Nexus logo" 
-              className="h-20 w-20 object-contain filter drop-shadow-[0_0_20px_rgba(0,245,212,0.45)] hover:rotate-6 transition-transform duration-300 cursor-pointer"
+              className="h-24 w-24 object-contain mix-blend-screen filter drop-shadow-[0_0_20px_rgba(0,245,212,0.45)] hover:rotate-6 transition-transform duration-300 cursor-pointer"
             />
           </motion.div>
 
