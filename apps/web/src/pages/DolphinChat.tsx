@@ -124,12 +124,10 @@ export default function DolphinChat() {
             Clear
           </Button>
 
-          <Link to="/marketplace/models">
-            <Button variant="primary" size="sm" className="font-bold flex items-center gap-1 text-xs">
-              AntSeed Marketplace
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Button>
-          </Link>
+          <Button to="/marketplace/models" variant="primary" size="sm" className="font-bold flex items-center gap-1 text-xs">
+            AntSeed Marketplace
+            <ArrowRight className="h-3.5 w-3.5" />
+          </Button>
         </div>
       </div>
 

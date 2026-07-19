@@ -206,11 +206,9 @@ export default function PaidChat() {
               {formatCurrency(sessionAuth.currentSessionSpend)} / {formatCurrency(sessionAuth.maxSessionSpend)}
             </span>
           </div>
-          <Link to="/balance">
-            <Button variant="outline" size="sm" className="text-[10px] py-1 px-2 font-mono">
-              Top Up
-            </Button>
-          </Link>
+          <Button to="/balance" variant="outline" size="sm" className="text-[10px] py-1 px-2 font-mono">
+            Top Up
+          </Button>
         </div>
       </div>
 

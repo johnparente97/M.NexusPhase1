@@ -85,18 +85,14 @@ export default function Landing() {
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex items-center gap-3.5 mt-2">
-            <Link to="/exchange">
-              <Button variant="primary" size="lg" className="font-bold flex items-center gap-1.5 shadow-xl">
-                Explore Exchange
-                <Compass className="h-4.5 w-4.5" />
-              </Button>
-            </Link>
-            <Link to="/studio">
-              <Button variant="outline" size="lg" className="font-bold flex items-center gap-1.5">
-                Nexus Studio
-                <Layers className="h-4.5 w-4.5" />
-              </Button>
-            </Link>
+            <Button to="/exchange" variant="primary" size="lg" className="font-bold flex items-center gap-1.5 shadow-xl">
+              Explore Exchange
+              <Compass className="h-4.5 w-4.5" />
+            </Button>
+            <Button to="/studio" variant="outline" size="lg" className="font-bold flex items-center gap-1.5">
+              Nexus Studio
+              <Layers className="h-4.5 w-4.5" />
+            </Button>
           </motion.div>
         </motion.div>
       </section>
@@ -183,12 +179,10 @@ export default function Landing() {
         <p className="text-xs sm:text-sm text-zinc-400 max-w-md leading-relaxed">
           Open Nexus Studio to declare parameters, instructions, and templates. Publish your work to the marketplace in minutes.
         </p>
-        <Link to="/studio" className="mt-2">
-          <Button variant="primary" size="lg" className="font-bold flex items-center gap-1.5 shadow-lg">
-            Create Custom Workflow
-            <ArrowRight className="h-4 w-4" />
-          </Button>
-        </Link>
+        <Button to="/studio" variant="primary" size="lg" className="mt-2 font-bold flex items-center gap-1.5 shadow-lg">
+          Create Custom Workflow
+          <ArrowRight className="h-4 w-4" />
+        </Button>
       </section>
 
     </div>
