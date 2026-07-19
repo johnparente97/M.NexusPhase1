@@ -1,7 +1,15 @@
 # Meridian Nexus — AI Capability Marketplace & Intelligence Synthesis Platform
 
-> **Build intelligence. Market capabilities. Synthesize outcomes.**
+[[![Launch Meridian Nexus App](https://img.shields.io/badge/🚀_LAUNCH_APP-MERIDIAN_NEXUS-27F293?style=for-the-badge&logo=rocket&logoColor=000)](https://johnparente97.github.io/M.NexusPhase1/)](https://johnparente97.github.io/M.NexusPhase1/)
+
+> **Build intelligence. Market capabilities. Synthesize outcomes.**  
 > *Meridian coordinates value. Nexus coordinates capabilities, workflows, and outcomes. MRDN aligns productive participation.*
+
+---
+
+## 🚀 Live Application URL
+
+Click the button above or open: **[https://johnparente97.github.io/M.NexusPhase1/](https://johnparente97.github.io/M.NexusPhase1/)**
 
 ---
 
@@ -62,10 +70,7 @@ npm run dev
 ### Frontend (GitHub Pages)
 The web application is automatically built and deployed to GitHub Pages via `.github/workflows/deploy.yml` on every push to `main`.
 
-To trigger a manual production build:
-```bash
-npm run build
-```
+Live URL: **[https://johnparente97.github.io/M.NexusPhase1/](https://johnparente97.github.io/M.NexusPhase1/)**
 
 ### Backend (Cloudflare Workers)
 Deploy the API Worker to Cloudflare Workers edge network:
