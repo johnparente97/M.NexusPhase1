@@ -209,11 +209,59 @@ INSERT OR IGNORE INTO workflows (id, creator_id, name, slug, short_description, 
  'Build a comprehensive risk assessment with probability analysis, mitigation strategies, and monitoring plan.',
  'Systematically assess risks for any initiative or project. Describe your initiative, context, and known concerns to receive a risk register, probability and impact analysis, categorized risk matrix, mitigation strategies per risk, contingency plans, and a monitoring dashboard framework. Essential for project managers, compliance teams, and executive decision-makers.',
  'Build a comprehensive risk assessment',
- 'business-operations', '["risk assessment","risk management","compliance","mitigation","governance"]',
+ 'strategy', '["risk assessment","risk management","compliance","mitigation","governance"]',
  'published', 'public', 0, 5.99, 40,
  445, 428, 4.7, 32, 112,
  'Initiative details and risk factors are processed in memory. No compliance data is stored.',
  1, 'Verified demonstration workflow', NULL);
+
+-- 16. Smart API Architect & OpenAPI Spec
+INSERT OR IGNORE INTO workflows (id, creator_id, name, slug, short_description, full_description, outcome_statement, category, tags, status, visibility, is_free, price_per_run, estimated_duration_seconds, total_runs, completed_runs, average_rating, review_count, saved_count, data_handling_summary, verified, verification_label, featured_order) VALUES
+('wf-api-architect', 'crt-meridian', 'Smart API Architect & OpenAPI Spec', 'api-architect-generator',
+ 'Design production-ready REST & GraphQL API schemas with Zod validation, error handling, rate limiting rules, and OpenAPI 3.1 specifications.',
+ 'Synthesize production-ready REST & GraphQL API specifications. Input your domain entity and target framework to receive full OpenAPI 3.1 YAML/JSON specs, Hono/Fastify TypeScript handlers, Zod schema validation, error contracts, and x402 header settlement middleware rules.',
+ 'Synthesize production-ready REST & GraphQL API specifications',
+ 'development', '["development","api","openapi","typescript","hono","zod","schema"]',
+ 'published', 'public', 0, 5.99, 35,
+ 1420, 1390, 4.9, 84, 312,
+ 'API schema specifications are processed in memory only during execution session. Results are saved to your activity history.',
+ 1, 'Verified Meridian workflow', NULL);
+
+-- 17. Autonomous Security & Code Auditor
+INSERT OR IGNORE INTO workflows (id, creator_id, name, slug, short_description, full_description, outcome_statement, category, tags, status, visibility, is_free, price_per_run, estimated_duration_seconds, total_runs, completed_runs, average_rating, review_count, saved_count, data_handling_summary, verified, verification_label, featured_order) VALUES
+('wf-security-auditor', 'crt-meridian', 'Autonomous Security & Code Auditor', 'security-code-auditor',
+ 'Audit TypeScript, Rust, and Solidity code for reentrancy bugs, secret exposure, CORS leaks, and OWASP Top 10 vulnerabilities with exact code patch fixes.',
+ 'Perform automated deep security audits on backend and smart contract codebases. Receives source code snippets or repository links to output an executive vulnerability report, CVSS severity ratings, proof-of-concept exploits, and exact diff patch fixes.',
+ 'Perform automated deep security audits on codebases',
+ 'development', '["development","security","audit","vulnerabilities","owasp","solidity","typescript"]',
+ 'published', 'public', 0, 8.99, 45,
+ 1890, 1850, 4.9, 118, 450,
+ 'Code snippets are processed in memory during the audit execution session only. No source code is permanently stored.',
+ 1, 'Verified Meridian workflow', NULL);
+
+-- 18. Cloud Infrastructure & Terraform Synthesizer
+INSERT OR IGNORE INTO workflows (id, creator_id, name, slug, short_description, full_description, outcome_statement, category, tags, status, visibility, is_free, price_per_run, estimated_duration_seconds, total_runs, completed_runs, average_rating, review_count, saved_count, data_handling_summary, verified, verification_label, featured_order) VALUES
+('wf-terraform-architect', 'crt-meridian', 'Cloud Infrastructure & Terraform Synthesizer', 'terraform-cloud-architect',
+ 'Synthesize multi-region cloud infrastructure blueprints across Cloudflare, AWS, and GCP with IaC Terraform code, IAM policies, and cost projections.',
+ 'Build infrastructure-as-code deployment blueprints. Describe workload requirements and target cloud providers to generate multi-region architecture diagrams, HCL Terraform definitions, IAM security policies, and monthly budget cost estimates.',
+ 'Build infrastructure-as-code deployment blueprints',
+ 'development', '["development","cloud","terraform","infrastructure","aws","cloudflare","gcp"]',
+ 'published', 'public', 0, 6.99, 40,
+ 1120, 1090, 4.8, 62, 280,
+ 'Architecture specs are processed in memory only. Results saved to activity history.',
+ 1, 'Verified Meridian workflow', NULL);
+
+-- 19. React 19 + Tailwind UI Component Architect
+INSERT OR IGNORE INTO workflows (id, creator_id, name, slug, short_description, full_description, outcome_statement, category, tags, status, visibility, is_free, price_per_run, estimated_duration_seconds, total_runs, completed_runs, average_rating, review_count, saved_count, data_handling_summary, verified, verification_label, featured_order) VALUES
+('wf-react-component-architect', 'crt-meridian', 'React 19 + Tailwind UI Component Architect', 'react-ui-component-architect',
+ 'Generate accessible, production-ready React 19 TypeScript component code with Tailwind CSS styling, Framer Motion animations, and ARIA keyboard navigation.',
+ 'Synthesize modern frontend UI component libraries. Provide design requirements or mockup descriptions to generate copy-paste TypeScript React 19 components with Tailwind CSS v4 utility classes, Framer Motion micro-animations, and full WCAG ARIA compliance.',
+ 'Synthesize modern frontend UI component libraries',
+ 'development', '["development","react","tailwind","frontend","ui","components","framer motion"]',
+ 'published', 'public', 1, 0, 30,
+ 2450, 2410, 4.9, 164, 620,
+ 'UI specifications are processed in memory only. Generated code saved to activity history.',
+ 1, 'Verified Meridian workflow', NULL);
 
 -- ── Workflow Versions (one per workflow) ──
 
@@ -275,7 +323,23 @@ INSERT OR IGNORE INTO workflow_versions (id, workflow_id, version_number, versio
  '', 'gemini', 'gemini-2.5-flash', 3072, 0.8),
 
 ('wv-risk-assessment-1', 'wf-risk-assessment', 1, 'Initial release',
- 'You are a risk management consultant. Build a comprehensive risk assessment framework. Include: Risk Register (table: risk, category, probability, impact, score), Risk Matrix Summary, Mitigation Strategies (per risk), Contingency Plans, Monitoring Indicators, and Review Schedule. Be systematic and actionable.',
+ 'You are a chief risk officer. Conduct a comprehensive risk assessment for any business initiative. Include: Initiative Summary, Risk Register (table: risk, category, probability, impact, score), Risk Matrix Summary, Mitigation Strategies (per risk), Contingency Plans, Monitoring Indicators, and Review Schedule. Be systematic and actionable.',
+ '', 'gemini', 'gemini-2.5-flash', 4096, 0.6),
+
+('wv-api-architect-1', 'wf-api-architect', 1, 'Initial release',
+ 'You are a principal software architect specializing in API design and Cloudflare Workers runtime. Synthesize production-ready REST & GraphQL OpenAPI 3.1 specifications and Zod validation schemas.',
+ '', 'gemini', 'gemini-2.5-flash', 4096, 0.5),
+
+('wv-security-auditor-1', 'wf-security-auditor', 1, 'Initial release',
+ 'You are a chief information security officer and smart contract auditor. Audit backend endpoints, TypeScript, Rust, and Solidity codebases for vulnerabilities, secret exposure, and CORS security flaws.',
+ '', 'gemini', 'gemini-2.5-flash', 4096, 0.4),
+
+('wv-terraform-architect-1', 'wf-terraform-architect', 1, 'Initial release',
+ 'You are a cloud infrastructure architect. Synthesize multi-region infrastructure-as-code Terraform blueprints across Cloudflare, AWS, and GCP with IAM security policies and cost projections.',
+ '', 'gemini', 'gemini-2.5-flash', 4096, 0.5),
+
+('wv-react-component-architect-1', 'wf-react-component-architect', 1, 'Initial release',
+ 'You are a staff frontend engineer. Synthesize production-ready React 19 TypeScript component code with Tailwind CSS v4 styling, Framer Motion animations, and ARIA accessibility.',
  '', 'gemini', 'gemini-2.5-flash', 4096, 0.6);
 
 -- ── Update workflows with current_version_id ──
@@ -478,7 +542,15 @@ INSERT OR IGNORE INTO workflow_capabilities (workflow_id, capability_id) VALUES
 ('wf-newsletter-creator', 'cap-writing'),
 ('wf-newsletter-creator', 'cap-creative'),
 ('wf-risk-assessment', 'cap-evaluation'),
-('wf-risk-assessment', 'cap-strategy');
+('wf-risk-assessment', 'cap-strategy'),
+('wf-api-architect', 'cap-strategy'),
+('wf-api-architect', 'cap-data'),
+('wf-security-auditor', 'cap-evaluation'),
+('wf-security-auditor', 'cap-strategy'),
+('wf-terraform-architect', 'cap-strategy'),
+('wf-terraform-architect', 'cap-data'),
+('wf-react-component-architect', 'cap-creative'),
+('wf-react-component-architect', 'cap-writing');
 
 -- ── Pre-insert Runs to fulfill reviews foreign keys constraints ──
 

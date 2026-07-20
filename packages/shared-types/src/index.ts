@@ -63,6 +63,7 @@ export type OutputSectionType =
   | 'action-items'
   | 'timeline'
   | 'content-draft'
+  | 'code'
   | 'comparison'
   | 'sources'
   | 'confidence'

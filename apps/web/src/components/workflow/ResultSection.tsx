@@ -147,6 +147,14 @@ export const ResultSection: React.FC<ResultSectionProps> = ({ section }) => {
     );
   }
 
+  if (type === 'code') {
+    return (
+      <div className="bg-black/80 border border-zinc-800/90 rounded-xl p-4 font-mono text-xs text-emerald-400 overflow-x-auto whitespace-pre leading-relaxed shadow-inner">
+        {String(content)}
+      </div>
+    );
+  }
+
   return <div className="text-zinc-400 leading-normal">{JSON.stringify(content, null, 2)}</div>;
 };
 export default ResultSection;

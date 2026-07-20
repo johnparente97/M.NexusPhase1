@@ -41,6 +41,14 @@ export class DeterministicDemoModelProvider implements ModelProvider {
       slug = 'email-newsletter-creator';
     } else if (request.userPrompt.includes('risk-assessment-framework') || request.userPrompt.includes('Risk Assessment Framework')) {
       slug = 'risk-assessment-framework';
+    } else if (request.userPrompt.includes('api-architect') || request.userPrompt.includes('OpenAPI')) {
+      slug = 'api-architect-generator';
+    } else if (request.userPrompt.includes('security-code-auditor') || request.userPrompt.includes('Security Auditor')) {
+      slug = 'security-code-auditor';
+    } else if (request.userPrompt.includes('terraform-cloud') || request.userPrompt.includes('Terraform Synthesizer')) {
+      slug = 'terraform-cloud-architect';
+    } else if (request.userPrompt.includes('react-ui-component') || request.userPrompt.includes('Component Architect')) {
+      slug = 'react-ui-component-architect';
     }
 
     // Parse the inputs from the userPrompt text if possible, e.g. "Company Name: [Stripe]"
@@ -405,6 +413,100 @@ export class DeterministicDemoModelProvider implements ModelProvider {
               { risk: 'Budget Pushback', impact: 'High', mitigation: 'Emphasize the developer free tier and low startup cost.' },
               { risk: 'Security Approval Delay', impact: 'Medium', mitigation: 'Provide complete architectural docs at the start of the meeting.' },
             ],
+          },
+        ];
+
+      case 'api-architect-generator':
+        return [
+          {
+            key: 'overview',
+            label: 'API Architecture Blueprint',
+            type: 'paragraph',
+            content: `Designed a high-throughput REST API schema for ${companyName}. Built with OpenAPI 3.1 specifications, Hono route handlers, Zod schema validation, and x402 header settlement middleware.`,
+          },
+          {
+            key: 'endpoints',
+            label: 'Endpoint Specifications',
+            type: 'table',
+            content: {
+              headers: ['HTTP Method', 'Endpoint Path', 'Auth Level', 'Rate Limit'],
+              rows: [
+                ['POST', '/api/v1/auth/login', 'Public', '10 req/min'],
+                ['GET', '/api/v1/capabilities', 'Bearer JWT', '200 req/min'],
+                ['POST', '/api/v1/workflows/run', 'x402 Header', '50 req/min'],
+                ['GET', '/api/v1/settlement/receipts', 'Bearer JWT', '100 req/min'],
+              ],
+            },
+          },
+          {
+            key: 'code',
+            label: 'OpenAPI 3.1 Spec (YAML)',
+            type: 'code',
+            content: `openapi: 3.1.0\ninfo:\n  title: ${companyName} API\n  version: 1.0.0\npaths:\n  /api/v1/workflows/run:\n    post:\n      summary: Execute capability workflow\n      security:\n        - X402Payment: []`,
+          },
+        ];
+
+      case 'security-code-auditor':
+        return [
+          {
+            key: 'overview',
+            label: 'Security Audit Executive Summary',
+            type: 'paragraph',
+            content: `Analyzed core codebase for ${companyName}. 0 Critical vulnerabilities, 1 High Severity issue identified (CORS wildcard header in production), and 2 Medium hardening recommendations.`,
+          },
+          {
+            key: 'vulnerabilities',
+            label: 'Vulnerability Assessment',
+            type: 'risks',
+            content: [
+              { risk: 'CORS Wildcard Access Control', impact: 'High', mitigation: 'Bind Access-Control-Allow-Origin strictly to env.CORS_ORIGIN.' },
+              { risk: 'Missing Parameter Sanitization', impact: 'Medium', mitigation: 'Apply Zod string schema stripping for HTML tags.' },
+            ],
+          },
+          {
+            key: 'patch',
+            label: 'Code Fix Patch',
+            type: 'code',
+            content: `// Security Patch Fix:\n- app.use('*', cors({ origin: '*' }));\n+ app.use('*', cors({ origin: c.env.CORS_ORIGIN, credentials: true }));`,
+          },
+        ];
+
+      case 'terraform-cloud-architect':
+        return [
+          {
+            key: 'overview',
+            label: 'Multi-Region Infrastructure Architecture',
+            type: 'paragraph',
+            content: `Synthesized cloud infrastructure blueprint for ${companyName} on Cloudflare Workers & AWS S3. Designed for 100,000 requests/second with global edge caching and D1 database replication.`,
+          },
+          {
+            key: 'resources',
+            label: 'Resource Allocation & Monthly Budget',
+            type: 'table',
+            content: {
+              headers: ['Resource Type', 'Provider', 'Scale Capacity', 'Monthly Cost'],
+              rows: [
+                ['Edge Workers', 'Cloudflare', 'Unlimited', '$5.00'],
+                ['D1 Relational DB', 'Cloudflare', '10GB Storage', 'Included'],
+                ['S3 Storage', 'AWS', '1TB Assets', '$23.00'],
+              ],
+            },
+          },
+        ];
+
+      case 'react-ui-component-architect':
+        return [
+          {
+            key: 'overview',
+            label: 'React 19 + Tailwind Component Architecture',
+            type: 'paragraph',
+            content: `Synthesized accessible UI component library for ${companyName} using React 19, Tailwind CSS v4, and Framer Motion micro-animations with full ARIA keyboard accessibility.`,
+          },
+          {
+            key: 'code',
+            label: 'TypeScript React Component',
+            type: 'code',
+            content: `export const ActionCard = ({ title, status }: Props) => (\n  <div className="p-6 bg-[#171719] border border-zinc-800 rounded-2xl">\n    <h3 className="text-base font-bold text-white">{title}</h3>\n  </div>\n);`,
           },
         ];
 
