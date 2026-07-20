@@ -84,7 +84,7 @@ export default function DevConsole() {
           cURL API Example
         </h3>
         <pre className="bg-zinc-950 border border-zinc-800/80 p-4 rounded-xl text-[11px] font-mono text-emerald-400 overflow-x-auto">
-{`curl -X POST https://meridian-nexus-api.jrjohnparente.workers.dev/api/workflows/business-intelligence-mission/run \\
+{`curl -X POST https://api.meridian.finance/api/workflows/business-intelligence-mission/run \\
   -H "Authorization: Bearer nx_live_9f82a1b4c3d2e5f678901234567890ab" \\
   -H "Content-Type: application/json" \\
   -d '{"inputs": {"companyName": "Acme Corp"}}'`}

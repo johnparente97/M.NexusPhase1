@@ -17,7 +17,7 @@ import { formatCurrency } from '../utils/format';
 
 export default function OrgDashboard() {
   const [members] = useState([
-    { id: 'usr-1', name: 'John Parente', email: 'john@meridian.finance', role: 'Owner', spend: '$142.50' },
+    { id: 'usr-1', name: 'Anonymous Founder', email: 'owner@meridian.finance', role: 'Owner', spend: '$142.50' },
     { id: 'usr-2', name: 'Sarah Chen', email: 'sarah@meridian.finance', role: 'Administrator', spend: '$89.20' },
     { id: 'usr-3', name: 'Alex Rivera', email: 'alex@meridian.finance', role: 'Developer', spend: '$34.10' },
     { id: 'usr-4', name: 'Finance Lead', email: 'finance@meridian.finance', role: 'Finance Manager', spend: '$12.00' },

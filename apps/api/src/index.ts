@@ -128,7 +128,7 @@ app.get('/', (c) => {
         <p>This is the secure backend intelligence and settlement gateway for Meridian Nexus. The API services are fully operational.</p>
         <div class="links">
           <a href="/api/health" class="btn-primary">Check System Health</a>
-          <a href="https://github.com/johnparente97/M.NexusPhase1" target="_blank" class="btn-secondary">View GitHub Repository</a>
+          <a href="https://github.com/meridian-protocol/M.NexusPhase1" target="_blank" class="btn-secondary">View GitHub Repository</a>
         </div>
         <div class="footer">
           Meridian Foundation &copy; 2026. Built on Base Sepolia.
