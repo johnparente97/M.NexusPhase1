@@ -40,7 +40,7 @@ export default function TopNav({ onSearchClick }: TopNavProps) {
                   whileHover={{ rotate: 8, scale: 1.08 }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  <NexusLogoMark className="h-8 w-8 sm:h-9 sm:w-9 filter drop-shadow-[0_0_12px_rgba(52,211,153,0.7)]" />
+                  <NexusLogoMark className="h-8 w-8 sm:h-9 sm:w-9" />
                 </motion.div>
                 <span className="font-display font-bold text-base text-white tracking-tight group-hover:text-emerald-300 transition-colors">
                   Meridian Nexus

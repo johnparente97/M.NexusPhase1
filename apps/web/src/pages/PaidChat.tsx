@@ -190,7 +190,7 @@ export default function PaidChat() {
         {/* Left Title & Stack Badge */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2">
-            <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8 filter drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]" />
+            <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8" />
             <span className="font-display font-bold text-base text-white tracking-tight">
               Meridian Inference
             </span>
@@ -278,7 +278,7 @@ export default function PaidChat() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
             >
-              <NexusLogoMark className="h-20 w-20 sm:h-28 sm:w-28 filter drop-shadow-[0_0_32px_rgba(52,211,153,0.65)]" />
+              <NexusLogoMark className="h-20 w-20 sm:h-28 sm:w-28" />
             </motion.div>
             <div className="flex flex-col gap-1.5">
               <h2 className="font-display font-semibold text-xl text-white">Ask anything</h2>

@@ -116,7 +116,7 @@ export default function DolphinChat() {
         {/* Left Title & x402 Stack Badge */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2">
-            <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8 filter drop-shadow-[0_0_12px_rgba(52,211,153,0.5)]" />
+            <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8" />
             <span className="font-display font-bold text-base text-white tracking-tight">
               Meridian Free Inference
             </span>

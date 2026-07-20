@@ -17,18 +17,18 @@ export const NexusLogoMark: React.FC<NexusLogoMarkProps> = ({ className = 'h-9 w
       style={style}
     >
       <defs>
-        {/* Emerald Core Glow Gradient */}
-        <radialGradient id="nexusGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#34D399" stopOpacity="1" />
-          <stop offset="60%" stopColor="#10B981" stopOpacity="0.8" />
-          <stop offset="100%" stopColor="#059669" stopOpacity="0" />
+        {/* Deep Core Glow */}
+        <radialGradient id="nexusCoreGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#10B981" stopOpacity="0.4" />
+          <stop offset="60%" stopColor="#10B981" stopOpacity="0.1" />
+          <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
         </radialGradient>
 
         {/* Sphere 3D Metallic Emerald Gradient */}
         <radialGradient id="sphereGrad" cx="35%" cy="35%" r="65%">
           <stop offset="0%" stopColor="#A7F3D0" />
-          <stop offset="40%" stopColor="#34D399" />
-          <stop offset="80%" stopColor="#059669" />
+          <stop offset="35%" stopColor="#34D399" />
+          <stop offset="75%" stopColor="#059669" />
           <stop offset="100%" stopColor="#064E3B" />
         </radialGradient>
 
@@ -39,15 +39,18 @@ export const NexusLogoMark: React.FC<NexusLogoMarkProps> = ({ className = 'h-9 w
           <stop offset="100%" stopColor="#10B981" />
         </linearGradient>
 
-        {/* Ambient Glow Filter */}
-        <filter id="emeraldFilterGlow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="2.5" result="blur" />
-          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        {/* Safe, Low-Blur Glow Filter to prevent Safari rasterization */}
+        <filter id="cleanEmeraldGlow" x="-10%" y="-10%" width="120%" height="120%">
+          <feGaussianBlur stdDeviation="1.5" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
         </filter>
       </defs>
 
-      {/* Outer Glow Halo */}
-      <circle cx="50" cy="50" r="44" fill="url(#nexusGlow)" opacity="0.25" />
+      {/* Ambient background glow ring */}
+      <circle cx="50" cy="50" r="45" fill="url(#nexusCoreGlow)" />
 
       {/* Outer Thin Ring */}
       <circle
@@ -55,50 +58,51 @@ export const NexusLogoMark: React.FC<NexusLogoMarkProps> = ({ className = 'h-9 w
         cy="50"
         r="34"
         stroke="#34D399"
-        strokeWidth="0.8"
-        strokeOpacity="0.6"
+        strokeWidth="1.2"
+        strokeOpacity="0.75"
       />
+
       <circle
         cx="50"
         cy="50"
-        r="36"
+        r="38"
         stroke="#10B981"
-        strokeWidth="0.4"
-        strokeOpacity="0.3"
+        strokeWidth="0.8"
+        strokeOpacity="0.4"
       />
 
       {/* Horizontal & Vertical Crosshair Lines */}
-      <line x1="14" y1="50" x2="86" y2="50" stroke="#34D399" strokeWidth="0.5" strokeOpacity="0.4" />
-      <line x1="50" y1="14" x2="50" y2="86" stroke="#34D399" strokeWidth="0.5" strokeOpacity="0.4" />
+      <line x1="16" y1="50" x2="84" y2="50" stroke="#34D399" strokeWidth="0.75" strokeOpacity="0.5" />
+      <line x1="50" y1="16" x2="50" y2="84" stroke="#34D399" strokeWidth="0.75" strokeOpacity="0.5" />
 
-      {/* Hyperbolic Curved Connecting Arcs between 4 Spheres */}
+      {/* Curved Hyperbolic Arcs connecting the outer nodes */}
       <path
         d="M 24,24 Q 50,42 76,24 Q 58,50 76,76 Q 50,58 24,76 Q 42,50 24,24 Z"
         fill="#10B981"
-        fillOpacity="0.12"
+        fillOpacity="0.15"
         stroke="url(#arcGrad)"
-        strokeWidth="1.2"
+        strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
-        filter="url(#emeraldFilterGlow)"
+        filter="url(#cleanEmeraldGlow)"
       />
 
       {/* Inner Central Ring */}
-      <circle cx="50" cy="50" r="11" stroke="#34D399" strokeWidth="0.9" strokeOpacity="0.8" />
+      <circle cx="50" cy="50" r="11" stroke="#34D399" strokeWidth="1.2" strokeOpacity="0.8" />
 
       {/* 4 Corner Orbital Spheres */}
       {/* Top-Left */}
-      <circle cx="24" cy="24" r="7.5" fill="url(#sphereGrad)" stroke="#A7F3D0" strokeWidth="0.5" />
+      <circle cx="24" cy="24" r="7.5" fill="url(#sphereGrad)" stroke="#A7F3D0" strokeWidth="0.75" />
       {/* Top-Right */}
-      <circle cx="76" cy="24" r="7.5" fill="url(#sphereGrad)" stroke="#A7F3D0" strokeWidth="0.5" />
+      <circle cx="76" cy="24" r="7.5" fill="url(#sphereGrad)" stroke="#A7F3D0" strokeWidth="0.75" />
       {/* Bottom-Right */}
-      <circle cx="76" cy="76" r="7.5" fill="url(#sphereGrad)" stroke="#A7F3D0" strokeWidth="0.5" />
+      <circle cx="76" cy="76" r="7.5" fill="url(#sphereGrad)" stroke="#A7F3D0" strokeWidth="0.75" />
       {/* Bottom-Left */}
-      <circle cx="24" cy="76" r="7.5" fill="url(#sphereGrad)" stroke="#A7F3D0" strokeWidth="0.5" />
+      <circle cx="24" cy="76" r="7.5" fill="url(#sphereGrad)" stroke="#A7F3D0" strokeWidth="0.75" />
 
       {/* Central Core Sphere */}
       <circle cx="50" cy="50" r="5" fill="url(#sphereGrad)" />
-      <circle cx="50" cy="50" r="2" fill="#FFFFFF" opacity="0.9" />
+      <circle cx="50" cy="50" r="2.2" fill="#FFFFFF" opacity="0.9" />
     </svg>
   );
 };

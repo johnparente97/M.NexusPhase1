@@ -86,7 +86,7 @@ export default function Landing() {
               transition={{ type: 'spring', stiffness: 300, damping: 18 }}
               className="cursor-pointer"
             >
-              <NexusLogoMark className="h-24 w-24 sm:h-32 sm:w-32 lg:h-40 lg:w-40 filter drop-shadow-[0_0_32px_rgba(52,211,153,0.7)]" />
+              <NexusLogoMark className="h-24 w-24 sm:h-32 sm:w-32 lg:h-40 lg:w-40" />
             </motion.div>
           </motion.div>
 
