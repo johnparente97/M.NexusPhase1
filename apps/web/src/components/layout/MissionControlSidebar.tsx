@@ -69,7 +69,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
   return (
     <aside
       className={cn(
-        'bg-zinc-950/90 border-r border-zinc-900 flex flex-col h-[calc(100vh-4.5rem)] sticky top-[4.5rem] select-none transition-all duration-200 z-30 hidden lg:flex',
+        'bg-[#171719]/90 border-r border-zinc-800/80 backdrop-blur-md flex flex-col h-[calc(100vh-6rem)] sticky top-24 select-none transition-all duration-200 z-30 hidden lg:flex',
         {
           'w-64': !isCollapsed,
           'w-16': isCollapsed,

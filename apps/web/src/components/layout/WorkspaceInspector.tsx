@@ -32,7 +32,7 @@ export const WorkspaceInspector: React.FC<WorkspaceInspectorProps> = ({
   activeWorkflow,
   activeRun,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const location = useLocation();
   const { user } = useAuth();
   const { usdcBalance, walletAddress, chainId } = useWallet();
@@ -47,16 +47,18 @@ export const WorkspaceInspector: React.FC<WorkspaceInspectorProps> = ({
     return (
       <button
         onClick={() => setIsCollapsed(false)}
-        className="fixed right-3 top-20 z-30 h-8 w-8 bg-zinc-900 border border-zinc-800 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-100 hover:border-[#27F293] shadow-lg transition-all"
+        className="fixed right-4 top-24 z-40 bg-[#171719] border border-zinc-800 hover:border-emerald-500/50 text-zinc-400 hover:text-emerald-400 px-3 py-2 rounded-xl flex items-center gap-2 shadow-xl shadow-black/40 transition-all cursor-pointer group"
         title="Expand Context Inspector"
       >
-        <ChevronLeft className="h-4 w-4" />
+        <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+        <span className="text-xs font-bold font-display text-zinc-300 group-hover:text-white hidden xl:inline">Context Inspector</span>
+        <ChevronLeft className="h-4 w-4 text-zinc-400 group-hover:text-emerald-400" />
       </button>
     );
   }
 
   return (
-    <aside className="w-80 shrink-0 border-l border-zinc-900 bg-zinc-950/60 backdrop-blur-md hidden xl:flex flex-col h-[calc(100vh-4rem)] sticky top-16 select-none overflow-y-auto no-scrollbar p-4 gap-5">
+    <aside className="w-80 shrink-0 border-l border-zinc-800/80 bg-[#171719]/90 backdrop-blur-md hidden xl:flex flex-col h-[calc(100vh-6rem)] sticky top-24 select-none overflow-y-auto no-scrollbar p-5 gap-5 z-30">
       {/* Inspector Top Bar */}
       <div className="flex items-center justify-between border-b border-zinc-900 pb-3">
         <div className="flex items-center gap-2">
