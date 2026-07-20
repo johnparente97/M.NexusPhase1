@@ -1,12 +1,13 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { StarRating } from '../ui/StarRating';
-import { Bookmark, Clock, User, CheckCircle, ArrowUpRight, Zap, Sparkles } from 'lucide-react';
+import { Bookmark, Clock, User, CheckCircle, ArrowUpRight, Zap, Sparkles, Shield, RefreshCw, Database, Layers } from 'lucide-react';
 import { Workflow } from '@meridian-nexus/shared-types';
 import { formatCurrency, formatDuration, formatRating } from '../../utils/format';
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '../../utils/constants';
 import { useToggleFavorite } from '../../hooks/useFavorites';
 import { useAuth } from '../../hooks/useAuth';
+import { useInspectorStore } from '../../stores/inspector-store';
 
 export interface WorkflowCardProps {
   workflow: Workflow;
@@ -16,6 +17,8 @@ export interface WorkflowCardProps {
 export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow, isFavorited = false }) => {
   const { isSignedIn } = useAuth();
   const toggleFav = useToggleFavorite();
+  const navigate = useNavigate();
+  const { setSelectedWorkflow, selectedWorkflow } = useInspectorStore();
 
   const handleSave = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -25,94 +28,164 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow, isFavorite
     }
   };
 
+  const handlePreview = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setSelectedWorkflow(workflow);
+  };
+
+  const handleRun = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    navigate(`/workflows/${workflow.slug}/run`);
+  };
+
   const creatorName = workflow.creator?.displayName || 'Meridian Creator';
   const displayPrice = workflow.isFree ? 'FREE DEMO' : formatCurrency(workflow.pricePerRun);
   const displayDuration = formatDuration(workflow.estimatedDurationSeconds);
   const CategoryIcon = CATEGORY_ICONS[workflow.category] || Sparkles;
+  const isSelected = selectedWorkflow?.id === workflow.id;
+
+  // Category gradients for collectible cards
+  const getBannerGradient = (category: string) => {
+    switch (category) {
+      case 'research':
+        return 'from-emerald-500/20 via-teal-500/10 to-transparent';
+      case 'marketing':
+        return 'from-indigo-500/20 via-purple-500/10 to-transparent';
+      case 'sales':
+        return 'from-amber-500/20 via-orange-500/10 to-transparent';
+      case 'development':
+        return 'from-cyan-500/20 via-blue-500/10 to-transparent';
+      case 'data-analysis':
+        return 'from-violet-500/20 via-fuchsia-500/10 to-transparent';
+      default:
+        return 'from-zinc-500/20 via-zinc-800/10 to-transparent';
+    }
+  };
 
   return (
-    <Link to={`/exchange/${workflow.slug}`} className="block group h-full">
-      <div className="flex flex-col justify-between h-full bg-[#141417] border border-zinc-800/90 hover:border-emerald-500/50 rounded-2xl p-5 sm:p-6 relative overflow-hidden transition-all duration-300 shadow-xl shadow-black/30 hover:shadow-2xl hover:shadow-emerald-500/10 group-hover:-translate-y-1">
+    <div
+      onClick={() => setSelectedWorkflow(workflow)}
+      className={`group flex flex-col justify-between h-full bg-[#111113]/90 border rounded-2xl relative overflow-hidden transition-all duration-300 shadow-xl shadow-black/40 cursor-pointer ${
+        isSelected 
+          ? 'border-emerald-500 ring-1 ring-emerald-500/30 shadow-emerald-500/10' 
+          : 'border-zinc-800/80 hover:border-zinc-700/90 hover:shadow-2xl hover:shadow-black/60 hover:-translate-y-1'
+      }`}
+    >
+      {/* ── Category Gradient Top Banner Artwork ── */}
+      <div className={`absolute top-0 left-0 right-0 h-20 bg-gradient-to-b ${getBannerGradient(workflow.category)} pointer-events-none z-0`} />
+
+      {/* Subtle Grid overlay */}
+      <div className="absolute top-0 left-0 right-0 h-20 bg-[linear-gradient(rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:10px_10px] pointer-events-none z-0" />
+
+      {/* Main Content Area */}
+      <div className="p-5 flex flex-col h-full justify-between z-10 relative">
         
-        {/* Subtle Background Glow Mesh */}
-        <div className="absolute top-0 right-0 w-36 h-36 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-all pointer-events-none" />
-
-        {/* 1. Header Row: Icon + Category Badge + Price Pill */}
-        <div className="flex items-center justify-between gap-3 mb-3 z-10">
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="h-9 w-9 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-emerald-400 shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-              <CategoryIcon className="h-4.5 w-4.5" />
+        {/* Top Header Controls: Category & Action icons */}
+        <div className="flex items-center justify-between gap-3 mb-4">
+          <div className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-lg bg-zinc-950/80 border border-zinc-800 flex items-center justify-center text-emerald-400 shrink-0 shadow-sm">
+              <CategoryIcon className="h-4 w-4" />
             </div>
-
-            <div className="flex items-center gap-1.5 flex-wrap min-w-0">
-              <span className="px-2.5 py-0.5 text-[10px] font-mono font-extrabold uppercase tracking-wider rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                {CATEGORY_LABELS[workflow.category] || workflow.category}
-              </span>
-
-              {workflow.verified && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold text-emerald-300 bg-emerald-950/60 border border-emerald-500/30 rounded-md">
-                  <CheckCircle className="h-3 w-3 fill-emerald-400 text-zinc-950 shrink-0" />
-                  Verified
-                </span>
-              )}
-            </div>
+            <span className="px-2 py-0.5 text-[9px] font-mono font-black uppercase tracking-wider rounded bg-zinc-950/90 text-zinc-400 border border-zinc-800/80">
+              {CATEGORY_LABELS[workflow.category] || workflow.category}
+            </span>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
-            <span className={`text-xs font-extrabold px-2.5 py-1 rounded-lg shadow-md transition-all ${
-              workflow.isFree 
-                ? 'bg-emerald-400 text-zinc-950 shadow-emerald-500/20' 
-                : 'bg-zinc-800 text-zinc-100 border border-zinc-700/80'
-            }`}>
-              {displayPrice}
+          <div className="flex items-center gap-1">
+            {/* Trust rating badge */}
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 text-[9px] font-mono font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded">
+              <Shield className="h-3 w-3 fill-emerald-500 text-zinc-950" />
+              98
             </span>
-
-            {isSignedIn && (
-              <button
-                onClick={handleSave}
-                disabled={toggleFav.isPending}
-                className="text-zinc-500 hover:text-emerald-400 p-1.5 rounded-lg hover:bg-zinc-800/60 transition-colors disabled:opacity-50"
-                title="Bookmark workflow"
-              >
-                <Bookmark className={`h-4 w-4 ${isFavorited ? 'fill-emerald-500 text-emerald-500' : ''}`} />
-              </button>
+            {workflow.isFree && (
+              <span className="px-1.5 py-0.5 text-[9px] font-mono font-black text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 rounded">
+                CASHBACK
+              </span>
             )}
           </div>
         </div>
 
-        {/* 2. Title & Description — Full Legibility without cutoffs */}
-        <div className="flex flex-col gap-1.5 mb-4 z-10">
-          <h3 className="font-display font-extrabold text-base sm:text-lg text-white group-hover:text-emerald-300 transition-colors leading-snug tracking-tight">
-            {workflow.name}
-          </h3>
-          <p className="text-xs sm:text-sm text-zinc-300/90 leading-relaxed font-normal line-clamp-2">
+        {/* Title, Creator, Description */}
+        <div className="flex flex-col gap-1.5 mb-5">
+          <div className="flex items-center gap-2 min-w-0">
+            <h3 className="font-display font-black text-base text-white group-hover:text-emerald-300 transition-colors leading-snug tracking-tight truncate">
+              {workflow.name}
+            </h3>
+            {workflow.verified && (
+              <CheckCircle className="h-4 w-4 fill-emerald-400 text-zinc-950 shrink-0" />
+            )}
+          </div>
+          <div className="flex items-center gap-1.5 text-[10px] text-zinc-400">
+            <User className="h-3.5 w-3.5 text-zinc-600" />
+            <span className="font-bold text-zinc-300">{creatorName}</span>
+            <span>•</span>
+            <span className="font-mono text-zinc-500">{workflow.totalRuns.toLocaleString()} runs</span>
+          </div>
+          <p className="text-xs text-zinc-400 leading-relaxed font-normal mt-2 line-clamp-2">
             {workflow.shortDescription}
           </p>
         </div>
 
-        {/* 3. Footer Row: Ratings, Creator & Configure Button */}
-        <div className="flex items-center justify-between gap-3 pt-3.5 border-t border-zinc-800/80 text-xs z-10">
-          <div className="flex items-center gap-3 text-zinc-400">
-            <div className="flex items-center gap-1.5 font-bold text-zinc-200">
-              <StarRating rating={workflow.averageRating} size="sm" />
-              <span>{formatRating(workflow.averageRating)}</span>
-            </div>
-
-            <span className="hidden sm:flex items-center gap-1 text-zinc-400 font-medium">
-              <Clock className="h-3.5 w-3.5 text-zinc-500 shrink-0" />
+        {/* Action Panel / Specifications footer */}
+        <div className="flex flex-col gap-3.5 pt-4 border-t border-zinc-900 text-xs">
+          
+          {/* Metadata Specifications strip */}
+          <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500">
+            <div className="flex items-center gap-1">
+              <Clock className="h-3 w-3" />
               <span>{displayDuration}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <Database className="h-3 w-3" />
+              <span>Gemini 2.5</span>
+            </div>
+            <span className="font-black text-white bg-zinc-900 border border-zinc-800 px-2 py-0.5 rounded font-mono">
+              {displayPrice}
             </span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 text-xs font-black px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-300 text-zinc-950 shadow-md shadow-emerald-500/25 group-hover:shadow-emerald-500/40 group-hover:scale-[1.03] active:scale-[0.97] transition-all duration-200">
-            <Zap className="h-3.5 w-3.5 fill-zinc-950" />
-            <span>Configure & Run</span>
-            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          {/* Action trigger row */}
+          <div className="flex items-center gap-2">
+            {/* Run CTA */}
+            <button
+              onClick={handleRun}
+              className="flex-1 inline-flex items-center justify-center gap-1.5 text-[10px] font-black px-3.5 py-2 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-300 text-zinc-950 shadow-md shadow-emerald-500/25 group-hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+            >
+              <Zap className="h-3 w-3 fill-zinc-950" />
+              <span>Run</span>
+              <ArrowUpRight className="h-3 w-3" />
+            </button>
+
+            {/* Preview Spec trigger */}
+            <button
+              onClick={handlePreview}
+              className="px-2.5 py-2 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-400 hover:text-white transition-all cursor-pointer font-bold text-[10px] flex items-center justify-center gap-1"
+              title="Inspect specifications"
+            >
+              <Layers className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">Inspect</span>
+            </button>
+
+            {/* Bookmark button */}
+            {isSignedIn && (
+              <button
+                onClick={handleSave}
+                disabled={toggleFav.isPending}
+                className="px-2.5 py-2 rounded-xl bg-zinc-950 border border-zinc-800 hover:bg-zinc-900 hover:border-zinc-700 text-zinc-500 hover:text-rose-400 transition-all cursor-pointer"
+                title="Save capability"
+              >
+                <Bookmark className={`h-3.5 w-3.5 ${isFavorited ? 'fill-rose-500 text-rose-500' : ''}`} />
+              </button>
+            )}
           </div>
+
         </div>
 
       </div>
-    </Link>
+    </div>
   );
 };
+
 export default WorkflowCard;
