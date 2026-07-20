@@ -23,7 +23,7 @@ export default function Exchange() {
   const [sort, setSort] = useState(searchParams.get('sort') || 'popular');
   const [verified, setVerified] = useState(searchParams.get('verified') === 'true');
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const debouncedSearch = useDebounce(search, 300);
