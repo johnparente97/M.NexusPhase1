@@ -8,9 +8,10 @@ import FeaturedCarousel from '../components/marketplace/FeaturedCarousel';
 import EmptyState from '../components/ui/EmptyState';
 import { useWorkflows } from '../hooks/useWorkflows';
 import { useDebounce } from '../hooks/useDebounce';
-import { Compass, Filter } from 'lucide-react';
+import { Compass, Filter, LayoutGrid, List, X, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Workflow } from '@meridian-nexus/shared-types';
+import { CATEGORY_LABELS } from '../utils/constants';
 
 export default function Exchange() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,6 +23,7 @@ export default function Exchange() {
   const [sort, setSort] = useState(searchParams.get('sort') || 'popular');
   const [verified, setVerified] = useState(searchParams.get('verified') === 'true');
   const [page, setPage] = useState(Number(searchParams.get('page')) || 1);
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const debouncedSearch = useDebounce(search, 300);
@@ -62,35 +64,134 @@ export default function Exchange() {
     setSearchParams({});
   };
 
+  const hasActiveFilters = Boolean(search || category || isFree || minRating > 0 || verified);
+
   return (
-    <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-6 py-6 gap-6 select-none pb-16">
+    <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 gap-6 select-none pb-20">
       
-      {/* Search Header Banner */}
+      {/* ── Marketplace Title Banner ── */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
+        <div className="flex flex-col gap-1.5">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <h1 className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
+              Workflow Exchange
+            </h1>
+            <span className="px-2.5 py-0.5 text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full flex items-center gap-1">
+              <ShieldCheck className="h-3 w-3" />
+              x402 Protocol Native
+            </span>
+          </div>
+          <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl leading-relaxed">
+            Discover, execute, and deploy decentralized AI agent workflows. Settlement-backed by Meridian Protocol on Base Sepolia.
+          </p>
+        </div>
+
+        {/* Real-time Metric Pill */}
+        <div className="flex items-center gap-3 shrink-0 text-xs font-medium text-zinc-400 bg-[#171719] border border-zinc-800/80 px-4 py-2.5 rounded-2xl shadow-md">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-white font-bold text-sm">{total}</span>
+            <span>Active Capabilities</span>
+          </div>
+          <span className="text-zinc-800">|</span>
+          <div className="flex items-center gap-1 text-emerald-400 font-semibold">
+            <CheckCircle2 className="h-3.5 w-3.5" />
+            <span>100% Verified</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Search Bar & Category Chips ── */}
       <div className="flex flex-col gap-4 w-full">
         <SearchBar value={search} onChange={setSearch} />
         <CategoryChips activeCategory={category} onChange={setCategory} />
       </div>
 
-      {/* Featured Banner Carousel */}
+      {/* ── Featured Banner Carousel ── */}
       {!search && !category && featuredWorkflows.length > 0 && (
         <FeaturedCarousel workflows={featuredWorkflows} />
       )}
 
-      {/* Mobile filter Toggle controls */}
-      <div className="flex items-center justify-between md:hidden border-b border-zinc-900 pb-3">
-        <span className="text-xs text-zinc-500 font-bold uppercase">Workflows list ({total})</span>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => setShowMobileFilters(!showMobileFilters)}
-          className="flex items-center gap-1.5"
-        >
-          <Filter className="h-4 w-4" />
-          Filters
-        </Button>
+      {/* ── Active Filter Bar & View Switcher Toolbar ── */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#171719] border border-zinc-800/80 px-4 py-3 rounded-2xl">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-xs text-zinc-400 font-bold uppercase tracking-wider">
+            Showing <span className="text-white">{workflows.length}</span> of <span className="text-white">{total}</span>
+          </span>
+
+          {hasActiveFilters && (
+            <div className="flex items-center gap-1.5 flex-wrap ml-2">
+              {category && (
+                <span className="inline-flex items-center gap-1 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                  Category: {CATEGORY_LABELS[category] || category}
+                  <X className="h-3 w-3 cursor-pointer hover:text-white" onClick={() => setCategory('')} />
+                </span>
+              )}
+              {search && (
+                <span className="inline-flex items-center gap-1 text-xs bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                  Search: "{search}"
+                  <X className="h-3 w-3 cursor-pointer hover:text-white" onClick={() => setSearch('')} />
+                </span>
+              )}
+              {verified && (
+                <span className="inline-flex items-center gap-1 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                  Verified Only
+                  <X className="h-3 w-3 cursor-pointer hover:text-white" onClick={() => setVerified(false)} />
+                </span>
+              )}
+              {isFree && (
+                <span className="inline-flex items-center gap-1 text-xs bg-teal-500/10 text-teal-300 border border-teal-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                  Free Runs
+                  <X className="h-3 w-3 cursor-pointer hover:text-white" onClick={() => setIsFree(false)} />
+                </span>
+              )}
+              <button
+                onClick={handleClearFilters}
+                className="text-xs text-zinc-400 hover:text-emerald-400 underline font-medium ml-1 cursor-pointer"
+              >
+                Clear All
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Right Controls: View Mode Switcher & Mobile Filters button */}
+        <div className="flex items-center gap-3 justify-between sm:justify-end">
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setShowMobileFilters(!showMobileFilters)}
+            className="flex items-center gap-1.5 md:hidden"
+          >
+            <Filter className="h-3.5 w-3.5" />
+            Filters
+          </Button>
+
+          {/* Grid vs List View Mode Toggle */}
+          <div className="flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-800">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                viewMode === 'grid' ? 'bg-zinc-800 text-emerald-400 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'
+              }`}
+              title="Grid View"
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => setViewMode('list')}
+              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                viewMode === 'list' ? 'bg-zinc-800 text-emerald-400 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'
+              }`}
+              title="List View"
+            >
+              <List className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
       </div>
 
-      {/* Layout Columns */}
+      {/* ── Main Layout Columns ── */}
       <div className="flex flex-col md:flex-row gap-8 items-start w-full">
         {/* Desktop Sidebar Filters */}
         <div className="hidden md:block">
@@ -111,11 +212,11 @@ export default function Exchange() {
 
         {/* Mobile slide drawer filters */}
         {showMobileFilters && (
-          <div className="fixed inset-0 z-50 bg-black/70 md:hidden p-4 sm:p-6 flex flex-col justify-end">
-            <div className="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
-              <div className="flex justify-between items-center pb-2 border-b border-zinc-900">
-                <span className="text-sm font-semibold text-zinc-200">Adjust Filters</span>
-                <button onClick={() => setShowMobileFilters(false)} className="text-xs text-zinc-500 font-bold">Close</button>
+          <div className="fixed inset-0 z-50 bg-black/75 md:hidden p-4 sm:p-6 flex flex-col justify-end">
+            <div className="bg-[#171719] border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
+              <div className="flex justify-between items-center pb-2 border-b border-zinc-800">
+                <span className="text-sm font-bold text-white">Filter Capabilities</span>
+                <button onClick={() => setShowMobileFilters(false)} className="text-xs text-zinc-400 hover:text-white font-bold">Close</button>
               </div>
               <FilterSidebar
                 category={category}
@@ -128,28 +229,29 @@ export default function Exchange() {
                 setSort={setSort}
                 verified={verified}
                 setVerified={setVerified}
+                onReset={handleClearFilters}
               />
             </div>
           </div>
         )}
 
-        {/* Workflows List Grid */}
+        {/* Workflows List / Grid View */}
         <div className="flex-1 flex flex-col gap-8 w-full">
           {!isLoading && workflows.length === 0 ? (
             <EmptyState
               icon={Compass}
-              title="No workflows match query"
-              description="Adjust search tags or reset filtering targets to explore other options."
-              actionLabel="Clear Filters"
+              title="No capabilities match your criteria"
+              description="Try clearing search keywords or resetting filters to explore all available AI workflows."
+              actionLabel="Reset All Filters"
               onAction={handleClearFilters}
             />
           ) : (
             <>
-              <WorkflowGrid workflows={workflows} isLoading={isLoading} />
+              <WorkflowGrid workflows={workflows} isLoading={isLoading} viewMode={viewMode} />
               
               {/* Pagination controls */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-4 border-t border-zinc-900 pt-6">
+                <div className="flex justify-center items-center gap-2 mt-4 border-t border-zinc-800/80 pt-6">
                   <Button
                     variant="secondary"
                     size="sm"
@@ -158,7 +260,7 @@ export default function Exchange() {
                   >
                     Previous
                   </Button>
-                  <span className="text-xs text-zinc-500 font-semibold px-2">
+                  <span className="text-xs text-zinc-400 font-semibold px-3 py-1 bg-[#171719] rounded-xl border border-zinc-800">
                     Page {page} of {totalPages}
                   </span>
                   <Button
