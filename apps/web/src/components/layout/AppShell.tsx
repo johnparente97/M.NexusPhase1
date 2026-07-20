@@ -43,8 +43,8 @@ export default function AppShell() {
           {/* 1. Left Mission Control Sidebar */}
           <MissionControlSidebar onSearchClick={() => setShowPalette(true)} />
 
-          {/* 2. Primary Center Workspace View - md:pt-20 accounts for fixed floating TopNav (desktop only) */}
-          <main className="flex-1 flex flex-col min-w-0 md:pt-20 pb-20">
+          {/* 2. Primary Center Workspace View - md:pt-24 accounts for fixed floating TopNav (desktop only) */}
+          <main className="flex-1 flex flex-col min-w-0 md:pt-24 pb-20">
             <Outlet />
           </main>
 

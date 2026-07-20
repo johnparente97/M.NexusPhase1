@@ -30,21 +30,24 @@ export default function TopNav({ onSearchClick }: TopNavProps) {
     <header className="fixed top-0 left-0 right-0 z-50 px-4 py-3 hidden md:block pointer-events-none">
       {/* MRDN floating pill nav — matches mrdn.finance bg-[#171719] rounded-2xl shadow */}
       <div className="max-w-7xl mx-auto pointer-events-auto">
-        <div className="bg-[#171719] rounded-2xl shadow-lg shadow-black/30 border border-zinc-800/50 px-4 py-2">
-          <div className="flex items-center justify-between gap-4">
+        <div className="bg-[#171719] rounded-2xl shadow-lg shadow-black/30 border border-zinc-800/50 px-5 py-2.5">
+          <div className="flex items-center justify-between gap-6">
 
-            <Link to="/" className="flex items-center gap-2 group shrink-0">
-              <motion.div
-                whileHover={{ rotate: 8, scale: 1.08 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <NexusLogoMark className="h-8 w-8 sm:h-9 sm:w-9 filter drop-shadow-[0_0_12px_rgba(52,211,153,0.7)]" />
-              </motion.div>
-              <span className="font-display font-bold text-base text-white tracking-tight group-hover:text-emerald-300 transition-colors">
-                Meridian Nexus
-              </span>
+            {/* Left Brand Logo & Title */}
+            <div className="flex items-center gap-3 shrink-0">
+              <Link to="/" className="flex items-center gap-2.5 group">
+                <motion.div
+                  whileHover={{ rotate: 8, scale: 1.08 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <NexusLogoMark className="h-8 w-8 sm:h-9 sm:w-9 filter drop-shadow-[0_0_12px_rgba(52,211,153,0.7)]" />
+                </motion.div>
+                <span className="font-display font-bold text-base text-white tracking-tight group-hover:text-emerald-300 transition-colors">
+                  Meridian Nexus
+                </span>
+              </Link>
               <DemoLabel />
-            </Link>
+            </div>
 
             {/* Center Nav — MRDN style font-medium text-gray-300 */}
             <nav className="hidden lg:flex items-center gap-5">
