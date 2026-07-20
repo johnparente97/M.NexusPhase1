@@ -2,13 +2,12 @@ import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import SearchBar from '../components/marketplace/SearchBar';
 import CategoryChips from '../components/marketplace/CategoryChips';
-import FilterSidebar from '../components/marketplace/FilterSidebar';
 import WorkflowGrid from '../components/marketplace/WorkflowGrid';
 import FeaturedCarousel from '../components/marketplace/FeaturedCarousel';
 import EmptyState from '../components/ui/EmptyState';
 import { useWorkflows } from '../hooks/useWorkflows';
 import { useDebounce } from '../hooks/useDebounce';
-import { Compass, Filter, LayoutGrid, List, X, Sparkles, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { Compass, Filter, LayoutGrid, List, X, Sparkles, CheckCircle2, ShieldCheck, RotateCcw } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { Workflow } from '@meridian-nexus/shared-types';
 import { CATEGORY_LABELS } from '../utils/constants';
@@ -112,37 +111,66 @@ export default function Exchange() {
         <FeaturedCarousel workflows={featuredWorkflows} />
       )}
 
-      {/* ── Active Filter Bar & View Switcher Toolbar ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#141417] border border-zinc-800/90 px-5 py-3.5 rounded-2xl shadow-lg shadow-black/30">
+      {/* ── Unified Horizontal Filter Command Toolbar ── */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-[#141417] border border-zinc-800/90 p-4 rounded-2xl shadow-xl shadow-black/30 w-full select-none">
+        
+        {/* Left Controls: Sort Select + Verified Pill + Free Pill */}
         <div className="flex items-center gap-3 flex-wrap">
-          <span className="text-xs text-zinc-400 font-bold uppercase tracking-wider">
-            Showing <span className="text-white font-extrabold">{workflows.length}</span> of <span className="text-white font-extrabold">{total}</span>
-          </span>
+          {/* Sort Dropdown */}
+          <div className="flex items-center gap-2 bg-zinc-950/90 border border-zinc-800 px-3.5 py-2 rounded-xl text-xs font-semibold text-zinc-300">
+            <span className="text-zinc-500 font-bold uppercase text-[10px] tracking-wider">Sort By:</span>
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value)}
+              className="bg-transparent text-xs font-bold text-white focus:outline-none cursor-pointer"
+            >
+              <option value="popular" className="bg-zinc-900 text-white">Most Popular</option>
+              <option value="newest" className="bg-zinc-900 text-white">Newest Releases</option>
+              <option value="rating" className="bg-zinc-900 text-white">Highest Rated</option>
+              <option value="price-asc" className="bg-zinc-900 text-white">Price: Low to High</option>
+              <option value="price-desc" className="bg-zinc-900 text-white">Price: High to Low</option>
+            </select>
+          </div>
 
+          {/* Verified Toggle Button Pill */}
+          <button
+            onClick={() => setVerified(!verified)}
+            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-sm ${
+              verified
+                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/50 shadow-md shadow-emerald-500/10'
+                : 'bg-zinc-950/80 text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-700'
+            }`}
+          >
+            <ShieldCheck className={`h-3.5 w-3.5 ${verified ? 'text-emerald-400' : 'text-zinc-500'}`} />
+            <span>x402 Verified Only</span>
+          </button>
+
+          {/* Free Runs Toggle Button Pill */}
+          <button
+            onClick={() => setIsFree(!isFree)}
+            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-sm ${
+              isFree
+                ? 'bg-teal-500/15 text-teal-300 border-teal-500/50 shadow-md shadow-teal-500/10'
+                : 'bg-zinc-950/80 text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-700'
+            }`}
+          >
+            <Sparkles className={`h-3.5 w-3.5 ${isFree ? 'text-teal-400' : 'text-zinc-500'}`} />
+            <span>Free Runs</span>
+          </button>
+
+          {/* Active Filter Tags */}
           {hasActiveFilters && (
-            <div className="flex items-center gap-2 flex-wrap ml-2">
+            <div className="flex items-center gap-2 flex-wrap ml-1">
               {category && (
-                <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-xl font-bold">
-                  Category: {CATEGORY_LABELS[category] || category}
+                <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-xl font-bold">
+                  {CATEGORY_LABELS[category] || category}
                   <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setCategory('')} />
                 </span>
               )}
               {search && (
-                <span className="inline-flex items-center gap-1.5 text-xs bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-xl font-bold">
-                  Search: "{search}"
+                <span className="inline-flex items-center gap-1.5 text-xs bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 px-2.5 py-1 rounded-xl font-bold">
+                  "{search}"
                   <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setSearch('')} />
-                </span>
-              )}
-              {verified && (
-                <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-xl font-bold">
-                  Verified Only
-                  <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setVerified(false)} />
-                </span>
-              )}
-              {isFree && (
-                <span className="inline-flex items-center gap-1.5 text-xs bg-teal-500/10 text-teal-300 border border-teal-500/30 px-3 py-1 rounded-xl font-bold">
-                  Free Runs
-                  <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setIsFree(false)} />
                 </span>
               )}
               <button
@@ -155,127 +183,78 @@ export default function Exchange() {
           )}
         </div>
 
-        {/* Right Controls: View Mode Switcher & Mobile Filters button */}
-        <div className="flex items-center gap-3 justify-between sm:justify-end">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => setShowMobileFilters(!showMobileFilters)}
-            className="flex items-center gap-1.5 md:hidden"
-          >
-            <Filter className="h-3.5 w-3.5" />
-            Filters
-          </Button>
+        {/* Right Controls: Result Count & View Mode Switcher */}
+        <div className="flex items-center justify-between lg:justify-end gap-4 shrink-0 border-t lg:border-t-0 border-zinc-800/80 pt-3 lg:pt-0">
+          <span className="text-xs text-zinc-400 font-bold uppercase tracking-wider">
+            Showing <span className="text-white font-extrabold">{workflows.length}</span> of <span className="text-white font-extrabold">{total}</span>
+          </span>
 
           {/* Grid vs List View Mode Toggle */}
           <div className="flex items-center gap-1 bg-zinc-950/90 p-1 rounded-xl border border-zinc-800">
             <button
-              onClick={() => setViewMode('grid')}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                viewMode === 'grid' ? 'bg-zinc-800 text-emerald-400 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'
-              }`}
-              title="Grid View"
-            >
-              <LayoutGrid className="h-4 w-4" />
-            </button>
-            <button
               onClick={() => setViewMode('list')}
-              className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
                 viewMode === 'list' ? 'bg-zinc-800 text-emerald-400 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'
               }`}
-              title="List View"
+              title="Wide Capability Strips"
             >
-              <List className="h-4 w-4" />
+              <List className="h-3.5 w-3.5" />
+              <span>Strips</span>
+            </button>
+            <button
+              onClick={() => setViewMode('grid')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                viewMode === 'grid' ? 'bg-zinc-800 text-emerald-400 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'
+              }`}
+              title="Wide Feature Tiles"
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+              <span>Tiles</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* ── Main Layout Columns ── */}
-      <div className="flex flex-col md:flex-row gap-8 items-start w-full">
-        {/* Desktop Sidebar Filters */}
-        <div className="hidden md:block">
-          <FilterSidebar
-            category={category}
-            setCategory={setCategory}
-            isFree={isFree}
-            setIsFree={setIsFree}
-            minRating={minRating}
-            setMinRating={setMinRating}
-            sort={sort}
-            setSort={setSort}
-            verified={verified}
-            setVerified={setVerified}
-            onReset={handleClearFilters}
+      {/* ── Main Full-Width Workflows Container ── */}
+      <div className="w-full flex flex-col gap-8">
+        {!isLoading && workflows.length === 0 ? (
+          <EmptyState
+            icon={Compass}
+            title="No capabilities match your criteria"
+            description="Try clearing search keywords or resetting filters to explore all available AI workflows."
+            actionLabel="Reset All Filters"
+            onAction={handleClearFilters}
           />
-        </div>
-
-        {/* Mobile slide drawer filters */}
-        {showMobileFilters && (
-          <div className="fixed inset-0 z-50 bg-black/75 md:hidden p-4 sm:p-6 flex flex-col justify-end">
-            <div className="bg-[#171719] border border-zinc-800 rounded-2xl p-5 flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
-              <div className="flex justify-between items-center pb-2 border-b border-zinc-800">
-                <span className="text-sm font-bold text-white">Filter Capabilities</span>
-                <button onClick={() => setShowMobileFilters(false)} className="text-xs text-zinc-400 hover:text-white font-bold">Close</button>
+        ) : (
+          <>
+            <WorkflowGrid workflows={workflows} isLoading={isLoading} viewMode={viewMode} />
+            
+            {/* Pagination controls */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-4 border-t border-zinc-800/80 pt-6">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={page === 1}
+                  onClick={() => handlePageChange(page - 1)}
+                >
+                  Previous
+                </Button>
+                <span className="text-xs text-zinc-400 font-semibold px-3.5 py-1.5 bg-[#141417] rounded-xl border border-zinc-800">
+                  Page {page} of {totalPages}
+                </span>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  disabled={page === totalPages}
+                  onClick={() => handlePageChange(page + 1)}
+                >
+                  Next
+                </Button>
               </div>
-              <FilterSidebar
-                category={category}
-                setCategory={setCategory}
-                isFree={isFree}
-                setIsFree={setIsFree}
-                minRating={minRating}
-                setMinRating={setMinRating}
-                sort={sort}
-                setSort={setSort}
-                verified={verified}
-                setVerified={setVerified}
-                onReset={handleClearFilters}
-              />
-            </div>
-          </div>
+            )}
+          </>
         )}
-
-        {/* Workflows List / Grid View */}
-        <div className="flex-1 flex flex-col gap-8 w-full">
-          {!isLoading && workflows.length === 0 ? (
-            <EmptyState
-              icon={Compass}
-              title="No capabilities match your criteria"
-              description="Try clearing search keywords or resetting filters to explore all available AI workflows."
-              actionLabel="Reset All Filters"
-              onAction={handleClearFilters}
-            />
-          ) : (
-            <>
-              <WorkflowGrid workflows={workflows} isLoading={isLoading} viewMode={viewMode} />
-              
-              {/* Pagination controls */}
-              {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-2 mt-4 border-t border-zinc-800/80 pt-6">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    disabled={page === 1}
-                    onClick={() => handlePageChange(page - 1)}
-                  >
-                    Previous
-                  </Button>
-                  <span className="text-xs text-zinc-400 font-semibold px-3 py-1 bg-[#171719] rounded-xl border border-zinc-800">
-                    Page {page} of {totalPages}
-                  </span>
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    disabled={page === totalPages}
-                    onClick={() => handlePageChange(page + 1)}
-                  >
-                    Next
-                  </Button>
-                </div>
-              )}
-            </>
-          )}
-        </div>
       </div>
 
     </div>
