@@ -110,18 +110,18 @@ export const WorkflowGrid: React.FC<WorkflowGridProps> = ({
 
                 {/* Right Column: CTA & Price */}
                 <div className="flex items-center gap-3 shrink-0 justify-between lg:justify-end border-t lg:border-t-0 border-zinc-800/80 pt-3 lg:pt-0 z-10">
-                  <span className={`text-xs font-extrabold px-3 py-1.5 rounded-xl shadow-md ${
+                  <span className={`text-xs font-black px-3.5 py-2 rounded-xl shadow-md font-mono ${
                     w.isFree 
-                      ? 'bg-emerald-400 text-zinc-950 shadow-emerald-500/20' 
-                      : 'bg-zinc-800 text-zinc-100 border border-zinc-700/80'
+                      ? 'bg-emerald-400 text-zinc-950 shadow-emerald-500/25' 
+                      : 'bg-zinc-900 text-zinc-100 border border-zinc-700/80'
                   }`}>
                     {displayPrice}
                   </span>
 
-                  <span className="inline-flex items-center gap-2 text-xs font-extrabold px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 group-hover:from-emerald-400 group-hover:to-teal-400 text-zinc-950 shadow-lg shadow-emerald-500/20 transition-all">
-                    <Zap className="h-3.5 w-3.5 fill-zinc-950" />
+                  <span className="inline-flex items-center gap-2 text-xs font-black px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-300 text-zinc-950 shadow-lg shadow-emerald-500/30 group-hover:shadow-emerald-500/50 group-hover:scale-[1.03] active:scale-[0.97] transition-all duration-200">
+                    <Zap className="h-4 w-4 fill-zinc-950" />
                     <span>Configure & Run</span>
-                    <ArrowUpRight className="h-4 w-4" />
+                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </span>
                 </div>
 

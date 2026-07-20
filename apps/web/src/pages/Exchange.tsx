@@ -135,26 +135,26 @@ export default function Exchange() {
           {/* Verified Toggle Button Pill */}
           <button
             onClick={() => setVerified(!verified)}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-sm ${
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold border transition-all duration-200 cursor-pointer active:scale-95 ${
               verified
-                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/50 shadow-md shadow-emerald-500/10'
-                : 'bg-zinc-950/80 text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-700'
+                ? 'bg-gradient-to-r from-emerald-500/25 to-teal-500/25 text-emerald-300 border-emerald-500/60 shadow-lg shadow-emerald-500/15'
+                : 'bg-zinc-950/80 text-zinc-400 border-zinc-800/90 hover:text-white hover:border-zinc-700 hover:bg-zinc-900/90'
             }`}
           >
-            <ShieldCheck className={`h-3.5 w-3.5 ${verified ? 'text-emerald-400' : 'text-zinc-500'}`} />
+            <ShieldCheck className={`h-4 w-4 ${verified ? 'text-emerald-400' : 'text-zinc-500'}`} />
             <span>x402 Verified Only</span>
           </button>
 
           {/* Free Runs Toggle Button Pill */}
           <button
             onClick={() => setIsFree(!isFree)}
-            className={`inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold border transition-all cursor-pointer shadow-sm ${
+            className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-extrabold border transition-all duration-200 cursor-pointer active:scale-95 ${
               isFree
-                ? 'bg-teal-500/15 text-teal-300 border-teal-500/50 shadow-md shadow-teal-500/10'
-                : 'bg-zinc-950/80 text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-700'
+                ? 'bg-gradient-to-r from-teal-500/25 to-emerald-500/25 text-teal-300 border-teal-500/60 shadow-lg shadow-teal-500/15'
+                : 'bg-zinc-950/80 text-zinc-400 border-zinc-800/90 hover:text-white hover:border-zinc-700 hover:bg-zinc-900/90'
             }`}
           >
-            <Sparkles className={`h-3.5 w-3.5 ${isFree ? 'text-teal-400' : 'text-zinc-500'}`} />
+            <Sparkles className={`h-4 w-4 ${isFree ? 'text-teal-400' : 'text-zinc-500'}`} />
             <span>Free Runs</span>
           </button>
 
@@ -162,22 +162,23 @@ export default function Exchange() {
           {hasActiveFilters && (
             <div className="flex items-center gap-2 flex-wrap ml-1">
               {category && (
-                <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-xl font-bold">
+                <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 px-3 py-1.5 rounded-xl font-extrabold shadow-sm">
                   {CATEGORY_LABELS[category] || category}
                   <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setCategory('')} />
                 </span>
               )}
               {search && (
-                <span className="inline-flex items-center gap-1.5 text-xs bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 px-2.5 py-1 rounded-xl font-bold">
+                <span className="inline-flex items-center gap-1.5 text-xs bg-indigo-500/15 text-indigo-300 border border-indigo-500/40 px-3 py-1.5 rounded-xl font-extrabold shadow-sm">
                   "{search}"
                   <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setSearch('')} />
                 </span>
               )}
               <button
                 onClick={handleClearFilters}
-                className="text-xs text-zinc-400 hover:text-emerald-400 underline font-semibold ml-1 cursor-pointer"
+                className="inline-flex items-center gap-1 text-xs text-zinc-400 hover:text-emerald-400 underline font-extrabold ml-1 cursor-pointer"
               >
-                Clear All
+                <RotateCcw className="h-3.5 w-3.5" />
+                <span>Reset All</span>
               </button>
             </div>
           )}
@@ -190,11 +191,13 @@ export default function Exchange() {
           </span>
 
           {/* Grid vs List View Mode Toggle */}
-          <div className="flex items-center gap-1 bg-zinc-950/90 p-1 rounded-xl border border-zinc-800">
+          <div className="flex items-center gap-1 bg-zinc-950/90 p-1.5 rounded-2xl border border-zinc-800/90 shadow-inner">
             <button
               onClick={() => setViewMode('list')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                viewMode === 'list' ? 'bg-zinc-800 text-emerald-400 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer active:scale-95 ${
+                viewMode === 'list' 
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-zinc-950 shadow-md shadow-emerald-500/30' 
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
               title="Wide Capability Strips"
             >
@@ -203,8 +206,10 @@ export default function Exchange() {
             </button>
             <button
               onClick={() => setViewMode('grid')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                viewMode === 'grid' ? 'bg-zinc-800 text-emerald-400 shadow-sm' : 'text-zinc-500 hover:text-zinc-300'
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-black transition-all duration-200 cursor-pointer active:scale-95 ${
+                viewMode === 'grid' 
+                  ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-zinc-950 shadow-md shadow-emerald-500/30' 
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
               title="Wide Feature Tiles"
             >

@@ -104,9 +104,10 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow, isFavorite
             </span>
           </div>
 
-          <div className="inline-flex items-center gap-1.5 text-xs font-extrabold px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 group-hover:from-emerald-400 group-hover:to-teal-400 text-zinc-950 shadow-md shadow-emerald-500/20 transition-all">
+          <div className="inline-flex items-center gap-1.5 text-xs font-black px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-300 text-zinc-950 shadow-md shadow-emerald-500/25 group-hover:shadow-emerald-500/40 group-hover:scale-[1.03] active:scale-[0.97] transition-all duration-200">
+            <Zap className="h-3.5 w-3.5 fill-zinc-950" />
             <span>Configure & Run</span>
-            <ArrowUpRight className="h-3.5 w-3.5" />
+            <ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </div>
         </div>
 
