@@ -379,9 +379,9 @@ export class DeterministicDemoModelProvider implements ModelProvider {
             content: {
               headers: ['Name', 'Role', 'Perspective / Bias'],
               rows: [
-                ['Sarah Jenkins', 'VP Engineering', 'Highly supportive of technology stack, focused on security & API design.'],
-                ['Robert Fowler', 'CFO', 'Budget-conscious. Wants to see proof of ROI and clear cost controls.'],
-                ['Elena Rostova', 'VP Operations', 'Focused on user adoption, training needs, and operational disruption.'],
+                ['Eng Lead', 'VP Engineering', 'Highly supportive of technology stack, focused on security & API design.'],
+                ['Finance Lead', 'CFO', 'Budget-conscious. Wants to see proof of ROI and clear cost controls.'],
+                ['Ops Lead', 'VP Operations', 'Focused on user adoption, training needs, and operational disruption.'],
               ],
             },
           },
@@ -400,9 +400,9 @@ export class DeterministicDemoModelProvider implements ModelProvider {
             label: 'Questions to Ask',
             type: 'list',
             content: [
-              'To Sarah: Are there specific security certifications your team requires next?',
-              'To Robert: What ROI thresholds does your team look for to justify enterprise tiering?',
-              'To Elena: What is your team\'s current training budget for operations staff?',
+              'To Eng Lead: Are there specific security certifications your team requires next?',
+              'To CFO: What ROI thresholds does your team look for to justify enterprise tiering?',
+              'To Ops Lead: What is your team\'s current training budget for operations staff?',
             ],
           },
           {

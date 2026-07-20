@@ -55,7 +55,7 @@ export default function Profile() {
           <Input
             {...register('displayName')}
             label="Display Name"
-            placeholder="e.g., Sarah Jenkins"
+            placeholder="e.g., Protocol Developer"
           />
 
           <Textarea

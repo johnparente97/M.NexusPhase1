@@ -6,16 +6,16 @@
 -- ── Demo Users ──
 
 INSERT OR IGNORE INTO users (id, clerk_id, email, display_name, avatar_url, role, created_at) VALUES
-  ('usr-demo-1', 'clerk_demo_1', 'demo@nexus.dev', 'Alex Chen', NULL, 'user', '2025-01-15T10:00:00Z'),
-  ('usr-creator-1', 'clerk_creator_1', 'creator@nexus.dev', 'Sarah Mitchell', NULL, 'creator', '2024-11-01T10:00:00Z'),
-  ('usr-creator-2', 'clerk_creator_2', 'labs@meridian.dev', 'Sarah Mitchell', NULL, 'creator', '2024-10-01T10:00:00Z'),
-  ('usr-creator-3', 'clerk_creator_3', 'growth@studio.dev', 'James Park', NULL, 'creator', '2024-12-01T10:00:00Z'),
-  ('usr-creator-4', 'clerk_creator_4', 'pipeline@ai.dev', 'Rachel Torres', NULL, 'creator', '2025-01-01T10:00:00Z'),
-  ('usr-creator-5', 'clerk_creator_5', 'sourcing@pro.dev', 'Marcus Webb', NULL, 'creator', '2024-11-15T10:00:00Z'),
-  ('usr-creator-6', 'clerk_creator_6', 'digital@edge.dev', 'Priya Sharma', NULL, 'creator', '2025-02-01T10:00:00Z'),
-  ('usr-creator-7', 'clerk_creator_7', 'support@ai.dev', 'David Kim', NULL, 'creator', '2024-12-15T10:00:00Z'),
-  ('usr-creator-8', 'clerk_creator_8', 'content@forge.dev', 'Emma Wilson', NULL, 'creator', '2025-01-10T10:00:00Z'),
-  ('usr-admin-1', 'clerk_admin_1', 'admin@nexus.dev', 'Admin User', NULL, 'admin', '2024-09-01T10:00:00Z');
+  ('usr-demo-1', 'clerk_demo_1', 'demo@nexus.dev', 'Meridian Member', NULL, 'user', '2025-01-15T10:00:00Z'),
+  ('usr-creator-1', 'clerk_creator_1', 'creator@nexus.dev', 'Strategy Works', NULL, 'creator', '2024-11-01T10:00:00Z'),
+  ('usr-creator-2', 'clerk_creator_2', 'labs@meridian.dev', 'Meridian Labs', NULL, 'creator', '2024-10-01T10:00:00Z'),
+  ('usr-creator-3', 'clerk_creator_3', 'growth@studio.dev', 'Growth Studio', NULL, 'creator', '2024-12-01T10:00:00Z'),
+  ('usr-creator-4', 'clerk_creator_4', 'pipeline@ai.dev', 'Pipeline AI', NULL, 'creator', '2025-01-01T10:00:00Z'),
+  ('usr-creator-5', 'clerk_creator_5', 'sourcing@pro.dev', 'Sourcing Pro', NULL, 'creator', '2024-11-15T10:00:00Z'),
+  ('usr-creator-6', 'clerk_creator_6', 'digital@edge.dev', 'Digital Edge', NULL, 'creator', '2025-02-01T10:00:00Z'),
+  ('usr-creator-7', 'clerk_creator_7', 'support@ai.dev', 'Support AI', NULL, 'creator', '2024-12-15T10:00:00Z'),
+  ('usr-creator-8', 'clerk_creator_8', 'content@forge.dev', 'Content Forge', NULL, 'creator', '2025-01-10T10:00:00Z'),
+  ('usr-admin-1', 'clerk_admin_1', 'admin@nexus.dev', 'Meridian Protocol Admin', NULL, 'admin', '2024-09-01T10:00:00Z');
 
 INSERT OR IGNORE INTO user_profiles (id, user_id, bio, company, theme) VALUES
   ('prof-demo-1', 'usr-demo-1', 'Product manager exploring AI workflows', 'Acme Corp', 'dark'),
