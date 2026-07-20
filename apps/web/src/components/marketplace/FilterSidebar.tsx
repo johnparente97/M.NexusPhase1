@@ -1,8 +1,9 @@
 import React from 'react';
-import { Card } from '../ui/Card';
 import { Toggle } from '../ui/Toggle';
 import { Select } from '../ui/Select';
 import { WORKFLOW_CATEGORIES } from '@meridian-nexus/shared-types';
+import { Filter, RotateCcw } from 'lucide-react';
+import { Button } from '../ui/Button';
 
 export interface FilterSidebarProps {
   category?: string;
@@ -15,6 +16,7 @@ export interface FilterSidebarProps {
   setSort: (val: string) => void;
   verified?: boolean;
   setVerified: (val: boolean) => void;
+  onReset?: () => void;
 }
 
 export const FilterSidebar: React.FC<FilterSidebarProps> = ({
@@ -28,17 +30,35 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   setSort,
   verified,
   setVerified,
+  onReset,
 }) => {
   return (
-    <Card className="flex flex-col gap-6 w-full md:max-w-[240px] shrink-0 bg-zinc-900 border-zinc-800 p-5">
+    <div className="flex flex-col gap-5 w-full md:w-64 shrink-0 bg-[#171719] border border-zinc-800/80 rounded-2xl p-5 shadow-lg shadow-black/20 select-none">
       
+      {/* Sidebar Header */}
+      <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3">
+        <div className="flex items-center gap-2 text-sm font-bold text-white">
+          <Filter className="h-4 w-4 text-emerald-400" />
+          <span>Filter Agents</span>
+        </div>
+        {onReset && (
+          <button
+            onClick={onReset}
+            className="text-xs text-zinc-400 hover:text-emerald-400 flex items-center gap-1 transition-colors"
+          >
+            <RotateCcw className="h-3 w-3" />
+            Reset
+          </button>
+        )}
+      </div>
+
       {/* Category Filter */}
-      <div className="flex flex-col gap-2.5">
-        <h4 className="text-xs font-semibold text-zinc-300">Category</h4>
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-semibold text-zinc-300">Category</label>
         <Select
           value={category || ''}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full text-xs"
+          className="w-full text-xs bg-zinc-950 border-zinc-800 rounded-xl focus:border-emerald-500 py-2"
         >
           <option value="">All Categories</option>
           {WORKFLOW_CATEGORIES.map((cat) => (
@@ -50,12 +70,12 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       </div>
 
       {/* Sorting */}
-      <div className="flex flex-col gap-2.5">
-        <h4 className="text-xs font-semibold text-zinc-300">Sort By</h4>
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-semibold text-zinc-300">Sort By</label>
         <Select
           value={sort || 'popular'}
           onChange={(e) => setSort(e.target.value)}
-          className="w-full text-xs"
+          className="w-full text-xs bg-zinc-950 border-zinc-800 rounded-xl focus:border-emerald-500 py-2"
         >
           <option value="popular">Most Popular</option>
           <option value="newest">Newest Releases</option>
@@ -65,13 +85,13 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </Select>
       </div>
 
-      <hr className="border-zinc-800" />
+      <hr className="border-zinc-800/80 my-1" />
 
       {/* Verified Toggle */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col gap-0.5">
-          <h4 className="text-xs font-semibold text-zinc-300">Verified Only</h4>
-          <span className="text-[10px] text-zinc-500">Trusted workflows only</span>
+          <h4 className="text-xs font-semibold text-zinc-200">Verified Only</h4>
+          <span className="text-[11px] text-zinc-500">x402 audited models</span>
         </div>
         <Toggle checked={!!verified} onChange={setVerified} />
       </div>
@@ -79,35 +99,36 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
       {/* Free workflows Toggle */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col gap-0.5">
-          <h4 className="text-xs font-semibold text-zinc-300">Free Runs</h4>
-          <span className="text-[10px] text-zinc-500">Only free tier options</span>
+          <h4 className="text-xs font-semibold text-zinc-200">Free Runs</h4>
+          <span className="text-[11px] text-zinc-500">No deposit required</span>
         </div>
         <Toggle checked={!!isFree} onChange={setIsFree} />
       </div>
 
-      <hr className="border-zinc-800" />
+      <hr className="border-zinc-800/80 my-1" />
 
-      {/* Ratings Filter */}
+      {/* Minimum Rating */}
       <div className="flex flex-col gap-2.5">
         <h4 className="text-xs font-semibold text-zinc-300">Minimum Rating</h4>
-        <div className="flex items-center gap-1.5 justify-between">
-          {[1, 2, 3, 4, 5].map((val) => (
+        <div className="grid grid-cols-5 gap-1.5">
+          {[0, 2, 3, 4, 5].map((r) => (
             <button
-              key={val}
-              onClick={() => setMinRating(val === minRating ? 0 : val)}
-              className={`text-xs px-2.5 py-1 rounded font-bold border transition-colors ${
-                minRating === val
-                  ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                  : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:text-zinc-200'
+              key={r}
+              type="button"
+              onClick={() => setMinRating(minRating === r ? 0 : r)}
+              className={`py-1.5 rounded-lg text-xs font-bold transition-all border ${
+                minRating === r
+                  ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40 shadow-sm'
+                  : 'bg-zinc-950 text-zinc-400 border-zinc-800 hover:border-zinc-700 hover:text-white'
               }`}
             >
-              {val}★
+              {r === 0 ? 'All' : `${r}★`}
             </button>
           ))}
         </div>
       </div>
 
-    </Card>
+    </div>
   );
 };
 export default FilterSidebar;

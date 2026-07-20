@@ -105,6 +105,7 @@ export default function Exchange() {
             setSort={setSort}
             verified={verified}
             setVerified={setVerified}
+            onReset={handleClearFilters}
           />
         </div>
 

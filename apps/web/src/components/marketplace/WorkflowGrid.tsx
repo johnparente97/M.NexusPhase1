@@ -31,7 +31,7 @@ export const WorkflowGrid: React.FC<WorkflowGridProps> = ({ workflows, isLoading
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
       {workflows?.map((w) => {
         const isFav = favorites?.some((f) => f.id === w.id) ?? false;
         return <WorkflowCard key={w.id} workflow={w} isFavorited={isFav} />;
