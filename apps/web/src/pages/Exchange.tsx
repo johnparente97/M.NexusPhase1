@@ -70,32 +70,32 @@ export default function Exchange() {
     <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 gap-6 select-none pb-20">
       
       {/* ── Marketplace Title Banner ── */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/80 pb-5">
-        <div className="flex flex-col gap-1.5">
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/80 pb-6">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-3xl sm:text-4xl font-display font-extrabold text-white tracking-tight">
               Workflow Exchange
             </h1>
-            <span className="px-2.5 py-0.5 text-xs font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full flex items-center gap-1">
-              <ShieldCheck className="h-3 w-3" />
+            <span className="px-3 py-1 text-xs font-mono font-extrabold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 rounded-xl flex items-center gap-1.5 shadow-sm">
+              <ShieldCheck className="h-3.5 w-3.5" />
               x402 Protocol Native
             </span>
           </div>
-          <p className="text-xs sm:text-sm text-zinc-400 max-w-2xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-300 max-w-2xl leading-relaxed font-normal">
             Discover, execute, and deploy decentralized AI agent workflows. Settlement-backed by Meridian Protocol on Base Sepolia.
           </p>
         </div>
 
         {/* Real-time Metric Pill */}
-        <div className="flex items-center gap-3 shrink-0 text-xs font-medium text-zinc-400 bg-[#171719] border border-zinc-800/80 px-4 py-2.5 rounded-2xl shadow-md">
+        <div className="flex items-center gap-4 shrink-0 text-xs font-medium text-zinc-300 bg-[#141417] border border-zinc-800/90 px-5 py-3 rounded-2xl shadow-xl shadow-black/30">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-white font-bold text-sm">{total}</span>
-            <span>Active Capabilities</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse shadow-md shadow-emerald-500/50" />
+            <span className="text-white font-extrabold text-base">{total}</span>
+            <span className="text-zinc-400">Active Capabilities</span>
           </div>
           <span className="text-zinc-800">|</span>
-          <div className="flex items-center gap-1 text-emerald-400 font-semibold">
-            <CheckCircle2 className="h-3.5 w-3.5" />
+          <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
+            <CheckCircle2 className="h-4 w-4" />
             <span>100% Verified</span>
           </div>
         </div>
@@ -113,41 +113,41 @@ export default function Exchange() {
       )}
 
       {/* ── Active Filter Bar & View Switcher Toolbar ── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#171719] border border-zinc-800/80 px-4 py-3 rounded-2xl">
-        <div className="flex items-center gap-2 flex-wrap">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-[#141417] border border-zinc-800/90 px-5 py-3.5 rounded-2xl shadow-lg shadow-black/30">
+        <div className="flex items-center gap-3 flex-wrap">
           <span className="text-xs text-zinc-400 font-bold uppercase tracking-wider">
-            Showing <span className="text-white">{workflows.length}</span> of <span className="text-white">{total}</span>
+            Showing <span className="text-white font-extrabold">{workflows.length}</span> of <span className="text-white font-extrabold">{total}</span>
           </span>
 
           {hasActiveFilters && (
-            <div className="flex items-center gap-1.5 flex-wrap ml-2">
+            <div className="flex items-center gap-2 flex-wrap ml-2">
               {category && (
-                <span className="inline-flex items-center gap-1 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-xl font-bold">
                   Category: {CATEGORY_LABELS[category] || category}
-                  <X className="h-3 w-3 cursor-pointer hover:text-white" onClick={() => setCategory('')} />
+                  <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setCategory('')} />
                 </span>
               )}
               {search && (
-                <span className="inline-flex items-center gap-1 text-xs bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                <span className="inline-flex items-center gap-1.5 text-xs bg-indigo-500/10 text-indigo-300 border border-indigo-500/30 px-3 py-1 rounded-xl font-bold">
                   Search: "{search}"
-                  <X className="h-3 w-3 cursor-pointer hover:text-white" onClick={() => setSearch('')} />
+                  <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setSearch('')} />
                 </span>
               )}
               {verified && (
-                <span className="inline-flex items-center gap-1 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-xl font-bold">
                   Verified Only
-                  <X className="h-3 w-3 cursor-pointer hover:text-white" onClick={() => setVerified(false)} />
+                  <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setVerified(false)} />
                 </span>
               )}
               {isFree && (
-                <span className="inline-flex items-center gap-1 text-xs bg-teal-500/10 text-teal-300 border border-teal-500/30 px-2.5 py-0.5 rounded-full font-medium">
+                <span className="inline-flex items-center gap-1.5 text-xs bg-teal-500/10 text-teal-300 border border-teal-500/30 px-3 py-1 rounded-xl font-bold">
                   Free Runs
-                  <X className="h-3 w-3 cursor-pointer hover:text-white" onClick={() => setIsFree(false)} />
+                  <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setIsFree(false)} />
                 </span>
               )}
               <button
                 onClick={handleClearFilters}
-                className="text-xs text-zinc-400 hover:text-emerald-400 underline font-medium ml-1 cursor-pointer"
+                className="text-xs text-zinc-400 hover:text-emerald-400 underline font-semibold ml-1 cursor-pointer"
               >
                 Clear All
               </button>
@@ -168,7 +168,7 @@ export default function Exchange() {
           </Button>
 
           {/* Grid vs List View Mode Toggle */}
-          <div className="flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-800">
+          <div className="flex items-center gap-1 bg-zinc-950/90 p-1 rounded-xl border border-zinc-800">
             <button
               onClick={() => setViewMode('grid')}
               className={`p-1.5 rounded-lg transition-colors cursor-pointer ${

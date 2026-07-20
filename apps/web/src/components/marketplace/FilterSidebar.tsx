@@ -2,7 +2,7 @@ import React from 'react';
 import { Toggle } from '../ui/Toggle';
 import { Select } from '../ui/Select';
 import { WORKFLOW_CATEGORIES } from '@meridian-nexus/shared-types';
-import { Filter, RotateCcw } from 'lucide-react';
+import { Filter, RotateCcw, ShieldCheck, Sparkles } from 'lucide-react';
 import { Button } from '../ui/Button';
 
 export interface FilterSidebarProps {
@@ -33,18 +33,18 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onReset,
 }) => {
   return (
-    <div className="flex flex-col gap-5 w-full md:w-64 shrink-0 bg-[#171719] border border-zinc-800/80 rounded-2xl p-5 shadow-lg shadow-black/20 select-none">
+    <div className="flex flex-col gap-6 w-full md:w-64 shrink-0 bg-[#141417] border border-zinc-800/90 rounded-2xl p-6 shadow-xl shadow-black/30 select-none">
       
       {/* Sidebar Header */}
-      <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3">
-        <div className="flex items-center gap-2 text-sm font-bold text-white">
+      <div className="flex items-center justify-between border-b border-zinc-800/80 pb-3.5">
+        <div className="flex items-center gap-2 text-sm font-extrabold text-white tracking-tight">
           <Filter className="h-4 w-4 text-emerald-400" />
           <span>Filter Agents</span>
         </div>
         {onReset && (
           <button
             onClick={onReset}
-            className="text-xs text-zinc-400 hover:text-emerald-400 flex items-center gap-1 transition-colors"
+            className="text-xs text-zinc-400 hover:text-emerald-400 flex items-center gap-1 transition-colors cursor-pointer font-semibold"
           >
             <RotateCcw className="h-3 w-3" />
             Reset
@@ -54,11 +54,11 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
       {/* Category Filter */}
       <div className="flex flex-col gap-2">
-        <label className="text-xs font-semibold text-zinc-300">Category</label>
+        <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider">Category</label>
         <Select
           value={category || ''}
           onChange={(e) => setCategory(e.target.value)}
-          className="w-full text-xs bg-zinc-950 border-zinc-800 rounded-xl focus:border-emerald-500 py-2"
+          className="w-full text-xs bg-zinc-950/90 border-zinc-800 rounded-xl focus:border-emerald-500 py-2.5 font-medium text-zinc-200"
         >
           <option value="">All Categories</option>
           {WORKFLOW_CATEGORIES.map((cat) => (
@@ -71,11 +71,11 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
 
       {/* Sorting */}
       <div className="flex flex-col gap-2">
-        <label className="text-xs font-semibold text-zinc-300">Sort By</label>
+        <label className="text-xs font-bold text-zinc-300 uppercase tracking-wider">Sort By</label>
         <Select
           value={sort || 'popular'}
           onChange={(e) => setSort(e.target.value)}
-          className="w-full text-xs bg-zinc-950 border-zinc-800 rounded-xl focus:border-emerald-500 py-2"
+          className="w-full text-xs bg-zinc-950/90 border-zinc-800 rounded-xl focus:border-emerald-500 py-2.5 font-medium text-zinc-200"
         >
           <option value="popular">Most Popular</option>
           <option value="newest">Newest Releases</option>
@@ -85,13 +85,16 @@ export const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </Select>
       </div>
 
-      <hr className="border-zinc-800/80 my-1" />
+      <hr className="border-zinc-800/80 my-0.5" />
 
       {/* Verified Toggle */}
       <div className="flex items-center justify-between gap-4">
         <div className="flex flex-col gap-0.5">
-          <h4 className="text-xs font-semibold text-zinc-200">Verified Only</h4>
-          <span className="text-[11px] text-zinc-500">x402 audited models</span>
+          <div className="flex items-center gap-1 text-xs font-bold text-zinc-200">
+            <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+            <span>Verified Only</span>
+          </div>
+          <span className="text-[11px] text-zinc-500 font-medium">x402 audited models</span>
         </div>
         <Toggle checked={!!verified} onChange={setVerified} />
       </div>

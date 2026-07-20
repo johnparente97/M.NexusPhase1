@@ -15,10 +15,10 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({ activeCategory, on
       <button
         onClick={() => onChange('')}
         className={cn(
-          'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold border transition-all duration-200 cursor-pointer whitespace-nowrap',
+          'inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold border transition-all duration-200 cursor-pointer whitespace-nowrap shadow-sm',
           {
-            'bg-emerald-500 text-zinc-950 border-emerald-400 font-bold shadow-md shadow-emerald-500/20': !activeCategory,
-            'bg-[#171719] text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-700': activeCategory,
+            'bg-emerald-500 text-zinc-950 border-emerald-400 font-extrabold shadow-md shadow-emerald-500/25': !activeCategory,
+            'bg-[#141417] text-zinc-400 border-zinc-800/90 hover:text-white hover:border-zinc-700': activeCategory,
           }
         )}
       >
@@ -35,10 +35,10 @@ export const CategoryChips: React.FC<CategoryChipsProps> = ({ activeCategory, on
             key={cat.value}
             onClick={() => onChange(cat.value)}
             className={cn(
-              'inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 cursor-pointer whitespace-nowrap',
+              'inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold border transition-all duration-200 cursor-pointer whitespace-nowrap shadow-sm',
               {
-                'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 font-bold shadow-sm shadow-emerald-500/10': isActive,
-                'bg-[#171719] text-zinc-400 border-zinc-800 hover:text-white hover:border-zinc-700': !isActive,
+                'bg-emerald-500/15 text-emerald-300 border-emerald-500/50 font-bold shadow-md shadow-emerald-500/10': isActive,
+                'bg-[#141417] text-zinc-400 border-zinc-800/90 hover:text-white hover:border-zinc-700': !isActive,
               }
             )}
           >
