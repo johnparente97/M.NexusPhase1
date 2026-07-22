@@ -581,9 +581,13 @@ export default function PaidChat() {
         <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 border-t border-zinc-800/80 pt-2 px-1">
           <span className="flex items-center gap-1.5">
             <DollarSign className="h-3 w-3 text-emerald-400" />
-            <span>Estimated cost: {selectedModel.isFree ? 'Free ($0.00)' : `<$0.01 per request ($${selectedModel.priceInputPerMillion}/1M in)`}</span>
+            <span>
+              {selectedModel.isFree
+                ? 'Estimated cost: Free ($0.00) • 100% Unlimited'
+                : `Sub-penny rate: <$0.0005 / prompt ($${selectedModel.priceInputPerMillion}/1M in) • 80% Cheaper vs Centralized APIs`}
+            </span>
           </span>
-          <span className="text-zinc-400">{selectedModel.isFree ? 'Unmetered Open Weights' : 'x402 Micropayments Active'}</span>
+          <span className="text-emerald-400 font-semibold">{selectedModel.isFree ? 'Unmetered Open Weights' : 'x402 Micropayments Active'}</span>
         </div>
       </form>
 
