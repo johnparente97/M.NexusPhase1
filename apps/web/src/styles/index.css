@@ -35,13 +35,35 @@
   --error: #ef4444;
   --info: #3B82F6;
   
-  /* MRDN-aligned radii — softer, more rounded */
+  /* Standardized Z-Index System Tokens */
+  --z-base: 0;
+  --z-sticky: 10;
+  --z-header: 20;
+  --z-dropdown: 30;
+  --z-drawer-backdrop: 40;
+  --z-drawer: 45;
+  --z-modal-backdrop: 50;
+  --z-modal: 55;
+  --z-toast: 60;
+  
+  /* MRDN-aligned radii */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-xl: 28px;
   --radius-2xl: 32px;
 }
+
+/* Layering Tokens Utilities */
+.z-layer-base { z-index: var(--z-base); }
+.z-layer-sticky { z-index: var(--z-sticky); }
+.z-layer-header { z-index: var(--z-header); }
+.z-layer-dropdown { z-index: var(--z-dropdown); }
+.z-layer-drawer-backdrop { z-index: var(--z-drawer-backdrop); }
+.z-layer-drawer { z-index: var(--z-drawer); }
+.z-layer-modal-backdrop { z-index: var(--z-modal-backdrop); }
+.z-layer-modal { z-index: var(--z-modal); }
+.z-layer-toast { z-index: var(--z-toast); }
 
 /* Custom base resets */
 body {
@@ -71,7 +93,7 @@ body {
   background: var(--accent-primary);
 }
 
-/* Glassmorphism utility — MRDN style */
+/* Glassmorphism utility */
 .glass-panel {
   background: rgba(23, 23, 25, 0.75);
   backdrop-filter: blur(16px);
@@ -79,7 +101,7 @@ body {
   border: 1px solid var(--card-border);
 }
 
-/* Premium card hover — aligned with MRDN emerald glow */
+/* Premium card hover */
 .premium-card {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -91,22 +113,19 @@ body {
     0 0 24px -4px rgba(52, 211, 153, 0.06);
 }
 
-/* Input styles — emerald focus ring */
+/* Input styles */
 input, textarea, select {
   outline: none;
   transition: all 0.15s ease-in-out;
 }
 input:focus, textarea:focus, select:focus {
   border-color: rgba(52, 211, 153, 0.4);
-  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.15);
 }
 
-/* Fade in entrance animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
-
-.animate-fade-in {
-  animation: fadeIn 0.3s ease-out forwards;
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

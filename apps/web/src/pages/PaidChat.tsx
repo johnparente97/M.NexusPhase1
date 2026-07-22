@@ -1,37 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ANTSEED_MODEL_CATALOG, AntSeedModel } from '../adapters/antseed/adapter';
 import { MeteringEngine, MeteredRequestReceipt } from '../adapters/pricing/metering';
-import { ModelRouterService, RoutingPriority } from '../services/model-router';
 import { MeridianRouterAdapter, SessionAuthorization } from '../adapters/meridian/router';
 import {
   Send,
   Square,
   Bot,
   User,
-  Sparkles,
   Zap,
-  ArrowUpRight,
-  Cpu,
-  Wallet,
-  Layers,
   ChevronDown,
-  Check,
-  RotateCcw,
   AlertTriangle,
   Coins,
   ShieldCheck,
   Info,
+  DollarSign,
 } from 'lucide-react';
-import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
-import { formatCurrency } from '../utils/format';
 import { useToast } from '../components/ui/Toast';
 import { fetchApi } from '../services/api-client';
 import { useWallet } from '../hooks/useWallet';
-import logoNexus from '../assets/logo-nexus.png';
 import { NexusLogoMark } from '../components/common/NexusLogoMark';
+import ChatContainer from '../components/chat/ChatContainer';
 
 export interface PaidChatMessage {
   id: string;
@@ -54,7 +45,7 @@ export default function PaidChat() {
   const initialModelId = searchParams.get('model') || 'deepseek-r1';
   const navigate = useNavigate();
 
-  const { isConnected, walletAddress, usdcBalance, signInWithEthereum } = useWallet();
+  const { isConnected, usdcBalance, signInWithEthereum } = useWallet();
   const { toast } = useToast();
 
   const [selectedModel, setSelectedModel] = useState<AntSeedModel>(() => {
@@ -62,7 +53,6 @@ export default function PaidChat() {
   });
 
   const [selectedMode, setSelectedMode] = useState('logical');
-  const [currency, setCurrency] = useState<'USDC' | 'MRDN'>('USDC');
   const [modelSwitchNotice, setModelSwitchNotice] = useState<string | null>(null);
 
   const [sessionAuth, setSessionAuth] = useState<SessionAuthorization>(() => {
@@ -74,15 +64,10 @@ export default function PaidChat() {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const abortRef = useRef<AbortController | null>(null);
-  const chatEndRef = useRef<HTMLDivElement>(null);
 
   // Available numeric balance check
   const numericBalance = parseFloat(usdcBalance) || 24.50;
   const isLowBalance = numericBalance < 0.50;
-
-  useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
 
   const handleModelChange = (modelId: string) => {
     const found = ANTSEED_MODEL_CATALOG.find((m) => m.id === modelId);
@@ -155,7 +140,7 @@ export default function PaidChat() {
         completionText = `Meridian Inference completed prompt processing using ${selectedModel.name} (${selectedMode} mode). Output verified via x402 settlement protocol.`;
       }
 
-      // Stream text simulation
+      // Stream text simulation with internal container auto-scroll (NO document window jumps!)
       const inputTokenCount = Math.max(12, Math.round(userText.length / 4));
       const words = completionText.split(' ');
       let accumulatedText = '';
@@ -203,7 +188,7 @@ export default function PaidChat() {
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full h-[calc(100vh-8.5rem)] md:h-[calc(100vh-4.5rem)] p-3 sm:p-6 gap-3 select-none">
+    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full h-[calc(100vh-7rem)] md:h-[calc(100vh-5rem)] p-3 sm:p-6 gap-3 select-none">
       
       {/* ── Top Header Toolbar ── */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#171719] border border-zinc-800/80 p-3 sm:px-4 sm:py-2.5 rounded-2xl shrink-0 shadow-lg shadow-black/20">
@@ -223,9 +208,9 @@ export default function PaidChat() {
           </span>
         </div>
 
-        {/* Right Top Bar Controls: Model Selector, Mode Dropdown, Currency, Wallet */}
+        {/* Right Top Bar Controls */}
         <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-          {/* Model Dropdown */}
+          {/* Model Selector Dropdown */}
           <div className="relative">
             <select
               value={selectedModel.id}
@@ -270,7 +255,7 @@ export default function PaidChat() {
         <motion.div
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-indigo-950/30 border border-indigo-500/30 px-4 py-2 rounded-xl text-xs text-indigo-300 flex items-center justify-between font-mono"
+          className="bg-indigo-950/30 border border-indigo-500/30 px-4 py-2 rounded-xl text-xs text-indigo-300 flex items-center justify-between font-mono shrink-0"
         >
           <div className="flex items-center gap-2">
             <Info className="h-4 w-4 text-indigo-400" />
@@ -282,7 +267,7 @@ export default function PaidChat() {
 
       {/* Low Balance Warning Banner */}
       {isLowBalance && (
-        <div className="bg-amber-950/30 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between text-xs text-amber-300 font-mono">
+        <div className="bg-amber-950/30 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between text-xs text-amber-300 font-mono shrink-0">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
             <span>Low AI Balance (${numericBalance.toFixed(2)} remaining). Top up your balance to maintain un-interrupted inference.</span>
@@ -298,74 +283,75 @@ export default function PaidChat() {
         </div>
       )}
 
-      {/* ── Main Chat Conversation Messages Area ── */}
-      <div className="flex-1 bg-zinc-900/40 border border-zinc-800/80 rounded-2xl p-4 overflow-y-auto no-scrollbar flex flex-col gap-4">
-        {messages.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center text-center p-6 gap-3 select-none">
-            <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-              <Bot className="h-6 w-6" />
-            </div>
-            <h2 className="font-display font-bold text-base text-zinc-200">
-              Meridian Decentralized Inference Marketplace
-            </h2>
-            <p className="text-xs text-zinc-400 max-w-md leading-relaxed">
-              Query metered decentralized AI model hosts. x402 transfer-with-authorization active—no wallet signature required per message.
-            </p>
-            <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 mt-2 bg-zinc-950 px-3 py-1.5 rounded-full border border-zinc-800">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-              <span>Active Model: {selectedModel.name} ({selectedModel.provider})</span>
-            </div>
-          </div>
-        ) : (
-          messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex items-start gap-3 max-w-3xl ${
-                msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'
-              }`}
-            >
-              <div
-                className={`h-8 w-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
-                  msg.role === 'user'
-                    ? 'bg-zinc-800 text-zinc-200 border border-zinc-700'
-                    : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
-                }`}
-              >
-                {msg.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+      {/* ── Main Independent Chat Messages Container (NO window auto-scroll jumps!) ── */}
+      <div className="flex-1 bg-zinc-900/40 border border-zinc-800/80 rounded-2xl overflow-hidden flex flex-col min-h-0">
+        <ChatContainer dependencies={[messages]} isGenerating={isGenerating}>
+          {messages.length === 0 ? (
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 gap-3 select-none my-auto">
+              <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                <Bot className="h-6 w-6" />
               </div>
-
-              <div
-                className={`flex flex-col gap-2 rounded-2xl p-4 text-xs leading-relaxed ${
-                  msg.role === 'user'
-                    ? 'bg-zinc-800/90 text-zinc-100 border border-zinc-700/60 rounded-tr-none'
-                    : 'bg-[#141417] text-zinc-200 border border-zinc-800 rounded-tl-none shadow-md'
-                }`}
-              >
-                {msg.role === 'assistant' && (
-                  <div className="flex items-center justify-between border-b border-zinc-900 pb-2 text-[10px] font-mono text-zinc-500">
-                    <span className="text-emerald-400 font-semibold">{msg.modelUsed || selectedModel.name}</span>
-                    <span>{msg.timestamp}</span>
-                  </div>
-                )}
-
-                <div className="whitespace-pre-wrap font-sans text-xs">{msg.content || (isGenerating && 'Synthesizing response...')}</div>
-
-                {/* Metering Receipt Footer */}
-                {msg.meteredReceipt && (
-                  <div className="mt-2 pt-2 border-t border-zinc-900/80 flex items-center justify-between text-[9px] font-mono text-zinc-500">
-                    <span>
-                      Tokens: {msg.meteredReceipt.inputTokens} in / {msg.meteredReceipt.outputTokens} out
-                    </span>
-                    <span className="text-emerald-400 font-bold">
-                      Settled: {msg.meteredReceipt.isFree ? 'Free' : `$${msg.meteredReceipt.totalCharged.toFixed(5)}`}
-                    </span>
-                  </div>
-                )}
+              <h2 className="font-display font-bold text-base text-zinc-200">
+                Meridian Decentralized Inference Marketplace
+              </h2>
+              <p className="text-xs text-zinc-400 max-w-md leading-relaxed">
+                Query metered decentralized AI model hosts. x402 transfer-with-authorization active—no wallet signature required per message.
+              </p>
+              <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 mt-2 bg-zinc-950 px-3 py-1.5 rounded-full border border-zinc-800">
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+                <span>Active Model: {selectedModel.name} ({selectedModel.provider})</span>
               </div>
             </div>
-          ))
-        )}
-        <div ref={chatEndRef} />
+          ) : (
+            messages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex items-start gap-3 max-w-3xl ${
+                  msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'
+                }`}
+              >
+                <div
+                  className={`h-8 w-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
+                    msg.role === 'user'
+                      ? 'bg-zinc-800 text-zinc-200 border border-zinc-700'
+                      : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                  }`}
+                >
+                  {msg.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                </div>
+
+                <div
+                  className={`flex flex-col gap-2 rounded-2xl p-4 text-xs leading-relaxed ${
+                    msg.role === 'user'
+                      ? 'bg-zinc-800/90 text-zinc-100 border border-zinc-700/60 rounded-tr-none'
+                      : 'bg-[#141417] text-zinc-200 border border-zinc-800 rounded-tl-none shadow-md'
+                  }`}
+                >
+                  {msg.role === 'assistant' && (
+                    <div className="flex items-center justify-between border-b border-zinc-900 pb-2 text-[10px] font-mono text-zinc-500">
+                      <span className="text-emerald-400 font-semibold">{msg.modelUsed || selectedModel.name}</span>
+                      <span>{msg.timestamp}</span>
+                    </div>
+                  )}
+
+                  <div className="whitespace-pre-wrap font-sans text-xs">{msg.content || (isGenerating && 'Synthesizing response...')}</div>
+
+                  {/* Metering Receipt Footer */}
+                  {msg.meteredReceipt && (
+                    <div className="mt-2 pt-2 border-t border-zinc-900/80 flex items-center justify-between text-[9px] font-mono text-zinc-500">
+                      <span>
+                        Tokens: {msg.meteredReceipt.inputTokens} in / {msg.meteredReceipt.outputTokens} out
+                      </span>
+                      <span className="text-emerald-400 font-bold">
+                        Settled: {msg.meteredReceipt.isFree ? 'Free' : `$${msg.meteredReceipt.totalCharged.toFixed(5)}`}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))
+          )}
+        </ChatContainer>
       </div>
 
       {/* ── Input Box & Controls ── */}
@@ -405,10 +391,13 @@ export default function PaidChat() {
           )}
         </div>
 
-        {/* Input Bar Footer Specs */}
+        {/* Pre-submission Cost Transparency Footer */}
         <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 border-t border-zinc-900 pt-2 px-1">
-          <span>Rate: {selectedModel.isFree ? 'Free' : `$${selectedModel.priceInputPerMillion}/1M in, $${selectedModel.priceOutputPerMillion}/1M out`}</span>
-          <span>x402 Micropayment Settlement Active</span>
+          <span className="flex items-center gap-1">
+            <DollarSign className="h-3 w-3 text-emerald-400" />
+            Estimated cost: {selectedModel.isFree ? 'Free ($0.00)' : `<$0.01 per request ($${selectedModel.priceInputPerMillion}/1M in)`}
+          </span>
+          <span>x402 Session Active (No Signatures)</span>
         </div>
       </form>
 

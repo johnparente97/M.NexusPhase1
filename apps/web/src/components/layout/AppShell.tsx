@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 import TopNav from './TopNav';
 import MobileNav from './MobileNav';
+import MobileNavDrawer from './MobileNavDrawer';
 import Footer from './Footer';
 import MissionControlSidebar from './MissionControlSidebar';
 import WorkspaceInspector from './WorkspaceInspector';
@@ -15,6 +16,7 @@ import AiCopilot from '../common/AiCopilot';
 export default function AppShell() {
   const { isLoaded } = useAuth();
   const [showPalette, setShowPalette] = useState(false);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
   // Setup global Cmd+K listener
   useEffect(() => {
@@ -36,15 +38,24 @@ export default function AppShell() {
     <ToastProvider>
       <div className="min-h-screen bg-zinc-950 flex flex-col antialiased selection:bg-emerald-400/30 selection:text-white">
         {/* Top Header Navigation */}
-        <TopNav onSearchClick={() => setShowPalette(true)} />
+        <TopNav
+          onSearchClick={() => setShowPalette(true)}
+          onMobileMenuClick={() => setIsMobileDrawerOpen(true)}
+        />
+
+        {/* Mobile Slide-Out Drawer */}
+        <MobileNavDrawer
+          isOpen={isMobileDrawerOpen}
+          onClose={() => setIsMobileDrawerOpen(false)}
+        />
 
         {/* Integrated 3-Pane AI OS Workspace Layout */}
         <div className="flex-1 flex w-full relative">
           {/* 1. Left Mission Control Sidebar */}
           <MissionControlSidebar onSearchClick={() => setShowPalette(true)} />
 
-          {/* 2. Primary Center Workspace View - md:pt-24 accounts for fixed floating TopNav (desktop only) */}
-          <main className="flex-1 flex flex-col min-w-0 md:pt-24 pb-20">
+          {/* 2. Primary Center Workspace View - pt-16 accounts for h-16 fixed TopNav */}
+          <main className="flex-1 flex flex-col min-w-0 pt-16 pb-20 md:pb-12">
             <Outlet />
           </main>
 
@@ -58,7 +69,7 @@ export default function AppShell() {
         {/* macOS / VisionOS Style Floating Dock */}
         <FloatingDock onSearchClick={() => setShowPalette(true)} />
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation Bar */}
         <MobileNav />
 
         {/* Floating Intelligence Assistant & Spotlight Search */}

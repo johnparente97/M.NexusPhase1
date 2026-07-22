@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../components/ui/Button';
-import { Badge } from '../components/ui/Badge';
 import { motion } from 'framer-motion';
 import { DolphinAdapter, DolphinChatMessage } from '../adapters/dolphin/adapter';
-import { Sparkles, Send, Square, Bot, User, ArrowUpRight, RefreshCw, Zap, ChevronDown } from 'lucide-react';
+import { Sparkles, Square, Bot, User, ArrowUpRight, RefreshCw, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { NexusLogoMark } from '../components/common/NexusLogoMark';
+import ChatContainer from '../components/chat/ChatContainer';
 
 export default function DolphinChat() {
   const [messages, setMessages] = useState<DolphinChatMessage[]>(() => {
@@ -30,11 +30,9 @@ export default function DolphinChat() {
   const [selectedMode, setSelectedMode] = useState('logical');
 
   const abortRef = useRef<AbortController | null>(null);
-  const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     localStorage.setItem('nexus_dolphin_history', JSON.stringify(messages));
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   const handleSend = async (e?: React.FormEvent) => {
@@ -108,12 +106,12 @@ export default function DolphinChat() {
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full h-[calc(100vh-8.5rem)] md:h-[calc(100vh-4.5rem)] p-3 sm:p-6 gap-3 select-none">
+    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full h-[calc(100vh-7rem)] md:h-[calc(100vh-5rem)] p-3 sm:p-6 gap-3 select-none">
       
-      {/* ── Top Toolbar — Meridian Inference layout ── */}
+      {/* ── Top Toolbar ── */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#171719] border border-zinc-800/80 p-3 sm:px-4 sm:py-2.5 rounded-2xl shrink-0 shadow-lg shadow-black/20">
         
-        {/* Left Title & x402 Stack Badge */}
+        {/* Left Title & Badge */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2">
             <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8" />
@@ -155,64 +153,65 @@ export default function DolphinChat() {
         </div>
       </div>
 
-      {/* ── Main Streamed Chat Window ── */}
-      <div className="flex-1 overflow-y-auto border border-zinc-800/80 bg-[#171719]/60 backdrop-blur-xl rounded-2xl p-4 flex flex-col gap-4">
-        {messages.map((msg) => (
-          <motion.div
-            key={msg.id}
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            className={`flex items-start gap-3 max-w-3xl ${
-              msg.role === 'user' ? 'ml-auto flex-row-reverse' : ''
-            }`}
-          >
-            <div
-              className={`h-7 w-7 rounded-xl flex items-center justify-center text-xs shrink-0 ${
-                msg.role === 'user'
-                  ? 'bg-white text-zinc-950 font-bold'
-                  : 'bg-zinc-900 border border-zinc-800 text-emerald-400'
+      {/* ── Main Streamed Independent Chat Window (NO document auto-scroll jumps!) ── */}
+      <div className="flex-1 overflow-hidden border border-zinc-800/80 bg-[#171719]/60 backdrop-blur-xl rounded-2xl flex flex-col min-h-0">
+        <ChatContainer dependencies={[messages]} isGenerating={isGenerating}>
+          {messages.map((msg) => (
+            <motion.div
+              key={msg.id}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className={`flex items-start gap-3 max-w-3xl ${
+                msg.role === 'user' ? 'ml-auto flex-row-reverse' : ''
               }`}
             >
-              {msg.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
-            </div>
-
-            <div className={`flex flex-col gap-1 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
               <div
-                className={`p-4 rounded-2xl text-xs leading-relaxed ${
+                className={`h-7 w-7 rounded-xl flex items-center justify-center text-xs shrink-0 ${
                   msg.role === 'user'
-                    ? 'bg-zinc-800 text-zinc-100 rounded-tr-none'
-                    : 'bg-zinc-900/90 border border-zinc-800/80 text-zinc-200 rounded-tl-none font-sans'
+                    ? 'bg-white text-zinc-950 font-bold'
+                    : 'bg-zinc-900 border border-zinc-800 text-emerald-400'
                 }`}
               >
-                {msg.content ? (
-                  renderMessageContent(msg.content)
-                ) : (
-                  <span className="text-zinc-500 italic flex items-center gap-1.5">
-                    <Sparkles className="h-3.5 w-3.5 text-emerald-400 animate-spin" />
-                    Dolphin is generating...
-                  </span>
-                )}
+                {msg.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
               </div>
 
-              <div className="flex items-center gap-2 text-[9px] font-mono text-zinc-500 px-1">
-                <span>{msg.timestamp}</span>
-                {msg.role === 'assistant' && (
-                  <>
-                    <span>•</span>
-                    <span className="text-emerald-400 font-semibold">$0.00 (Free)</span>
-                    {msg.tokensEstimated && (
-                      <>
-                        <span>•</span>
-                        <span>~{msg.tokensEstimated} tokens</span>
-                      </>
-                    )}
-                  </>
-                )}
+              <div className={`flex flex-col gap-1 ${msg.role === 'user' ? 'items-end' : 'items-start'}`}>
+                <div
+                  className={`p-4 rounded-2xl text-xs leading-relaxed ${
+                    msg.role === 'user'
+                      ? 'bg-zinc-800 text-zinc-100 rounded-tr-none'
+                      : 'bg-zinc-900/90 border border-zinc-800/80 text-zinc-200 rounded-tl-none font-sans'
+                  }`}
+                >
+                  {msg.content ? (
+                    renderMessageContent(msg.content)
+                  ) : (
+                    <span className="text-zinc-500 italic flex items-center gap-1.5">
+                      <Sparkles className="h-3.5 w-3.5 text-emerald-400 animate-spin" />
+                      Dolphin is generating...
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-2 text-[9px] font-mono text-zinc-500 px-1">
+                  <span>{msg.timestamp}</span>
+                  {msg.role === 'assistant' && (
+                    <>
+                      <span>•</span>
+                      <span className="text-emerald-400 font-semibold">$0.00 (Free)</span>
+                      {msg.tokensEstimated && (
+                        <>
+                          <span>•</span>
+                          <span>~{msg.tokensEstimated} tokens</span>
+                        </>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
-            </div>
-          </motion.div>
-        ))}
-        <div ref={chatEndRef} />
+            </motion.div>
+          ))}
+        </ChatContainer>
       </div>
 
       {/* ── Bottom Input Capsule Bar ── */}

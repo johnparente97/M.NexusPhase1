@@ -58,7 +58,7 @@ export const WorkspaceInspector: React.FC<WorkspaceInspectorProps> = ({
     return (
       <button
         onClick={() => setIsCollapsed(false)}
-        className="fixed right-4 top-24 z-40 bg-[#171719] border border-zinc-800 hover:border-emerald-500/50 text-zinc-400 hover:text-emerald-400 px-3 py-2.5 rounded-xl flex items-center gap-2 shadow-xl shadow-black/40 transition-all cursor-pointer group"
+        className="fixed right-4 top-20 z-layer-header bg-[#171719] border border-zinc-800 hover:border-emerald-500/50 text-zinc-400 hover:text-emerald-400 px-3 py-2.5 rounded-xl flex items-center gap-2 shadow-xl shadow-black/40 transition-all cursor-pointer group"
         title="Expand Context Inspector"
       >
         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-sm shadow-emerald-500" />
@@ -69,7 +69,7 @@ export const WorkspaceInspector: React.FC<WorkspaceInspectorProps> = ({
   }
 
   return (
-    <aside className="w-80 shrink-0 border-l border-zinc-800/80 bg-[#09090b]/95 backdrop-blur-md hidden xl:flex flex-col h-[calc(100vh-6rem)] sticky top-24 select-none overflow-y-auto no-scrollbar p-5 gap-5 z-30 transition-all duration-200">
+    <aside className="w-80 shrink-0 border-l border-zinc-800/80 bg-[#09090b]/95 backdrop-blur-md hidden xl:flex flex-col h-[calc(100vh-4rem)] sticky top-16 select-none overflow-y-auto no-scrollbar p-5 gap-5 z-layer-header transition-all duration-200">
       
       {/* Inspector Top Header */}
       <div className="flex items-center justify-between border-b border-zinc-900 pb-3.5">
