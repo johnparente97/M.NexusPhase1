@@ -359,7 +359,7 @@ export default function PaidChat() {
         <Link to="/" className="flex items-center gap-2.5 group">
           <NexusLogoMark className="h-6 w-6 sm:h-7 sm:w-7" />
           <span className="font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors">
-            Nexus Inference Hub
+            Meridian Inference Hub
           </span>
         </Link>
 
