@@ -17,47 +17,48 @@ export const NexusLogoMark: React.FC<NexusLogoMarkProps> = ({ className = 'h-9 w
       style={style}
     >
       <defs>
-        {/* Soft Radial Glow behind the central aperture */}
-        <radialGradient id="meridianApertureGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#34D399" stopOpacity="0.3" />
-          <stop offset="70%" stopColor="#27F293" stopOpacity="0.08" />
+        {/* Soft Ambient Glow */}
+        <radialGradient id="meridianGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#34D399" stopOpacity="0.25" />
           <stop offset="100%" stopColor="#10B981" stopOpacity="0" />
         </radialGradient>
 
-        {/* Meridian Mint Emerald Gradient */}
-        <linearGradient id="meridianMintGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+        {/* Meridian Mint Emerald Color Gradient */}
+        <linearGradient id="meridianBrandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="#34D399" />
-          <stop offset="50%" stopColor="#27F293" />
-          <stop offset="100%" stopColor="#10B981" />
+          <stop offset="100%" stopColor="#27F293" />
         </linearGradient>
 
-        {/* Single Aperture Blade definition for rotational symmetry */}
-        <g id="meridianApertureBlade">
+        {/* 
+          Exact Meridian Pinwheel / Aperture Blade 
+          4-fold rotational symmetry around (50, 50).
+        */}
+        <g id="meridianPinwheelBlade">
           <path
-            d="M 34 14 
-               L 61 14 
-               C 63.5 14 65.5 15.2 66.5 17 
-               L 85.5 36 
-               C 86.5 37 86.5 39 85.5 40 
-               L 67 58.5 
-               C 66 59.5 64 59.5 63 58.5 
-               L 36.5 32 
-               C 35.5 31 35.5 29.5 36.5 28.5 
-               L 34 14 Z"
-            fill="url(#meridianMintGrad)"
+            d="M 37,14 
+               L 62,14 
+               C 64.5,14 66.5,15 67.5,17 
+               L 86,37.5 
+               C 87,38.5 87,40.5 86,41.5 
+               L 67.5,60 
+               C 66.5,61 64.5,61 63.5,60 
+               L 37,33.5 
+               C 35.5,32 35.5,29.5 37,28 
+               L 37,14 Z"
+            fill="url(#meridianBrandGrad)"
           />
         </g>
       </defs>
 
-      {/* Central Ambient Glow */}
-      <circle cx="50" cy="50" r="42" fill="url(#meridianApertureGlow)" />
+      {/* Central Background Glow */}
+      <circle cx="50" cy="50" r="44" fill="url(#meridianGlow)" />
 
-      {/* 4 Interlocking Rotated Meridian Blades */}
+      {/* The 4 Rotated Meridian Aperture Blades */}
       <g>
-        <use href="#meridianApertureBlade" />
-        <use href="#meridianApertureBlade" transform="rotate(90 50 50)" />
-        <use href="#meridianApertureBlade" transform="rotate(180 50 50)" />
-        <use href="#meridianApertureBlade" transform="rotate(270 50 50)" />
+        <use href="#meridianPinwheelBlade" />
+        <use href="#meridianPinwheelBlade" transform="rotate(90 50 50)" />
+        <use href="#meridianPinwheelBlade" transform="rotate(180 50 50)" />
+        <use href="#meridianPinwheelBlade" transform="rotate(270 50 50)" />
       </g>
     </svg>
   );
