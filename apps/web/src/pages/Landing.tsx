@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import { WORKFLOW_CATEGORIES } from '@meridian-nexus/shared-types';
 import { CATEGORY_ICONS } from '../utils/constants';
-import logoNexus from '../assets/logo-nexus.png';
 import { NexusLogoMark } from '../components/common/NexusLogoMark';
 
 export default function Landing() {
