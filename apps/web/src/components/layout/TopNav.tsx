@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { Button } from '../ui/Button';
-import { Compass, Layers, History, Award, LayoutDashboard, Search, Wallet, LogOut as LogOutIcon, Copy, Menu, Coins } from 'lucide-react';
-import { cn } from '../../utils/cn';
+import { Search, Wallet, LogOut as LogOutIcon, Copy, Menu, Coins } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DemoLabel from '../common/DemoLabel';
 import { useWallet } from '../../hooks/useWallet';
@@ -24,12 +23,11 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
     navigate('/dashboard');
   };
 
-  const navItemVariants = { hover: { y: -1, scale: 1.03 }, tap: { scale: 0.97 } };
   const isWrongNetwork = isConnected && chainId !== 84532;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-layer-header h-16 px-3 sm:px-6 bg-[#171719]/90 backdrop-blur-xl border-b border-zinc-800/80 flex items-center justify-between select-none">
-      <div className="max-w-7xl w-full mx-auto flex items-center justify-between gap-4">
+      <div className="w-full mx-auto flex items-center justify-between gap-4">
 
         {/* Left: Mobile Menu Toggle + Brand Logo & Title */}
         <div className="flex items-center gap-3 shrink-0">
@@ -53,56 +51,8 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
           <DemoLabel />
         </div>
 
-        {/* Center: Desktop Navigation Links */}
-        <nav className="hidden lg:flex items-center gap-5">
-          {[
-            { to: '/chat', label: 'Inference Chat' },
-            { to: '/marketplace/models', label: 'Models' },
-            { to: '/exchange', label: 'Exchange' },
-            ...(isSignedIn ? [
-              { to: '/studio', label: 'Studio' },
-              { to: '/activity', label: 'Activity' },
-              ...(user?.role === 'creator' ? [{ to: '/creator', label: 'Creator' }] : []),
-            ] : []),
-          ].map(({ to, label }) => (
-            <motion.div key={to} whileHover="hover" whileTap="tap" variants={navItemVariants}>
-              <NavLink
-                to={to}
-                className={({ isActive }) =>
-                  cn(
-                    'text-xs font-medium transition-colors py-1',
-                    isActive
-                      ? 'text-emerald-400 font-semibold border-b-2 border-emerald-400'
-                      : 'text-zinc-400 hover:text-white'
-                  )
-                }
-              >
-                {label}
-              </NavLink>
-            </motion.div>
-          ))}
-
-          {/* Command Centre Link */}
-          {isSignedIn && (
-            <motion.div whileHover="hover" whileTap="tap" variants={navItemVariants}>
-              <NavLink
-                to="/dashboard"
-                className={({ isActive }) =>
-                  cn(
-                    'flex items-center gap-1.5 text-xs font-semibold transition-colors',
-                    isActive ? 'text-emerald-400' : 'text-zinc-200 hover:text-white'
-                  )
-                }
-              >
-                <LayoutDashboard className="h-3.5 w-3.5 text-emerald-400" />
-                Command Centre
-              </NavLink>
-            </motion.div>
-          )}
-        </nav>
-
-        {/* Right Controls: Search, Wallet & Balance */}
-        <div className="flex items-center gap-2">
+        {/* Right Controls: Spotlight Search, AI Balance, Wallet & Profile */}
+        <div className="flex items-center gap-2.5">
           {/* Spotlight Search Pill */}
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -111,14 +61,14 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
             className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 hover:text-zinc-200 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl px-3 py-1.5 transition-colors cursor-pointer select-none"
           >
             <Search className="h-3.5 w-3.5 text-zinc-500" />
-            <span className="hidden md:inline">Search...</span>
+            <span className="hidden md:inline">Spotlight</span>
             <kbd className="text-[9px] text-zinc-500 bg-zinc-950 border border-zinc-800 px-1 py-0.5 rounded font-mono">⌘K</kbd>
           </motion.button>
 
           {/* AI Balance Quick Action */}
           <Link
             to="/balance"
-            className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs font-mono text-emerald-400 px-3 py-1.5 rounded-xl transition-colors shrink-0"
+            className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 hover:border-emerald-500/40 text-xs font-mono text-emerald-400 px-3 py-1.5 rounded-xl transition-colors shrink-0"
             title="Unified AI Balance"
           >
             <Coins className="h-3.5 w-3.5 text-emerald-400" />
