@@ -64,13 +64,17 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         {!isCollapsed ? (
           <Link to="/" className="flex items-center gap-2.5 group overflow-hidden">
             <NexusLogoMark className="h-7 w-7 text-emerald-400 shrink-0" />
-            <span className="font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors truncate">
-              Meridian Nexus
-            </span>
-            <DemoLabel />
+            <div className="flex flex-col min-w-0">
+              <span className="font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors truncate">
+                Nexus
+              </span>
+              <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest leading-none">
+                Powered by Meridian
+              </span>
+            </div>
           </Link>
         ) : (
-          <Link to="/" className="mx-auto" title="Meridian Nexus">
+          <Link to="/" className="mx-auto" title="Nexus • Powered by Meridian">
             <NexusLogoMark className="h-7 w-7 text-emerald-400" />
           </Link>
         )}

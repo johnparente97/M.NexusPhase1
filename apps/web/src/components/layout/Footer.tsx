@@ -10,12 +10,17 @@ export default function Footer() {
         <div className="flex flex-col gap-3 max-w-xs">
           <Link to="/" className="flex items-center gap-2.5">
             <NexusLogoMark className="h-9 w-9 sm:h-10 sm:w-10 object-contain" />
-            <span className="font-display font-bold text-base tracking-tight text-zinc-100">
-              Meridian Nexus
-            </span>
+            <div className="flex flex-col">
+              <span className="font-display font-bold text-base tracking-tight text-zinc-100">
+                Nexus
+              </span>
+              <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest leading-none">
+                Powered by Meridian
+              </span>
+            </div>
           </Link>
           <p className="text-[11px] text-zinc-500 leading-normal">
-            Discover, configure, and execute trusted AI capabilities through one outcome-first interface. Powered by Meridian infrastructure.
+            Discover, configure, and execute trusted AI capabilities through one outcome-first interface. Built on Meridian (MRDN) infrastructure.
           </p>
         </div>
 
@@ -44,7 +49,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-zinc-900 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
         <p className="text-[10px] text-zinc-600">
-          © {new Date().getFullYear()} Meridian Nexus. All rights reserved.
+          © {new Date().getFullYear()} Nexus. Built on Meridian (MRDN). All rights reserved.
         </p>
         <p className="text-[10px] text-zinc-500 max-w-md leading-normal sm:text-right">
           <strong>Demonstration Disclosure</strong>: This platform operates in fallback demonstration mode. All transactions, credits, and metrics are simulated for evaluation purposes.

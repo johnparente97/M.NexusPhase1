@@ -50,7 +50,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         <Link to="/" className="flex items-center gap-2.5 group">
           <NexusLogoMark className="h-7 w-7 text-emerald-400" />
           <span className="font-display font-bold text-sm text-white tracking-tight">
-            Meridian Nexus
+            Nexus
           </span>
         </Link>
         <DemoLabel />
