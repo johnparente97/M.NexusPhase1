@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import {
   Compass,
@@ -14,21 +14,20 @@ import {
   Terminal,
   BookOpen,
   Bot,
-  User,
   LogOut,
-  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { cn } from '../../utils/cn';
 import { NexusLogoMark } from '../common/NexusLogoMark';
 import DemoLabel from '../common/DemoLabel';
+import { useSidebarStore } from '../../stores/sidebar-store';
 
 export interface MissionControlSidebarProps {
   onSearchClick: () => void;
 }
 
 export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ onSearchClick }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const { isCollapsed, toggleSidebar } = useSidebarStore();
   const { isSignedIn, user, signOut } = useAuth();
 
   const navItems: Array<{
@@ -53,14 +52,14 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
   return (
     <aside
       className={cn(
-        'bg-[#121214] border-r border-zinc-800/80 flex flex-col h-screen sticky top-0 select-none transition-all duration-200 z-layer-header hidden lg:flex shrink-0 shadow-xl',
+        'fixed top-0 left-0 bottom-0 h-screen bg-[#121214] border-r border-zinc-800/80 flex flex-col select-none transition-all duration-200 z-layer-header hidden lg:flex shrink-0 shadow-xl',
         {
           'w-64': !isCollapsed,
           'w-16': isCollapsed,
         }
       )}
     >
-      {/* ── Top Brand Section (OpenAI/Claude Style) ── */}
+      {/* ── Top Brand Header ── */}
       <div className="h-14 px-3 border-b border-zinc-800/80 flex items-center justify-between shrink-0">
         {!isCollapsed ? (
           <Link to="/" className="flex items-center gap-2.5 group overflow-hidden">
@@ -77,7 +76,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         )}
       </div>
 
-      {/* ── ⌘K Search Command Launcher ── */}
+      {/* ── ⌘K Search Launcher ── */}
       <div className="p-3 border-b border-zinc-800/80 shrink-0">
         {!isCollapsed ? (
           <button
@@ -177,7 +176,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
 
         {/* Collapse Button */}
         <button
-          onClick={() => setIsCollapsed(!isCollapsed)}
+          onClick={toggleSidebar}
           className="w-full flex items-center justify-center p-2 rounded-xl text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 transition-colors cursor-pointer"
           title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
         >
