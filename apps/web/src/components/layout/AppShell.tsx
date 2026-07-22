@@ -21,7 +21,8 @@ export default function AppShell() {
   const [showPalette, setShowPalette] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
-  const isChat = location.pathname.startsWith('/chat');
+  // Check both pathname and hash for HashRouter resilience
+  const isChat = location.pathname.includes('/chat') || location.hash.includes('/chat');
 
   // Setup global Cmd+K listener
   useEffect(() => {
@@ -67,7 +68,7 @@ export default function AppShell() {
             className={cn(
               'flex-1 flex flex-col min-w-0 pt-14 w-full max-w-7xl mx-auto px-2 sm:px-5',
               {
-                'pb-0 h-[calc(100vh-3.5rem)] overflow-hidden': isChat,
+                'pb-0 h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] overflow-hidden': isChat,
                 'pb-16 md:pb-8': !isChat,
               }
             )}
@@ -78,7 +79,7 @@ export default function AppShell() {
           {/* Context Inspector Overlay Panel */}
           <WorkspaceInspector />
 
-          {/* Footer (Hidden on Chat workspace to maximize vertical space) */}
+          {/* Footer (Hidden on Chat workspace to maximize vertical height) */}
           {!isChat && <Footer />}
         </div>
 

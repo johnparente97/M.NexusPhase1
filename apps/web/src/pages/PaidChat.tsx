@@ -350,7 +350,7 @@ export default function PaidChat() {
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full h-[calc(100vh-4.25rem)] p-2 sm:p-4 gap-3">
+    <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full h-full min-h-0 p-2 sm:p-4 gap-3 overflow-hidden">
       
       {/* Sleek OpenAI/Anthropic Minimalist Header Toolbar */}
       <div className="flex items-center justify-between gap-3 bg-[#171719]/80 backdrop-blur-xl border border-zinc-800/80 px-5 py-2 rounded-2xl shrink-0 shadow-lg">
