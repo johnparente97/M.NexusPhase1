@@ -1,87 +1,98 @@
-# Meridian Nexus — AI Capability Marketplace & Intelligence Synthesis Platform
+# Meridian Nexus — Front-End Application & AI Capability Marketplace
 
-[![Launch Meridian Nexus](https://img.shields.io/badge/LAUNCH_MERIDIAN_NEXUS-27F293?style=for-the-badge&logo=rocket&logoColor=000)](https://johnparente97.github.io/M.NexusPhase1/)
+[![Live Application](https://img.shields.io/badge/LIVE_NEXUS_DEMO-27F293?style=for-the-badge&logo=rocket&logoColor=000)](https://johnparente97.github.io/M.NexusPhase1/)
 
-**No installation required — opens the live Meridian Nexus demo in your browser.**
-
-Public Live URL: **[https://johnparente97.github.io/M.NexusPhase1/](https://johnparente97.github.io/M.NexusPhase1/)**
-
-> **Build intelligence. Market capabilities. Synthesize outcomes.**  
-> *Meridian coordinates value. Nexus coordinates capabilities, workflows, and outcomes. MRDN aligns productive participation.*
+> **Meridian handles payment, settlement, organization, and value movement.  
+> Nexus handles model discovery, chat, workflow orchestration, and user experience.**
 
 ---
 
-## 🌟 Overview
+## 🌟 Overview & Product Positioning
 
-**Meridian Nexus** is the application, marketplace, orchestration, and distribution layer built on top of Meridian's payment and settlement infrastructure.
+**Meridian Nexus** is the user-facing application, marketplace, orchestration, and distribution layer built on top of Meridian's existing settlement infrastructure.
 
-It provides a unified AI operating system where users can:
-1. Access the **Dolphin Free Experience** (unmetered, zero cost per prompt AI chat).
-2. Discover, compare, and execute models in the **AntSeed Model Marketplace** (Claude 3.5 Sonnet, GPT-4o, DeepSeek R1, Llama 3.3 70B, Gemini 2.5 Flash, Flux 1.1 Pro).
-3. Fund a **Universal Dollar AI Balance** across EVM networks (Base, Ethereum, Arbitrum, Polygon, Avalanche) with a configurable **1% Meridian Top-Up Fee (`MERIDIAN_TOP_UP_FEE_BPS=100`)**.
-4. Authorize **Session-Based Spending Limits** once without signing a wallet message for every AI prompt.
-5. Track **Usage-Based Token Billing** with real-time input/output token metering (`inputCost + outputCost`) and machine-readable outcome receipts.
-6. Compose agents in **Agent Builder** and outcome workflows in **Nexus Studio**.
-7. Manage enterprise teams, budgets, and member roles in **Organization Dashboard**.
+### Core Value Proposition
+- **No Subscription & No KYC**: Instant access to decentralized AI model hosts.
+- **Pay Only For What Is Used**: Micro-metered token billing per inference prompt.
+- **MRDN Optionality & Fee Benefit**:
+  - **Top-Up using MRDN**: **0% top-up fee**
+  - **Top-Up using USDC or other supported tokens**: **1% top-up fee**
+- **One Top-Up, Zero Repeated Signatures**: Transfer-with-authorization (x402 protocol) funds a session balance so users don't sign a transaction for every message.
+- **Decentralized AI First**: Foundation built on decentralized AI model hosts (Dolphin, DeepSeek R1, Llama 3.3 70B, Qwen 2.5 72B, Mistral, Nous Hermes). Centralized models exist as secondary multi-step workflow connectors.
 
 ---
 
-## 🛠️ Monorepo Architecture
+## 🛠️ Repository Structure
 
 ```
 M.NexusPhase1/
-├── .github/workflows/deploy.yml # GitHub Actions automated Pages deployment
-├── HOSTING_AUDIT.md            # Hosting & Infrastructure Audit Report
-├── DEPLOYMENT_CHECKLIST.md     # Production Redeployment Checklist
-├── INTEGRATION_STATUS.md       # Operational status matrix (Live vs Testnet vs Mocks)
+├── README.md                           # Product overview & quickstart
+├── ARCHITECTURE.md                     # Application architecture & adapter patterns
+├── PRODUCT_ALIGNMENT.md                # Meridian vs Nexus boundaries & positioning
+├── BACKEND_INTEGRATION_REQUIREMENTS.md # Detailed backend service integration spec
+├── MOCKS_AND_GAPS.md                   # Operational vs mocked capabilities matrix
+├── QA_TEST_PLAN.md                     # QA test suites & verification checklist
+├── HANDOFF.md                          # Handoff guide for Meridian developers
+├── CHANGELOG_AUDIT.md                  # Detailed audit log of fixes & refactoring
 ├── apps/
-│   ├── api/                    # Cloudflare Worker API (Hono + D1 Database)
-│   └── web/                    # Vite + React + Tailwind + Framer Motion UI
+│   ├── api/                            # Cloudflare Worker API (Hono + D1 Database)
+│   └── web/                            # Vite + React 19 + Tailwind CSS UI
 └── packages/
-    ├── shared-types/           # Shared TypeScript contracts and entity types
-    └── validation/             # Zod validation schemas
+    ├── shared-types/                   # Shared TypeScript entity types
+    └── validation/                     # Zod validation schemas
 ```
 
 ---
 
 ## 🚀 Quick Start (Local Development)
 
+### Prerequisites
+- **Node.js**: `v18.0.0+` or `v20.0.0+`
+- **npm**: `v9.0.0+`
+
 ### 1. Install Dependencies
 ```bash
-pnpm install
+npm install
 ```
 
-### 2. Typecheck & Validate
+### 2. Type Check Codebase
 ```bash
-pnpm typecheck
+npm run typecheck
 ```
 
-### 3. Launch Development Server
+### 3. Execute Test Suites
 ```bash
-pnpm dev
+npm test
 ```
-- **Web App**: `http://localhost:5173`
-- **API Worker**: `http://localhost:8787` (proxied automatically via `/api`)
+
+### 4. Build Production Bundle
+```bash
+npm run build
+```
+
+### 5. Start Development Servers
+```bash
+# Starts both Frontend (Vite) on http://localhost:5173 and Worker API on http://localhost:8787
+npm run dev
+```
 
 ---
 
-## 📦 Production Deployment
+## 🔒 Environment Setup
 
-### Frontend (GitHub Pages)
-The web application is automatically built and deployed to GitHub Pages via `.github/workflows/deploy.yml` on every push to `main`.
-
-Live URL: **[https://johnparente97.github.io/M.NexusPhase1/](https://johnparente97.github.io/M.NexusPhase1/)**
-
-### Backend (Cloudflare Workers)
-Deploy the API Worker to Cloudflare Workers edge network:
+Copy `.env.example` to `.env` in `apps/web/`:
 ```bash
-pnpm deploy:api
+VITE_API_URL=http://localhost:8787
+VITE_CLERK_PUBLISHABLE_KEY=pk_test_XXXXXXXXXXXXXXXXXXXXXXXX
+VITE_TURNSTILE_SITE_KEY=1x00000000000000000000AA
 ```
-Deployed Worker URL: `https://meridian-nexus-api.jrjohnparente.workers.dev`
-Worker Health Check: `https://meridian-nexus-api.jrjohnparente.workers.dev/api/health`
+
+Secrets for backend Worker must be set using Wrangler secrets (`wrangler secret put <KEY>`). **Never commit private keys or secrets.**
 
 ---
 
-## 📄 License & Attribution
+## 📦 Deployment Information
 
-Built on Meridian Infrastructure. All rights reserved.
+- **Frontend Deployment**: Automated via GitHub Actions `.github/workflows/deploy.yml` to GitHub Pages upon push to `main`.
+- **Live Frontend URL**: [https://johnparente97.github.io/M.NexusPhase1/](https://johnparente97.github.io/M.NexusPhase1/)
+- **Backend Worker URL**: `https://meridian-nexus-api.jrjohnparente.workers.dev`

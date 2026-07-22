@@ -1,8 +1,8 @@
 // ─── Meridian Router & Session Authorization Adapter ─────────────────
-// Manages multichain top-ups, 1% fee calculation, and session spending limits.
+// Manages multichain top-ups, fee calculations (0% MRDN, 1% USDC/others), and session spending limits.
 // ─────────────────────────────────────────────────────────────────────
 
-import { MERIDIAN_TOP_UP_FEE_BPS, SUPPORTED_CHAINS, SupportedToken } from '../../config/chain-config';
+import { MERIDIAN_TOP_UP_FEE_BPS, MRDN_TOP_UP_FEE_BPS, STANDARD_TOP_UP_FEE_BPS, SupportedToken } from '../../config/chain-config';
 
 export interface TopUpCalculation {
   depositAmount: number;
@@ -10,7 +10,10 @@ export interface TopUpCalculation {
   sourceChainId: number;
   conversionRateUsd: number;
   grossUsdValue: number;
-  meridianTopUpFeeUsd: number; // 1% Fee
+  meridianTopUpFeeUsd: number; // 0% for MRDN, 1% for USDC / standard assets
+  feeBps: number;
+  feePercentageDisplay: string;
+  isMrdnZeroFeeBenefit: boolean;
   estimatedNetworkFeeUsd: number;
   slippageUsd: number;
   netCreditedUsdc: number;
@@ -31,7 +34,10 @@ export interface SessionAuthorization {
 
 export class MeridianRouterAdapter {
   /**
-   * Calculates 1% Meridian Top-Up Fee breakdown across EVM chains & tokens
+   * Calculates Meridian Top-Up Fee breakdown across EVM chains & tokens
+   * Rule:
+   * - Top-up using MRDN: 0% fee (0 BPS)
+   * - Top-up using USDC or other supported asset: 1% fee (100 BPS)
    */
   static calculateTopUp(
     depositAmount: number,
@@ -40,6 +46,7 @@ export class MeridianRouterAdapter {
   ): TopUpCalculation {
     // Estimated token prices vs USD
     const priceMap: Record<string, number> = {
+      MRDN: 1.0, // Fixed 1:1 settlement credit baseline
       USDC: 1.0,
       USDG: 1.0,
       ETH: 3450.0,
@@ -49,7 +56,11 @@ export class MeridianRouterAdapter {
 
     const rate = priceMap[token.symbol] || 1.0;
     const grossUsdValue = depositAmount * rate;
-    const feePercent = MERIDIAN_TOP_UP_FEE_BPS / 10000; // 0.01 (1%)
+
+    // Determine top-up fee: MRDN has 0% fee benefit, others have 1% fee
+    const isMrdnZeroFee = token.symbol === 'MRDN' || token.topUpFeeBps === 0;
+    const feeBps = isMrdnZeroFee ? MRDN_TOP_UP_FEE_BPS : (token.topUpFeeBps ?? STANDARD_TOP_UP_FEE_BPS);
+    const feePercent = feeBps / 10000;
     const meridianTopUpFeeUsd = parseFloat((grossUsdValue * feePercent).toFixed(4));
     const estimatedNetworkFeeUsd = chainId === 1 ? 4.5 : 0.02; // ETH vs Layer-2 gas
     const slippageUsd = parseFloat(((grossUsdValue * token.estimatedSlippageBps) / 10000).toFixed(4));
@@ -66,6 +77,9 @@ export class MeridianRouterAdapter {
       conversionRateUsd: rate,
       grossUsdValue: parseFloat(grossUsdValue.toFixed(2)),
       meridianTopUpFeeUsd,
+      feeBps,
+      feePercentageDisplay: isMrdnZeroFee ? '0% (MRDN Benefit)' : '1%',
+      isMrdnZeroFeeBenefit: isMrdnZeroFee,
       estimatedNetworkFeeUsd,
       slippageUsd,
       netCreditedUsdc,

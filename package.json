@@ -11,7 +11,7 @@
     "build:api": "npm run build --prefix apps/api",
     "lint": "eslint . --ext .ts,.tsx",
     "typecheck": "npx tsc --noEmit --project apps/web/tsconfig.json && npx tsc --noEmit --project apps/api/tsconfig.json",
-    "test": "npm run test --prefix apps/api",
+    "test": "./apps/api/node_modules/.bin/vitest run",
     "db:migrate:local": "npx wrangler d1 migrations apply meridian-nexus-db --local --config apps/api/wrangler.jsonc",
     "db:migrate:remote": "npx wrangler d1 migrations apply meridian-nexus-db --remote --config apps/api/wrangler.jsonc",
     "db:seed:local": "npx wrangler d1 execute meridian-nexus-db --local --file=apps/api/seed/seed.sql --config apps/api/wrangler.jsonc",
