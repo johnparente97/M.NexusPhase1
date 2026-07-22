@@ -1,15 +1,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../components/ui/Button';
 import { motion } from 'framer-motion';
-import { DolphinAdapter, DolphinChatMessage } from '../adapters/dolphin/adapter';
-import { Sparkles, Square, Bot, User, ArrowUpRight, RefreshCw, ChevronDown } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { DolphinAdapter, DolphinChatMessage, FREE_LLM_CATALOG, FreeLlmModel } from '../adapters/dolphin/adapter';
+import { Sparkles, Square, Bot, User, ArrowUpRight, RefreshCw, ChevronDown, ShieldCheck, Info } from 'lucide-react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { NexusLogoMark } from '../components/common/NexusLogoMark';
 import ChatContainer from '../components/chat/ChatContainer';
 
 export default function DolphinChat() {
+  const [searchParams] = useSearchParams();
+  const initialModelId = searchParams.get('model') || 'dolphin-mixtral-8x7b-free';
+
+  const [selectedModel, setSelectedModel] = useState<FreeLlmModel>(() => {
+    return FREE_LLM_CATALOG.find((m) => m.id === initialModelId) || FREE_LLM_CATALOG[0]!;
+  });
+
+  const [selectedMode, setSelectedMode] = useState('logical');
+  const [modelSwitchNotice, setModelSwitchNotice] = useState<string | null>(null);
+
   const [messages, setMessages] = useState<DolphinChatMessage[]>(() => {
-    const saved = localStorage.getItem('nexus_dolphin_history');
+    const saved = localStorage.getItem('nexus_free_chat_history');
     if (saved) {
       try {
         return JSON.parse(saved);
@@ -19,21 +29,30 @@ export default function DolphinChat() {
       {
         id: 'msg-init',
         role: 'assistant',
-        content: `Hello! I am Dolphin 8x7B, your free open-weights assistant on Meridian Nexus. How can I help you explore AI models, agents, or workflows today?`,
+        content: `Hello! Welcome to the Meridian Free Multi-LLM Hub. You are currently connected to **${selectedModel.name}**.\n\nYou can chat for free with any of our open-weights models (Dolphin 8x7B, DeepSeek R1, Llama 3.3 70B, Qwen 2.5 72B, Mistral 7B, Nous Hermes 3) using the top selector. How can I help you today?`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        modelUsed: selectedModel.name,
       },
     ];
   });
 
   const [input, setInput] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
-  const [selectedMode, setSelectedMode] = useState('logical');
 
   const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
-    localStorage.setItem('nexus_dolphin_history', JSON.stringify(messages));
+    localStorage.setItem('nexus_free_chat_history', JSON.stringify(messages));
   }, [messages]);
+
+  const handleModelChange = (modelId: string) => {
+    const found = FREE_LLM_CATALOG.find((m) => m.id === modelId);
+    if (found) {
+      setSelectedModel(found);
+      setModelSwitchNotice(`Switched model to ${found.name}. Conversation context carries over.`);
+      setTimeout(() => setModelSwitchNotice(null), 4000);
+    }
+  };
 
   const handleSend = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -57,13 +76,14 @@ export default function DolphinChat() {
       role: 'assistant',
       content: '',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      modelUsed: selectedModel.name,
     };
 
     setMessages((prev) => [...prev, botMsgPlaceholder]);
     abortRef.current = new AbortController();
 
     try {
-      const generator = DolphinAdapter.streamCompletion(updatedMessages, abortRef.current.signal);
+      const generator = DolphinAdapter.streamCompletion(updatedMessages, selectedModel.id, abortRef.current.signal);
       for await (const chunk of generator) {
         setMessages((prev) =>
           prev.map((msg) =>
@@ -74,7 +94,7 @@ export default function DolphinChat() {
         );
       }
     } catch (err) {
-      console.error('Dolphin stream failed:', err);
+      console.error('Free LLM stream failed:', err);
     } finally {
       setIsGenerating(false);
     }
@@ -92,12 +112,13 @@ export default function DolphinChat() {
       {
         id: 'msg-init',
         role: 'assistant',
-        content: `Chat history cleared. I'm Dolphin 8x7B, ready for your next question!`,
+        content: `Chat history cleared. Connected to **${selectedModel.name}**. Ready for your next query!`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        modelUsed: selectedModel.name,
       },
     ];
     setMessages(initial);
-    localStorage.removeItem('nexus_dolphin_history');
+    localStorage.removeItem('nexus_free_chat_history');
   };
 
   const renderMessageContent = (content: string) => {
@@ -111,33 +132,35 @@ export default function DolphinChat() {
       {/* ── Top Toolbar ── */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#171719] border border-zinc-800/80 p-3 sm:px-4 sm:py-2.5 rounded-2xl shrink-0 shadow-lg shadow-black/20">
         
-        {/* Left Title & Badge */}
+        {/* Left Title & Free Badge */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2">
             <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8" />
             <span className="font-display font-bold text-base text-white tracking-tight">
-              Meridian Free Inference
+              Free Multi-LLM Hub
             </span>
           </Link>
           <span className="text-zinc-700">|</span>
           <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
             <Sparkles className="h-3 w-3" />
-            Dolphin 8x7B (Free)
+            Unmetered ($0.00)
           </span>
         </div>
 
-        {/* Right Controls */}
-        <div className="flex items-center gap-2">
-          {/* Mode Dropdown */}
+        {/* Right Controls: Free Model Selector, Clear, Paid Link */}
+        <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
+          {/* Free Model Selector Dropdown */}
           <div className="relative">
             <select
-              value={selectedMode}
-              onChange={(e) => setSelectedMode(e.target.value)}
-              className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs text-zinc-200 font-medium px-3 py-1.5 rounded-xl focus:outline-none appearance-none pr-8 cursor-pointer transition-colors"
+              value={selectedModel.id}
+              onChange={(e) => handleModelChange(e.target.value)}
+              className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs text-emerald-400 font-bold px-3 py-1.5 rounded-xl focus:outline-none appearance-none pr-8 cursor-pointer transition-colors"
             >
-              <option value="logical">Logical</option>
-              <option value="creative">Creative</option>
-              <option value="agentic">Agentic Workflow</option>
+              {FREE_LLM_CATALOG.map((m) => (
+                <option key={m.id} value={m.id} className="bg-[#171719] text-zinc-200 font-medium">
+                  {m.name} ($0.00 Free)
+                </option>
+              ))}
             </select>
             <ChevronDown className="h-3.5 w-3.5 text-zinc-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
@@ -152,6 +175,21 @@ export default function DolphinChat() {
           </Button>
         </div>
       </div>
+
+      {/* Model Switch Context Notice Banner */}
+      {modelSwitchNotice && (
+        <motion.div
+          initial={{ opacity: 0, y: -4 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-emerald-950/30 border border-emerald-500/30 px-4 py-2 rounded-xl text-xs text-emerald-300 flex items-center justify-between font-mono shrink-0"
+        >
+          <div className="flex items-center gap-2">
+            <Info className="h-4 w-4 text-emerald-400" />
+            <span>{modelSwitchNotice}</span>
+          </div>
+          <span className="text-[10px] text-zinc-400">Context Retained</span>
+        </motion.div>
+      )}
 
       {/* ── Main Streamed Independent Chat Window (NO document auto-scroll jumps!) ── */}
       <div className="flex-1 overflow-hidden border border-zinc-800/80 bg-[#171719]/60 backdrop-blur-xl rounded-2xl flex flex-col min-h-0">
@@ -183,28 +221,29 @@ export default function DolphinChat() {
                       : 'bg-zinc-900/90 border border-zinc-800/80 text-zinc-200 rounded-tl-none font-sans'
                   }`}
                 >
+                  {msg.role === 'assistant' && (
+                    <div className="flex items-center justify-between border-b border-zinc-900 pb-2 mb-2 text-[10px] font-mono text-zinc-500">
+                      <span className="text-emerald-400 font-semibold">{msg.modelUsed || selectedModel.name}</span>
+                      <span>{msg.timestamp}</span>
+                    </div>
+                  )}
+
                   {msg.content ? (
                     renderMessageContent(msg.content)
                   ) : (
                     <span className="text-zinc-500 italic flex items-center gap-1.5">
                       <Sparkles className="h-3.5 w-3.5 text-emerald-400 animate-spin" />
-                      Dolphin is generating...
+                      {selectedModel.name} is generating...
                     </span>
                   )}
                 </div>
 
                 <div className="flex items-center gap-2 text-[9px] font-mono text-zinc-500 px-1">
-                  <span>{msg.timestamp}</span>
-                  {msg.role === 'assistant' && (
+                  <span className="text-emerald-400 font-semibold">$0.00 (Free Tier)</span>
+                  {msg.tokensEstimated && (
                     <>
                       <span>•</span>
-                      <span className="text-emerald-400 font-semibold">$0.00 (Free)</span>
-                      {msg.tokensEstimated && (
-                        <>
-                          <span>•</span>
-                          <span>~{msg.tokensEstimated} tokens</span>
-                        </>
-                      )}
+                      <span>~{msg.tokensEstimated} tokens</span>
                     </>
                   )}
                 </div>
@@ -222,7 +261,7 @@ export default function DolphinChat() {
         >
           <input
             type="text"
-            placeholder="Ask Dolphin anything (free, unmetered)..."
+            placeholder={`Ask ${selectedModel.name} anything (free, unmetered)...`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isGenerating}
@@ -254,18 +293,11 @@ export default function DolphinChat() {
 
         {/* Subcaption */}
         <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500">
-          <span>$0.00/message</span>
+          <span>Active: <strong className="text-zinc-300">{selectedModel.name}</strong></span>
           <span>·</span>
-          <span className="text-zinc-400">Meridian open-weights stack</span>
+          <span className="text-emerald-400">$0.00 / message</span>
           <span>·</span>
-          <a
-            href="https://github.com/meridian-protocol"
-            target="_blank"
-            rel="noreferrer"
-            className="text-emerald-400/80 hover:text-emerald-400 hover:underline flex items-center gap-0.5"
-          >
-            meridian-protocol <ArrowUpRight className="h-2.5 w-2.5" />
-          </a>
+          <span className="text-zinc-400">Meridian open-weights network</span>
         </div>
       </div>
 

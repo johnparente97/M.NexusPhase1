@@ -56,7 +56,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         {/* Center: Desktop Navigation Links */}
         <nav className="hidden lg:flex items-center gap-5">
           {[
-            { to: '/chat/free', label: 'Dolphin (Free)' },
+            { to: '/chat/free', label: 'Free Multi-LLM' },
             { to: '/chat/paid', label: 'Inference (x402)' },
             { to: '/marketplace/models', label: 'Models' },
             { to: '/exchange', label: 'Exchange' },

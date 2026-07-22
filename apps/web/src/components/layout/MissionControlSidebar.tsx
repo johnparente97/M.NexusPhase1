@@ -34,7 +34,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     requiresAuth?: boolean;
     tag?: string;
   }> = [
-    { to: '/chat/free', label: 'Dolphin Free Chat', icon: Sparkles, tag: 'Free' },
+    { to: '/chat/free', label: 'Free Multi-LLM Chat', icon: Sparkles, tag: 'Free' },
     { to: '/chat/paid', label: 'Meridian Inference (x402)', icon: Bot, tag: 'x402' },
     { to: '/marketplace/models', label: 'AntSeed Model Catalog', icon: Cpu },
     { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
