@@ -350,10 +350,10 @@ export default function PaidChat() {
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full h-[calc(100vh-5rem)] p-3 sm:p-6 gap-3.5">
+    <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full h-[calc(100vh-4.25rem)] p-2 sm:p-4 gap-3">
       
       {/* Sleek OpenAI/Anthropic Minimalist Header Toolbar */}
-      <div className="flex items-center justify-between gap-3 bg-[#171719]/80 backdrop-blur-xl border border-zinc-800/80 px-5 py-2.5 rounded-2xl shrink-0 shadow-lg">
+      <div className="flex items-center justify-between gap-3 bg-[#171719]/80 backdrop-blur-xl border border-zinc-800/80 px-5 py-2 rounded-2xl shrink-0 shadow-lg">
         
         {/* Left: Brand Mark */}
         <Link to="/" className="flex items-center gap-2.5 group">
@@ -424,7 +424,7 @@ export default function PaidChat() {
 
       {/* Low Balance Warning Banner */}
       {!selectedModel.isFree && isLowBalance && (
-        <div className="bg-amber-950/30 border border-amber-500/40 p-3.5 rounded-2xl flex items-center justify-between text-xs text-amber-300 font-mono shrink-0">
+        <div className="bg-amber-950/30 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between text-xs text-amber-300 font-mono shrink-0">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
             <span>Low AI Balance (${numericBalance.toFixed(2)}). Top up your balance to execute metered inference.</span>
@@ -440,11 +440,11 @@ export default function PaidChat() {
         </div>
       )}
 
-      {/* Main Chat Stream Container (Spacious Desktop View) */}
+      {/* Main Chat Stream Container (Takes Maximum Full Height) */}
       <div className="flex-1 bg-[#141416]/60 backdrop-blur-md border border-zinc-800/80 rounded-3xl overflow-hidden flex flex-col min-h-0">
         <ChatContainer dependencies={[messages]} isGenerating={isGenerating}>
           {messages.length === 0 ? (
-            /* Minimalist Empty State Prompt Canvas (Spacious Desktop Layout) */
+            /* Minimalist Empty State Prompt Canvas */
             <div className="flex-1 flex flex-col items-center justify-center text-center p-6 sm:p-10 gap-8 my-auto select-none max-w-4xl mx-auto w-full">
               <div className="h-16 w-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 prismatic-glow">
                 <NexusLogoMark className="h-10 w-10" />
@@ -459,7 +459,7 @@ export default function PaidChat() {
                 </p>
               </div>
 
-              {/* 4 Prompt Starter Cards (Expands into 4-col layout on large desktop) */}
+              {/* 4 Prompt Starter Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full text-left">
                 {PROMPT_STARTERS.map((starter, idx) => {
                   const Icon = starter.icon;
@@ -543,8 +543,8 @@ export default function PaidChat() {
         </ChatContainer>
       </div>
 
-      {/* Floating Input Composer Capsule (Expands on Desktop) */}
-      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex flex-col gap-2 bg-[#171719] border border-zinc-800/80 p-3.5 rounded-3xl shrink-0 shadow-2xl prismatic-border">
+      {/* Floating Input Composer Capsule */}
+      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex flex-col gap-2 bg-[#171719] border border-zinc-800/80 p-3 rounded-3xl shrink-0 shadow-2xl prismatic-border">
         <div className="flex items-center gap-3">
           <input
             type="text"
