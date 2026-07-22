@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ANTSEED_MODEL_CATALOG, AntSeedModel } from '../adapters/antseed/adapter';
 import { DolphinAdapter } from '../adapters/dolphin/adapter';
 import { MeteringEngine, MeteredRequestReceipt } from '../adapters/pricing/metering';
@@ -18,6 +18,12 @@ import {
   Info,
   DollarSign,
   Sparkles,
+  Code,
+  Brain,
+  TrendingUp,
+  PenTool,
+  Copy,
+  Check,
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { useToast } from '../components/ui/Toast';
@@ -36,10 +42,37 @@ export interface PaidChatMessage {
 }
 
 const REASONING_MODES = [
-  { id: 'logical', label: 'Logical Reasoning' },
-  { id: 'agentic', label: 'Agentic Workflow' },
-  { id: 'code', label: 'Code Synthesis' },
+  { id: 'logical', label: 'Logical' },
+  { id: 'agentic', label: 'Agentic' },
+  { id: 'code', label: 'Code' },
   { id: 'creative', label: 'Creative' },
+];
+
+const PROMPT_STARTERS = [
+  {
+    icon: Brain,
+    title: 'Deep Logic & Reasoning',
+    prompt: 'Deconstruct a complex algorithmic problem step-by-step with proof.',
+    modelId: 'deepseek-r1',
+  },
+  {
+    icon: Code,
+    title: 'Code Architecture',
+    prompt: 'Draft a type-safe TypeScript API router schema with Zod validation.',
+    modelId: 'qwen-2-5-72b',
+  },
+  {
+    icon: TrendingUp,
+    title: 'Market Intelligence',
+    prompt: 'Synthesize competitive positioning & economic utility for a Web3 protocol.',
+    modelId: 'llama-3-3-70b',
+  },
+  {
+    icon: PenTool,
+    title: 'Creative Writing',
+    prompt: 'Draft a compelling announcement post for an open-source AI launch.',
+    modelId: 'dolphin-mixtral-8x7b-free',
+  },
 ];
 
 export default function PaidChat() {
@@ -56,6 +89,7 @@ export default function PaidChat() {
 
   const [selectedMode, setSelectedMode] = useState('logical');
   const [modelSwitchNotice, setModelSwitchNotice] = useState<string | null>(null);
+  const [copiedMsgId, setCopiedMsgId] = useState<string | null>(null);
 
   const [sessionAuth, setSessionAuth] = useState<SessionAuthorization>(() => {
     return MeridianRouterAdapter.createDefaultSessionAuth(5.0);
@@ -67,7 +101,7 @@ export default function PaidChat() {
 
   const abortRef = useRef<AbortController | null>(null);
 
-  // Available numeric balance check
+  // Balance check
   const numericBalance = parseFloat(usdcBalance) || 24.50;
   const isLowBalance = numericBalance < 0.50;
 
@@ -75,31 +109,46 @@ export default function PaidChat() {
     const found = ANTSEED_MODEL_CATALOG.find((m) => m.id === modelId);
     if (found) {
       setSelectedModel(found);
-      setModelSwitchNotice(`Switched model to ${found.name}. Conversation context carries over.`);
+      setModelSwitchNotice(`Switched model to ${found.name}. Context retained.`);
       setTimeout(() => setModelSwitchNotice(null), 4000);
     }
   };
 
-  const handleSend = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!input.trim() || isGenerating) return;
+  const handleCopyText = (text: string, id: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedMsgId(id);
+    setTimeout(() => setCopiedMsgId(null), 2000);
+  };
+
+  const handleSend = async (userPromptText?: string, targetModelId?: string) => {
+    const textToSend = (userPromptText || input).trim();
+    if (!textToSend || isGenerating) return;
+
+    // Switch model if prompt starter specified a target model
+    if (targetModelId) {
+      const found = ANTSEED_MODEL_CATALOG.find((m) => m.id === targetModelId);
+      if (found) setSelectedModel(found);
+    }
+
+    const activeModel = targetModelId
+      ? ANTSEED_MODEL_CATALOG.find((m) => m.id === targetModelId) || selectedModel
+      : selectedModel;
 
     // Wallet check ONLY for paid metered models
-    if (!selectedModel.isFree && !isConnected) {
+    if (!activeModel.isFree && !isConnected) {
       toast('Please connect your wallet to authorize x402 inference settlement.', 'warning');
       signInWithEthereum();
       return;
     }
 
-    if (!selectedModel.isFree && isLowBalance) {
-      toast('Low AI balance detected ($' + numericBalance.toFixed(2) + '). Please top up to continue metered inference.', 'error');
+    if (!activeModel.isFree && isLowBalance) {
+      toast(`Low AI balance ($${numericBalance.toFixed(2)}). Top up at /balance to continue.`, 'error');
     }
 
-    const userText = input.trim();
     const userMsg: PaidChatMessage = {
       id: `msg-${Date.now()}`,
       role: 'user',
-      content: userText,
+      content: textToSend,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     };
 
@@ -114,16 +163,16 @@ export default function PaidChat() {
       role: 'assistant',
       content: '',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      modelUsed: selectedModel.name,
+      modelUsed: activeModel.name,
     };
 
     setMessages((prev) => [...prev, botMsgPlaceholder]);
     abortRef.current = new AbortController();
 
     try {
-      if (selectedModel.isFree) {
+      if (activeModel.isFree) {
         // Free Model Completion Stream
-        const generator = DolphinAdapter.streamCompletion(updatedMessages, selectedModel.id, abortRef.current.signal);
+        const generator = DolphinAdapter.streamCompletion(updatedMessages, activeModel.id, abortRef.current.signal);
         for await (const chunk of generator) {
           setMessages((prev) =>
             prev.map((msg) =>
@@ -134,10 +183,10 @@ export default function PaidChat() {
                     meteredReceipt: {
                       requestId: `req-${Date.now()}`,
                       timestamp: new Date().toISOString(),
-                      modelId: selectedModel.id,
-                      modelName: selectedModel.name,
-                      provider: selectedModel.provider,
-                      inputTokens: Math.round(userText.length / 4),
+                      modelId: activeModel.id,
+                      modelName: activeModel.name,
+                      provider: activeModel.provider,
+                      inputTokens: Math.round(textToSend.length / 4),
                       outputTokens: chunk.tokensCount || 0,
                       inputCost: 0,
                       outputCost: 0,
@@ -163,7 +212,7 @@ export default function PaidChat() {
             'X-402-Payment-Token': `x402-session-${Date.now()}`,
           },
           body: JSON.stringify({
-            model: selectedModel.id,
+            model: activeModel.id,
             mode: selectedMode,
             messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
           }),
@@ -175,10 +224,10 @@ export default function PaidChat() {
         } else if (response && response.reply) {
           completionText = response.reply;
         } else {
-          completionText = `Meridian Inference completed prompt processing using ${selectedModel.name} (${selectedMode} mode). Output verified via x402 settlement protocol.`;
+          completionText = `Meridian Inference completed prompt processing using ${activeModel.name} (${selectedMode} mode). Output verified via x402 settlement protocol.`;
         }
 
-        const inputTokenCount = Math.max(12, Math.round(userText.length / 4));
+        const inputTokenCount = Math.max(12, Math.round(textToSend.length / 4));
         const words = completionText.split(' ');
         let accumulatedText = '';
 
@@ -193,7 +242,7 @@ export default function PaidChat() {
         }
 
         const outputTokenCount = Math.max(20, Math.round(accumulatedText.length / 4));
-        const receipt = MeteringEngine.calculateRequestCost(selectedModel, inputTokenCount, outputTokenCount);
+        const receipt = MeteringEngine.calculateRequestCost(activeModel, inputTokenCount, outputTokenCount);
 
         setSessionAuth((prev) => ({
           ...prev,
@@ -226,89 +275,85 @@ export default function PaidChat() {
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full h-[calc(100vh-7rem)] md:h-[calc(100vh-5rem)] p-3 sm:p-6 gap-3 select-none">
+    <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full h-[calc(100vh-6rem)] p-3 sm:p-5 gap-3 select-none">
       
-      {/* ── Top Header Toolbar ── */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#171719] border border-zinc-800/80 p-3 sm:px-4 sm:py-2.5 rounded-2xl shrink-0 shadow-lg shadow-black/20">
+      {/* ── Sleek OpenAI/Anthropic Minimalist Header Toolbar ── */}
+      <div className="flex items-center justify-between gap-3 bg-[#171719]/80 backdrop-blur-xl border border-zinc-800/80 px-4 py-2 rounded-2xl shrink-0 shadow-lg">
         
-        {/* Left Title & Protocol Badge */}
-        <div className="flex items-center gap-3">
-          <Link to="/" className="flex items-center gap-2">
-            <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8" />
-            <span className="font-display font-bold text-base text-white tracking-tight">
-              Meridian Inference Chat
-            </span>
-          </Link>
-          <span className="text-zinc-700">|</span>
-          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
-            {selectedModel.isFree ? <Sparkles className="h-3 w-3" /> : <Zap className="h-3 w-3" />}
-            {selectedModel.isFree ? 'Free Model' : 'x402 Micropayments'}
+        {/* Left: Brand Mark */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <NexusLogoMark className="h-6 w-6 sm:h-7 sm:w-7" />
+          <span className="font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors">
+            Nexus Chat
           </span>
+        </Link>
+
+        {/* Center: Prismatic Model Selector Capsule */}
+        <div className="relative">
+          <select
+            value={selectedModel.id}
+            onChange={(e) => handleModelChange(e.target.value)}
+            className="bg-zinc-900 border border-zinc-700/60 hover:border-emerald-500/40 text-xs font-semibold text-zinc-200 px-3 py-1.5 rounded-xl focus:outline-none appearance-none pr-8 cursor-pointer transition-all shadow-sm"
+          >
+            {ANTSEED_MODEL_CATALOG.map((m) => (
+              <option key={m.id} value={m.id} className="bg-[#171719] text-zinc-200">
+                {m.name} {m.isFree ? '• Free' : `• $${m.priceInputPerMillion}/1M`}
+              </option>
+            ))}
+          </select>
+          <ChevronDown className="h-3.5 w-3.5 text-zinc-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
 
-        {/* Right Top Bar Controls: Unified Model Selector, Mode Dropdown, Balance Link */}
-        <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-          {/* Unified Model Selector Dropdown */}
-          <div className="relative">
-            <select
-              value={selectedModel.id}
-              onChange={(e) => handleModelChange(e.target.value)}
-              className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs text-zinc-200 font-medium px-3 py-1.5 rounded-xl focus:outline-none appearance-none pr-8 cursor-pointer transition-colors"
-            >
-              {ANTSEED_MODEL_CATALOG.map((m) => (
-                <option key={m.id} value={m.id} className="bg-[#171719] text-zinc-200">
-                  {m.name} {m.isFree ? '($0.00 Free)' : `($${m.priceInputPerMillion}/1M)`}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="h-3.5 w-3.5 text-zinc-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
-
-          {/* Mode Dropdown */}
-          <div className="relative">
+        {/* Right: Balance Pill & Reasoning Mode */}
+        <div className="flex items-center gap-2">
+          {/* Mode Switcher */}
+          <div className="hidden sm:block relative">
             <select
               value={selectedMode}
               onChange={(e) => setSelectedMode(e.target.value)}
-              className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs text-zinc-200 font-medium px-3 py-1.5 rounded-xl focus:outline-none appearance-none pr-8 cursor-pointer transition-colors"
+              className="bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700 text-[11px] text-zinc-400 font-medium px-2.5 py-1.5 rounded-lg focus:outline-none appearance-none pr-6 cursor-pointer"
             >
               {REASONING_MODES.map((m) => (
                 <option key={m.id} value={m.id} className="bg-[#171719] text-zinc-200">
-                  {m.label}
+                  {m.label} Mode
                 </option>
               ))}
             </select>
-            <ChevronDown className="h-3.5 w-3.5 text-zinc-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <ChevronDown className="h-3 w-3 text-zinc-500 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
-          {/* Top-up Balance Link */}
-          <Link to="/balance" className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs font-mono text-emerald-400 px-3 py-1.5 rounded-xl transition-colors">
+          <Link
+            to="/balance"
+            className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs font-mono text-emerald-400 px-2.5 py-1.5 rounded-xl transition-colors shrink-0"
+            title="Unified AI Balance"
+          >
             <Coins className="h-3.5 w-3.5" />
             <span>${numericBalance.toFixed(2)}</span>
           </Link>
         </div>
       </div>
 
-      {/* Model Switch Context Notice Banner */}
+      {/* Model Switch Notice Banner */}
       {modelSwitchNotice && (
         <motion.div
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-indigo-950/30 border border-indigo-500/30 px-4 py-2 rounded-xl text-xs text-indigo-300 flex items-center justify-between font-mono shrink-0"
+          className="bg-emerald-950/30 border border-emerald-500/30 px-4 py-2 rounded-xl text-xs text-emerald-300 flex items-center justify-between font-mono shrink-0"
         >
           <div className="flex items-center gap-2">
-            <Info className="h-4 w-4 text-indigo-400" />
+            <Info className="h-4 w-4 text-emerald-400" />
             <span>{modelSwitchNotice}</span>
           </div>
           <span className="text-[10px] text-zinc-400">Context Retained</span>
         </motion.div>
       )}
 
-      {/* Low Balance Warning Banner (Only for paid models) */}
+      {/* Low Balance Warning Banner */}
       {!selectedModel.isFree && isLowBalance && (
         <div className="bg-amber-950/30 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between text-xs text-amber-300 font-mono shrink-0">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
-            <span>Low AI Balance (${numericBalance.toFixed(2)} remaining). Top up your balance to maintain un-interrupted inference.</span>
+            <span>Low AI Balance (${numericBalance.toFixed(2)}). Top up your balance to maintain un-interrupted inference.</span>
           </div>
           <Button
             variant="primary"
@@ -321,23 +366,47 @@ export default function PaidChat() {
         </div>
       )}
 
-      {/* ── Main Independent Chat Messages Container (NO window auto-scroll jumps!) ── */}
-      <div className="flex-1 bg-zinc-900/40 border border-zinc-800/80 rounded-2xl overflow-hidden flex flex-col min-h-0">
+      {/* ── Main Chat Stream Container (Clean OpenAI/Anthropic Canvas Layout) ── */}
+      <div className="flex-1 bg-[#141416]/60 backdrop-blur-md border border-zinc-800/80 rounded-3xl overflow-hidden flex flex-col min-h-0">
         <ChatContainer dependencies={[messages]} isGenerating={isGenerating}>
           {messages.length === 0 ? (
-            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 gap-3 select-none my-auto">
-              <div className="h-12 w-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
-                <Bot className="h-6 w-6" />
+            /* Minimalist Empty State Prompt Canvas */
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 gap-6 my-auto select-none max-w-xl mx-auto">
+              <div className="h-14 w-14 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 prismatic-glow">
+                <NexusLogoMark className="h-8 w-8" />
               </div>
-              <h2 className="font-display font-bold text-base text-zinc-200">
-                Meridian Decentralized Inference Chat
-              </h2>
-              <p className="text-xs text-zinc-400 max-w-md leading-relaxed">
-                Query free or metered decentralized AI model hosts. Pay per token or chat for free with open-weights models.
-              </p>
-              <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 mt-2 bg-zinc-950 px-3 py-1.5 rounded-full border border-zinc-800">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-                <span>Active Model: {selectedModel.name} ({selectedModel.provider})</span>
+
+              <div className="space-y-1.5">
+                <h2 className="font-display font-bold text-lg sm:text-xl text-white tracking-tight">
+                  What would you like to build or reason today?
+                </h2>
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Query free open-weights or metered decentralized AI models with x402 pay-per-token settlement.
+                </p>
+              </div>
+
+              {/* 4 Prompt Starter Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full text-left">
+                {PROMPT_STARTERS.map((starter, idx) => {
+                  const Icon = starter.icon;
+                  return (
+                    <motion.button
+                      key={idx}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => handleSend(starter.prompt, starter.modelId)}
+                      className="p-3.5 bg-[#171719] hover:bg-zinc-800/80 border border-zinc-800 hover:border-emerald-500/40 rounded-2xl transition-all cursor-pointer flex flex-col gap-1.5 group shadow-sm"
+                    >
+                      <div className="flex items-center gap-2 text-xs font-semibold text-zinc-200 group-hover:text-emerald-300">
+                        <Icon className="h-4 w-4 text-emerald-400 shrink-0" />
+                        <span>{starter.title}</span>
+                      </div>
+                      <p className="text-[11px] text-zinc-400 line-clamp-2 leading-relaxed">
+                        {starter.prompt}
+                      </p>
+                    </motion.button>
+                  );
+                })}
               </div>
             </div>
           ) : (
@@ -348,40 +417,51 @@ export default function PaidChat() {
                   msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'
                 }`}
               >
+                {/* User / Assistant Avatar Marker */}
                 <div
-                  className={`h-8 w-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold ${
+                  className={`h-8 w-8 rounded-2xl flex items-center justify-center shrink-0 text-xs font-bold shadow-md ${
                     msg.role === 'user'
-                      ? 'bg-zinc-800 text-zinc-200 border border-zinc-700'
-                      : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
+                      ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
+                      : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 prismatic-glow'
                   }`}
                 >
                   {msg.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
                 </div>
 
+                {/* Message Bubble Container */}
                 <div
-                  className={`flex flex-col gap-2 rounded-2xl p-4 text-xs leading-relaxed ${
+                  className={`flex flex-col gap-2 rounded-3xl p-4 text-xs leading-relaxed ${
                     msg.role === 'user'
                       ? 'bg-zinc-800/90 text-zinc-100 border border-zinc-700/60 rounded-tr-none'
-                      : 'bg-[#141417] text-zinc-200 border border-zinc-800 rounded-tl-none shadow-md'
+                      : 'bg-[#18181b] text-zinc-200 border border-zinc-800/80 rounded-tl-none shadow-xl'
                   }`}
                 >
                   {msg.role === 'assistant' && (
-                    <div className="flex items-center justify-between border-b border-zinc-900 pb-2 text-[10px] font-mono text-zinc-500">
+                    <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 text-[10px] font-mono text-zinc-500">
                       <span className="text-emerald-400 font-semibold">{msg.modelUsed || selectedModel.name}</span>
-                      <span>{msg.timestamp}</span>
+                      <div className="flex items-center gap-2">
+                        <span>{msg.timestamp}</span>
+                        <button
+                          onClick={() => handleCopyText(msg.content, msg.id)}
+                          className="text-zinc-500 hover:text-zinc-300 p-0.5 transition-colors cursor-pointer"
+                          title="Copy response"
+                        >
+                          {copiedMsgId === msg.id ? <Check className="h-3 w-3 text-emerald-400" /> : <Copy className="h-3 w-3" />}
+                        </button>
+                      </div>
                     </div>
                   )}
 
-                  <div className="whitespace-pre-wrap font-sans text-xs">{msg.content || (isGenerating && 'Synthesizing response...')}</div>
+                  <div className="whitespace-pre-wrap font-sans text-xs leading-relaxed">{msg.content || (isGenerating && 'Synthesizing response...')}</div>
 
                   {/* Metering Receipt Footer */}
                   {msg.meteredReceipt && (
-                    <div className="mt-2 pt-2 border-t border-zinc-900/80 flex items-center justify-between text-[9px] font-mono text-zinc-500">
+                    <div className="mt-2 pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[9px] font-mono text-zinc-500">
                       <span>
                         Tokens: {msg.meteredReceipt.inputTokens} in / {msg.meteredReceipt.outputTokens} out
                       </span>
                       <span className="text-emerald-400 font-bold">
-                        Settled: {msg.meteredReceipt.isFree ? 'Free ($0.00)' : `$${msg.meteredReceipt.totalCharged.toFixed(5)}`}
+                        {msg.meteredReceipt.isFree ? 'Free ($0.00)' : `Settled: $${msg.meteredReceipt.totalCharged.toFixed(5)}`}
                       </span>
                     </div>
                   )}
@@ -392,8 +472,8 @@ export default function PaidChat() {
         </ChatContainer>
       </div>
 
-      {/* ── Input Box & Controls ── */}
-      <form onSubmit={handleSend} className="flex flex-col gap-2 bg-[#171719] border border-zinc-800/80 p-3 rounded-2xl shrink-0 shadow-lg">
+      {/* ── Floating OpenAI/Anthropic Input Composer Capsule ── */}
+      <form onSubmit={(e) => handleSend()} className="flex flex-col gap-2 bg-[#171719] border border-zinc-800/80 p-3 rounded-3xl shrink-0 shadow-2xl prismatic-border">
         <div className="flex items-center gap-2">
           <input
             type="text"
@@ -401,7 +481,7 @@ export default function PaidChat() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isGenerating}
-            className="flex-1 bg-transparent border-none text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none font-sans"
+            className="flex-1 bg-transparent border-none text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none font-sans px-2"
           />
 
           {isGenerating ? (
@@ -410,32 +490,30 @@ export default function PaidChat() {
               variant="danger"
               size="sm"
               onClick={handleStop}
-              className="font-bold text-xs flex items-center gap-1.5"
+              className="font-bold text-xs flex items-center gap-1.5 rounded-xl"
             >
               <Square className="h-3.5 w-3.5 fill-current" />
               Stop
             </Button>
           ) : (
-            <Button
+            <button
               type="submit"
-              variant="primary"
-              size="sm"
               disabled={!input.trim()}
-              className="font-bold text-xs flex items-center gap-1.5"
+              className="h-8 w-8 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-zinc-950 disabled:opacity-40 disabled:hover:bg-emerald-400 flex items-center justify-center transition-colors cursor-pointer shrink-0 shadow-md font-bold"
+              title="Submit prompt"
             >
-              <Send className="h-3.5 w-3.5" />
-              Send
-            </Button>
+              <Send className="h-4 w-4" />
+            </button>
           )}
         </div>
 
-        {/* Pre-submission Cost Transparency Footer */}
-        <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 border-t border-zinc-900 pt-2 px-1">
-          <span className="flex items-center gap-1">
+        {/* Pre-submission Cost Transparency & Mode Indicator */}
+        <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 border-t border-zinc-800/80 pt-2 px-1">
+          <span className="flex items-center gap-1.5">
             <DollarSign className="h-3 w-3 text-emerald-400" />
-            Estimated cost: {selectedModel.isFree ? 'Free ($0.00)' : `<$0.01 per request ($${selectedModel.priceInputPerMillion}/1M in)`}
+            <span>Estimated cost: {selectedModel.isFree ? 'Free ($0.00)' : `<$0.01 per request ($${selectedModel.priceInputPerMillion}/1M in)`}</span>
           </span>
-          <span>{selectedModel.isFree ? 'Unmetered Open Weights' : 'x402 Session Active (No Signatures)'}</span>
+          <span className="text-zinc-400">{selectedModel.isFree ? 'Unmetered Open Weights' : 'x402 Micropayments Active'}</span>
         </div>
       </form>
 

@@ -65,6 +65,33 @@
 .z-layer-modal { z-index: var(--z-modal); }
 .z-layer-toast { z-index: var(--z-toast); }
 
+/* Prismatic & Iridescent Aesthetics Utilities */
+.prismatic-glow {
+  box-shadow: 0 0 24px -4px rgba(52, 211, 153, 0.18), 
+              0 0 48px -8px rgba(99, 102, 241, 0.12),
+              0 0 64px -12px rgba(244, 63, 94, 0.08);
+}
+
+.prismatic-border {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-image: linear-gradient(#171719, #171719), 
+                    linear-gradient(135deg, rgba(52, 211, 153, 0.45) 0%, rgba(99, 102, 241, 0.35) 50%, rgba(244, 63, 94, 0.25) 100%);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+.prismatic-text {
+  background: linear-gradient(135deg, #6EE7B7 0%, #818CF8 50%, #F43F5E 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.prismatic-badge {
+  background: rgba(52, 211, 153, 0.06);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  box-shadow: inset 0 0 12px rgba(99, 102, 241, 0.1);
+}
+
 /* Custom base resets */
 body {
   background-color: var(--background);
