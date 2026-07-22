@@ -202,7 +202,7 @@ export default function UnifiedBalancePage() {
               </span>
             ) : (
               <span className="text-amber-400 font-semibold">
-                -$${calculation.meridianTopUpFeeUsd.toFixed(2)} (1%)
+                -${calculation.meridianTopUpFeeUsd.toFixed(2)} (1%)
               </span>
             )}
           </div>
@@ -220,7 +220,7 @@ export default function UnifiedBalancePage() {
         <div className="flex items-center justify-between pt-2 flex-wrap gap-3">
           <div className="text-[11px] text-zinc-500 font-mono flex items-center gap-1.5">
             <ShieldCheck className="h-4 w-4 text-emerald-400" />
-            <span>x402 Transfer-With-Authorization (No signature per prompt)</span>
+            <span>x402 Transfer-With-Authorization (Demo Simulation)</span>
           </div>
           <Button
             variant="primary"
@@ -229,7 +229,7 @@ export default function UnifiedBalancePage() {
             isLoading={isProcessingTopUp}
             className="font-bold px-6 text-xs flex items-center gap-2"
           >
-            Confirm Top-Up Transaction
+            Simulate Demo Top-Up
             <ArrowUpRight className="h-4 w-4" />
           </Button>
         </div>

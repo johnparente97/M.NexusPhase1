@@ -62,6 +62,8 @@ export const router = createHashRouter([
       { path: 'exchange', element: suspenseWrapper(Exchange) },
       { path: 'exchange/:id', element: suspenseWrapper(WorkflowDetail) },
       { path: 'exchange/:id/run', element: suspenseWrapper(WorkflowRunner) },
+      { path: 'workflows/:id/run', element: <Navigate to="/exchange/:id/run" replace /> },
+      { path: 'workflows/:id', element: <Navigate to="/exchange/:id" replace /> },
       { path: 'studio', element: suspenseWrapper(Studio) },
       { path: 'studio/new', element: suspenseWrapper(StudioEditor) },
       { path: 'studio/:id/edit', element: suspenseWrapper(StudioEditor) },

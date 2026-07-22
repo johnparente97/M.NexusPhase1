@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ANTSEED_MODEL_CATALOG, AntSeedModel } from '../adapters/antseed/adapter';
 import { DolphinAdapter } from '../adapters/dolphin/adapter';
 import { MeteringEngine, MeteredRequestReceipt } from '../adapters/pricing/metering';
@@ -75,6 +75,83 @@ const PROMPT_STARTERS = [
   },
 ];
 
+// Helper to render Markdown elements safely
+function MarkdownContent({ content }: { content: string }) {
+  if (!content) return null;
+
+  // Split into lines for basic markdown parsing (headings, lists, code blocks, bold)
+  const lines = content.split('\n');
+  let inCodeBlock = false;
+  let codeBuffer: string[] = [];
+
+  const elements: React.ReactNode[] = [];
+
+  lines.forEach((line, idx) => {
+    if (line.trim().startsWith('```')) {
+      if (inCodeBlock) {
+        elements.push(
+          <div key={`code-${idx}`} className="my-2 p-3 bg-zinc-950 border border-zinc-800 rounded-xl font-mono text-[11px] text-emerald-300 overflow-x-auto">
+            <pre>{codeBuffer.join('\n')}</pre>
+          </div>
+        );
+        codeBuffer = [];
+        inCodeBlock = false;
+      } else {
+        inCodeBlock = true;
+      }
+      return;
+    }
+
+    if (inCodeBlock) {
+      codeBuffer.push(line);
+      return;
+    }
+
+    if (line.startsWith('### ')) {
+      elements.push(
+        <h4 key={idx} className="font-display font-bold text-sm text-white mt-3 mb-1">
+          {line.replace('### ', '')}
+        </h4>
+      );
+    } else if (line.startsWith('## ')) {
+      elements.push(
+        <h3 key={idx} className="font-display font-bold text-base text-white mt-3 mb-1">
+          {line.replace('## ', '')}
+        </h3>
+      );
+    } else if (line.startsWith('# ')) {
+      elements.push(
+        <h2 key={idx} className="font-display font-bold text-lg text-white mt-4 mb-2">
+          {line.replace('# ', '')}
+        </h2>
+      );
+    } else if (line.startsWith('- ') || line.startsWith('* ')) {
+      elements.push(
+        <li key={idx} className="ml-4 list-disc text-zinc-300 my-0.5">
+          {line.substring(2)}
+        </li>
+      );
+    } else if (line.trim() === '') {
+      elements.push(<div key={idx} className="h-1.5" />);
+    } else {
+      // Basic bold text replacement (**text**)
+      const parts = line.split(/(\*\*.*?\*\*)/g);
+      elements.push(
+        <p key={idx} className="my-1 leading-relaxed">
+          {parts.map((part, pIdx) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+              return <strong key={pIdx} className="font-semibold text-white">{part.slice(2, -2)}</strong>;
+            }
+            return part;
+          })}
+        </p>
+      );
+    }
+  });
+
+  return <div className="space-y-0.5 select-text">{elements}</div>;
+}
+
 export default function PaidChat() {
   const [searchParams] = useSearchParams();
   const initialModelId = searchParams.get('model') || 'dolphin-mixtral-8x7b-free';
@@ -101,8 +178,9 @@ export default function PaidChat() {
 
   const abortRef = useRef<AbortController | null>(null);
 
-  // Balance check
-  const numericBalance = parseFloat(usdcBalance) || 24.50;
+  // Exact balance check (differentiating real $0.00 balance vs demo balance)
+  const isDemoBalance = usdcBalance === undefined || usdcBalance === null;
+  const numericBalance = isDemoBalance ? 24.50 : (parseFloat(usdcBalance) || 0.0);
   const isLowBalance = numericBalance < 0.50;
 
   const handleModelChange = (modelId: string) => {
@@ -124,7 +202,6 @@ export default function PaidChat() {
     const textToSend = (userPromptText || input).trim();
     if (!textToSend || isGenerating) return;
 
-    // Switch model if prompt starter specified a target model
     if (targetModelId) {
       const found = ANTSEED_MODEL_CATALOG.find((m) => m.id === targetModelId);
       if (found) setSelectedModel(found);
@@ -141,8 +218,11 @@ export default function PaidChat() {
       return;
     }
 
-    if (!activeModel.isFree && isLowBalance) {
-      toast(`Low AI balance ($${numericBalance.toFixed(2)}). Top up at /balance to continue.`, 'error');
+    // STRICT BALANCE PREFLIGHT GATE (Block execution if balance is $0.00)
+    if (!activeModel.isFree && numericBalance <= 0) {
+      toast('Insufficient AI balance ($0.00). Please top up your balance to execute metered model inference.', 'error');
+      navigate('/balance');
+      return; // STOP execution completely!
     }
 
     const userMsg: PaidChatMessage = {
@@ -275,9 +355,9 @@ export default function PaidChat() {
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full h-[calc(100vh-6rem)] p-3 sm:p-5 gap-3 select-none">
+    <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full h-[calc(100vh-6rem)] p-3 sm:p-5 gap-3">
       
-      {/* ── Sleek OpenAI/Anthropic Minimalist Header Toolbar ── */}
+      {/* Sleek OpenAI/Anthropic Minimalist Header Toolbar */}
       <div className="flex items-center justify-between gap-3 bg-[#171719]/80 backdrop-blur-xl border border-zinc-800/80 px-4 py-2 rounded-2xl shrink-0 shadow-lg">
         
         {/* Left: Brand Mark */}
@@ -306,7 +386,6 @@ export default function PaidChat() {
 
         {/* Right: Balance Pill & Reasoning Mode */}
         <div className="flex items-center gap-2">
-          {/* Mode Switcher */}
           <div className="hidden sm:block relative">
             <select
               value={selectedMode}
@@ -328,7 +407,7 @@ export default function PaidChat() {
             title="Unified AI Balance"
           >
             <Coins className="h-3.5 w-3.5" />
-            <span>${numericBalance.toFixed(2)}</span>
+            <span>{isDemoBalance ? `$${numericBalance.toFixed(2)} Demo` : `$${numericBalance.toFixed(2)}`}</span>
           </Link>
         </div>
       </div>
@@ -353,7 +432,7 @@ export default function PaidChat() {
         <div className="bg-amber-950/30 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between text-xs text-amber-300 font-mono shrink-0">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
-            <span>Low AI Balance (${numericBalance.toFixed(2)}). Top up your balance to maintain un-interrupted inference.</span>
+            <span>Low AI Balance (${numericBalance.toFixed(2)}). Top up your balance to execute metered inference.</span>
           </div>
           <Button
             variant="primary"
@@ -366,11 +445,10 @@ export default function PaidChat() {
         </div>
       )}
 
-      {/* ── Main Chat Stream Container (Clean OpenAI/Anthropic Canvas Layout) ── */}
+      {/* Main Chat Stream Container */}
       <div className="flex-1 bg-[#141416]/60 backdrop-blur-md border border-zinc-800/80 rounded-3xl overflow-hidden flex flex-col min-h-0">
         <ChatContainer dependencies={[messages]} isGenerating={isGenerating}>
           {messages.length === 0 ? (
-            /* Minimalist Empty State Prompt Canvas */
             <div className="flex-1 flex flex-col items-center justify-center text-center p-6 gap-6 my-auto select-none max-w-xl mx-auto">
               <div className="h-14 w-14 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 prismatic-glow">
                 <NexusLogoMark className="h-8 w-8" />
@@ -385,7 +463,6 @@ export default function PaidChat() {
                 </p>
               </div>
 
-              {/* 4 Prompt Starter Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 w-full text-left">
                 {PROMPT_STARTERS.map((starter, idx) => {
                   const Icon = starter.icon;
@@ -417,7 +494,6 @@ export default function PaidChat() {
                   msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'
                 }`}
               >
-                {/* User / Assistant Avatar Marker */}
                 <div
                   className={`h-8 w-8 rounded-2xl flex items-center justify-center shrink-0 text-xs font-bold shadow-md ${
                     msg.role === 'user'
@@ -428,7 +504,6 @@ export default function PaidChat() {
                   {msg.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
                 </div>
 
-                {/* Message Bubble Container */}
                 <div
                   className={`flex flex-col gap-2 rounded-3xl p-4 text-xs leading-relaxed ${
                     msg.role === 'user'
@@ -452,9 +527,8 @@ export default function PaidChat() {
                     </div>
                   )}
 
-                  <div className="whitespace-pre-wrap font-sans text-xs leading-relaxed">{msg.content || (isGenerating && 'Synthesizing response...')}</div>
+                  <MarkdownContent content={msg.content || (isGenerating ? 'Synthesizing response...' : '')} />
 
-                  {/* Metering Receipt Footer */}
                   {msg.meteredReceipt && (
                     <div className="mt-2 pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[9px] font-mono text-zinc-500">
                       <span>
@@ -472,8 +546,8 @@ export default function PaidChat() {
         </ChatContainer>
       </div>
 
-      {/* ── Floating OpenAI/Anthropic Input Composer Capsule ── */}
-      <form onSubmit={(e) => handleSend()} className="flex flex-col gap-2 bg-[#171719] border border-zinc-800/80 p-3 rounded-3xl shrink-0 shadow-2xl prismatic-border">
+      {/* Floating Input Composer Capsule */}
+      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex flex-col gap-2 bg-[#171719] border border-zinc-800/80 p-3 rounded-3xl shrink-0 shadow-2xl prismatic-border">
         <div className="flex items-center gap-2">
           <input
             type="text"
@@ -507,7 +581,6 @@ export default function PaidChat() {
           )}
         </div>
 
-        {/* Pre-submission Cost Transparency & Mode Indicator */}
         <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 border-t border-zinc-800/80 pt-2 px-1">
           <span className="flex items-center gap-1.5">
             <DollarSign className="h-3 w-3 text-emerald-400" />

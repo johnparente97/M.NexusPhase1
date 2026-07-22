@@ -3,16 +3,16 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Terminal, Key, Webhook, Copy, CheckCircle2, Code, ShieldCheck, Zap } from 'lucide-react';
+import { Terminal, Key, Copy, Code, Info } from 'lucide-react';
 import { useToast } from '../components/ui/Toast';
 
 export default function DevConsole() {
-  const [apiKey] = useState('nx_live_9f82a1b4c3d2e5f678901234567890ab');
+  const [apiKey] = useState('nx_demo_9f82a1b4c3d2e5f678901234567890ab');
   const { toast } = useToast();
 
   const handleCopyKey = () => {
     navigator.clipboard.writeText(apiKey);
-    toast('API key copied to clipboard!', 'success');
+    toast('Demo API key copied to clipboard!', 'info');
   };
 
   return (
@@ -23,6 +23,7 @@ export default function DevConsole() {
         <div className="flex items-center gap-2">
           <Terminal className="h-5 w-5 text-[#27F293]" />
           <h1 className="text-xl font-display font-bold text-zinc-100">Developer & Integration Console</h1>
+          <Badge variant="info" className="text-[10px] font-mono">DEVELOPER PREVIEW</Badge>
         </div>
         <p className="text-xs text-zinc-400">
           Programmatic access to Meridian Nexus capabilities via REST, SDKs, MCP, A2A, and x402 endpoints.
@@ -31,12 +32,18 @@ export default function DevConsole() {
 
       {/* API Key Box */}
       <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-4">
-        <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-          <Key className="h-4 w-4 text-[#27F293]" />
-          Production API Key
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
+            <Key className="h-4 w-4 text-[#27F293]" />
+            Developer Preview Demo Key
+          </h3>
+          <Badge variant="warning" className="text-[9px]">DEMO KEY</Badge>
+        </div>
+        <p className="text-xs text-zinc-400">
+          This key is provided for demonstration and integration testing purposes. Live production API credentials will be issued upon backend deployment.
+        </p>
         <div className="flex items-center gap-3">
-          <Input value={apiKey} readOnly className="font-mono text-xs text-zinc-300 flex-1" />
+          <Input value={apiKey} readOnly className="font-mono text-xs text-zinc-300 flex-1 bg-zinc-950" />
           <Button variant="outline" size="md" onClick={handleCopyKey} className="shrink-0 text-xs font-semibold flex items-center gap-1.5">
             <Copy className="h-3.5 w-3.5" />
             Copy Key
@@ -49,7 +56,7 @@ export default function DevConsole() {
         <Card className="bg-zinc-900 border-zinc-800 p-5 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-zinc-200">Model Context Protocol (MCP)</span>
-            <Badge variant="success" className="text-[9px]">ACTIVE</Badge>
+            <Badge variant="info" className="text-[9px]">PREVIEW</Badge>
           </div>
           <p className="text-[11px] text-zinc-400">
             Expose & consume tools, datasets, prompts, and workflows across AI client clients.
@@ -58,37 +65,43 @@ export default function DevConsole() {
 
         <Card className="bg-zinc-900 border-zinc-800 p-5 flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-zinc-200">Agent2Agent (A2A)</span>
-            <Badge variant="success" className="text-[9px]">ACTIVE</Badge>
+            <span className="text-xs font-bold text-zinc-200">Agent-to-Agent (A2A)</span>
+            <Badge variant="info" className="text-[9px]">PREVIEW</Badge>
           </div>
           <p className="text-[11px] text-zinc-400">
-            Cross-framework agent coordination, task exchange, and status verification protocol.
+            Autonomous agent task delegation, capability discovery, and result verification.
           </p>
         </Card>
 
         <Card className="bg-zinc-900 border-zinc-800 p-5 flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-zinc-200">x402 Protocol v2</span>
-            <Badge variant="success" className="text-[9px]">ACTIVE</Badge>
+            <span className="text-xs font-bold text-zinc-200">x402 Facilitator v2</span>
+            <Badge variant="success" className="text-[9px]">TESTNET</Badge>
           </div>
           <p className="text-[11px] text-zinc-400">
-            Programmatic HTTP payment negotiation & settlement via Meridian EVM facilitator.
+            Pay-per-token settlement and outcome receipts on Base Sepolia testnet.
           </p>
         </Card>
       </div>
 
-      {/* Code Snippet Example */}
-      <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-3">
-        <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-          <Code className="h-4 w-4 text-emerald-400" />
-          cURL API Example
-        </h3>
-        <pre className="bg-zinc-950 border border-zinc-800/80 p-4 rounded-xl text-[11px] font-mono text-emerald-400 overflow-x-auto">
-{`curl -X POST https://api.meridian.finance/api/workflows/business-intelligence-mission/run \\
-  -H "Authorization: Bearer nx_live_9f82a1b4c3d2e5f678901234567890ab" \\
+      {/* Example Curl Request */}
+      <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
+            <Code className="h-4 w-4 text-emerald-400" />
+            Example API Request (Demo Endpoint)
+          </h3>
+          <span className="text-[10px] font-mono text-zinc-500">POST /api/chat/completions</span>
+        </div>
+        <div className="bg-zinc-950 p-4 rounded-xl border border-zinc-800 font-mono text-xs text-emerald-400 overflow-x-auto">
+          <pre>{`curl -X POST https://api.meridian.nexus/v1/chat/completions \\
+  -H "Authorization: Bearer ${apiKey}" \\
   -H "Content-Type: application/json" \\
-  -d '{"inputs": {"companyName": "Acme Corp"}}'`}
-        </pre>
+  -d '{
+    "model": "dolphin-mixtral-8x7b-free",
+    "messages": [{"role": "user", "content": "Hello Meridian"}]
+  }'`}</pre>
+        </div>
       </Card>
 
     </div>

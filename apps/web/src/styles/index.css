@@ -104,6 +104,17 @@ body {
   background-position: center top;
 }
 
+/* Text selection accessibility */
+::selection {
+  background-color: rgba(52, 211, 153, 0.35);
+  color: #ffffff;
+}
+
+.selectable-text {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
 /* Scrollbar customization */
 ::-webkit-scrollbar {
   width: 7px;

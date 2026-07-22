@@ -133,7 +133,7 @@ export const WorkflowGrid: React.FC<WorkflowGridProps> = ({
                   {displayPrice}
                 </span>
 
-                <Link to={`/workflows/${w.slug}/run`} className="inline-flex items-center gap-2 text-xs font-black px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-300 text-zinc-950 shadow-lg shadow-emerald-500/30 group-hover:scale-[1.03] active:scale-[0.97] transition-all duration-200">
+                <Link to={`/exchange/${w.id}/run`} className="inline-flex items-center gap-2 text-xs font-black px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-400 via-teal-400 to-emerald-500 hover:from-emerald-300 hover:to-teal-300 text-zinc-950 shadow-lg shadow-emerald-500/30 group-hover:scale-[1.03] active:scale-[0.97] transition-all duration-200">
                   <Zap className="h-4 w-4 fill-zinc-950" />
                   <span>Run</span>
                   <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
