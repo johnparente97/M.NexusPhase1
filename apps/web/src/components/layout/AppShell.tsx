@@ -6,7 +6,6 @@ import MobileNavDrawer from './MobileNavDrawer';
 import Footer from './Footer';
 import MissionControlSidebar from './MissionControlSidebar';
 import WorkspaceInspector from './WorkspaceInspector';
-import FloatingDock from './FloatingDock';
 import { ToastProvider } from '../ui/Toast';
 import { useAuth } from '../../hooks/useAuth';
 import LoadingPage from '../common/LoadingPage';
@@ -37,7 +36,7 @@ export default function AppShell() {
   return (
     <ToastProvider>
       <div className="min-h-screen bg-zinc-950 flex flex-col antialiased selection:bg-emerald-400/30 selection:text-white">
-        {/* Top Header Navigation */}
+        {/* Sleek Top Header Navigation (h-14) */}
         <TopNav
           onSearchClick={() => setShowPalette(true)}
           onMobileMenuClick={() => setIsMobileDrawerOpen(true)}
@@ -49,27 +48,24 @@ export default function AppShell() {
           onClose={() => setIsMobileDrawerOpen(false)}
         />
 
-        {/* Integrated 3-Pane AI OS Workspace Layout */}
+        {/* Integrated AI OS Workspace Layout */}
         <div className="flex-1 flex w-full relative">
           {/* 1. Left Mission Control Sidebar */}
           <MissionControlSidebar onSearchClick={() => setShowPalette(true)} />
 
-          {/* 2. Primary Center Workspace View - pt-16 accounts for h-16 fixed TopNav */}
-          <main className="flex-1 flex flex-col min-w-0 pt-16 pb-20 md:pb-12">
+          {/* 2. Primary Workspace View - pt-14 accounts for h-14 fixed TopNav */}
+          <main className="flex-1 flex flex-col min-w-0 pt-14 pb-16 md:pb-8">
             <Outlet />
           </main>
 
-          {/* 3. Right Context Inspector Panel */}
+          {/* 3. Right Context Inspector Panel (Auto-hidden drawer) */}
           <WorkspaceInspector />
         </div>
 
         {/* Footer */}
         <Footer />
 
-        {/* macOS / VisionOS Style Floating Dock */}
-        <FloatingDock onSearchClick={() => setShowPalette(true)} />
-
-        {/* Mobile Navigation Bar */}
+        {/* Mobile Bottom Navigation Bar */}
         <MobileNav />
 
         {/* Floating Intelligence Assistant & Spotlight Search */}

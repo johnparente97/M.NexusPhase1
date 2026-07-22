@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import {
   Compass,
   Layers,
@@ -8,7 +8,6 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
-  Sparkles,
   Cpu,
   Coins,
   Building2,
@@ -43,25 +42,25 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     { to: '/dashboard', label: 'Command Centre', icon: LayoutDashboard, requiresAuth: true },
     { to: '/organization', label: 'Organization Enterprise', icon: Building2, requiresAuth: true },
     { to: '/developer', label: 'Developer Console', icon: Terminal },
-    { to: '/docs', label: 'Meridian Documentation', icon: BookOpen },
+    { to: '/docs', label: 'Documentation', icon: BookOpen },
   ];
 
   return (
     <aside
       className={cn(
-        'bg-[#171719]/90 border-r border-zinc-800/80 backdrop-blur-md flex flex-col h-[calc(100vh-4rem)] sticky top-16 select-none transition-all duration-200 z-layer-header hidden lg:flex shrink-0',
+        'bg-[#141416]/95 border-r border-zinc-800/80 backdrop-blur-xl flex flex-col h-[calc(100vh-3.5rem)] sticky top-14 select-none transition-all duration-200 z-layer-header hidden lg:flex shrink-0',
         {
-          'w-64': !isCollapsed,
+          'w-60': !isCollapsed,
           'w-16': isCollapsed,
         }
       )}
     >
       {/* ⌘K Search Command Trigger */}
-      <div className="p-3 border-b border-zinc-900 shrink-0">
+      <div className="p-3 border-b border-zinc-800/80 shrink-0">
         {!isCollapsed ? (
           <button
             onClick={onSearchClick}
-            className="w-full flex items-center justify-between gap-2 bg-zinc-900/60 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer shadow-sm group"
+            className="w-full flex items-center justify-between gap-2 bg-zinc-900/80 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer shadow-sm group"
           >
             <div className="flex items-center gap-2">
               <Search className="h-3.5 w-3.5 text-zinc-500 group-hover:text-emerald-400" />
@@ -74,7 +73,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         ) : (
           <button
             onClick={onSearchClick}
-            className="w-full flex items-center justify-center p-2 rounded-xl bg-zinc-900/60 border border-zinc-800 text-zinc-400 hover:text-emerald-400"
+            className="w-full flex items-center justify-center p-2 rounded-xl text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800/60 transition-colors cursor-pointer"
             title="Spotlight Search (⌘K)"
           >
             <Search className="h-4 w-4" />
@@ -82,8 +81,8 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         )}
       </div>
 
-      {/* Navigation List Container (Independent scrolling) */}
-      <nav className="flex-1 overflow-y-auto no-scrollbar p-2 space-y-1">
+      {/* Navigation List */}
+      <div className="flex-1 py-3 px-2 overflow-y-auto no-scrollbar space-y-1">
         {navItems.map((item) => {
           if (item.requiresAuth && !isSignedIn) return null;
           const Icon = item.icon;
@@ -92,46 +91,55 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
             <NavLink
               key={item.to}
               to={item.to}
-              title={isCollapsed ? item.label : undefined}
               className={({ isActive }) =>
                 cn(
-                  'flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition-all group',
+                  'flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all group relative',
                   isActive
-                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold'
-                    : 'text-zinc-400 hover:text-white hover:bg-zinc-900/60'
+                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold shadow-sm'
+                    : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50'
                 )
               }
             >
-              <div className="flex items-center gap-3 min-w-0">
-                <Icon className="h-4 w-4 shrink-0 transition-transform group-hover:scale-110" />
-                {!isCollapsed && <span className="truncate">{item.label}</span>}
-              </div>
+              {({ isActive }) => (
+                <>
+                  <Icon
+                    className={cn('h-4 w-4 shrink-0 transition-colors', {
+                      'text-emerald-400': isActive,
+                      'text-zinc-500 group-hover:text-zinc-300': !isActive,
+                    })}
+                  />
 
-              {!isCollapsed && item.tag && (
-                <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
-                  {item.tag}
-                </span>
+                  {!isCollapsed && (
+                    <span className="truncate flex-1">{item.label}</span>
+                  )}
+
+                  {!isCollapsed && item.tag && (
+                    <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+                      {item.tag}
+                    </span>
+                  )}
+
+                  {/* Tooltip when collapsed */}
+                  {isCollapsed && (
+                    <div className="absolute left-16 bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs font-medium px-2.5 py-1.5 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-layer-dropdown">
+                      {item.label}
+                    </div>
+                  )}
+                </>
               )}
             </NavLink>
           );
         })}
-      </nav>
+      </div>
 
-      {/* Collapse / Expand Footer Toggle */}
-      <div className="p-3 border-t border-zinc-900 shrink-0 flex items-center justify-between">
+      {/* Sidebar Collapse Toggle */}
+      <div className="p-2 border-t border-zinc-800/80 shrink-0">
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="w-full flex items-center justify-center gap-2 text-xs text-zinc-500 hover:text-zinc-200 p-2 rounded-xl bg-zinc-900/40 hover:bg-zinc-900 transition-colors"
+          className="w-full flex items-center justify-center p-2 rounded-xl text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 transition-colors cursor-pointer"
           title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
         >
-          {isCollapsed ? (
-            <ChevronRight className="h-4 w-4" />
-          ) : (
-            <>
-              <ChevronLeft className="h-4 w-4" />
-              <span className="font-mono text-[10px]">Collapse</span>
-            </>
-          )}
+          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
         </button>
       </div>
     </aside>

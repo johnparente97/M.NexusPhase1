@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Button } from '../ui/Button';
 import { Search, Wallet, LogOut as LogOutIcon, Copy, Menu, Coins } from 'lucide-react';
 import { motion } from 'framer-motion';
 import DemoLabel from '../common/DemoLabel';
@@ -26,15 +25,15 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
   const isWrongNetwork = isConnected && chainId !== 84532;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-layer-header h-16 px-3 sm:px-6 bg-[#171719]/90 backdrop-blur-xl border-b border-zinc-800/80 flex items-center justify-between select-none">
-      <div className="w-full mx-auto flex items-center justify-between gap-4">
+    <header className="fixed top-0 left-0 right-0 z-layer-header h-14 px-3 sm:px-5 bg-[#141416]/95 backdrop-blur-xl border-b border-zinc-800/80 flex items-center justify-between select-none">
+      <div className="w-full flex items-center justify-between gap-4">
 
         {/* Left: Mobile Menu Toggle + Brand Logo & Title */}
         <div className="flex items-center gap-3 shrink-0">
           {/* Mobile Menu Button */}
           <button
             onClick={onMobileMenuClick}
-            className="p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors lg:hidden"
+            className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors lg:hidden"
             aria-label="Open Navigation Menu"
           >
             <Menu className="h-5 w-5" />
@@ -42,33 +41,33 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
 
           <Link to="/" className="flex items-center gap-2.5 group">
             <motion.div whileHover={{ rotate: 8, scale: 1.08 }} whileTap={{ scale: 0.95 }}>
-              <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8" />
+              <NexusLogoMark className="h-7 w-7" />
             </motion.div>
-            <span className="font-display font-bold text-sm sm:text-base text-white tracking-tight group-hover:text-emerald-300 transition-colors">
+            <span className="font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors">
               Meridian Nexus
             </span>
           </Link>
           <DemoLabel />
         </div>
 
-        {/* Right Controls: Spotlight Search, AI Balance, Wallet & Profile */}
+        {/* Right Utility Controls: Spotlight Search, AI Balance, Wallet & Profile */}
         <div className="flex items-center gap-2.5">
-          {/* Spotlight Search Pill */}
+          {/* Spotlight Search Launcher */}
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             onClick={onSearchClick}
-            className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 hover:text-zinc-200 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl px-3 py-1.5 transition-colors cursor-pointer select-none"
+            className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 hover:text-zinc-200 bg-zinc-900/80 border border-zinc-800 hover:border-zinc-700 rounded-xl px-3 py-1.5 transition-colors cursor-pointer select-none shadow-sm"
           >
             <Search className="h-3.5 w-3.5 text-zinc-500" />
             <span className="hidden md:inline">Spotlight</span>
-            <kbd className="text-[9px] text-zinc-500 bg-zinc-950 border border-zinc-800 px-1 py-0.5 rounded font-mono">⌘K</kbd>
+            <kbd className="text-[9px] text-zinc-500 bg-zinc-950 border border-zinc-800 px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
           </motion.button>
 
-          {/* AI Balance Quick Action */}
+          {/* AI Balance Quick Link */}
           <Link
             to="/balance"
-            className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 hover:border-emerald-500/40 text-xs font-mono text-emerald-400 px-3 py-1.5 rounded-xl transition-colors shrink-0"
+            className="flex items-center gap-1.5 bg-zinc-900/90 border border-zinc-800 hover:border-emerald-500/40 text-xs font-mono text-emerald-400 px-3 py-1.5 rounded-xl transition-colors shrink-0 shadow-sm"
             title="Unified AI Balance"
           >
             <Coins className="h-3.5 w-3.5 text-emerald-400" />
@@ -119,7 +118,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
           {/* User Profile Avatar */}
           {isSignedIn ? (
             <Link to="/profile" title="Profile" className="ml-1">
-              <div className="h-7 w-7 rounded-full bg-emerald-400 text-zinc-950 font-bold flex items-center justify-center text-xs hover:opacity-90 transition-opacity">
+              <div className="h-7 w-7 rounded-full bg-emerald-400 text-zinc-950 font-bold flex items-center justify-center text-xs hover:opacity-90 transition-opacity shadow-sm">
                 {user?.displayName?.charAt(0)?.toUpperCase() || 'U'}
               </div>
             </Link>
@@ -129,7 +128,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
                 onClick={() => handleDemoLogin('user')}
                 className="text-[10px] font-medium text-zinc-400 hover:text-white px-2 py-1 rounded-lg bg-zinc-900 border border-zinc-800 transition-colors"
               >
-                User Demo
+                Demo Login
               </button>
             </div>
           )}
