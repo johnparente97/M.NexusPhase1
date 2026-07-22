@@ -35,37 +35,34 @@ export default function AppShell() {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-zinc-950 flex flex-col antialiased selection:bg-emerald-400/30 selection:text-white">
-        {/* Sleek Top Header Navigation (h-14) */}
-        <TopNav
-          onSearchClick={() => setShowPalette(true)}
-          onMobileMenuClick={() => setIsMobileDrawerOpen(true)}
-        />
+      <div className="h-screen w-screen bg-zinc-950 flex overflow-hidden antialiased selection:bg-emerald-400/30 selection:text-white">
+        
+        {/* 1. Full-Height Left Sidebar (OpenAI / Claude Style) */}
+        <MissionControlSidebar onSearchClick={() => setShowPalette(true)} />
 
-        {/* Mobile Slide-Out Drawer */}
+        {/* 2. Primary Main Workspace View */}
+        <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden relative">
+          
+          {/* Top Utilities Header inside Main Workspace */}
+          <TopNav
+            onSearchClick={() => setShowPalette(true)}
+            onMobileMenuClick={() => setIsMobileDrawerOpen(true)}
+          />
+
+          {/* Center Main View Canvas */}
+          <main className="flex-1 flex flex-col min-w-0 overflow-y-auto relative pb-16 md:pb-0">
+            <Outlet />
+          </main>
+
+          {/* Context Inspector Overlay Panel */}
+          <WorkspaceInspector />
+        </div>
+
+        {/* Mobile Slide-Out Drawer & Mobile Bottom Bar */}
         <MobileNavDrawer
           isOpen={isMobileDrawerOpen}
           onClose={() => setIsMobileDrawerOpen(false)}
         />
-
-        {/* Integrated AI OS Workspace Layout */}
-        <div className="flex-1 flex w-full relative">
-          {/* 1. Left Mission Control Sidebar */}
-          <MissionControlSidebar onSearchClick={() => setShowPalette(true)} />
-
-          {/* 2. Primary Workspace View - pt-14 accounts for h-14 fixed TopNav */}
-          <main className="flex-1 flex flex-col min-w-0 pt-14 pb-16 md:pb-8">
-            <Outlet />
-          </main>
-
-          {/* 3. Right Context Inspector Panel (Auto-hidden drawer) */}
-          <WorkspaceInspector />
-        </div>
-
-        {/* Footer */}
-        <Footer />
-
-        {/* Mobile Bottom Navigation Bar */}
         <MobileNav />
 
         {/* Floating Intelligence Assistant & Spotlight Search */}
