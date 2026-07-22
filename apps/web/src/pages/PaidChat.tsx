@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ANTSEED_MODEL_CATALOG, AntSeedModel } from '../adapters/antseed/adapter';
+import { DolphinAdapter } from '../adapters/dolphin/adapter';
 import { MeteringEngine, MeteredRequestReceipt } from '../adapters/pricing/metering';
 import { MeridianRouterAdapter, SessionAuthorization } from '../adapters/meridian/router';
 import {
@@ -16,6 +17,7 @@ import {
   ShieldCheck,
   Info,
   DollarSign,
+  Sparkles,
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 import { useToast } from '../components/ui/Toast';
@@ -42,14 +44,14 @@ const REASONING_MODES = [
 
 export default function PaidChat() {
   const [searchParams] = useSearchParams();
-  const initialModelId = searchParams.get('model') || 'deepseek-r1';
+  const initialModelId = searchParams.get('model') || 'dolphin-mixtral-8x7b-free';
   const navigate = useNavigate();
 
   const { isConnected, usdcBalance, signInWithEthereum } = useWallet();
   const { toast } = useToast();
 
   const [selectedModel, setSelectedModel] = useState<AntSeedModel>(() => {
-    return ANTSEED_MODEL_CATALOG.find((m) => m.id === initialModelId || m.id === 'deepseek-r1') || ANTSEED_MODEL_CATALOG[0]!;
+    return ANTSEED_MODEL_CATALOG.find((m) => m.id === initialModelId || m.id === 'dolphin-mixtral-8x7b-free') || ANTSEED_MODEL_CATALOG[0]!;
   });
 
   const [selectedMode, setSelectedMode] = useState('logical');
@@ -82,13 +84,14 @@ export default function PaidChat() {
     if (e) e.preventDefault();
     if (!input.trim() || isGenerating) return;
 
-    if (!isConnected) {
+    // Wallet check ONLY for paid metered models
+    if (!selectedModel.isFree && !isConnected) {
       toast('Please connect your wallet to authorize x402 inference settlement.', 'warning');
       signInWithEthereum();
       return;
     }
 
-    if (isLowBalance) {
+    if (!selectedModel.isFree && isLowBalance) {
       toast('Low AI balance detected ($' + numericBalance.toFixed(2) + '). Please top up to continue metered inference.', 'error');
     }
 
@@ -118,54 +121,89 @@ export default function PaidChat() {
     abortRef.current = new AbortController();
 
     try {
-      // Call Cloudflare Worker Chat Completions route
-      const response = (await fetchApi('/api/chat/completions', {
-        method: 'POST',
-        headers: {
-          'X-402-Payment-Token': `x402-session-${Date.now()}`,
-        },
-        body: JSON.stringify({
-          model: selectedModel.id,
-          mode: selectedMode,
-          messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
-        }),
-      })) as any;
-
-      let completionText = '';
-      if (response && response.choices && response.choices[0]?.message?.content) {
-        completionText = response.choices[0].message.content;
-      } else if (response && response.reply) {
-        completionText = response.reply;
+      if (selectedModel.isFree) {
+        // Free Model Completion Stream
+        const generator = DolphinAdapter.streamCompletion(updatedMessages, selectedModel.id, abortRef.current.signal);
+        for await (const chunk of generator) {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === botMsgId
+                ? {
+                    ...msg,
+                    content: chunk.text,
+                    meteredReceipt: {
+                      requestId: `req-${Date.now()}`,
+                      timestamp: new Date().toISOString(),
+                      modelId: selectedModel.id,
+                      modelName: selectedModel.name,
+                      provider: selectedModel.provider,
+                      inputTokens: Math.round(userText.length / 4),
+                      outputTokens: chunk.tokensCount || 0,
+                      inputCost: 0,
+                      outputCost: 0,
+                      totalModelCost: 0,
+                      platformFee: 0,
+                      totalCharged: 0,
+                      currency: 'USDC',
+                      isFree: true,
+                      mrdnCashbackEarned: 0,
+                      settlementStatus: 'settled',
+                      settlementTxHash: '0x0000000000000000000000000000000000000000',
+                    },
+                  }
+                : msg
+            )
+          );
+        }
       } else {
-        completionText = `Meridian Inference completed prompt processing using ${selectedModel.name} (${selectedMode} mode). Output verified via x402 settlement protocol.`;
-      }
+        // Paid Model Completion Stream via Worker API
+        const response = (await fetchApi('/api/chat/completions', {
+          method: 'POST',
+          headers: {
+            'X-402-Payment-Token': `x402-session-${Date.now()}`,
+          },
+          body: JSON.stringify({
+            model: selectedModel.id,
+            mode: selectedMode,
+            messages: updatedMessages.map((m) => ({ role: m.role, content: m.content })),
+          }),
+        })) as any;
 
-      // Stream text simulation with internal container auto-scroll (NO document window jumps!)
-      const inputTokenCount = Math.max(12, Math.round(userText.length / 4));
-      const words = completionText.split(' ');
-      let accumulatedText = '';
+        let completionText = '';
+        if (response && response.choices && response.choices[0]?.message?.content) {
+          completionText = response.choices[0].message.content;
+        } else if (response && response.reply) {
+          completionText = response.reply;
+        } else {
+          completionText = `Meridian Inference completed prompt processing using ${selectedModel.name} (${selectedMode} mode). Output verified via x402 settlement protocol.`;
+        }
 
-      for (let i = 0; i < words.length; i++) {
-        if (abortRef.current?.signal.aborted) break;
-        await new Promise((res) => setTimeout(res, 25));
-        accumulatedText += (i === 0 ? '' : ' ') + words[i];
+        const inputTokenCount = Math.max(12, Math.round(userText.length / 4));
+        const words = completionText.split(' ');
+        let accumulatedText = '';
+
+        for (let i = 0; i < words.length; i++) {
+          if (abortRef.current?.signal.aborted) break;
+          await new Promise((res) => setTimeout(res, 25));
+          accumulatedText += (i === 0 ? '' : ' ') + words[i];
+
+          setMessages((prev) =>
+            prev.map((m) => (m.id === botMsgId ? { ...m, content: accumulatedText } : m))
+          );
+        }
+
+        const outputTokenCount = Math.max(20, Math.round(accumulatedText.length / 4));
+        const receipt = MeteringEngine.calculateRequestCost(selectedModel, inputTokenCount, outputTokenCount);
+
+        setSessionAuth((prev) => ({
+          ...prev,
+          currentSessionSpend: parseFloat((prev.currentSessionSpend + receipt.totalCharged).toFixed(4)),
+        }));
 
         setMessages((prev) =>
-          prev.map((m) => (m.id === botMsgId ? { ...m, content: accumulatedText } : m))
+          prev.map((m) => (m.id === botMsgId ? { ...m, meteredReceipt: receipt } : m))
         );
       }
-
-      const outputTokenCount = Math.max(20, Math.round(accumulatedText.length / 4));
-      const receipt = MeteringEngine.calculateRequestCost(selectedModel, inputTokenCount, outputTokenCount);
-
-      setSessionAuth((prev) => ({
-        ...prev,
-        currentSessionSpend: parseFloat((prev.currentSessionSpend + receipt.totalCharged).toFixed(4)),
-      }));
-
-      setMessages((prev) =>
-        prev.map((m) => (m.id === botMsgId ? { ...m, meteredReceipt: receipt } : m))
-      );
     } catch (err) {
       console.error('Inference error:', err);
       setMessages((prev) =>
@@ -193,7 +231,7 @@ export default function PaidChat() {
       {/* ── Top Header Toolbar ── */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#171719] border border-zinc-800/80 p-3 sm:px-4 sm:py-2.5 rounded-2xl shrink-0 shadow-lg shadow-black/20">
         
-        {/* Left Title & Stack Badge */}
+        {/* Left Title & Protocol Badge */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-2">
             <NexusLogoMark className="h-7 w-7 sm:h-8 sm:w-8" />
@@ -203,14 +241,14 @@ export default function PaidChat() {
           </Link>
           <span className="text-zinc-700">|</span>
           <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
-            <Zap className="h-3 w-3" />
-            x402 Micropayments
+            {selectedModel.isFree ? <Sparkles className="h-3 w-3" /> : <Zap className="h-3 w-3" />}
+            {selectedModel.isFree ? 'Free Model' : 'x402 Micropayments'}
           </span>
         </div>
 
-        {/* Right Top Bar Controls */}
+        {/* Right Top Bar Controls: Unified Model Selector, Mode Dropdown, Balance Link */}
         <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-          {/* Model Selector Dropdown */}
+          {/* Unified Model Selector Dropdown */}
           <div className="relative">
             <select
               value={selectedModel.id}
@@ -219,7 +257,7 @@ export default function PaidChat() {
             >
               {ANTSEED_MODEL_CATALOG.map((m) => (
                 <option key={m.id} value={m.id} className="bg-[#171719] text-zinc-200">
-                  {m.name} {m.isFree ? '(Free)' : `($${m.priceInputPerMillion}/1M)`}
+                  {m.name} {m.isFree ? '($0.00 Free)' : `($${m.priceInputPerMillion}/1M)`}
                 </option>
               ))}
             </select>
@@ -265,8 +303,8 @@ export default function PaidChat() {
         </motion.div>
       )}
 
-      {/* Low Balance Warning Banner */}
-      {isLowBalance && (
+      {/* Low Balance Warning Banner (Only for paid models) */}
+      {!selectedModel.isFree && isLowBalance && (
         <div className="bg-amber-950/30 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between text-xs text-amber-300 font-mono shrink-0">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
@@ -292,10 +330,10 @@ export default function PaidChat() {
                 <Bot className="h-6 w-6" />
               </div>
               <h2 className="font-display font-bold text-base text-zinc-200">
-                Meridian Decentralized Inference Marketplace
+                Meridian Decentralized Inference Chat
               </h2>
               <p className="text-xs text-zinc-400 max-w-md leading-relaxed">
-                Query metered decentralized AI model hosts. x402 transfer-with-authorization active—no wallet signature required per message.
+                Query free or metered decentralized AI model hosts. Pay per token or chat for free with open-weights models.
               </p>
               <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 mt-2 bg-zinc-950 px-3 py-1.5 rounded-full border border-zinc-800">
                 <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
@@ -343,7 +381,7 @@ export default function PaidChat() {
                         Tokens: {msg.meteredReceipt.inputTokens} in / {msg.meteredReceipt.outputTokens} out
                       </span>
                       <span className="text-emerald-400 font-bold">
-                        Settled: {msg.meteredReceipt.isFree ? 'Free' : `$${msg.meteredReceipt.totalCharged.toFixed(5)}`}
+                        Settled: {msg.meteredReceipt.isFree ? 'Free ($0.00)' : `$${msg.meteredReceipt.totalCharged.toFixed(5)}`}
                       </span>
                     </div>
                   )}
@@ -397,7 +435,7 @@ export default function PaidChat() {
             <DollarSign className="h-3 w-3 text-emerald-400" />
             Estimated cost: {selectedModel.isFree ? 'Free ($0.00)' : `<$0.01 per request ($${selectedModel.priceInputPerMillion}/1M in)`}
           </span>
-          <span>x402 Session Active (No Signatures)</span>
+          <span>{selectedModel.isFree ? 'Unmetered Open Weights' : 'x402 Session Active (No Signatures)'}</span>
         </div>
       </form>
 

@@ -47,9 +47,14 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
     };
   }, [isOpen]);
 
-  const navItems = [
-    { to: '/chat/free', label: 'Free Multi-LLM Chat', icon: Sparkles, tag: 'Free' },
-    { to: '/chat/paid', label: 'Meridian Inference (x402)', icon: Bot, tag: 'x402' },
+  const navItems: Array<{
+    to: string;
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    requiresAuth?: boolean;
+    tag?: string;
+  }> = [
+    { to: '/chat', label: 'Inference Chat', icon: Bot },
     { to: '/marketplace/models', label: 'AntSeed Model Catalog', icon: Cpu },
     { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
     { to: '/balance', label: 'Unified AI Balance', icon: Coins, requiresAuth: true },

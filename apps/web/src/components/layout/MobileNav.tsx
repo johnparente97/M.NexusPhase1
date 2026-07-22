@@ -17,7 +17,7 @@ export default function MobileNav() {
 
   const guestItems = [
     { to: '/exchange', icon: Compass, label: 'Exchange' },
-    { to: '/chat/free', icon: Sparkles, label: 'Free LLMs' },
+    { to: '/chat', icon: Sparkles, label: 'Chat' },
     { to: '/marketplace/models', icon: Layers, label: 'Models' },
   ];
 

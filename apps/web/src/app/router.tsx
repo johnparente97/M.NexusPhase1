@@ -1,4 +1,4 @@
-import { createHashRouter } from 'react-router-dom';
+import { createHashRouter, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
 import AppShell from '../components/layout/AppShell';
 import LoadingPage from '../components/common/LoadingPage';
@@ -36,7 +36,6 @@ const RunDetail = lazyWithRetry(() => import('../pages/RunDetail'));
 const CreatorDashboard = lazyWithRetry(() => import('../pages/CreatorDashboard'));
 const Profile = lazyWithRetry(() => import('../pages/Profile'));
 const SavedWorkflows = lazyWithRetry(() => import('../pages/SavedWorkflows'));
-const DolphinChat = lazyWithRetry(() => import('../pages/DolphinChat'));
 const PaidChat = lazyWithRetry(() => import('../pages/PaidChat'));
 const ModelMarketplace = lazyWithRetry(() => import('../pages/ModelMarketplace'));
 const UnifiedBalancePage = lazyWithRetry(() => import('../pages/UnifiedBalancePage'));
@@ -73,8 +72,9 @@ export const router = createHashRouter([
       { path: 'profile', element: suspenseWrapper(Profile) },
       { path: 'saved', element: suspenseWrapper(SavedWorkflows) },
       
-      // New Capabilities Routes
-      { path: 'chat/free', element: suspenseWrapper(DolphinChat) },
+      // Unified Chat & Capabilities Routes
+      { path: 'chat', element: suspenseWrapper(PaidChat) },
+      { path: 'chat/free', element: suspenseWrapper(PaidChat) },
       { path: 'chat/paid', element: suspenseWrapper(PaidChat) },
       { path: 'marketplace/models', element: suspenseWrapper(ModelMarketplace) },
       { path: 'balance', element: suspenseWrapper(UnifiedBalancePage) },
