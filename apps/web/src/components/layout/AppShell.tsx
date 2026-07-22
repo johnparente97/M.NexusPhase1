@@ -4,7 +4,6 @@ import TopNav from './TopNav';
 import MobileNav from './MobileNav';
 import MobileNavDrawer from './MobileNavDrawer';
 import Footer from './Footer';
-import MissionControlSidebar from './MissionControlSidebar';
 import WorkspaceInspector from './WorkspaceInspector';
 import { ToastProvider } from '../ui/Toast';
 import { useAuth } from '../../hooks/useAuth';
@@ -35,34 +34,32 @@ export default function AppShell() {
 
   return (
     <ToastProvider>
-      <div className="h-screen w-screen bg-zinc-950 flex overflow-hidden antialiased selection:bg-emerald-400/30 selection:text-white">
+      <div className="min-h-screen bg-zinc-950 flex flex-col antialiased selection:bg-emerald-400/30 selection:text-white">
         
-        {/* 1. Full-Height Left Sidebar (OpenAI / Claude Style) */}
-        <MissionControlSidebar onSearchClick={() => setShowPalette(true)} />
+        {/* Single Authoritative Top Navigation Header (No Side Menu Collision!) */}
+        <TopNav
+          onSearchClick={() => setShowPalette(true)}
+          onMobileMenuClick={() => setIsMobileDrawerOpen(true)}
+        />
 
-        {/* 2. Primary Main Workspace View */}
-        <div className="flex-1 flex flex-col h-screen min-w-0 overflow-hidden relative">
-          
-          {/* Top Utilities Header inside Main Workspace */}
-          <TopNav
-            onSearchClick={() => setShowPalette(true)}
-            onMobileMenuClick={() => setIsMobileDrawerOpen(true)}
-          />
-
-          {/* Center Main View Canvas */}
-          <main className="flex-1 flex flex-col min-w-0 overflow-y-auto relative pb-16 md:pb-0">
-            <Outlet />
-          </main>
-
-          {/* Context Inspector Overlay Panel */}
-          <WorkspaceInspector />
-        </div>
-
-        {/* Mobile Slide-Out Drawer & Mobile Bottom Bar */}
+        {/* Mobile Slide-Out Drawer */}
         <MobileNavDrawer
           isOpen={isMobileDrawerOpen}
           onClose={() => setIsMobileDrawerOpen(false)}
         />
+
+        {/* 100% Full Width Primary Workspace Canvas */}
+        <main className="flex-1 flex flex-col min-w-0 pt-16 pb-16 md:pb-8 w-full max-w-7xl mx-auto px-4 sm:px-6">
+          <Outlet />
+        </main>
+
+        {/* Context Inspector Overlay Panel (Auto-hidden drawer) */}
+        <WorkspaceInspector />
+
+        {/* Footer */}
+        <Footer />
+
+        {/* Mobile Bottom Navigation Bar */}
         <MobileNav />
 
         {/* Floating Intelligence Assistant & Spotlight Search */}
