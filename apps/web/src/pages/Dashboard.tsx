@@ -36,7 +36,7 @@ export default function Dashboard() {
             Welcome back, {user?.displayName || 'Guest Operator'}
           </h2>
           <p className="text-xs text-zinc-400 leading-relaxed max-w-xl">
-            The Meridian network is running optimal. Verified Productive Outcome Value (VPOV) has increased by 14% today. You have active access to 15 capability schemas on the Exchange.
+            The Meridian network is active and performing at optimal latency. You have instant sub-penny access to all AI models and verified workflows on the Market.
           </p>
         </div>
 

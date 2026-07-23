@@ -20,7 +20,7 @@ export default function Footer() {
             </div>
           </Link>
           <p className="text-[11px] text-zinc-500 leading-normal">
-            Discover, configure, and execute trusted AI capabilities through one outcome-first interface. Built on Meridian (MRDN) infrastructure.
+            Run open-weight AI models and verified workflows at sub-penny rates with zero subscriptions. Built on Meridian.
           </p>
         </div>
 
@@ -28,15 +28,17 @@ export default function Footer() {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
           <div className="flex flex-col gap-2">
             <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Product</h4>
-            <Link to="/exchange" className="text-xs text-zinc-500 hover:text-zinc-300">Exchange</Link>
-            <Link to="/studio" className="text-xs text-zinc-500 hover:text-zinc-300">Nexus Studio</Link>
-            <Link to="/dashboard" className="text-xs text-zinc-500 hover:text-zinc-300">Dashboard</Link>
+            <Link to="/chat" className="text-xs text-zinc-500 hover:text-zinc-300">AI Playground</Link>
+            <Link to="/exchange" className="text-xs text-zinc-500 hover:text-zinc-300">Workflow Market</Link>
+            <Link to="/marketplace/models" className="text-xs text-zinc-500 hover:text-zinc-300">Model Hub</Link>
+            <Link to="/studio" className="text-xs text-zinc-500 hover:text-zinc-300">Workflow Builder</Link>
           </div>
           <div className="flex flex-col gap-2">
-            <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">System</h4>
-            <span className="text-xs text-zinc-500">Meridian Mpay</span>
-            <span className="text-xs text-zinc-500">Command Centre</span>
-            <span className="text-xs text-zinc-500">x402 Settlement</span>
+            <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Workspace</h4>
+            <Link to="/balance" className="text-xs text-zinc-500 hover:text-zinc-300">AI Vault</Link>
+            <Link to="/dashboard" className="text-xs text-zinc-500 hover:text-zinc-300">Mission Control</Link>
+            <Link to="/activity" className="text-xs text-zinc-500 hover:text-zinc-300">Live Activity</Link>
+            <Link to="/developer" className="text-xs text-zinc-500 hover:text-zinc-300">Dev Hub</Link>
           </div>
           <div className="flex flex-col gap-2 col-span-2 sm:col-span-1">
             <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Legal</h4>
