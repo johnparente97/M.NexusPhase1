@@ -14,6 +14,7 @@ interface TopNavProps {
 }
 
 export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps) {
+  const { isCollapsed } = useSidebarStore();
   const { isConnected, walletAddress, chainId, usdcBalance, signInWithEthereum, switchNetwork } = useWallet();
   const isWrongNetwork = isConnected && chainId !== null && chainId !== 84532;
 
