@@ -9,7 +9,7 @@
 
 ---
 
-## ⚡ The Meridian 🤝 Nexus Synergy
+## ⚡ How Meridian & Nexus Work Together
 
 ```mermaid
 graph TD
@@ -33,7 +33,7 @@ graph TD
 
 ---
 
-## 🌟 Core Value Synergy & Highlights
+## 🌟 Core Advantages & Highlights
 
 - ⚡ **No Subscriptions & Zero Minimum Balances**: Run high-performance AI models with pay-as-you-go micro-metering.
 - 💰 **90%+ Lower Cost vs Centralized APIs**:
@@ -48,9 +48,9 @@ graph TD
 
 ---
 
-## 🧭 Synergistic Workspaces
+## 🧭 Workspace Architecture
 
-| Workspace | Route | Purpose & Synergy |
+| Workspace | Route | Capability & Function |
 | :--- | :--- | :--- |
 | **Inference Hub** ⚡ | `/chat` | Sub-penny prompt execution across open-weight models with live model switching. |
 | **Workflow Market** 🪐 | `/exchange` | Discover & execute multi-step AI capabilities created by protocol developers. |
@@ -66,7 +66,7 @@ graph TD
 
 ```
 M.NexusPhase1/
-├── README.md                           # Synergistic product overview & quickstart
+├── README.md                           # Product overview & quickstart
 ├── ARCHITECTURE.md                     # Application architecture & adapter patterns
 ├── PRODUCT_ALIGNMENT.md                # Meridian vs Nexus boundaries & positioning
 ├── BACKEND_INTEGRATION_REQUIREMENTS.md # Backend service integration spec
