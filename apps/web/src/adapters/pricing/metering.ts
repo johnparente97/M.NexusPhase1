@@ -56,11 +56,11 @@ export class MeteringEngine {
     const outputCost = (outputTokens / 1000000) * model.priceOutputPerMillion;
     const totalModelCost = inputCost + outputCost;
 
-    // Minimum charge threshold ($0.0001) for tiny testnet executions
-    const roundedModelCost = Math.max(0.0001, parseFloat(totalModelCost.toFixed(6)));
-    const platformFee = parseFloat((roundedModelCost * 0.01).toFixed(6)); // 1% platform fee
+    // Minimum charge threshold ($0.00001) for ultra-cheap testnet micro-executions
+    const roundedModelCost = Math.max(0.00001, parseFloat(totalModelCost.toFixed(6)));
+    const platformFee = parseFloat((roundedModelCost * 0.005).toFixed(6)); // 0.5% platform fee
     const totalCharged = parseFloat((roundedModelCost + platformFee).toFixed(6));
-    const mrdnCashbackEarned = parseFloat((totalCharged * 0.02).toFixed(6)); // 2% Base MRDN cashback
+    const mrdnCashbackEarned = parseFloat((totalCharged * 0.05).toFixed(6)); // 5% Base MRDN cashback reward
 
     return {
       requestId: `req-${crypto.randomUUID().substring(0, 8)}`,

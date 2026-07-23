@@ -587,10 +587,10 @@ export default function PaidChat() {
             <span className="truncate">
               {selectedModel.isFree
                 ? 'Free ($0.00) • 100% Unlimited'
-                : `<$0.0005 / prompt ($${selectedModel.priceInputPerMillion}/1M in)`}
+                : `<$0.0001 / prompt • 90%+ Cheaper vs Centralized APIs`}
             </span>
           </span>
-          <span className="text-emerald-400 font-semibold shrink-0">{selectedModel.isFree ? 'Unmetered' : 'x402 Active'}</span>
+          <span className="text-emerald-400 font-semibold shrink-0">{selectedModel.isFree ? 'Unmetered' : '5% MRDN Rewards'}</span>
         </div>
       </form>
 
