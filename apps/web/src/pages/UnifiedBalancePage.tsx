@@ -71,7 +71,7 @@ export default function UnifiedBalancePage() {
           <Badge variant="success" className="text-[10px] font-mono">x402 ROUTER</Badge>
         </div>
         <p className="text-xs text-zinc-400 max-w-2xl leading-relaxed">
-          Fund your AI balance using supported EVM tokens. Paid automatically per request via Meridian settlement infrastructure.
+          Your Web3 AI funds & credit reserve. Top up anytime with zero monthly subscriptions, 0% MRDN deposit fees, and 5% cashback rewards.
         </p>
       </div>
 

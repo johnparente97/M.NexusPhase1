@@ -100,24 +100,24 @@ export default function Landing() {
           {/* Hero heading — Funnel Display, MRDN style */}
           <motion.h1
             variants={item}
-            className="text-3xl sm:text-6xl lg:text-7xl font-display font-semibold text-white tracking-tight leading-[1.1] sm:leading-[1.05] max-w-4xl"
+            className="text-3xl sm:text-6xl lg:text-7xl font-display font-bold text-white tracking-tight leading-[1.1] sm:leading-[1.05] max-w-4xl"
           >
-            Build intelligence.{' '}
+            Build AI Workflows.{' '}
             <br className="hidden sm:block" />
-            Market capabilities.{' '}
+            Market Capabilities.{' '}
             <br className="hidden sm:block" />
             <span
               className="text-emerald-400"
               style={{ textShadow: '0 0 40px rgba(52, 211, 153, 0.4), 0 0 80px rgba(52, 211, 153, 0.2)' }}
             >
-              Synthesize outcomes.
+              Synthesize Outcomes.
             </span>
           </motion.h1>
 
           {/* Sub-copy */}
-          <motion.p variants={item} className="text-xs sm:text-lg text-zinc-400 max-w-2xl leading-relaxed font-sans">
-            The open creation, marketplace, workflow, and intelligence synthesis layer built on Meridian.{' '}
-            <span className="text-zinc-300 hidden sm:inline">Nexus coordinates intelligence. Meridian coordinates value.</span>
+          <motion.p variants={item} className="text-xs sm:text-base text-zinc-400 max-w-2xl leading-relaxed font-sans">
+            The open AI creation & workflow marketplace built on Meridian. Run open-weight models at sub-penny rates with zero subscriptions.{' '}
+            <span className="text-zinc-300 hidden sm:inline">Pay per run with instant Web3 settlement & 5% cashback.</span>
           </motion.p>
 
           {/* Trust badges */}

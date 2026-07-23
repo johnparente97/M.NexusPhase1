@@ -90,7 +90,7 @@ export default function ModelMarketplace() {
             <Badge variant="info" className="text-[10px] font-mono">OPEN-WEIGHTS</Badge>
           </div>
           <p className="text-xs text-zinc-400 max-w-2xl leading-relaxed">
-            Discover, compare, and execute free & metered decentralized AI model hosts powered by Meridian x402 settlement.
+            Access high-performance open-weight AI model hosts at sub-penny rates. 90%+ cheaper than centralized APIs with instant Web3 settlement.
           </p>
         </div>
 

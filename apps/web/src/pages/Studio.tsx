@@ -55,7 +55,7 @@ export default function Studio() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-900 pb-5">
         <div className="flex flex-col gap-1.5">
           <h1 className="text-xl sm:text-2xl font-display font-bold text-zinc-100 tracking-tight">Workflow Builder</h1>
-          <p className="text-xs text-zinc-500">Design, parameterize, and publish intelligent workflow templates.</p>
+          <p className="text-xs text-zinc-500">Build, test, and publish custom multi-step AI capabilities. Earn protocol revenue when others run your workflows.</p>
         </div>
         <Link to="/studio/new">
           <Button variant="primary" size="sm" className="font-bold flex items-center gap-1.5 shadow-lg">

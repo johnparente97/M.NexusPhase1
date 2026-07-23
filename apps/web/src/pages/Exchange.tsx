@@ -124,7 +124,7 @@ export default function Exchange() {
             Workflow Market
           </h1>
           <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-xl font-normal">
-            Run verified AI workflows powered by Meridian Protocol. Pay per execution using x402 header settlement. Earn MRDN Cashback. Deploy in seconds.
+            Discover and execute verified AI workflows powered by Meridian. Pay per execution with sub-penny rates, zero monthly commitments, and 5% MRDN cashback.
           </p>
 
           {/* Natural Language Suggested Searches */}
