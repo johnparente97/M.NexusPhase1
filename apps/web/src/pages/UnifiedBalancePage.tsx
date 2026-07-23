@@ -112,14 +112,26 @@ export default function UnifiedBalancePage() {
         </Card>
       </div>
 
-      {/* Transparent Fee Utility Information Banner */}
-      <div className="bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-4 flex items-start gap-3 text-xs text-zinc-300">
-        <Sparkles className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
-        <div className="flex flex-col gap-1">
-          <span className="font-bold text-white text-xs">Top-Up Fee Structure</span>
-          <p className="text-[11px] text-zinc-400 leading-relaxed">
-            Deposit using <strong className="text-emerald-400">MRDN for a 0% top-up fee</strong>, or <strong className="text-zinc-200">USDC / standard tokens for a 1% top-up fee</strong>. MRDN is optional—you can access all inference models and workflows using USDC or any supported asset.
-          </p>
+      {/* Transparent Fee & Cost-Effectiveness Banner */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-4 flex items-start gap-3 text-xs text-zinc-300">
+          <Sparkles className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+          <div className="flex flex-col gap-1">
+            <span className="font-bold text-white text-xs">Cost-Effective Guarantee</span>
+            <p className="text-[11px] text-zinc-400 leading-relaxed">
+              No monthly subscriptions or minimum balances. Pay only for what you use via x402 headers at sub-penny rates (<strong className="text-emerald-400">90%+ cheaper than OpenAI/Anthropic APIs</strong>) plus <strong className="text-emerald-400">5% MRDN cashback rewards</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-4 flex items-start gap-3 text-xs text-zinc-300">
+          <Coins className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
+          <div className="flex flex-col gap-1">
+            <span className="font-bold text-white text-xs">0% MRDN Deposit Benefit</span>
+            <p className="text-[11px] text-zinc-400 leading-relaxed">
+              Deposit using <strong className="text-emerald-400">MRDN for 0% top-up fees</strong>, or standard USDC for a 0.5% protocol fee. You can top up any amount with zero long-term commitment.
+            </p>
+          </div>
         </div>
       </div>
 
