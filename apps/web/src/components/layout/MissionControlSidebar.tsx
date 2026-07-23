@@ -36,7 +36,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     requiresAuth?: boolean;
     tag?: string;
   }> = [
-    { to: '/chat', label: 'AI Playground', icon: Bot, tag: 'Free' },
+    { to: '/chat', label: 'Inference Hub', icon: Bot, tag: 'Free' },
     { to: '/marketplace/models', label: 'Model Hub', icon: Cpu },
     { to: '/exchange', label: 'Workflow Market', icon: Compass },
     { to: '/balance', label: 'AI Vault', icon: Coins, requiresAuth: true },

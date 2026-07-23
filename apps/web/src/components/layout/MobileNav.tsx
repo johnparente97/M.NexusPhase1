@@ -9,14 +9,14 @@ export default function MobileNav() {
   const navigate = useNavigate();
 
   const authedItems = [
-    { to: '/chat', icon: Sparkles, label: 'Playground' },
+    { to: '/chat', icon: Sparkles, label: 'Hub' },
     { to: '/exchange', icon: Compass, label: 'Exchange' },
     { to: '/studio', icon: Layers, label: 'Studio' },
     { to: '/balance', icon: Coins, label: 'Vault' },
   ];
 
   const guestItems = [
-    { to: '/chat', icon: Sparkles, label: 'Playground' },
+    { to: '/chat', icon: Sparkles, label: 'Hub' },
     { to: '/exchange', icon: Compass, label: 'Exchange' },
     { to: '/marketplace/models', icon: Cpu, label: 'Models' },
     { to: '/balance', icon: Coins, label: 'Vault' },

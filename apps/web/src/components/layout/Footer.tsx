@@ -28,7 +28,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-8">
           <div className="flex flex-col gap-2">
             <h4 className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">Product</h4>
-            <Link to="/chat" className="text-xs text-zinc-500 hover:text-zinc-300">AI Playground</Link>
+            <Link to="/chat" className="text-xs text-zinc-500 hover:text-zinc-300">Inference Hub</Link>
             <Link to="/exchange" className="text-xs text-zinc-500 hover:text-zinc-300">Workflow Market</Link>
             <Link to="/marketplace/models" className="text-xs text-zinc-500 hover:text-zinc-300">Model Hub</Link>
             <Link to="/studio" className="text-xs text-zinc-500 hover:text-zinc-300">Workflow Builder</Link>
