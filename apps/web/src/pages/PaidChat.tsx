@@ -86,7 +86,7 @@ function MarkdownContent({ content }: { content: string }) {
     if (line.trim().startsWith('```')) {
       if (inCodeBlock) {
         elements.push(
-          <div key={`code-${idx}`} className="my-2 p-3.5 bg-zinc-950 border border-zinc-800/90 rounded-xl font-mono text-[11px] text-emerald-300 overflow-x-auto shadow-inner">
+          <div key={`code-${idx}`} className="my-2 p-3 sm:p-3.5 bg-zinc-950 border border-zinc-800/90 rounded-xl font-mono text-[11px] text-emerald-300 overflow-x-auto shadow-inner">
             <pre>{codeBuffer.join('\n')}</pre>
           </div>
         );
@@ -350,25 +350,25 @@ export default function PaidChat() {
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full h-full min-h-0 p-2 sm:p-4 gap-3 overflow-hidden">
+    <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full h-full min-h-0 p-2 sm:p-4 gap-2.5 overflow-hidden">
       
-      {/* Sleek OpenAI/Anthropic Minimalist Header Toolbar */}
-      <div className="flex items-center justify-between gap-3 bg-[#171719]/80 backdrop-blur-xl border border-zinc-800/80 px-5 py-2 rounded-2xl shrink-0 shadow-lg">
+      {/* Sleek OpenAI/Anthropic Header Toolbar (Optimized for Mobile) */}
+      <div className="flex items-center justify-between gap-2 bg-[#171719]/90 backdrop-blur-xl border border-zinc-800/80 px-3 sm:px-5 py-2 rounded-2xl shrink-0 shadow-lg">
         
         {/* Left: Brand Mark */}
-        <Link to="/" className="flex items-center gap-2.5 group">
+        <Link to="/" className="flex items-center gap-2 group shrink-0">
           <NexusLogoMark className="h-6 w-6 sm:h-7 sm:w-7" />
-          <span className="font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors">
+          <span className="hidden md:inline font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors">
             Meridian Inference Hub
           </span>
         </Link>
 
         {/* Center: Prismatic Model Selector Capsule */}
-        <div className="relative">
+        <div className="relative flex-1 sm:flex-none max-w-[200px] sm:max-w-none">
           <select
             value={selectedModel.id}
             onChange={(e) => handleModelChange(e.target.value)}
-            className="bg-zinc-900 border border-zinc-700/60 hover:border-emerald-500/40 text-xs font-semibold text-zinc-200 px-4 py-1.5 rounded-xl focus:outline-none appearance-none pr-8 cursor-pointer transition-all shadow-sm"
+            className="w-full bg-zinc-900 border border-zinc-700/60 hover:border-emerald-500/40 text-[13px] sm:text-xs font-semibold text-zinc-200 px-3 py-1.5 rounded-xl focus:outline-none appearance-none pr-7 cursor-pointer transition-all shadow-sm truncate"
           >
             {ANTSEED_MODEL_CATALOG.map((m) => (
               <option key={m.id} value={m.id} className="bg-[#171719] text-zinc-200">
@@ -376,12 +376,12 @@ export default function PaidChat() {
               </option>
             ))}
           </select>
-          <ChevronDown className="h-3.5 w-3.5 text-zinc-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <ChevronDown className="h-3.5 w-3.5 text-zinc-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
 
         {/* Right: Balance Pill & Reasoning Mode */}
-        <div className="flex items-center gap-2.5">
-          <div className="hidden sm:block relative">
+        <div className="flex items-center gap-2 shrink-0">
+          <div className="hidden md:block relative">
             <select
               value={selectedMode}
               onChange={(e) => setSelectedMode(e.target.value)}
@@ -398,11 +398,11 @@ export default function PaidChat() {
 
           <Link
             to="/balance"
-            className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs font-mono text-emerald-400 px-3 py-1.5 rounded-xl transition-colors shrink-0"
+            className="flex items-center gap-1 bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-[11px] sm:text-xs font-mono text-emerald-400 px-2.5 py-1.5 rounded-xl transition-colors shrink-0"
             title="Unified AI Balance"
           >
-            <Coins className="h-3.5 w-3.5 text-emerald-400" />
-            <span>{isDemoBalance ? `$${numericBalance.toFixed(2)} Demo` : `$${numericBalance.toFixed(2)}`}</span>
+            <Coins className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+            <span>{isDemoBalance ? `$${numericBalance.toFixed(2)}` : `$${numericBalance.toFixed(2)}`}</span>
           </Link>
         </div>
       </div>
@@ -412,46 +412,46 @@ export default function PaidChat() {
         <motion.div
           initial={{ opacity: 0, y: -4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-emerald-950/30 border border-emerald-500/30 px-4 py-2 rounded-xl text-xs text-emerald-300 flex items-center justify-between font-mono shrink-0"
+          className="bg-emerald-950/30 border border-emerald-500/30 px-3.5 py-1.5 rounded-xl text-[11px] sm:text-xs text-emerald-300 flex items-center justify-between font-mono shrink-0"
         >
           <div className="flex items-center gap-2">
-            <Info className="h-4 w-4 text-emerald-400" />
+            <Info className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
             <span>{modelSwitchNotice}</span>
           </div>
-          <span className="text-[10px] text-zinc-400">Context Retained</span>
+          <span className="text-[10px] text-zinc-400 hidden sm:inline">Context Retained</span>
         </motion.div>
       )}
 
       {/* Low Balance Warning Banner */}
       {!selectedModel.isFree && isLowBalance && (
-        <div className="bg-amber-950/30 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between text-xs text-amber-300 font-mono shrink-0">
+        <div className="bg-amber-950/30 border border-amber-500/40 p-3 rounded-2xl flex items-center justify-between text-xs text-amber-300 font-mono shrink-0 gap-2">
           <div className="flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0" />
-            <span>Low AI Balance (${numericBalance.toFixed(2)}). Top up your balance to execute metered inference.</span>
+            <span className="text-[11px] sm:text-xs">Low AI Balance (${numericBalance.toFixed(2)}). Top up balance to run inference.</span>
           </div>
           <Button
             variant="primary"
             size="sm"
             onClick={() => navigate('/balance')}
-            className="text-xs font-bold shrink-0"
+            className="text-xs font-bold shrink-0 px-3 py-1"
           >
-            Top Up Balance
+            Top Up
           </Button>
         </div>
       )}
 
-      {/* Main Chat Stream Container (Takes Maximum Full Height) */}
+      {/* Main Chat Stream Container (Mobile-Optimized Height & Padding) */}
       <div className="flex-1 bg-[#141416]/60 backdrop-blur-md border border-zinc-800/80 rounded-3xl overflow-hidden flex flex-col min-h-0">
         <ChatContainer dependencies={[messages]} isGenerating={isGenerating}>
           {messages.length === 0 ? (
             /* Minimalist Empty State Prompt Canvas */
-            <div className="flex-1 flex flex-col items-center justify-center text-center p-6 sm:p-10 gap-8 my-auto select-none max-w-4xl mx-auto w-full">
-              <div className="h-16 w-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 prismatic-glow">
-                <NexusLogoMark className="h-10 w-10" />
+            <div className="flex-1 flex flex-col items-center justify-center text-center p-4 sm:p-8 gap-6 sm:gap-8 my-auto select-none max-w-4xl mx-auto w-full">
+              <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 prismatic-glow">
+                <NexusLogoMark className="h-8 w-8 sm:h-10 sm:w-10" />
               </div>
 
-              <div className="space-y-2">
-                <h2 className="font-display font-bold text-xl sm:text-2xl text-white tracking-tight">
+              <div className="space-y-1.5 sm:space-y-2">
+                <h2 className="font-display font-bold text-lg sm:text-2xl text-white tracking-tight">
                   What would you like to build or reason today?
                 </h2>
                 <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed max-w-lg mx-auto">
@@ -459,23 +459,23 @@ export default function PaidChat() {
                 </p>
               </div>
 
-              {/* 4 Prompt Starter Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 w-full text-left">
+              {/* 4 Prompt Starter Cards (2-col grid on mobile) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 w-full text-left">
                 {PROMPT_STARTERS.map((starter, idx) => {
                   const Icon = starter.icon;
                   return (
                     <motion.button
                       key={idx}
-                      whileHover={{ scale: 1.02, y: -3 }}
-                      whileTap={{ scale: 0.98 }}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.97 }}
                       onClick={() => handleSend(starter.prompt, starter.modelId)}
-                      className="p-4 bg-[#171719] hover:bg-zinc-800/90 border border-zinc-800/90 hover:border-emerald-500/40 rounded-2xl transition-all cursor-pointer flex flex-col gap-2 group shadow-md"
+                      className="p-3.5 sm:p-4 bg-[#171719] hover:bg-zinc-800/90 border border-zinc-800/90 hover:border-emerald-500/40 rounded-2xl transition-all cursor-pointer flex flex-col gap-1.5 sm:gap-2 group shadow-md"
                     >
                       <div className="flex items-center gap-2 text-xs font-semibold text-zinc-200 group-hover:text-emerald-300">
                         <Icon className="h-4 w-4 text-emerald-400 shrink-0" />
                         <span>{starter.title}</span>
                       </div>
-                      <p className="text-[11px] text-zinc-400 line-clamp-3 leading-relaxed font-sans">
+                      <p className="text-[11px] text-zinc-400 line-clamp-2 sm:line-clamp-3 leading-relaxed font-sans">
                         {starter.prompt}
                       </p>
                     </motion.button>
@@ -487,31 +487,31 @@ export default function PaidChat() {
             messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex items-start gap-4 max-w-5xl ${
+                className={`flex items-start gap-3 sm:gap-4 max-w-5xl ${
                   msg.role === 'user' ? 'self-end flex-row-reverse' : 'self-start'
                 }`}
               >
                 <div
-                  className={`h-9 w-9 rounded-2xl flex items-center justify-center shrink-0 text-xs font-bold shadow-md ${
+                  className={`h-8 w-8 sm:h-9 sm:w-9 rounded-2xl flex items-center justify-center shrink-0 text-xs font-bold shadow-md ${
                     msg.role === 'user'
                       ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
                       : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 prismatic-glow'
                   }`}
                 >
-                  {msg.role === 'user' ? <User className="h-4.5 w-4.5" /> : <Bot className="h-4.5 w-4.5" />}
+                  {msg.role === 'user' ? <User className="h-4 w-4 sm:h-4.5 sm:w-4.5" /> : <Bot className="h-4 w-4 sm:h-4.5 sm:w-4.5" />}
                 </div>
 
                 <div
-                  className={`flex flex-col gap-2 rounded-3xl p-5 text-xs sm:text-sm leading-relaxed ${
+                  className={`flex flex-col gap-2 rounded-3xl p-3.5 sm:p-5 text-xs sm:text-sm leading-relaxed ${
                     msg.role === 'user'
-                      ? 'bg-zinc-800/90 text-zinc-100 border border-zinc-700/60 rounded-tr-none max-w-2xl'
+                      ? 'bg-zinc-800/90 text-zinc-100 border border-zinc-700/60 rounded-tr-none max-w-[85%] sm:max-w-2xl'
                       : 'bg-[#18181b] text-zinc-200 border border-zinc-800/80 rounded-tl-none shadow-xl flex-1'
                   }`}
                 >
                   {msg.role === 'assistant' && (
-                    <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2.5 text-[11px] font-mono text-zinc-500">
+                    <div className="flex items-center justify-between border-b border-zinc-800/80 pb-2 text-[10px] sm:text-[11px] font-mono text-zinc-500">
                       <span className="text-emerald-400 font-semibold">{msg.modelUsed || selectedModel.name}</span>
-                      <div className="flex items-center gap-2.5">
+                      <div className="flex items-center gap-2">
                         <span>{msg.timestamp}</span>
                         <button
                           onClick={() => handleCopyText(msg.content, msg.id)}
@@ -527,7 +527,7 @@ export default function PaidChat() {
                   <MarkdownContent content={msg.content || (isGenerating ? 'Synthesizing response...' : '')} />
 
                   {msg.meteredReceipt && (
-                    <div className="mt-2.5 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-[10px] font-mono text-zinc-500">
+                    <div className="mt-2 pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-zinc-500">
                       <span>
                         Tokens: {msg.meteredReceipt.inputTokens} in / {msg.meteredReceipt.outputTokens} out
                       </span>
@@ -543,16 +543,19 @@ export default function PaidChat() {
         </ChatContainer>
       </div>
 
-      {/* Floating Input Composer Capsule */}
-      <form onSubmit={(e) => { e.preventDefault(); handleSend(); }} className="flex flex-col gap-2 bg-[#171719] border border-zinc-800/80 p-3 rounded-3xl shrink-0 shadow-2xl prismatic-border">
-        <div className="flex items-center gap-3">
+      {/* Floating Input Composer Capsule (Mobile Safe Area Padded) */}
+      <form
+        onSubmit={(e) => { e.preventDefault(); handleSend(); }}
+        className="flex flex-col gap-1.5 bg-[#171719] border border-zinc-800/80 p-2.5 sm:p-3.5 rounded-3xl shrink-0 shadow-2xl prismatic-border mb-16 lg:mb-0"
+      >
+        <div className="flex items-center gap-2 sm:gap-3">
           <input
             type="text"
             placeholder={`Ask ${selectedModel.name}... (Press Enter)`}
             value={input}
             onChange={(e) => setInput(e.target.value)}
             disabled={isGenerating}
-            className="flex-1 bg-transparent border-none text-xs sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none font-sans px-2"
+            className="flex-1 bg-transparent border-none text-[16px] sm:text-sm text-zinc-100 placeholder-zinc-500 focus:outline-none font-sans px-2"
           />
 
           {isGenerating ? (
@@ -561,7 +564,7 @@ export default function PaidChat() {
               variant="danger"
               size="sm"
               onClick={handleStop}
-              className="font-bold text-xs flex items-center gap-1.5 rounded-xl px-4 py-2"
+              className="font-bold text-xs flex items-center gap-1.5 rounded-xl px-3 sm:px-4 py-1.5 sm:py-2"
             >
               <Square className="h-3.5 w-3.5 fill-current" />
               Stop
@@ -578,16 +581,16 @@ export default function PaidChat() {
           )}
         </div>
 
-        <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 border-t border-zinc-800/80 pt-2 px-1">
-          <span className="flex items-center gap-1.5">
-            <DollarSign className="h-3 w-3 text-emerald-400" />
-            <span>
+        <div className="flex items-center justify-between text-[9px] sm:text-[10px] font-mono text-zinc-500 border-t border-zinc-800/80 pt-1.5 px-1">
+          <span className="flex items-center gap-1 truncate max-w-[70%]">
+            <DollarSign className="h-3 w-3 text-emerald-400 shrink-0" />
+            <span className="truncate">
               {selectedModel.isFree
-                ? 'Estimated cost: Free ($0.00) • 100% Unlimited'
-                : `Sub-penny rate: <$0.0005 / prompt ($${selectedModel.priceInputPerMillion}/1M in) • 80% Cheaper vs Centralized APIs`}
+                ? 'Free ($0.00) • 100% Unlimited'
+                : `<$0.0005 / prompt ($${selectedModel.priceInputPerMillion}/1M in)`}
             </span>
           </span>
-          <span className="text-emerald-400 font-semibold">{selectedModel.isFree ? 'Unmetered Open Weights' : 'x402 Micropayments Active'}</span>
+          <span className="text-emerald-400 font-semibold shrink-0">{selectedModel.isFree ? 'Unmetered' : 'x402 Active'}</span>
         </div>
       </form>
 
