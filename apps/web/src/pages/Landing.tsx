@@ -67,7 +67,7 @@ export default function Landing() {
     <div className="flex-1 flex flex-col w-full select-none overflow-hidden">
 
       {/* ── Hero ── */}
-      <section className="relative py-24 sm:py-36 px-6 flex flex-col items-center text-center justify-center min-h-[85vh]">
+      <section className="relative py-10 sm:py-36 px-4 sm:px-6 flex flex-col items-center text-center justify-center min-h-[75vh] sm:min-h-[85vh]">
         {/* MRDN-style ambient glows */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[500px] w-[700px] bg-emerald-500/8 blur-[120px] rounded-full" />
@@ -75,7 +75,7 @@ export default function Landing() {
           <div className="absolute top-1/4 right-1/4 h-[200px] w-[300px] bg-blue-500/5 blur-[80px] rounded-full" />
         </div>
 
-        <motion.div variants={container} initial="hidden" animate="visible" className="max-w-4xl mx-auto flex flex-col items-center gap-8 z-10 relative">
+        <motion.div variants={container} initial="hidden" animate="visible" className="max-w-4xl mx-auto flex flex-col items-center gap-4 sm:gap-8 z-10 relative">
 
           {/* Nexus Logo with MRDN glow */}
           <motion.div variants={item}>
@@ -85,7 +85,7 @@ export default function Landing() {
               transition={{ type: 'spring', stiffness: 300, damping: 18 }}
               className="cursor-pointer"
             >
-              <NexusLogoMark className="h-24 w-24 sm:h-32 sm:w-32 lg:h-40 lg:w-40" />
+              <NexusLogoMark className="h-16 w-16 sm:h-32 sm:w-32 lg:h-40 lg:w-40" />
             </motion.div>
           </motion.div>
 
@@ -93,14 +93,14 @@ export default function Landing() {
           <motion.div variants={item}>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 tracking-wide">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Meridian Nexus — Phase 1 Live
+              Nexus — Phase 1 Live
             </span>
           </motion.div>
 
           {/* Hero heading — Funnel Display, MRDN style */}
           <motion.h1
             variants={item}
-            className="text-5xl sm:text-6xl lg:text-7xl font-display font-semibold text-white tracking-tight leading-[1.05] max-w-4xl"
+            className="text-3xl sm:text-6xl lg:text-7xl font-display font-semibold text-white tracking-tight leading-[1.1] sm:leading-[1.05] max-w-4xl"
           >
             Build intelligence.{' '}
             <br className="hidden sm:block" />
@@ -115,9 +115,9 @@ export default function Landing() {
           </motion.h1>
 
           {/* Sub-copy */}
-          <motion.p variants={item} className="text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed font-sans">
+          <motion.p variants={item} className="text-xs sm:text-lg text-zinc-400 max-w-2xl leading-relaxed font-sans">
             The open creation, marketplace, workflow, and intelligence synthesis layer built on Meridian.{' '}
-            <span className="text-zinc-300">Nexus coordinates intelligence. Meridian coordinates value.</span>
+            <span className="text-zinc-300 hidden sm:inline">Nexus coordinates intelligence. Meridian coordinates value.</span>
           </motion.p>
 
           {/* Trust badges */}

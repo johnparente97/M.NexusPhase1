@@ -76,7 +76,7 @@ export default function AiCopilot() {
         onClick={() => setIsOpen(true)}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.95 }}
-        className="fixed bottom-6 right-6 z-40 h-12 w-12 rounded-full bg-[#27F293] hover:bg-[#1fe285] text-zinc-950 flex items-center justify-center shadow-[0_8px_30px_0_rgba(39,242,147,0.35)] cursor-pointer"
+        className="hidden lg:flex fixed bottom-6 right-6 z-layer-header h-12 w-12 rounded-full bg-emerald-400 hover:bg-emerald-300 text-zinc-950 items-center justify-center shadow-[0_8px_30px_0_rgba(39,242,147,0.35)] cursor-pointer"
       >
         <Sparkles className="h-5.5 w-5.5 animate-pulse" />
       </motion.button>

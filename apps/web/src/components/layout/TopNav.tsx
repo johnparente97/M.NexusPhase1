@@ -1,36 +1,26 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import { Search, Wallet, LogOut as LogOutIcon, Copy, Menu, Coins } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Search, Wallet, Coins, Menu, Copy } from 'lucide-react';
+import { NexusLogoMark } from '../common/NexusLogoMark';
 import DemoLabel from '../common/DemoLabel';
 import { useWallet } from '../../hooks/useWallet';
-import { NexusLogoMark } from '../common/NexusLogoMark';
 import { useSidebarStore } from '../../stores/sidebar-store';
 import { cn } from '../../utils/cn';
 
-export interface TopNavProps {
-  onSearchClick?: () => void;
-  onMobileMenuClick?: () => void;
+interface TopNavProps {
+  onSearchClick: () => void;
+  onMobileMenuClick: () => void;
 }
 
 export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps) {
   const { isCollapsed } = useSidebarStore();
-  const { isSignedIn, user, signOut, signInAsDemo } = useAuth();
-  const navigate = useNavigate();
-  const { walletAddress, chainId, isConnected, isConnecting, usdcBalance, switchNetwork, signInWithEthereum, disconnectWallet } = useWallet();
-
-  const handleDemoLogin = (role: 'user' | 'creator' | 'admin') => {
-    signInAsDemo(role);
-    navigate('/dashboard');
-  };
-
-  const isWrongNetwork = isConnected && chainId !== 84532;
+  const { isConnected, walletAddress, usdcBalance, signInWithEthereum, isWrongNetwork, switchNetwork } = useWallet();
 
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 h-14 z-layer-header px-3 sm:px-5 bg-[#141416]/90 backdrop-blur-xl border-b border-zinc-800/80 flex items-center justify-between select-none transition-all duration-200 left-0',
+        'fixed top-0 right-0 h-14 bg-[#121214]/90 backdrop-blur-xl border-b border-zinc-800/80 px-3 sm:px-6 flex items-center justify-between z-layer-header transition-all duration-200 left-0',
         {
           'lg:left-64': !isCollapsed,
           'lg:left-16': isCollapsed,
@@ -38,22 +28,24 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
       )}
     >
       {/* Mobile Only: Brand Logo & Hamburger Menu */}
-      <div className="flex items-center gap-3 lg:hidden shrink-0">
+      <div className="flex items-center gap-2.5 lg:hidden shrink-0">
         <button
           onClick={onMobileMenuClick}
-          className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors"
+          className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors cursor-pointer"
           aria-label="Open Navigation Menu"
         >
           <Menu className="h-5 w-5" />
         </button>
 
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <NexusLogoMark className="h-7 w-7 text-emerald-400" />
+        <Link to="/" className="flex items-center gap-2 group">
+          <NexusLogoMark className="h-6 w-6 text-emerald-400" />
           <span className="font-display font-bold text-sm text-white tracking-tight">
             Nexus
           </span>
         </Link>
-        <DemoLabel />
+        <div className="hidden sm:block">
+          <DemoLabel />
+        </div>
       </div>
 
       {/* Desktop Left: Adaptive Section Status Indicator */}
@@ -64,8 +56,8 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         </span>
       </div>
 
-      {/* Right Controls: Spotlight Search, AI Balance, Wallet & Profile */}
-      <div className="flex items-center gap-2.5 ml-auto">
+      {/* Right Controls: Spotlight Search, AI Balance, Wallet */}
+      <div className="flex items-center gap-2 sm:gap-2.5 ml-auto shrink-0">
         {/* Spotlight Search Launcher */}
         <motion.button
           whileHover={{ scale: 1.02 }}
@@ -81,73 +73,47 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         {/* AI Balance Quick Link */}
         <Link
           to="/balance"
-          className="flex items-center gap-1.5 bg-zinc-900/90 border border-zinc-800 hover:border-emerald-500/40 text-xs font-mono text-emerald-400 px-3 py-1.5 rounded-xl transition-colors shrink-0 shadow-sm"
+          className="flex items-center gap-1.5 bg-zinc-900/90 border border-zinc-800 hover:border-emerald-500/40 text-[11px] sm:text-xs font-mono text-emerald-400 px-2.5 sm:px-3 py-1.5 rounded-xl transition-colors shrink-0 shadow-sm"
           title="Unified AI Balance"
         >
           <Coins className="h-3.5 w-3.5 text-emerald-400" />
           <span>${usdcBalance}</span>
         </Link>
 
-        {/* Wallet Button */}
+        {/* Wallet Button (Compact on Mobile to prevent overflow) */}
         {isWrongNetwork ? (
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={switchNetwork}
-            className="text-xs bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl transition-colors cursor-pointer font-semibold"
+            className="text-[11px] sm:text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-2.5 sm:px-3 py-1.5 rounded-xl transition-colors cursor-pointer font-semibold"
           >
-            Switch Network
+            Switch
           </motion.button>
         ) : isConnected ? (
-          <div className="hidden sm:flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-xl p-1.5 px-3 text-xs">
+          <div className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-xl p-1 px-2.5 sm:px-3 text-xs">
             <button
               onClick={() => { navigator.clipboard.writeText(walletAddress || ''); }}
-              className="font-mono text-zinc-300 hover:text-emerald-400 flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="font-mono text-zinc-300 hover:text-emerald-400 flex items-center gap-1.5 transition-colors cursor-pointer text-[11px] sm:text-xs"
               title="Copy wallet address"
             >
-              {walletAddress ? `${walletAddress.substring(0, 6)}...${walletAddress.substring(walletAddress.length - 4)}` : ''}
-              <Copy className="h-3 w-3 text-zinc-500" />
-            </button>
-            <button
-              onClick={disconnectWallet}
-              className="text-zinc-500 hover:text-red-400 p-0.5 hover:bg-zinc-800/40 rounded transition-colors cursor-pointer"
-              title="Disconnect Wallet"
-            >
-              <LogOutIcon className="h-3.5 w-3.5" />
+              {walletAddress ? `${walletAddress.substring(0, 4)}...${walletAddress.substring(walletAddress.length - 3)}` : ''}
+              <Copy className="h-3 w-3 text-zinc-500 hidden sm:inline" />
             </button>
           </div>
         ) : (
           <motion.button
-            whileHover={{ scale: 1.03 }}
+            whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             onClick={signInWithEthereum}
-            className="flex items-center gap-1.5 text-xs font-semibold bg-white hover:bg-gray-100 text-zinc-950 px-3.5 py-1.5 rounded-xl shadow-md transition-all cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 bg-emerald-400 hover:bg-emerald-300 text-zinc-950 font-bold px-2.5 sm:px-3.5 py-1.5 rounded-xl text-[11px] sm:text-xs shadow-md transition-colors cursor-pointer shrink-0"
           >
-            <Wallet className="h-3.5 w-3.5" />
-            <span className="hidden sm:inline">{isConnecting ? 'Connecting...' : 'Connect Wallet'}</span>
+            <Wallet className="h-3.5 w-3.5 shrink-0" />
+            <span className="hidden sm:inline">Connect Wallet</span>
             <span className="sm:hidden">Connect</span>
           </motion.button>
         )}
-
-        {/* User Profile Avatar */}
-        {isSignedIn ? (
-          <Link to="/profile" title="Profile" className="ml-1">
-            <div className="h-7 w-7 rounded-full bg-emerald-400 text-zinc-950 font-bold flex items-center justify-center text-xs hover:opacity-90 transition-opacity shadow-sm">
-              {user?.displayName?.charAt(0)?.toUpperCase() || 'U'}
-            </div>
-          </Link>
-        ) : (
-          <div className="hidden xl:flex items-center gap-1 border-l border-zinc-800 pl-2">
-            <button
-              onClick={() => handleDemoLogin('user')}
-              className="text-[10px] font-medium text-zinc-400 hover:text-white px-2 py-1 rounded-lg bg-zinc-900 border border-zinc-800 transition-colors"
-            >
-              Demo Login
-            </button>
-          </div>
-        )}
       </div>
-
     </header>
   );
 }
