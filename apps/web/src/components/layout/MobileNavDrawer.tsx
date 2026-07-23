@@ -22,7 +22,6 @@ import {
 import { useAuth } from '../../hooks/useAuth';
 import { useWallet } from '../../hooks/useWallet';
 import { NexusLogoMark } from '../common/NexusLogoMark';
-import DemoLabel from '../common/DemoLabel';
 import { Button } from '../ui/Button';
 
 interface MobileNavDrawerProps {
@@ -50,28 +49,28 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
     items: NavDrawerItem[];
   }> = [
     {
-      title: '⚡ AI Playground & Marketplace',
+      title: 'AI & Inference',
       items: [
-        { to: '/chat', label: 'AI Playground', icon: Bot, tag: 'Free' },
-        { to: '/marketplace/models', label: 'Model Arcade', icon: Cpu },
-        { to: '/exchange', label: 'Workflow Bazaar', icon: Compass },
+        { to: '/chat', label: 'Inference Playground', icon: Bot, tag: 'Free' },
+        { to: '/marketplace/models', label: 'Model Registry', icon: Cpu },
+        { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
       ],
     },
     {
-      title: '💎 Vault & Creation',
+      title: 'Vault & Creation',
       items: [
-        { to: '/balance', label: 'Token Vault', icon: Coins },
-        { to: '/studio', label: 'Workflow Forge', icon: Layers, requiresAuth: true },
-        { to: '/activity', label: 'Flight Logs', icon: History, requiresAuth: true },
+        { to: '/balance', label: 'Unified Vault', icon: Coins },
+        { to: '/studio', label: 'Workflow Studio', icon: Layers, requiresAuth: true },
+        { to: '/activity', label: 'Run Telemetry', icon: History, requiresAuth: true },
         { to: '/dashboard', label: 'Mission Control', icon: LayoutDashboard, requiresAuth: true },
       ],
     },
     {
-      title: '🛠️ Developer & Codex',
+      title: 'Developer & Docs',
       items: [
-        { to: '/developer', label: 'Dev Arcade', icon: Terminal },
-        { to: '/organization', label: 'Squad Hub', icon: Building2, requiresAuth: true },
-        { to: '/docs', label: 'The Codex', icon: BookOpen },
+        { to: '/developer', label: 'Developer Console', icon: Terminal },
+        { to: '/organization', label: 'Team Workspace', icon: Building2, requiresAuth: true },
+        { to: '/docs', label: 'Documentation', icon: BookOpen },
       ],
     },
   ];
@@ -123,7 +122,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-xs font-semibold text-zinc-300">
                     <Coins className="h-4 w-4 text-emerald-400" />
-                    <span>Token Vault</span>
+                    <span>Unified Vault</span>
                   </div>
                   <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full">
                     {balanceDisplay}
@@ -137,7 +136,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
                   className="w-full text-xs font-semibold py-2 justify-center"
                 >
                   <Zap className="h-3.5 w-3.5 mr-1.5" />
-                  Top Up AI Fuel
+                  Manage AI Balance
                 </Button>
               </div>
 

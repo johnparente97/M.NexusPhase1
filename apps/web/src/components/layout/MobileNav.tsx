@@ -10,15 +10,15 @@ export default function MobileNav() {
 
   const authedItems = [
     { to: '/chat', icon: Sparkles, label: 'Playground' },
-    { to: '/exchange', icon: Compass, label: 'Bazaar' },
-    { to: '/studio', icon: Layers, label: 'Forge' },
+    { to: '/exchange', icon: Compass, label: 'Exchange' },
+    { to: '/studio', icon: Layers, label: 'Studio' },
     { to: '/balance', icon: Coins, label: 'Vault' },
   ];
 
   const guestItems = [
     { to: '/chat', icon: Sparkles, label: 'Playground' },
-    { to: '/exchange', icon: Compass, label: 'Bazaar' },
-    { to: '/marketplace/models', icon: Cpu, label: 'Arcade' },
+    { to: '/exchange', icon: Compass, label: 'Exchange' },
+    { to: '/marketplace/models', icon: Cpu, label: 'Models' },
     { to: '/balance', icon: Coins, label: 'Vault' },
   ];
 
