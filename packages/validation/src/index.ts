@@ -249,3 +249,25 @@ export function createDynamicInputSchema(
 
   return z.object(shape);
 }
+
+// ── Chat Completion Schema (Security Hardening) ──
+
+export const MAX_CHAT_PROMPT_LENGTH = 16000;
+export const MAX_CHAT_MESSAGES = 50;
+
+export const chatCompletionSchema = z.object({
+  messages: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'assistant', 'system']),
+        content: z.string().min(1).max(MAX_CHAT_PROMPT_LENGTH, 'Message exceeds 16,000 character limit'),
+      })
+    )
+    .min(1, 'At least 1 message required')
+    .max(MAX_CHAT_MESSAGES, 'Conversation history cannot exceed 50 messages'),
+  model: z.string().min(1).max(64).optional(),
+  modelId: z.string().min(1).max(64).optional(),
+  mode: z.string().max(32).optional(),
+  systemPrompt: z.string().max(5000).optional(),
+});
+

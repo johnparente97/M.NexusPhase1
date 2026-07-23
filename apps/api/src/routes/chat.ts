@@ -2,6 +2,8 @@ import { Hono } from 'hono';
 import { AppEnv } from '../types';
 import { createModelProvider } from '../providers/model/factory';
 import { ModelGenerationRequest } from '@meridian-nexus/shared-types';
+import { chatCompletionSchema } from '@meridian-nexus/validation';
+import { zValidator } from '../middleware/validate';
 
 const router = new Hono<AppEnv>();
 
@@ -41,16 +43,12 @@ WORKFLOW EXECUTION FLOW:
 Be helpful, expert, and concise. Format responses with markdown. Guide users to relevant features.`;
 
 // POST /api/chat/completions
-router.post('/completions', async (c) => {
+router.post('/completions', zValidator('json', chatCompletionSchema), async (c) => {
   try {
-    const body = await c.req.json<{
-      messages: Array<{ role: string; content: string }>;
-      modelId?: string;
-      systemPrompt?: string;
-    }>();
+    const body = (c.req as any).valid('json');
 
     const messages = body.messages || [];
-    const modelId = body.modelId || 'gemini-2.5-flash';
+    const modelId = body.modelId || body.model || 'gemini-2.5-flash';
     const lastMessage = messages[messages.length - 1]?.content || '';
 
     console.log(`[API Chat] Model: ${modelId}, prompt: ${lastMessage.substring(0, 80)}`);
