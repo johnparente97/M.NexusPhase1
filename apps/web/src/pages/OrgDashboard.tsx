@@ -31,7 +31,7 @@ export default function OrgDashboard() {
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2">
             <Building2 className="h-5 w-5 text-[#27F293]" />
-            <h1 className="text-xl font-display font-bold text-zinc-100">Meridian Enterprise Organization</h1>
+            <h1 className="text-xl font-display font-bold text-zinc-100">Team Workspace</h1>
           </div>
           <p className="text-xs text-zinc-400">
             Manage team access roles, organization balances, spend limits, and governance policy rules.

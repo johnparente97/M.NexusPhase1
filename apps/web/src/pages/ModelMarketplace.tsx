@@ -86,8 +86,8 @@ export default function ModelMarketplace() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-900 pb-6">
         <div className="flex flex-col gap-1.5">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-display font-bold text-zinc-100">Decentralized AI Model Marketplace</h1>
-            <Badge variant="info" className="text-[10px] font-mono">DECENTRALIZED HOSTS</Badge>
+            <h1 className="text-2xl font-display font-bold text-zinc-100">Model Hub</h1>
+            <Badge variant="info" className="text-[10px] font-mono">OPEN-WEIGHTS</Badge>
           </div>
           <p className="text-xs text-zinc-400 max-w-2xl leading-relaxed">
             Discover, compare, and execute free & metered decentralized AI model hosts powered by Meridian x402 settlement.
@@ -106,10 +106,10 @@ export default function ModelMarketplace() {
               Compare ({comparedModelIds.length})
             </Button>
           )}
-          <Link to="/chat/free">
+          <Link to="/chat">
             <Button variant="secondary" size="sm" className="font-semibold text-xs flex items-center gap-1.5">
               <Sparkles className="h-3.5 w-3.5 text-[#27F293]" />
-              Free Dolphin Chat
+              AI Playground
             </Button>
           </Link>
           <Link to="/balance">

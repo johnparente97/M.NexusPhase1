@@ -121,7 +121,7 @@ export default function Exchange() {
             Meridian Protocol Native
           </span>
           <h1 className="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-[1.1]">
-            Discover AI Workflows
+            Workflow Market
           </h1>
           <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-xl font-normal">
             Run verified AI workflows powered by Meridian Protocol. Pay per execution using x402 header settlement. Earn MRDN Cashback. Deploy in seconds.

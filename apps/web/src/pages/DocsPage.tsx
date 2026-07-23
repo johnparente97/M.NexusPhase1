@@ -10,7 +10,7 @@ export default function DocsPage() {
       <div className="flex flex-col gap-1 border-b border-zinc-900 pb-6">
         <div className="flex items-center gap-2">
           <BookOpen className="h-5 w-5 text-[#27F293]" />
-          <h1 className="text-xl font-display font-bold text-zinc-100">Meridian Nexus Documentation</h1>
+          <h1 className="text-xl font-display font-bold text-zinc-100">Docs</h1>
         </div>
         <p className="text-xs text-zinc-400">
           Learn how Meridian coordinates value movement and how Nexus coordinates AI capabilities and verified outcomes.

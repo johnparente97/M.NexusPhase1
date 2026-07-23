@@ -18,7 +18,7 @@ export default function Activity() {
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-900 pb-5">
         <div className="flex flex-col gap-1.5">
-          <h1 className="text-xl sm:text-2xl font-display font-bold text-zinc-100 tracking-tight">Run History</h1>
+          <h1 className="text-xl sm:text-2xl font-display font-bold text-zinc-100 tracking-tight">Live Activity</h1>
           <p className="text-xs text-zinc-500">Track and review all model execution timelines and results.</p>
         </div>
         

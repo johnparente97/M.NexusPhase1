@@ -22,7 +22,7 @@ export default function DevConsole() {
       <div className="flex flex-col gap-1 border-b border-zinc-900 pb-6">
         <div className="flex items-center gap-2">
           <Terminal className="h-5 w-5 text-[#27F293]" />
-          <h1 className="text-xl font-display font-bold text-zinc-100">Developer & Integration Console</h1>
+          <h1 className="text-xl font-display font-bold text-zinc-100">Dev Hub</h1>
           <Badge variant="info" className="text-[10px] font-mono">DEVELOPER PREVIEW</Badge>
         </div>
         <p className="text-xs text-zinc-400">
