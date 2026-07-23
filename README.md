@@ -13,7 +13,7 @@
 
 ```mermaid
 graph TD
-    User["👤 Young Adult Builder / Developer"] -->|1. Prompts & Workflows| NexusUI["🪐 Nexus Workspace (React 19 + Vite)"]
+    User["👤 Builder / Developer"] -->|1. Prompts & Workflows| NexusUI["🪐 Nexus Workspace (React 19 + Vite)"]
     
     subgraph "Nexus Intelligence Layer"
         NexusUI -->|Sub-Penny Routing| InfHub["⚡ Inference Hub (Open-Weights)"]
