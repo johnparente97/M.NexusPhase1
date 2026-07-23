@@ -3,7 +3,7 @@ import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-import { Terminal, Key, Copy, Code, Info } from 'lucide-react';
+import { Terminal, Key, Copy, Code, Info, Globe, ExternalLink } from 'lucide-react';
 import { useToast } from '../components/ui/Toast';
 
 export default function DevConsole() {
@@ -76,13 +76,70 @@ export default function DevConsole() {
         <Card className="bg-zinc-900 border-zinc-800 p-5 flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-zinc-200">x402 Facilitator v2</span>
-            <Badge variant="success" className="text-[9px]">TESTNET</Badge>
+            <Badge variant="success" className="text-[9px]">LIVE TESTNET</Badge>
           </div>
           <p className="text-[11px] text-zinc-400">
-            Pay-per-token settlement and outcome receipts on Base Sepolia testnet.
+            Pay-per-token settlement and outcome receipts on Base, Arbitrum, Optimism, & Solana.
           </p>
         </Card>
       </div>
+
+      {/* Official Meridian x402 Reference Demos Card */}
+      <Card className="bg-gradient-to-br from-emerald-950/20 via-zinc-900 to-zinc-950 border-emerald-500/30 p-6 flex flex-col gap-4 shadow-xl">
+        <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+          <div className="flex items-center gap-2">
+            <Globe className="h-5 w-5 text-emerald-400" />
+            <h3 className="text-sm font-bold text-zinc-100 font-display">
+              Meridian Official x402 Payment Reference Demos
+            </h3>
+          </div>
+          <Badge variant="success" className="text-[9px]">LIVE DEMO DEPLOYED</Badge>
+        </div>
+        <p className="text-xs text-zinc-400 leading-relaxed">
+          Inspect fully functional reference implementations for cross-chain x402 settlement, same-chain Base Sepolia payments, and Solana SPL token headers:
+        </p>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+          <a
+            href="https://demo.mrdn.finance/cross-chain"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3.5 rounded-xl bg-zinc-950/80 border border-emerald-500/30 hover:border-emerald-400 transition-all flex flex-col gap-1.5 group"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-emerald-300 group-hover:text-emerald-200">Cross-Chain x402</span>
+              <ExternalLink className="h-3.5 w-3.5 text-emerald-400" />
+            </div>
+            <span className="text-[10px] text-zinc-400">Multi-source EVM payment headers</span>
+          </a>
+
+          <a
+            href="https://demo.mrdn.finance/protected"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3.5 rounded-xl bg-zinc-950/80 border border-zinc-800 hover:border-zinc-700 transition-all flex flex-col gap-1.5 group"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-zinc-200 group-hover:text-white">Same-Chain x402</span>
+              <ExternalLink className="h-3.5 w-3.5 text-zinc-400" />
+            </div>
+            <span className="text-[10px] text-zinc-400">Base Sepolia EIP-712 auth flow</span>
+          </a>
+
+          <a
+            href="https://demo.mrdn.finance/protected_solana"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-3.5 rounded-xl bg-zinc-950/80 border border-zinc-800 hover:border-zinc-700 transition-all flex flex-col gap-1.5 group"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-zinc-200 group-hover:text-white">Solana x402 Route</span>
+              <ExternalLink className="h-3.5 w-3.5 text-zinc-400" />
+            </div>
+            <span className="text-[10px] text-zinc-400">SOL & SPL token header flow</span>
+          </a>
+        </div>
+      </Card>
 
       {/* Example Curl Request */}
       <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-4">
