@@ -21,5 +21,6 @@ describe('MeteringEngine Token Pricing Calculation', () => {
     expect(receipt.inputCost).toBe(paidModel.priceInputPerMillion);
     expect(receipt.outputCost).toBe(paidModel.priceOutputPerMillion);
     expect(receipt.totalModelCost).toBeGreaterThan(0);
+    expect(receipt.mrdnCashbackEarned).toBeCloseTo(receipt.totalCharged * 0.05, 5);
   });
 });
