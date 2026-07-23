@@ -49,28 +49,28 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
     items: NavDrawerItem[];
   }> = [
     {
-      title: 'AI & Inference',
+      title: 'AI & Automations',
       items: [
-        { to: '/chat', label: 'Inference Playground', icon: Bot, tag: 'Free' },
-        { to: '/marketplace/models', label: 'Model Registry', icon: Cpu },
-        { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
+        { to: '/chat', label: 'AI Playground', icon: Bot, tag: 'Free' },
+        { to: '/marketplace/models', label: 'Model Hub', icon: Cpu },
+        { to: '/exchange', label: 'Workflow Market', icon: Compass },
       ],
     },
     {
-      title: 'Vault & Creation',
+      title: 'Workspace & Balance',
       items: [
-        { to: '/balance', label: 'Unified Vault', icon: Coins },
-        { to: '/studio', label: 'Workflow Studio', icon: Layers, requiresAuth: true },
-        { to: '/activity', label: 'Run Telemetry', icon: History, requiresAuth: true },
+        { to: '/balance', label: 'AI Vault', icon: Coins },
+        { to: '/studio', label: 'Workflow Builder', icon: Layers, requiresAuth: true },
+        { to: '/activity', label: 'Live Activity', icon: History, requiresAuth: true },
         { to: '/dashboard', label: 'Mission Control', icon: LayoutDashboard, requiresAuth: true },
       ],
     },
     {
-      title: 'Developer & Docs',
+      title: 'Developers',
       items: [
-        { to: '/developer', label: 'Developer Console', icon: Terminal },
+        { to: '/developer', label: 'Dev Hub', icon: Terminal },
         { to: '/organization', label: 'Team Workspace', icon: Building2, requiresAuth: true },
-        { to: '/docs', label: 'Documentation', icon: BookOpen },
+        { to: '/docs', label: 'Docs', icon: BookOpen },
       ],
     },
   ];
@@ -122,7 +122,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-xs font-semibold text-zinc-300">
                     <Coins className="h-4 w-4 text-emerald-400" />
-                    <span>Unified Vault</span>
+                    <span>AI Vault</span>
                   </div>
                   <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full">
                     {balanceDisplay}
@@ -136,7 +136,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
                   className="w-full text-xs font-semibold py-2 justify-center"
                 >
                   <Zap className="h-3.5 w-3.5 mr-1.5" />
-                  Manage AI Balance
+                  Top Up AI Balance
                 </Button>
               </div>
 

@@ -36,16 +36,16 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     requiresAuth?: boolean;
     tag?: string;
   }> = [
-    { to: '/chat', label: 'Inference Playground', icon: Bot, tag: 'Free' },
-    { to: '/marketplace/models', label: 'Model Registry', icon: Cpu },
-    { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
-    { to: '/balance', label: 'Unified Vault', icon: Coins, requiresAuth: true },
-    { to: '/studio', label: 'Workflow Studio', icon: Layers, requiresAuth: true },
-    { to: '/activity', label: 'Run Telemetry', icon: History, requiresAuth: true },
+    { to: '/chat', label: 'AI Playground', icon: Bot, tag: 'Free' },
+    { to: '/marketplace/models', label: 'Model Hub', icon: Cpu },
+    { to: '/exchange', label: 'Workflow Market', icon: Compass },
+    { to: '/balance', label: 'AI Vault', icon: Coins, requiresAuth: true },
+    { to: '/studio', label: 'Workflow Builder', icon: Layers, requiresAuth: true },
+    { to: '/activity', label: 'Live Activity', icon: History, requiresAuth: true },
     { to: '/dashboard', label: 'Mission Control', icon: LayoutDashboard, requiresAuth: true },
     { to: '/organization', label: 'Team Workspace', icon: Building2, requiresAuth: true },
-    { to: '/developer', label: 'Developer Console', icon: Terminal },
-    { to: '/docs', label: 'Documentation', icon: BookOpen },
+    { to: '/developer', label: 'Dev Hub', icon: Terminal },
+    { to: '/docs', label: 'Docs', icon: BookOpen },
   ];
 
   return (
