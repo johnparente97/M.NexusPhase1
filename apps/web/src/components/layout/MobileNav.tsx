@@ -1,6 +1,6 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Compass, Layers, Coins, Sparkles, UserCircle2 } from 'lucide-react';
+import { Compass, Layers, Coins, Sparkles, UserCircle2, Cpu } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { motion } from 'framer-motion';
 
@@ -9,17 +9,17 @@ export default function MobileNav() {
   const navigate = useNavigate();
 
   const authedItems = [
-    { to: '/chat', icon: Sparkles, label: 'Chat' },
-    { to: '/exchange', icon: Compass, label: 'Exchange' },
-    { to: '/studio', icon: Layers, label: 'Studio' },
-    { to: '/balance', icon: Coins, label: 'Balance' },
+    { to: '/chat', icon: Sparkles, label: 'Playground' },
+    { to: '/exchange', icon: Compass, label: 'Bazaar' },
+    { to: '/studio', icon: Layers, label: 'Forge' },
+    { to: '/balance', icon: Coins, label: 'Vault' },
   ];
 
   const guestItems = [
-    { to: '/chat', icon: Sparkles, label: 'Chat' },
-    { to: '/exchange', icon: Compass, label: 'Exchange' },
-    { to: '/marketplace/models', icon: Layers, label: 'Models' },
-    { to: '/balance', icon: Coins, label: 'Balance' },
+    { to: '/chat', icon: Sparkles, label: 'Playground' },
+    { to: '/exchange', icon: Compass, label: 'Bazaar' },
+    { to: '/marketplace/models', icon: Cpu, label: 'Arcade' },
+    { to: '/balance', icon: Coins, label: 'Vault' },
   ];
 
   const items = isSignedIn ? authedItems : guestItems;

@@ -37,16 +37,16 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     requiresAuth?: boolean;
     tag?: string;
   }> = [
-    { to: '/chat', label: 'Inference Chat', icon: Bot, tag: 'AI' },
-    { to: '/marketplace/models', label: 'AntSeed Models', icon: Cpu },
-    { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
-    { to: '/balance', label: 'Unified AI Balance', icon: Coins, requiresAuth: true },
-    { to: '/studio', label: 'Nexus Studio', icon: Layers, requiresAuth: true },
-    { to: '/activity', label: 'Run Activity', icon: History, requiresAuth: true },
-    { to: '/dashboard', label: 'Command Centre', icon: LayoutDashboard, requiresAuth: true },
-    { to: '/organization', label: 'Organization', icon: Building2, requiresAuth: true },
-    { to: '/developer', label: 'Developer Console', icon: Terminal },
-    { to: '/docs', label: 'Documentation', icon: BookOpen },
+    { to: '/chat', label: 'AI Playground', icon: Bot, tag: 'Free' },
+    { to: '/marketplace/models', label: 'Model Arcade', icon: Cpu },
+    { to: '/exchange', label: 'Workflow Bazaar', icon: Compass },
+    { to: '/balance', label: 'Token Vault', icon: Coins, requiresAuth: true },
+    { to: '/studio', label: 'Workflow Forge', icon: Layers, requiresAuth: true },
+    { to: '/activity', label: 'Flight Logs', icon: History, requiresAuth: true },
+    { to: '/dashboard', label: 'Mission Control', icon: LayoutDashboard, requiresAuth: true },
+    { to: '/organization', label: 'Squad Hub', icon: Building2, requiresAuth: true },
+    { to: '/developer', label: 'Dev Arcade', icon: Terminal },
+    { to: '/docs', label: 'The Codex', icon: BookOpen },
   ];
 
   return (
@@ -88,26 +88,24 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
             className="w-full flex items-center justify-between gap-2 bg-zinc-900/80 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-zinc-200 px-3 py-2 rounded-xl text-xs transition-all cursor-pointer shadow-sm group"
           >
             <div className="flex items-center gap-2">
-              <Search className="h-3.5 w-3.5 text-zinc-500 group-hover:text-emerald-400" />
-              <span>⌘K Search</span>
+              <Search className="h-3.5 w-3.5 text-zinc-500 group-hover:text-emerald-400 transition-colors" />
+              <span>Search Nexus...</span>
             </div>
-            <kbd className="text-[9px] font-mono bg-zinc-950 border border-zinc-800 px-1.5 py-0.5 rounded text-zinc-500">
-              ⌘K
-            </kbd>
+            <kbd className="text-[9px] text-zinc-500 bg-zinc-950 border border-zinc-800 px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
           </button>
         ) : (
           <button
             onClick={onSearchClick}
-            className="w-full flex items-center justify-center p-2 rounded-xl text-zinc-400 hover:text-emerald-400 hover:bg-zinc-800/60 transition-colors cursor-pointer"
-            title="Spotlight Search (⌘K)"
+            className="w-10 h-10 mx-auto flex items-center justify-center bg-zinc-900/80 border border-zinc-800 hover:border-zinc-700 text-zinc-400 hover:text-emerald-400 rounded-xl transition-all cursor-pointer shadow-sm"
+            title="Search (⌘K)"
           >
             <Search className="h-4 w-4" />
           </button>
         )}
       </div>
 
-      {/* ── Main Navigation List ── */}
-      <div className="flex-1 py-3 px-2 overflow-y-auto no-scrollbar space-y-1">
+      {/* ── Navigation Links List ── */}
+      <div className="flex-1 overflow-y-auto p-2 space-y-1 no-scrollbar">
         {navItems.map((item) => {
           if (item.requiresAuth && !isSignedIn) return null;
           const Icon = item.icon;
@@ -116,39 +114,28 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
             <NavLink
               key={item.to}
               to={item.to}
+              title={isCollapsed ? item.label : undefined}
               className={({ isActive }) =>
                 cn(
-                  'flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-medium transition-all group relative',
-                  isActive
-                    ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold shadow-sm'
-                    : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50'
+                  'flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer group',
+                  {
+                    'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold shadow-sm': isActive,
+                    'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/80': !isActive,
+                    'justify-center px-0': isCollapsed,
+                  }
                 )
               }
             >
               {({ isActive }) => (
                 <>
-                  <Icon
-                    className={cn('h-4 w-4 shrink-0 transition-colors', {
-                      'text-emerald-400': isActive,
-                      'text-zinc-500 group-hover:text-zinc-300': !isActive,
-                    })}
-                  />
-
-                  {!isCollapsed && (
-                    <span className="truncate flex-1">{item.label}</span>
-                  )}
-
+                  <div className="flex items-center gap-3">
+                    <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-emerald-400' : 'text-zinc-400 group-hover:text-zinc-200')} />
+                    {!isCollapsed && <span className="truncate">{item.label}</span>}
+                  </div>
                   {!isCollapsed && item.tag && (
-                    <span className="text-[9px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded border border-emerald-500/20">
+                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
                       {item.tag}
                     </span>
-                  )}
-
-                  {/* Tooltip when collapsed */}
-                  {isCollapsed && (
-                    <div className="absolute left-16 bg-zinc-900 border border-zinc-800 text-zinc-200 text-xs font-medium px-2.5 py-1.5 rounded-xl shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-layer-dropdown">
-                      {item.label}
-                    </div>
                   )}
                 </>
               )}
@@ -157,20 +144,19 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
         })}
       </div>
 
-      {/* ── Bottom Section: Profile & Sidebar Toggle ── */}
-      <div className="p-2 border-t border-zinc-800/80 shrink-0 space-y-2">
-        {/* User Card */}
+      {/* ── User Profile & Sidebar Collapse Toggle ── */}
+      <div className="p-3 border-t border-zinc-800/80 shrink-0 bg-[#121214] flex flex-col gap-2">
         {isSignedIn && !isCollapsed && (
-          <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-900/60 border border-zinc-800/60 text-xs">
-            <div className="flex items-center gap-2 truncate">
-              <div className="h-6 w-6 rounded-full bg-emerald-400 text-zinc-950 font-bold flex items-center justify-center text-[10px]">
+          <div className="flex items-center justify-between p-2 rounded-xl bg-zinc-900/60 border border-zinc-800/60">
+            <div className="flex items-center gap-2.5 overflow-hidden">
+              <div className="h-7 w-7 rounded-full bg-emerald-400 text-zinc-950 font-bold flex items-center justify-center text-xs shrink-0 shadow-md">
                 {user?.displayName?.charAt(0)?.toUpperCase() || 'U'}
               </div>
-              <span className="text-zinc-300 font-medium truncate">{user?.displayName || 'User'}</span>
+              <span className="text-xs font-medium text-zinc-200 truncate">{user?.displayName || 'User'}</span>
             </div>
             <button
-              onClick={() => signOut()}
-              className="text-zinc-500 hover:text-red-400 p-1 hover:bg-zinc-800 rounded transition-colors cursor-pointer"
+              onClick={signOut}
+              className="text-zinc-500 hover:text-rose-400 p-1 transition-colors cursor-pointer"
               title="Sign Out"
             >
               <LogOut className="h-3.5 w-3.5" />
@@ -178,13 +164,19 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
           </div>
         )}
 
-        {/* Collapse Button */}
         <button
           onClick={toggleSidebar}
-          className="w-full flex items-center justify-center p-2 rounded-xl text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/60 transition-colors cursor-pointer"
+          className="w-full flex items-center justify-center gap-2 py-2 rounded-xl bg-zinc-900/40 hover:bg-zinc-900 border border-zinc-800/60 text-zinc-400 hover:text-zinc-200 text-xs transition-all cursor-pointer"
           title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
         >
-          {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          {isCollapsed ? (
+            <ChevronRight className="h-4 w-4 text-emerald-400" />
+          ) : (
+            <>
+              <ChevronLeft className="h-4 w-4 text-emerald-400" />
+              <span className="text-[11px] font-mono">Collapse Sidebar</span>
+            </>
+          )}
         </button>
       </div>
     </aside>
