@@ -65,10 +65,10 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
             <NexusLogoMark className="h-7 w-7 text-emerald-400 shrink-0" />
             <div className="flex flex-col min-w-0">
               <span className="font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors truncate">
-                Nexus
+                Meridian Nexus
               </span>
-              <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest leading-none">
-                Powered by Meridian
+              <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest leading-none">
+                AI & Workflow Suite
               </span>
             </div>
           </Link>

@@ -93,7 +93,7 @@ export default function Landing() {
           <motion.div variants={item}>
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 tracking-wide">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Nexus — Phase 1 Live
+              Meridian AI Suite • Phase 1 Live
             </span>
           </motion.div>
 

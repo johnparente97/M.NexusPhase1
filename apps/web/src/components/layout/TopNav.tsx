@@ -41,7 +41,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         <Link to="/" className="flex items-center gap-2 group">
           <NexusLogoMark className="h-6 w-6 text-emerald-400" />
           <span className="font-display font-bold text-sm text-white tracking-tight">
-            Nexus
+            Meridian Nexus
           </span>
         </Link>
         <div className="hidden sm:block">
@@ -53,7 +53,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
       <div className="hidden lg:flex items-center gap-2 text-xs font-mono text-zinc-400">
         <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          AntSeed Decentralized AI Node Active
+          Meridian Ecosystem • AI & Workflow Suite
         </span>
       </div>
 
