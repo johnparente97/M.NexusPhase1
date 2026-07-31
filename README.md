@@ -28,22 +28,26 @@ Meridian Nexus is the official intelligence and workflow layer for the [Meridian
 
 ```mermaid
 graph TD
-    User["Builder / Developer"] -->|Prompts & Workflows| Nexus["Meridian Nexus"]
+    User["Builder / Developer"] -->|Prompts & Workflows| NexusUI["Meridian Nexus"]
 
-    subgraph Nexus["Nexus — Intelligence Layer"]
+    subgraph NexusLayer["Nexus — Intelligence Layer"]
         InfHub["Inference Hub"]
         WFMarket["Workflow Market"]
         ModelHub["Model Hub"]
         Studio["Workflow Builder"]
     end
 
-    subgraph Protocol["Meridian Protocol — Settlement Layer"]
+    subgraph ProtocolLayer["Meridian Protocol — Settlement Layer"]
         x402["x402 Facilitator"]
         Mpay["Mpay Gasless"]
         Gateway["Circle Gateway"]
         Token["MRDN Token Pool"]
     end
 
+    NexusUI --> InfHub
+    NexusUI --> WFMarket
+    NexusUI --> ModelHub
+    NexusUI --> Studio
     InfHub --> x402
     x402 --> Mpay
     x402 --> Gateway
@@ -65,6 +69,21 @@ graph TD
 | **Ecosystem Alignment** | `/alignment` | System architecture spec and responsibility breakdown |
 | **Live Activity** | `/activity` | Execution history, telemetry, and verifiable outcome receipts |
 | **Dev Console** | `/developer` | REST API docs, MCP integration, and x402 payment header specs |
+
+---
+
+## 📋 Ecosystem Alignment
+
+> **How does Nexus fit into the Meridian product suite?**
+
+The [Ecosystem Alignment page](https://johnparente97.github.io/M.NexusPhase1/#/alignment) is a dedicated system specification that explains:
+
+- **Division of responsibilities** between Meridian Protocol (settlement) and Nexus (intelligence)
+- **Payment rail integration** across all 4 modalities (x402, Circle Gateway, Mpay, MRDN Token)
+- **Architecture map** showing how Nexus connects to every Meridian service
+- **Full workspace routing matrix** with direct links to each workspace
+
+→ View it live at [`/alignment`](https://johnparente97.github.io/M.NexusPhase1/#/alignment)
 
 ---
 
