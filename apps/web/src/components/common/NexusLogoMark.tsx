@@ -14,7 +14,7 @@ export interface NexusLogoMarkProps {
 export const NexusLogoMark: React.FC<NexusLogoMarkProps> = ({
   className = 'h-8 w-8',
   size,
-  alt = 'Meridian Logo',
+  alt = 'Nexus Logo',
 }) => {
   const style = size ? { width: size, height: size } : undefined;
   const baseUrl = import.meta.env.BASE_URL || '/';
@@ -24,7 +24,7 @@ export const NexusLogoMark: React.FC<NexusLogoMarkProps> = ({
     <img
       src={logoSrc}
       alt={alt}
-      className={`object-contain rounded-xl select-none ${className}`}
+      className={`object-contain select-none ${className}`}
       style={style}
     />
   );
