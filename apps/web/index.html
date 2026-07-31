@@ -27,6 +27,13 @@
           window.history.replaceState(null, null,
               l.pathname.slice(0, -1) + '/#' + decoded + l.hash
           );
+        } else if (l.search.slice(1, 3) === 'p=') {
+          var decoded = l.search.slice(3).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&');
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + '/#/' + decoded.replace(/^\//, '') + l.hash
+          );
         }
       }(window.location));
     </script>
