@@ -8,10 +8,11 @@ import { zValidator } from '../middleware/validate';
 const router = new Hono<AppEnv>();
 
 // Comprehensive Nexus Knowledge System Prompt
-const NEXUS_SYSTEM_PROMPT = `You are an expert AI assistant embedded in Meridian Nexus, a Web3 AI workflow marketplace. You have deep knowledge of:
+const NEXUS_SYSTEM_PROMPT = `You are an expert AI assistant embedded in Nexus (Powered by Meridian), an AI creation & workflow marketplace. You have deep knowledge of:
 
 PLATFORM ARCHITECTURE:
-- Meridian Nexus is a three-pane AI workspace: Left sidebar (Mission Control), Center (workspace views), Right (context inspector)
+- Nexus is a three-pane AI workspace: Left sidebar (Mission Control), Center (workspace views), Right (context inspector)
+- Powered by Meridian Protocol for settlement, non-custodial wallets, and x402 payment headers
 - Built on Cloudflare Workers + D1 database + Vite React frontend
 - Deployed to GitHub Pages (frontend) and Cloudflare Workers (API)
 - Uses hash-based routing for SPA on static hosting
@@ -119,9 +120,9 @@ function generateDynamicFallback(prompt: string): string {
   const q = prompt.toLowerCase();
   
   if (q.includes('nexus') || q.includes('what is') || q.includes('tell me about') || q.includes('explain')) {
-    return `**Meridian Nexus — AI Workflow Marketplace**
+    return `**Nexus — AI Workflow Marketplace (Powered by Meridian)**
 
-Nexus is a three-pane AI operating system that lets you discover, configure, and execute trusted AI workflows — all settled transparently on-chain.
+Nexus is a three-pane AI operating system that lets you discover, configure, and execute trusted AI workflows — all settled transparently on-chain via the Meridian Protocol.
 
 **Core Capabilities:**
 - **Workflow Exchange** — Browse 15+ pre-built workflows (Company Intelligence, Marketing Campaigns, Sales Outreach, Vendor Comparisons, and more)
@@ -229,7 +230,7 @@ Navigate to **Agent Builder** in the sidebar to get started.`;
   }
 
   if (q.includes('hello') || q.includes('hi') || q.includes('hey')) {
-    return `Hello! Welcome to Meridian Nexus. I'm your free Dolphin AI assistant.
+    return `Hello! Welcome to Nexus (Powered by Meridian). I'm your free Dolphin AI assistant.
 
 Here's what I can help with:
 - **Explain any Nexus feature** — workflows, models, settlement, agents

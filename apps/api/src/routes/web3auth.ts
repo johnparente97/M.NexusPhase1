@@ -154,7 +154,7 @@ app.post('/challenge', requireAuth(), async (c) => {
   const nonce = crypto.randomUUID().replace(/-/g, '').substring(0, 16);
   const now = new Date();
   
-  const challengeMessage = `Link your wallet to Meridian Nexus:\n\n` +
+  const challengeMessage = `Link your wallet to Nexus (Powered by Meridian):\n\n` +
     `Wallet: ${walletLower}\n` +
     `User ID: ${authUser.id}\n` +
     `Nonce: ${nonce}\n` +

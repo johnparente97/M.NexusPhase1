@@ -1,4 +1,4 @@
-// ─── Meridian Nexus — Shared Types ───────────────────────────────────
+// ─── Nexus — Shared Types (Powered by Meridian) ───────────────────
 // All types shared between @meridian-nexus/web and @meridian-nexus/api.
 // These types define the contract between frontend and backend.
 // ─────────────────────────────────────────────────────────────────────

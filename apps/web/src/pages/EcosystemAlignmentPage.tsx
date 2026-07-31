@@ -128,7 +128,8 @@ export default function EcosystemAlignmentPage() {
           <Card className="bg-[#141416]/90 backdrop-blur-xl border border-emerald-500/30 rounded-3xl p-5 sm:p-8 space-y-5 shadow-xl hover:border-emerald-500/50 transition-all flex flex-col h-full">
             <h3 className="font-display font-bold text-base sm:text-lg text-emerald-400 flex items-center gap-2">
               <NexusLogoMark className="h-5 w-5 text-emerald-400" />
-              <span>Meridian Nexus Layer</span>
+              <span>Nexus Intelligence Layer</span>
+              <span className="text-[10px] font-mono prismatic-text font-bold ml-auto">(Powered by Meridian)</span>
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed flex-1">
               Coordinates <strong className="text-zinc-200">intelligence, AI model execution, workflow orchestration, and user interaction</strong> powered by Meridian settlement:
@@ -170,7 +171,7 @@ export default function EcosystemAlignmentPage() {
               <span className="text-[10px] text-emerald-400 uppercase font-bold tracking-widest truncate">Presentation & Intelligence Suite</span>
               <span className="text-[10px] text-zinc-500 hidden sm:block">APPLICATION LAYER</span>
             </div>
-            <span className="text-sm sm:text-base font-bold text-white block">MERIDIAN NEXUS SUITE</span>
+            <span className="text-sm sm:text-base font-bold text-white block">NEXUS SUITE <span className="text-xs prismatic-text font-normal">(POWERED BY MERIDIAN)</span></span>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-1 text-[10px] sm:text-[11px]">
               <span className="bg-zinc-900/80 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl text-zinc-300 border border-zinc-800 text-center font-semibold truncate">Inference Hub</span>
               <span className="bg-zinc-900/80 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl text-zinc-300 border border-zinc-800 text-center font-semibold truncate">Workflow Market</span>

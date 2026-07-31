@@ -2,7 +2,7 @@ import { WorkflowResult, ResultSection } from '@meridian-nexus/shared-types';
 
 export class ExportService {
   static toMarkdown(result: WorkflowResult, workflowName: string): string {
-    let md = `# Meridian Nexus Run Result: ${workflowName}\n`;
+    let md = `# Nexus Run Result: ${workflowName} (Powered by Meridian)\n`;
     md += `Run ID: \`${result.runId}\` | Date: ${new Date(result.createdAt).toLocaleString()}\n\n`;
 
     md += `## Metadata\n`;
@@ -73,7 +73,7 @@ export class ExportService {
       }
     }
 
-    md += `\n---\n*Disclaimer: Generated on the Meridian Nexus phase 1 platform. All data is for demonstration and trial purposes.*`;
+    md += `\n---\n*Disclaimer: Generated on the Nexus platform (Powered by Meridian). All data is for demonstration and trial purposes.*`;
     return md;
   }
 

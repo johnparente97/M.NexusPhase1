@@ -1,4 +1,4 @@
-name: Deploy Meridian Nexus to GitHub Pages
+name: Deploy Nexus (Powered by Meridian) to GitHub Pages
 
 on:
   push:

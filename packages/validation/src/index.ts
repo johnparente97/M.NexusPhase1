@@ -1,4 +1,4 @@
-// ─── Meridian Nexus — Shared Validation Schemas ──────────────────────
+// ─── Nexus — Shared Validation Schemas (Powered by Meridian) ──────
 // Zod schemas used by both frontend (React Hook Form) and backend (Hono).
 // ─────────────────────────────────────────────────────────────────────
 

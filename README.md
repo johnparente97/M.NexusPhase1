@@ -28,7 +28,7 @@ Nexus is an open intelligence and workflow platform **powered by the [Meridian P
 
 ```mermaid
 graph TD
-    User["Builder / Developer"] -->|Prompts & Workflows| NexusUI["Meridian Nexus"]
+    User["Builder / Developer"] -->|Prompts & Workflows| NexusUI["Nexus (Powered by Meridian)"]
 
     subgraph NexusLayer["Nexus — Intelligence Layer"]
         InfHub["Inference Hub"]

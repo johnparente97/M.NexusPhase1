@@ -34,7 +34,7 @@ app.get('/', (c) => {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Meridian Nexus API Gateway</title>
+      <title>Nexus API Gateway (Powered by Meridian)</title>
       <style>
         body {
           background-color: #171719;
@@ -124,8 +124,9 @@ app.get('/', (c) => {
     <body>
       <div class="container">
         <div class="badge">Nexus API Worker</div>
-        <h1>Meridian Nexus API</h1>
-        <p>This is the secure backend intelligence and settlement gateway for Meridian Nexus. The API services are fully operational.</p>
+        <h1>Nexus API</h1>
+        <p style="margin-top: 4px; font-size: 11px; color: #27F293; font-weight: 600;">Powered by Meridian Protocol</p>
+        <p>This is the secure backend intelligence and settlement gateway for Nexus. The API services are fully operational.</p>
         <div class="links">
           <a href="/api/health" class="btn-primary">Check System Health</a>
           <a href="https://github.com/meridian-protocol/M.NexusPhase1" target="_blank" class="btn-secondary">View GitHub Repository</a>
