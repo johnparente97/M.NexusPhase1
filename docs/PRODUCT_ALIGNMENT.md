@@ -1,4 +1,4 @@
-# Product Alignment & Infrastructure Boundaries — Meridian Nexus
+# Product Alignment & Infrastructure Boundaries — Nexus (Powered by Meridian)
 
 ## 1. System Responsibilities
 
@@ -13,8 +13,8 @@ Nexus is the application and presentation layer. Meridian is the infrastructure 
 │  • MRDN Incentives                 • Wallet & Transaction Infrastructure│
 └────────────────────────────────────┬────────────────────────────────────┘
                                      │ (Underlying Infrastructure)
-┌────────────────────────────────────▼────────────────────────────────────┐
-│                             MERIDIAN NEXUS                              │
+┌─────────────────────────────────────────────────────────────────────────┐
+│                     NEXUS (POWERED BY MERIDIAN)                         │
 │  • User Experience & UI            • Decentralized AI Model Discovery   │
 │  • Model Comparison & Chat          • Workflow Orchestration             │
 │  • Usage Visibility & Metering     • Provider Transparency              │

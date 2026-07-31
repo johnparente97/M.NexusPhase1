@@ -1,4 +1,4 @@
--- ─── Meridian Nexus — Compliance & KYC Schema ───────────────────────
+-- ─── Nexus — Compliance & KYC Schema (Powered by Meridian) ───────────────────────
 -- Migration: 0004_compliance_and_kyc.sql
 -- Adds compliance and KYC verification tracking to users table
 -- ─────────────────────────────────────────────────────────────────────

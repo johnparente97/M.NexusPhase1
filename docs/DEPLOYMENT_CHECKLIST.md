@@ -1,6 +1,6 @@
-# Meridian Nexus — Production Redeployment Checklist
+# Production Redeployment Checklist — Nexus (Powered by Meridian)
 
-Follow this checklist whenever making future updates to the Meridian Nexus monorepo.
+Follow this checklist whenever making future updates to the Nexus monorepo.
 
 ---
 

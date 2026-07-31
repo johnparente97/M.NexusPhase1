@@ -1,6 +1,6 @@
-# Meridian Nexus — Hosting & Deployment Audit Report
+# Hosting & Deployment Audit Report — Nexus (Powered by Meridian)
 
-This audit report documents all identified hosting issues, root causes, file changes, deployment configurations, and verification test results for **Meridian Nexus**.
+This audit report documents all identified hosting issues, root causes, file changes, deployment configurations, and verification test results for **Nexus**.
 
 ---
 
@@ -25,7 +25,7 @@ This audit report documents all identified hosting issues, root causes, file cha
 | **2** | API requests on GitHub Pages produced `404 Not Found` | `API_BASE_URL` defaulted to relative `""` which targeted `https://johnparente97.github.io/api/...` instead of Cloudflare. | Created centralized API base URL resolution in `apps/web/src/services/api-client.ts` defaulting to `https://meridian-nexus-api.jrjohnparente.workers.dev`. |
 | **3** | Browser CORS preflight error on Cloudflare Worker | `corsMiddleware` in Worker only allowed `http://localhost:5173` if `CORS_ORIGIN` env was unset. | Updated `apps/api/src/middleware/cors.ts` to explicitly permit `https://johnparente97.github.io` and all `*.github.io` subpaths. |
 | **4** | Nested SPA route refresh produced GitHub Pages 404 | GitHub Pages static server does not support server-side URL rewrites for deep paths. | Switched React Router to `createHashRouter` in `router.tsx` and added `apps/web/public/404.html` SPA fallback script. |
-| **5** | Double-nested Markdown badge in `README.md` | Syntactically nested `[[![...](...)](...)](...)` rendered invalid HTML links. | Fixed badge syntax in `README.md` to standard `[![Launch Meridian Nexus](badge-url)](pages-url)`. |
+| **5** | Double-nested Markdown badge in `README.md` | Syntactically nested `[[![...](...)](...)](...)` rendered invalid HTML links. | Fixed badge syntax in `README.md` to standard `[![Launch Nexus](badge-url)](pages-url)`. |
 | **6** | Potential white-screen crash on unhandled component errors | Missing top-level React ErrorBoundary in `App.tsx`. | Wrapped `App.tsx` with `<ErrorBoundary>` providing graceful error recovery UI and home navigation. |
 
 ---
@@ -39,7 +39,7 @@ This audit report documents all identified hosting issues, root causes, file cha
 - `apps/web/vite.config.ts`: Configured `base: '/M.NexusPhase1/'` for Vite bundle generation.
 - `apps/web/src/app/App.tsx`: Added top-level `<ErrorBoundary>` wrapper.
 - `apps/web/src/components/common/DemoLabel.tsx`: Updated environment mode badge (`Base Sepolia Testnet & Demo Mode`).
-- `README.md`: Added prominent `[![Launch Meridian Nexus]()]()` badge and public fallback link.
+- `README.md`: Added prominent `[![Launch Nexus]()]()` badge and public fallback link.
 
 ---
 

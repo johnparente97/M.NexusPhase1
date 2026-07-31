@@ -1,4 +1,4 @@
--- ─── Meridian Nexus — Security and Payments Tables ──────────────────
+-- ─── Nexus — Security and Payments Tables (Powered by Meridian) ──────────────────
 -- Migration: 0002_security_and_payments.sql
 -- Creates tables for SIWE wallet linking, payment intents, replay protection, and idempotency
 -- ─────────────────────────────────────────────────────────────────────

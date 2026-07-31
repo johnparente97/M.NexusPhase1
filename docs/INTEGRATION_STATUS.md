@@ -1,6 +1,6 @@
-# Meridian Nexus — Integration Status Matrix
+# Integration Status Matrix — Nexus (Powered by Meridian)
 
-This document provides complete transparency regarding the operational status of all Meridian settlement, AI model provider, and wallet integration capabilities in Meridian Nexus.
+This document provides complete transparency regarding the operational status of all Meridian settlement, AI model provider, and wallet integration capabilities in Nexus.
 
 ---
 

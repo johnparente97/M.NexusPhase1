@@ -1,4 +1,4 @@
--- ─── Meridian Nexus — D1 Initial Schema ─────────────────────────────
+-- ─── Nexus — D1 Initial Schema (Powered by Meridian) ─────────────────────
 -- Migration: 0001_initial_schema.sql
 -- Creates all tables for Phase 1 MVP
 -- ─────────────────────────────────────────────────────────────────────

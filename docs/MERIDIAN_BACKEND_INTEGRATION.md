@@ -1,4 +1,4 @@
-# Meridian Backend Integration Specification — Meridian Nexus
+# Meridian Backend Integration Specification — Nexus (Powered by Meridian)
 
 This document defines the complete backend integration requirements, payload schemas, service boundaries, and operational status matrix for the Meridian core development team.
 

@@ -1,4 +1,4 @@
-# Mocks and Gaps Matrix — Meridian Nexus
+# Mocks and Gaps Matrix — Nexus (Powered by Meridian)
 
 This document tracks operational vs. mocked capabilities, hardcoded assumptions, and required backend connections.
 

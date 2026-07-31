@@ -1,6 +1,6 @@
-# QA Test Plan & Verification Checklist — Meridian Nexus
+# QA Test Plan & Verification Checklist — Nexus (Powered by Meridian)
 
-This QA test plan outlines the critical user journeys, automated test coverage, manual verification steps, and regression checklists for Meridian Nexus.
+This QA test plan outlines the critical user journeys, automated test coverage, manual verification steps, and regression checklists for Nexus.
 
 ---
 

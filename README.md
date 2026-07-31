@@ -6,6 +6,7 @@
 <p align="center"><strong>The AI & Workflow Suite — Powered by Meridian Protocol</strong></p>
 
 <p align="center">
+  <a href="http://localhost:5173/M.NexusPhase1/"><img src="https://img.shields.io/badge/Local_Dev-localhost%3A5173-7C3AED?style=for-the-badge&logo=vite&logoColor=fff" alt="Local Dev" /></a>
   <a href="https://johnparente97.github.io/M.NexusPhase1/"><img src="https://img.shields.io/badge/Live_Demo-27F293?style=for-the-badge&logo=rocket&logoColor=000" alt="Live Demo" /></a>
   <a href="https://github.com/johnparente97/M.NexusPhase1/actions"><img src="https://img.shields.io/badge/Build-Passing-00E676?style=for-the-badge&logo=github&logoColor=fff" alt="Build" /></a>
   <a href="https://mrdn.finance/"><img src="https://img.shields.io/badge/Protocol-x402_Native-00F5D4?style=for-the-badge&logo=ethereum&logoColor=000" alt="Protocol" /></a>
@@ -118,7 +119,7 @@ npm run build
 npm run dev
 ```
 
-The app will be available at **`http://localhost:5173/M.NexusPhase1/`**
+The app will be available at **[http://localhost:5173/M.NexusPhase1/](http://localhost:5173/M.NexusPhase1/)**
 
 ---
 

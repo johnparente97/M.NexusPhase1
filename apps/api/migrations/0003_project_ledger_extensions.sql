@@ -1,4 +1,4 @@
--- ─── Meridian Nexus — Project Ledger Extensions ──────────────────────
+-- ─── Nexus — Project Ledger Extensions (Powered by Meridian) ──────────────────────
 -- Migration: 0003_project_ledger_extensions.sql
 -- Adds columns to settlement_receipts to track cross-chain routing and fee attributions
 -- ─────────────────────────────────────────────────────────────────────

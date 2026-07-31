@@ -1,8 +1,8 @@
-# Changelog & Audit Summary — Meridian Nexus
+# Changelog & Audit Summary — Nexus (Powered by Meridian)
 
 ## 1. Audit Overview
 
-A comprehensive audit was performed across the entire Meridian Nexus codebase covering product positioning, top-up fee rules, decentralized AI model prioritization, front-end architecture, bugs, accessibility, responsiveness, testing, and backend handoff readiness.
+A comprehensive audit was performed across the entire Nexus codebase covering product positioning, top-up fee rules, decentralized AI model prioritization, front-end architecture, bugs, accessibility, responsiveness, testing, and backend handoff readiness.
 
 ---
 

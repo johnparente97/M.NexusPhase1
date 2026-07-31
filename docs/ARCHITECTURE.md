@@ -1,12 +1,12 @@
-# Architecture & System Boundaries — Meridian Nexus
+# Architecture & System Boundaries — Nexus (Powered by Meridian)
 
-## 1. Overview & High-Level Architecture
+Meridian Protocol provides value, liquidity, payment routing, and Web3 settlement capabilities. Nexus is the open intelligence layer for AI model execution, workflow orchestration, and user interaction.
 
-Meridian Nexus follows a decoupled **Adapter Pattern Architecture** separating UI presentation, domain logic, and backend infrastructure.
+Nexus follows a decoupled **Adapter Pattern Architecture** separating UI presentation, domain logic, and backend infrastructure.
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                           MERIDIAN NEXUS UI                             │
+│                     NEXUS UI (POWERED BY MERIDIAN)                      │
 │     React 19 + Tailwind CSS + Framer Motion + TanStack React Query      │
 └────────────────────────────────────┬────────────────────────────────────┘
                                      │

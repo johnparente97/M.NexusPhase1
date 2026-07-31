@@ -1,4 +1,4 @@
--- ─── Meridian Nexus — Seed Data ──────────────────────────────────────
+-- ─── Nexus — Seed Data (Powered by Meridian) ──────────────────────────────────────
 -- Populates the marketplace with demo users, creators, and 15 workflows.
 -- Run after migrations: npx wrangler d1 execute nexus-db --file=seed/seed.sql
 -- ─────────────────────────────────────────────────────────────────────
