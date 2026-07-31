@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ANTSEED_MODEL_CATALOG, AntSeedModel } from '../adapters/antseed/adapter';
 import { Card } from '../components/ui/Card';
@@ -21,7 +21,14 @@ import {
   Scale,
   X,
   Database,
-  ArrowUpRight
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Brain,
+  Code,
+  Image as ImageIcon,
+  Globe,
+  LayoutGrid,
 } from 'lucide-react';
 import { formatCurrency } from '../utils/format';
 
@@ -32,11 +39,21 @@ export default function ModelMarketplace() {
   const [onlyFree, setOnlyFree] = useState(false);
   const [onlyEnterprise, setOnlyEnterprise] = useState(false);
   
+  // Ref for programmatic scroll control
+  const categoryScrollRef = useRef<HTMLDivElement>(null);
+
   // Model Comparison State
   const [comparedModelIds, setComparedModelIds] = useState<string[]>([]);
   const [isComparing, setIsComparing] = useState(false);
 
   const navigate = useNavigate();
+
+  const handleScrollCategories = (direction: 'left' | 'right') => {
+    if (categoryScrollRef.current) {
+      const scrollAmount = direction === 'left' ? -240 : 240;
+      categoryScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   const toggleCompare = (modelId: string) => {
     setComparedModelIds((prev) => {
@@ -61,13 +78,13 @@ export default function ModelMarketplace() {
   });
 
   const categories = [
-    { key: 'all', label: 'All Categories' },
-    { key: 'reasoning', label: 'Reasoning' },
-    { key: 'coding', label: 'Coding' },
-    { key: 'research', label: 'Research' },
-    { key: 'general', label: 'General' },
-    { key: 'image', label: 'Image AI' },
-    { key: 'enterprise', label: 'Enterprise' },
+    { key: 'all', label: 'All Models', icon: LayoutGrid },
+    { key: 'reasoning', label: 'Reasoning', icon: Brain },
+    { key: 'coding', label: 'Coding & Dev', icon: Code },
+    { key: 'research', label: 'Deep Research', icon: Search },
+    { key: 'general', label: 'General AI', icon: Globe },
+    { key: 'image', label: 'Image AI', icon: ImageIcon },
+    { key: 'enterprise', label: 'Enterprise & Privacy', icon: ShieldCheck },
   ];
 
   const hostTypes = [
@@ -76,6 +93,11 @@ export default function ModelMarketplace() {
     { key: 'open-weights-node', label: 'Open-Weights Nodes' },
     { key: 'workflow-connector', label: 'Workflow Connectors' },
   ];
+
+  const getCategoryCount = (key: string) => {
+    if (key === 'all') return ANTSEED_MODEL_CATALOG.length;
+    return ANTSEED_MODEL_CATALOG.filter((m) => m.category === key).length;
+  };
 
   const comparedModels = ANTSEED_MODEL_CATALOG.filter((m) => comparedModelIds.includes(m.id));
 
@@ -121,80 +143,152 @@ export default function ModelMarketplace() {
         </div>
       </div>
 
-      {/* Filter & Search Toolbar */}
-      <div className="flex flex-col gap-4 bg-zinc-900/50 border border-zinc-800 p-4 rounded-2xl">
+      {/* Enhanced Intuitive Category & Filter Toolbar */}
+      <div className="flex flex-col gap-5 bg-[#141416]/90 border border-zinc-800/90 p-4 sm:p-5 rounded-3xl shadow-xl">
         
-        {/* Host Type Pills & Categories */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-            <span className="text-[10px] font-mono text-zinc-500 uppercase shrink-0 font-bold">Category:</span>
-            {categories.map((cat) => (
+        {/* Category Selector Header Bar with Interactive Arrows */}
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-mono text-zinc-400 uppercase font-bold tracking-wider flex items-center gap-1.5">
+              <Filter className="h-3.5 w-3.5 text-emerald-400" />
+              Model Categories ({filteredModels.length} shown)
+            </span>
+
+            {/* Desktop Scroll Controls */}
+            <div className="hidden sm:flex items-center gap-1.5">
               <button
-                key={cat.key}
-                onClick={() => setSelectedCategory(cat.key)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
-                  selectedCategory === cat.key
-                    ? 'bg-[#27F293] text-zinc-950 font-bold shadow-sm'
-                    : 'bg-zinc-950 border border-zinc-800 text-zinc-400 hover:text-zinc-200'
-                }`}
+                type="button"
+                onClick={() => handleScrollCategories('left')}
+                className="p-1.5 bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                title="Scroll categories left"
               >
-                {cat.label}
+                <ChevronLeft className="h-4 w-4 text-emerald-400" />
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={() => handleScrollCategories('right')}
+                className="p-1.5 bg-zinc-950 hover:bg-zinc-800 border border-zinc-800 rounded-xl text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                title="Scroll categories right"
+              >
+                <ChevronRight className="h-4 w-4 text-emerald-400" />
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 shrink-0">
-            <span className="text-[10px] font-mono text-zinc-500 uppercase shrink-0 font-bold">Host Type:</span>
+          {/* Scrollable Category Pills Row with Visual Overflow Masks */}
+          <div className="relative flex items-center">
+            {/* Scroll Left Button overlay on mobile */}
+            <button
+              type="button"
+              onClick={() => handleScrollCategories('left')}
+              className="sm:hidden absolute left-0 z-10 p-1.5 bg-zinc-950/90 border border-zinc-800 rounded-r-xl text-emerald-400 shadow-md"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+
+            <div
+              ref={categoryScrollRef}
+              className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 w-full px-6 sm:px-0 scroll-smooth"
+            >
+              {categories.map((cat) => {
+                const Icon = cat.icon;
+                const count = getCategoryCount(cat.key);
+                const isSelected = selectedCategory === cat.key;
+
+                return (
+                  <button
+                    key={cat.key}
+                    onClick={() => setSelectedCategory(cat.key)}
+                    className={`px-3.5 py-2 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
+                      isSelected
+                        ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md prismatic-glow scale-[1.02]'
+                        : 'bg-zinc-950/90 border border-zinc-800/90 text-zinc-300 hover:text-white hover:border-zinc-700'
+                    }`}
+                  >
+                    <Icon className={`h-3.5 w-3.5 ${isSelected ? 'text-zinc-950' : 'text-emerald-400'}`} />
+                    <span>{cat.label}</span>
+                    <span
+                      className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ${
+                        isSelected
+                          ? 'bg-zinc-950/20 text-zinc-950'
+                          : 'bg-zinc-900 text-zinc-400 border border-zinc-800'
+                      }`}
+                    >
+                      {count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Scroll Right Button overlay on mobile */}
+            <button
+              type="button"
+              onClick={() => handleScrollCategories('right')}
+              className="sm:hidden absolute right-0 z-10 p-1.5 bg-zinc-950/90 border border-zinc-800 rounded-l-xl text-emerald-400 shadow-md"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Host Type Segmented Tab & Search Toolbar */}
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-t border-zinc-800/80 pt-4">
+          
+          {/* Host Type Segmented Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar bg-zinc-950 p-1 rounded-2xl border border-zinc-800/90 shrink-0">
+            <span className="text-[9px] font-mono text-zinc-500 uppercase shrink-0 font-bold px-2">Host:</span>
             {hostTypes.map((ht) => (
               <button
                 key={ht.key}
                 onClick={() => setSelectedHostType(ht.key)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                className={`px-3 py-1 rounded-xl text-[11px] font-semibold whitespace-nowrap transition-all cursor-pointer ${
                   selectedHostType === ht.key
-                    ? 'bg-indigo-500 text-white font-bold shadow-sm'
-                    : 'bg-zinc-950 border border-zinc-800 text-zinc-400 hover:text-zinc-200'
+                    ? 'bg-zinc-800 text-white font-bold shadow-sm border border-zinc-700'
+                    : 'text-zinc-400 hover:text-zinc-200'
                 }`}
               >
                 {ht.label}
               </button>
             ))}
           </div>
-        </div>
 
-        {/* Toggles & Search Field */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 border-t border-zinc-800/60 pt-3">
-          <div className="flex items-center gap-4">
-            <label className="flex items-center gap-2 text-xs text-zinc-400 cursor-pointer select-none">
-              <input
-                type="checkbox"
-                checked={onlyFree}
-                onChange={(e) => setOnlyFree(e.target.checked)}
-                className="accent-[#27F293] rounded"
-              />
-              <span>Free Models Only</span>
-            </label>
+          {/* Search Field & Toggles */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div className="flex items-center gap-3 shrink-0">
+              <label className="flex items-center gap-2 text-xs text-zinc-300 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={onlyFree}
+                  onChange={(e) => setOnlyFree(e.target.checked)}
+                  className="accent-emerald-400 rounded"
+                />
+                <span>Free Models</span>
+              </label>
 
-            <label className="flex items-center gap-2 text-xs text-zinc-400 cursor-pointer select-none">
+              <label className="flex items-center gap-2 text-xs text-zinc-300 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={onlyEnterprise}
+                  onChange={(e) => setOnlyEnterprise(e.target.checked)}
+                  className="accent-emerald-400 rounded"
+                />
+                <span>Enterprise</span>
+              </label>
+            </div>
+
+            <div className="flex items-center gap-2 bg-zinc-950 border border-zinc-800 rounded-2xl px-3 py-2 w-full sm:w-64">
+              <Search className="h-3.5 w-3.5 text-zinc-500" />
               <input
-                type="checkbox"
-                checked={onlyEnterprise}
-                onChange={(e) => setOnlyEnterprise(e.target.checked)}
-                className="accent-[#27F293] rounded"
+                type="text"
+                placeholder="Search models..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="bg-transparent border-none text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none w-full font-sans"
               />
-              <span>Encrypted Enterprise</span>
-            </label>
+            </div>
           </div>
 
-          <div className="flex items-center gap-2 bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 w-full sm:w-72">
-            <Search className="h-3.5 w-3.5 text-zinc-500" />
-            <input
-              type="text"
-              placeholder="Search model hosts or providers..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="bg-transparent border-none text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none w-full font-sans"
-            />
-          </div>
         </div>
 
       </div>

@@ -43,6 +43,7 @@ const AgentBuilder = lazyWithRetry(() => import('../pages/AgentBuilder'));
 const OrgDashboard = lazyWithRetry(() => import('../pages/OrgDashboard'));
 const DevConsole = lazyWithRetry(() => import('../pages/DevConsole'));
 const DocsPage = lazyWithRetry(() => import('../pages/DocsPage'));
+const EcosystemAlignmentPage = lazyWithRetry(() => import('../pages/EcosystemAlignmentPage'));
 const NotFoundPage = lazyWithRetry(() => import('../pages/NotFoundPage'));
 
 const suspenseWrapper = (Component: React.ComponentType) => (
@@ -83,6 +84,8 @@ export const router = createHashRouter([
       { path: 'agents/new', element: suspenseWrapper(AgentBuilder) },
       { path: 'organization', element: suspenseWrapper(OrgDashboard) },
       { path: 'developer', element: suspenseWrapper(DevConsole) },
+      { path: 'alignment', element: suspenseWrapper(EcosystemAlignmentPage) },
+      { path: 'ecosystem', element: suspenseWrapper(EcosystemAlignmentPage) },
       { path: 'docs', element: suspenseWrapper(DocsPage) },
 
       { path: '*', element: suspenseWrapper(NotFoundPage) },

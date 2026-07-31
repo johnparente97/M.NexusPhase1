@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { Search, Wallet, Coins, Menu, Copy } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Search, Wallet, Coins, Menu, Copy, ChevronDown, ExternalLink } from 'lucide-react';
 import { NexusLogoMark } from '../common/NexusLogoMark';
 import DemoLabel from '../common/DemoLabel';
 import { useWallet } from '../../hooks/useWallet';
@@ -17,18 +17,21 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
   const { isCollapsed } = useSidebarStore();
   const { isConnected, walletAddress, chainId, usdcBalance, signInWithEthereum, switchNetwork } = useWallet();
   const isWrongNetwork = isConnected && chainId !== null && chainId !== 84532;
+  
+  const [networkFamily, setNetworkFamily] = useState<'EVM' | 'Solana'>('EVM');
+  const [isPaymentsOpen, setIsPaymentsOpen] = useState(false);
 
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 h-14 bg-[#121214]/90 backdrop-blur-xl border-b border-zinc-800/80 px-3 sm:px-6 flex items-center justify-between z-layer-header transition-all duration-200 left-0',
+        'fixed top-0 right-0 h-14 bg-[#171719]/90 backdrop-blur-xl border-b border-zinc-800/80 px-3 sm:px-6 flex items-center justify-between z-layer-header transition-all duration-200 left-0',
         {
           'lg:left-64': !isCollapsed,
           'lg:left-16': isCollapsed,
         }
       )}
     >
-      {/* Mobile Only: Brand Logo & Hamburger Menu */}
+      {/* Mobile Left: Hamburger + Brand */}
       <div className="flex items-center gap-2.5 lg:hidden shrink-0">
         <button
           onClick={onMobileMenuClick}
@@ -41,24 +44,171 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         <Link to="/" className="flex items-center gap-2 group">
           <NexusLogoMark className="h-6 w-6 text-emerald-400" />
           <span className="font-display font-bold text-sm text-white tracking-tight">
-            Meridian Nexus
+            Meridian <span className="text-emerald-400">Nexus</span>
           </span>
         </Link>
-        <div className="hidden sm:block">
-          <DemoLabel />
+      </div>
+
+      {/* Desktop Navigation Links — Canonical Meridian Product Suite Navigation */}
+      <nav className="hidden lg:flex items-center gap-5 text-xs font-display">
+        <Link to="/" className="flex items-center gap-2 mr-1 group">
+          <NexusLogoMark className="h-6 w-6 text-emerald-400 group-hover:rotate-45 transition-transform duration-300" />
+          <span className="font-display font-bold text-sm text-white tracking-tight">
+            Meridian <span className="text-emerald-400">Nexus</span>
+          </span>
+        </Link>
+
+        <Link
+          to="/chat"
+          className="text-zinc-300 hover:text-white transition-colors font-medium"
+        >
+          Inference
+        </Link>
+
+        <Link
+          to="/exchange"
+          className="text-zinc-300 hover:text-white transition-colors font-medium"
+        >
+          Workflows
+        </Link>
+
+        <Link
+          to="/marketplace/models"
+          className="text-zinc-300 hover:text-white transition-colors font-medium"
+        >
+          Models
+        </Link>
+
+        {/* Payments Dropdown */}
+        <div
+          className="relative"
+          onMouseEnter={() => setIsPaymentsOpen(true)}
+          onMouseLeave={() => setIsPaymentsOpen(false)}
+        >
+          <button
+            type="button"
+            className="inline-flex items-center gap-1 text-zinc-300 hover:text-white transition-colors font-medium cursor-pointer py-1"
+          >
+            <span>Payments</span>
+            <ChevronDown className={cn("h-3.5 w-3.5 text-emerald-400 transition-transform duration-200", isPaymentsOpen && "rotate-180")} />
+          </button>
+
+          <AnimatePresence>
+            {isPaymentsOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 6 }}
+                transition={{ duration: 0.15 }}
+                className="absolute left-0 top-full pt-1 z-50 w-52"
+              >
+                <div className="space-y-1 rounded-xl bg-[#1B1B1C] border border-zinc-800 p-2 text-white shadow-2xl shadow-black/80">
+                  <a
+                    href="https://pay.mrdn.finance/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
+                  >
+                    <span className="font-bold">Mpay (Gasless)</span>
+                    <ExternalLink className="h-3 w-3 opacity-60" />
+                  </a>
+                  <a
+                    href="https://instant.mrdn.finance/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
+                  >
+                    <span>Instant x402</span>
+                    <ExternalLink className="h-3 w-3 opacity-60" />
+                  </a>
+                  <a
+                    href="https://nanopayments.mrdn.finance/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
+                  >
+                    <span>Batched Nanopayments</span>
+                    <ExternalLink className="h-3 w-3 opacity-60" />
+                  </a>
+                  <Link
+                    to="/balance"
+                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-zinc-200 transition-colors hover:bg-zinc-800"
+                  >
+                    <span>AI Vault & Top-Up</span>
+                    <Coins className="h-3 w-3 text-emerald-400" />
+                  </Link>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      </div>
 
-      {/* Desktop Left: Adaptive Section Status Indicator */}
-      <div className="hidden lg:flex items-center gap-2 text-xs font-mono text-zinc-400">
-        <span className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono">
-          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-          Meridian Ecosystem • AI & Workflow Suite
-        </span>
-      </div>
+        {/* Command Centre — Meridian Glowing Signature Link */}
+        <Link
+          to="/auth"
+          className="font-display font-medium text-[#F0F0F0] transition-colors hover:text-emerald-300"
+          style={{
+            textShadow: '0 0 6px rgba(52, 211, 153, 0.45), 0 0 14px rgba(52, 211, 153, 0.25), 0 0 24px rgba(52, 211, 153, 0.12)',
+          }}
+        >
+          Command Centre
+        </Link>
 
-      {/* Right Controls: Spotlight Search, AI Balance, Wallet */}
+        <Link
+          to="/activity"
+          className="text-zinc-300 hover:text-white transition-colors font-medium"
+        >
+          Stats
+        </Link>
+
+        <Link
+          to="/alignment"
+          className="text-emerald-400 hover:text-emerald-300 transition-colors font-medium"
+        >
+          Alignment
+        </Link>
+
+        <a
+          href="https://docs.mrdn.finance/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-zinc-300 hover:text-white transition-colors font-medium inline-flex items-center gap-1"
+        >
+          <span>Docs</span>
+          <ExternalLink className="h-3 w-3 opacity-60" />
+        </a>
+      </nav>
+
+      {/* Right Controls: Network Toggle, Spotlight Search, AI Balance, Wallet */}
       <div className="flex items-center gap-2 sm:gap-2.5 ml-auto shrink-0">
+        {/* Network Family Switcher (EVM vs Solana) */}
+        <div className="hidden xl:flex items-center rounded-full bg-zinc-900 p-0.5 border border-zinc-800">
+          <button
+            type="button"
+            onClick={() => setNetworkFamily('EVM')}
+            className={cn(
+              "px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-all cursor-pointer",
+              networkFamily === 'EVM'
+                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-sm"
+                : "text-zinc-400 hover:text-white"
+            )}
+          >
+            EVM
+          </button>
+          <button
+            type="button"
+            onClick={() => setNetworkFamily('Solana')}
+            className={cn(
+              "px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-all cursor-pointer",
+              networkFamily === 'Solana'
+                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30 shadow-sm"
+                : "text-zinc-400 hover:text-white"
+            )}
+          >
+            Solana
+          </button>
+        </div>
+
         {/* Spotlight Search Launcher */}
         <motion.button
           whileHover={{ scale: 1.02 }}
@@ -78,10 +228,10 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
           title="Unified AI Balance"
         >
           <Coins className="h-3.5 w-3.5 text-emerald-400" />
-          <span>${usdcBalance}</span>
+          <span>${usdcBalance || '24.50'}</span>
         </Link>
 
-        {/* Wallet Button (Compact on Mobile to prevent overflow) */}
+        {/* Wallet Button */}
         {isWrongNetwork ? (
           <motion.button
             whileHover={{ scale: 1.02 }}
@@ -118,3 +268,4 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
     </header>
   );
 }
+

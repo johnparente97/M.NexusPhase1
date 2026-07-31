@@ -42,6 +42,7 @@ export default function Footer() {
         {/* Nexus Workspaces */}
         <div className="flex flex-col gap-3">
           <h4 className="font-display font-medium text-sm text-white">Nexus Suite</h4>
+          <Link to="/alignment" className="text-xs text-emerald-400 font-bold hover:text-emerald-300 transition-colors">Ecosystem Alignment</Link>
           <Link to="/chat" className="text-xs hover:text-white transition-colors">Inference Hub</Link>
           <Link to="/exchange" className="text-xs hover:text-white transition-colors">Workflow Market</Link>
           <Link to="/marketplace/models" className="text-xs hover:text-white transition-colors">Model Hub</Link>

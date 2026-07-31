@@ -66,8 +66,9 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
       ],
     },
     {
-      title: 'Developers',
+      title: 'Developers & Alignment',
       items: [
+        { to: '/alignment', label: 'Ecosystem Alignment', icon: ShieldCheck, tag: 'Spec' },
         { to: '/developer', label: 'Dev Hub', icon: Terminal },
         { to: '/organization', label: 'Team Workspace', icon: Building2, requiresAuth: true },
         { to: '/docs', label: 'Docs', icon: BookOpen },
