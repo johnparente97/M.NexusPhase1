@@ -49,15 +49,8 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         </Link>
       </div>
 
-      {/* Desktop Navigation Links — Canonical Meridian Product Suite Navigation */}
-      <nav className="hidden lg:flex items-center gap-5 text-xs font-display">
-        <Link to="/" className="flex items-center gap-2 mr-1 group">
-          <NexusLogoMark className="h-6 w-6 text-emerald-400 group-hover:rotate-45 transition-transform duration-300" />
-          <span className="font-display font-bold text-sm text-white tracking-tight">
-            Meridian <span className="text-emerald-400">Nexus</span>
-          </span>
-        </Link>
-
+      {/* Desktop Navigation Links — Essential Meridian Product Suite Navigation */}
+      <nav className="hidden lg:flex items-center gap-6 text-xs font-display">
         <Link
           to="/chat"
           className="text-zinc-300 hover:text-white transition-colors font-medium"
@@ -153,30 +146,6 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         >
           Command Centre
         </Link>
-
-        <Link
-          to="/activity"
-          className="text-zinc-300 hover:text-white transition-colors font-medium"
-        >
-          Stats
-        </Link>
-
-        <Link
-          to="/alignment"
-          className="text-emerald-400 hover:text-emerald-300 transition-colors font-medium"
-        >
-          Alignment
-        </Link>
-
-        <a
-          href="https://docs.mrdn.finance/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-zinc-300 hover:text-white transition-colors font-medium inline-flex items-center gap-1"
-        >
-          <span>Docs</span>
-          <ExternalLink className="h-3 w-3 opacity-60" />
-        </a>
       </nav>
 
       {/* Right Controls: Network Toggle, Spotlight Search, AI Balance, Wallet */}

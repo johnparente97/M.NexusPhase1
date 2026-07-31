@@ -15,6 +15,7 @@ import {
   BookOpen,
   Bot,
   LogOut,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { cn } from '../../utils/cn';
@@ -44,6 +45,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     { to: '/activity', label: 'Live Activity', icon: History, requiresAuth: true },
     { to: '/dashboard', label: 'Mission Control', icon: LayoutDashboard, requiresAuth: true },
     { to: '/organization', label: 'Team Workspace', icon: Building2, requiresAuth: true },
+    { to: '/alignment', label: 'Ecosystem Alignment', icon: ShieldCheck, tag: 'Spec' },
     { to: '/developer', label: 'Dev Hub', icon: Terminal },
     { to: '/docs', label: 'Docs', icon: BookOpen },
   ];

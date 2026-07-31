@@ -31,25 +31,31 @@ export default function Footer() {
         {/* Platform Links */}
         <div className="flex flex-col gap-3">
           <h4 className="font-display font-medium text-sm text-white">Platform</h4>
-          <a href="https://mrdn.finance/" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-white transition-colors">Home</a>
-          <a href="https://docs.mrdn.finance/" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-white transition-colors">Docs</a>
+          <a href="https://mrdn.finance/" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-white transition-colors">mrdn.finance</a>
           <a href="https://mrdn.finance/auth" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-white transition-colors">Command Centre</a>
-          <a href="https://pay.mrdn.finance/" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-white transition-colors"><span className="text-emerald-400 font-bold">M</span>pay</a>
+          <a href="https://pay.mrdn.finance/" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-white transition-colors"><span className="text-emerald-400 font-bold">M</span>pay Gasless</a>
+          <a href="https://nanopayments.mrdn.finance/" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-white transition-colors">Circle Gateway</a>
           <a href="https://aerodrome.finance/swap?from=0x833589fcd6edb6e08f4c7c32d4f71b54bda02913&to=0xe57e601c06689d3e2bf7db7bebb14b4ff28400c6&chain0=8453&chain1=8453" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-white transition-colors">Swap $MRDN</a>
-          <a href="https://demo.mrdn.finance/" target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-400 hover:text-emerald-300 font-mono transition-colors">x402 Demos ↗</a>
         </div>
 
         {/* Nexus Workspaces */}
         <div className="flex flex-col gap-3">
           <h4 className="font-display font-medium text-sm text-white">Nexus Suite</h4>
-          <Link to="/alignment" className="text-xs text-emerald-400 font-bold hover:text-emerald-300 transition-colors">Ecosystem Alignment</Link>
           <Link to="/chat" className="text-xs hover:text-white transition-colors">Inference Hub</Link>
           <Link to="/exchange" className="text-xs hover:text-white transition-colors">Workflow Market</Link>
           <Link to="/marketplace/models" className="text-xs hover:text-white transition-colors">Model Hub</Link>
           <Link to="/balance" className="text-xs hover:text-white transition-colors">AI Vault</Link>
           <Link to="/studio" className="text-xs hover:text-white transition-colors">Workflow Builder</Link>
-          <Link to="/activity" className="text-xs hover:text-white transition-colors">Live Activity</Link>
-          <Link to="/developer" className="text-xs hover:text-white transition-colors">Dev Hub</Link>
+          <Link to="/activity" className="text-xs hover:text-white transition-colors">Live Activity & Stats</Link>
+        </div>
+
+        {/* Support & Resources */}
+        <div className="flex flex-col gap-3">
+          <h4 className="font-display font-medium text-sm text-white">Resources</h4>
+          <Link to="/alignment" className="text-xs text-emerald-400 font-semibold hover:text-emerald-300 transition-colors">Ecosystem Alignment</Link>
+          <Link to="/developer" className="text-xs hover:text-white transition-colors">Dev Console</Link>
+          <a href="https://docs.mrdn.finance/" target="_blank" rel="noopener noreferrer" className="text-xs hover:text-white transition-colors">Official Docs ↗</a>
+          <a href="https://demo.mrdn.finance/" target="_blank" rel="noopener noreferrer" className="text-xs text-emerald-400 hover:text-emerald-300 font-mono transition-colors">x402 Demos ↗</a>
         </div>
 
         {/* Community & Legal */}
