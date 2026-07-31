@@ -62,14 +62,14 @@ graph TD
 
 | Workspace | Route | Description |
 | :--- | :--- | :--- |
-| **Inference Hub** | `/chat` | Run open-weight AI models at sub-penny rates with live model switching |
-| **Workflow Market** | `/exchange` | Discover and execute multi-step AI workflows built by other developers |
-| **Model Hub** | `/marketplace/models` | Browse 400+ models with pricing, latency, and benchmark comparisons |
-| **AI Vault** | `/balance` | Manage funds across Multichain Top-Up, Circle Gateway, and Mpay |
-| **Workflow Builder** | `/studio` | Build, parameterize, and publish custom AI workflow templates |
-| **Ecosystem Alignment** | `/alignment` | System architecture spec and responsibility breakdown |
-| **Live Activity** | `/activity` | Execution history, telemetry, and verifiable outcome receipts |
-| **Dev Console** | `/developer` | REST API docs, MCP integration, and x402 payment header specs |
+| **Inference Hub** | [`/chat`](https://johnparente97.github.io/M.NexusPhase1/#/chat) | Run open-weight AI models at sub-penny rates with live model switching |
+| **Workflow Market** | [`/exchange`](https://johnparente97.github.io/M.NexusPhase1/#/exchange) | Discover and execute multi-step AI workflows built by other developers |
+| **Model Hub** | [`/marketplace/models`](https://johnparente97.github.io/M.NexusPhase1/#/marketplace/models) | Browse 400+ models with pricing, latency, and benchmark comparisons |
+| **AI Vault** | [`/balance`](https://johnparente97.github.io/M.NexusPhase1/#/balance) | Manage funds across Multichain Top-Up, Circle Gateway, and Mpay |
+| **Workflow Builder** | [`/studio`](https://johnparente97.github.io/M.NexusPhase1/#/studio) | Build, parameterize, and publish custom AI workflow templates |
+| **Ecosystem Alignment** | [`/alignment`](https://johnparente97.github.io/M.NexusPhase1/#/alignment) | System architecture spec and responsibility breakdown |
+| **Live Activity** | [`/activity`](https://johnparente97.github.io/M.NexusPhase1/#/activity) | Execution history, telemetry, and verifiable outcome receipts |
+| **Dev Console** | [`/developer`](https://johnparente97.github.io/M.NexusPhase1/#/developer) | REST API docs, MCP integration, and x402 payment header specs |
 
 ---
 
