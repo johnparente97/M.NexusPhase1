@@ -3,7 +3,7 @@ import { Button } from '../ui/Button';
 import { Copy, FileDown, FileJson, Check } from 'lucide-react';
 import { useToast } from '../ui/Toast';
 import { ExportService } from '../../services/export-service';
-import { WorkflowResult } from '@meridian-nexus/shared-types';
+import { WorkflowResult } from '@nexus/shared-types';
 
 export interface ExportActionsProps {
   result: WorkflowResult;

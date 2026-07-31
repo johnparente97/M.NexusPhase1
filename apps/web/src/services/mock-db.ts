@@ -1,4 +1,4 @@
-import { Workflow, WorkflowRun, ResultSection, WorkflowRunStep, WorkflowResult } from '@meridian-nexus/shared-types';
+import { Workflow, WorkflowRun, ResultSection, WorkflowRunStep, WorkflowResult } from '@nexus/shared-types';
 
 export const MOCK_CREATORS: Record<string, { id: string; displayName: string; bio: string; verified: boolean; verificationLabel: string }> = {
   'crt-meridian': {

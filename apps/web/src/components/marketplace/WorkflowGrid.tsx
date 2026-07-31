@@ -1,6 +1,6 @@
 import React from 'react';
 import WorkflowCard from './WorkflowCard';
-import { Workflow } from '@meridian-nexus/shared-types';
+import { Workflow } from '@nexus/shared-types';
 import { Skeleton } from '../ui/Skeleton';
 import { useFavorites } from '../../hooks/useFavorites';
 import { Link } from 'react-router-dom';

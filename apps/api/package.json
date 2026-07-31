@@ -1,5 +1,5 @@
 {
-  "name": "@meridian-nexus/api",
+  "name": "@nexus/api",
   "version": "0.1.0",
   "private": true,
   "main": "src/index.ts",
@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@clerk/hono": "^0.1.0",
-    "@meridian-nexus/shared-types": "workspace:*",
-    "@meridian-nexus/validation": "workspace:*",
+    "@nexus/shared-types": "workspace:*",
+    "@nexus/validation": "workspace:*",
     "hono": "^4.12.0",
     "jose": "^5.9.6",
     "viem": "^2.55.2",

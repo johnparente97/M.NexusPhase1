@@ -8,7 +8,7 @@ import {
   CreateWorkflowInput,
   UpdateWorkflowInput,
   Capability,
-} from '@meridian-nexus/shared-types';
+} from '@nexus/shared-types';
 import { WorkflowRepository } from './interfaces';
 import { generateId } from '../utils/id';
 import { getIsoTimestamp } from '../utils/time';

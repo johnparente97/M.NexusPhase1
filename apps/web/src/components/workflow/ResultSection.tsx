@@ -1,5 +1,5 @@
 import React from 'react';
-import { ResultSection as SectionType } from '@meridian-nexus/shared-types';
+import { ResultSection as SectionType } from '@nexus/shared-types';
 import { CheckCircle2, AlertTriangle, Play } from 'lucide-react';
 
 export interface ResultSectionProps {

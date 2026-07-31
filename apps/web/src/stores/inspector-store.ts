@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Workflow, WorkflowRun } from '@meridian-nexus/shared-types';
+import { Workflow, WorkflowRun } from '@nexus/shared-types';
 
 interface InspectorState {
   selectedWorkflow: Workflow | null;

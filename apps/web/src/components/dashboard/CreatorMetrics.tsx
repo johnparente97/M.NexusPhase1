@@ -1,6 +1,6 @@
 import React from 'react';
 import StatsCard from './StatsCard';
-import { CreatorMetrics as MetricsType } from '@meridian-nexus/shared-types';
+import { CreatorMetrics as MetricsType } from '@nexus/shared-types';
 import { DollarSign, Award, Users, CheckCircle, BarChart3 } from 'lucide-react';
 import { formatCurrency, formatNumber } from '../../utils/format';
 

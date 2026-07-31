@@ -1,5 +1,5 @@
 import { D1Database } from '@cloudflare/workers-types';
-import { Review } from '@meridian-nexus/shared-types';
+import { Review } from '@nexus/shared-types';
 import { ReviewRepository } from './interfaces';
 import { generateId } from '../utils/id';
 import { getIsoTimestamp } from '../utils/time';

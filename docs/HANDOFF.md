@@ -16,7 +16,7 @@ The repository is **100% production-ready**, type-checked, unit-tested, visually
 
 ## 2. Verification & Build Health
 
-- **TypeScript Strict Check**: `0 errors` across `@meridian-nexus/web` and `@meridian-nexus/api`.
+- **TypeScript Strict Check**: `0 errors` across `@nexus/web` and `@nexus/api`.
 - **Vitest Unit Suite**: `6/6 tests passed` (Meridian router top-up rules, Metering engine token costs & 5% cashback, EIP-712 payment authorization crypto).
 - **Vite Production Build**: Compiled in **2.69s** (`dist/` directory ready for static CDN deployment).
 - **Git Working Tree**: Clean, all commits synced to `https://github.com/johnparente97/M.NexusPhase1.git` (`main`).

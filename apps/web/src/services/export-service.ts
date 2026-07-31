@@ -1,4 +1,4 @@
-import { WorkflowResult } from '@meridian-nexus/shared-types';
+import { WorkflowResult } from '@nexus/shared-types';
 
 export class ExportService {
   static async copyToClipboard(text: string): Promise<boolean> {

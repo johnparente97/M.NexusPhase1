@@ -1,5 +1,5 @@
 import { D1Database } from '@cloudflare/workers-types';
-import { UsageMetrics } from '@meridian-nexus/shared-types';
+import { UsageMetrics } from '@nexus/shared-types';
 import { QuotaError } from '../utils/errors';
 import { SECURITY_LIMITS } from '../security/limits';
 

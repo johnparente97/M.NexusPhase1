@@ -16,7 +16,7 @@ import {
   WorkflowListParams,
   CreateWorkflowInput,
   UpdateWorkflowInput,
-} from '@meridian-nexus/shared-types';
+} from '@nexus/shared-types';
 
 export interface WorkflowRepository {
   list(params: WorkflowListParams): Promise<{ workflows: Workflow[]; total: number }>;

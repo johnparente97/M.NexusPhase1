@@ -1,8 +1,8 @@
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createDynamicInputSchema } from '@meridian-nexus/validation';
-import { WorkflowInputDefinition } from '@meridian-nexus/shared-types';
+import { createDynamicInputSchema } from '@nexus/validation';
+import { WorkflowInputDefinition } from '@nexus/shared-types';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
 import { Select } from '../ui/Select';

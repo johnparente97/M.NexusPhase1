@@ -1,5 +1,5 @@
 import { D1Database } from '@cloudflare/workers-types';
-import { User, UserProfile, CreatorProfile } from '@meridian-nexus/shared-types';
+import { User, UserProfile, CreatorProfile } from '@nexus/shared-types';
 import { UserRepository } from './interfaces';
 import { generateId } from '../utils/id';
 import { getIsoTimestamp } from '../utils/time';

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from '../ui/Card';
 import ResultSection from './ResultSection';
 import ExportActions from './ExportActions';
-import { WorkflowResult } from '@meridian-nexus/shared-types';
+import { WorkflowResult } from '@nexus/shared-types';
 import { Sparkles, HelpCircle, Award } from 'lucide-react';
 import DemoLabel from '../common/DemoLabel';
 

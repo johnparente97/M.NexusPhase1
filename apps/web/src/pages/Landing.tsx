@@ -16,7 +16,7 @@ import {
   Globe,
   CheckCircle2,
 } from 'lucide-react';
-import { WORKFLOW_CATEGORIES } from '@meridian-nexus/shared-types';
+import { WORKFLOW_CATEGORIES } from '@nexus/shared-types';
 import { CATEGORY_ICONS } from '../utils/constants';
 import { NexusLogoMark } from '../components/common/NexusLogoMark';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SettlementReceipt, WorkflowRun } from '@meridian-nexus/shared-types';
+import { SettlementReceipt, WorkflowRun } from '@nexus/shared-types';
 import { ShieldCheck, Download, Copy, CheckCircle2, ExternalLink, X, FileText, Sparkles, Coins } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Badge } from '../ui/Badge';

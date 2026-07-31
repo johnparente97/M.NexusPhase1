@@ -2,7 +2,7 @@ import { Hono } from 'hono';
 import { AppEnv } from '../types';
 import { D1WorkflowRepository } from '../repositories/workflow-repo';
 import { zValidator } from '../middleware/validate';
-import { createWorkflowSchema, updateWorkflowSchema, workflowListParamsSchema } from '@meridian-nexus/validation';
+import { createWorkflowSchema, updateWorkflowSchema, workflowListParamsSchema } from '@nexus/validation';
 import { requireAuth, optionalAuth } from '../middleware/auth';
 import { D1UserRepository } from '../repositories/user-repo';
 import { NotFoundError } from '../utils/errors';

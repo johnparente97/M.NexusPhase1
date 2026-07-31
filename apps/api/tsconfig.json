@@ -3,7 +3,12 @@
   "compilerOptions": {
     "types": ["@cloudflare/workers-types", "vitest/globals"],
     "noUnusedLocals": false,
-    "noUnusedParameters": false
+    "noUnusedParameters": false,
+    "baseUrl": ".",
+    "paths": {
+      "@nexus/shared-types": ["../../packages/shared-types/src/index.ts"],
+      "@nexus/validation": ["../../packages/validation/src/index.ts"]
+    }
   },
   "include": ["src/**/*", "tests/**/*"]
 }

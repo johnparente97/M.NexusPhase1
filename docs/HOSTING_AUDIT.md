@@ -65,7 +65,7 @@ This audit report documents all identified hosting issues, root causes, file cha
    - **Result**: `HTTP/2 200 OK`, `{"status":"healthy","database":"Connected"}`
 2. **TypeScript Typecheck**:  
    - `pnpm typecheck`  
-   - **Result**: `0 Errors` across `@meridian-nexus/web` and `@meridian-nexus/api`.
+   - **Result**: `0 Errors` across `@nexus/web` and `@nexus/api`.
 3. **Production Vite Build**:  
    - `pnpm build`  
    - **Result**: Success. Generated dist bundle under `apps/web/dist`.

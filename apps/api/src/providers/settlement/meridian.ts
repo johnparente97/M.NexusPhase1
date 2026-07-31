@@ -5,7 +5,7 @@ import {
   SettlementReceipt,
   RefundRequest,
   RefundResult,
-} from '@meridian-nexus/shared-types';
+} from '@nexus/shared-types';
 import { SettlementProvider } from './interface';
 
 export class MeridianSettlementProvider implements SettlementProvider {

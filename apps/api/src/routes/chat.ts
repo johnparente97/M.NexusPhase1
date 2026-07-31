@@ -1,8 +1,8 @@
 import { Hono } from 'hono';
 import { AppEnv } from '../types';
 import { createModelProvider } from '../providers/model/factory';
-import { ModelGenerationRequest } from '@meridian-nexus/shared-types';
-import { chatCompletionSchema } from '@meridian-nexus/validation';
+import { ModelGenerationRequest } from '@nexus/shared-types';
+import { chatCompletionSchema } from '@nexus/validation';
 import { zValidator } from '../middleware/validate';
 
 const router = new Hono<AppEnv>();

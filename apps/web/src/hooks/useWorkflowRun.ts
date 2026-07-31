@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchApi } from '../services/api-client';
-import { WorkflowRun, WorkflowResult } from '@meridian-nexus/shared-types';
+import { WorkflowRun, WorkflowResult } from '@nexus/shared-types';
 
 export function useExecuteWorkflow(workflowId: string) {
   const queryClient = useQueryClient();

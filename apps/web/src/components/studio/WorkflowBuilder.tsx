@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { createWorkflowSchema } from '@meridian-nexus/validation';
+import { createWorkflowSchema } from '@nexus/validation';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/Textarea';
 import { Select } from '../ui/Select';
@@ -10,7 +10,7 @@ import { Card } from '../ui/Card';
 import InputFieldEditor from './InputFieldEditor';
 import OutputSchemaEditor from './OutputSchemaEditor';
 import WorkflowPreview from './WorkflowPreview';
-import { WORKFLOW_CATEGORIES, Workflow } from '@meridian-nexus/shared-types';
+import { WORKFLOW_CATEGORIES, Workflow } from '@nexus/shared-types';
 import { useCreateWorkflow, useUpdateWorkflow } from '../../hooks/useWorkflows';
 import { useToast } from '../ui/Toast';
 import { useNavigate } from 'react-router-dom';

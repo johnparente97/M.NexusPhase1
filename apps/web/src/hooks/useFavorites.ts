@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchApi } from '../services/api-client';
-import { Workflow } from '@meridian-nexus/shared-types';
+import { Workflow } from '@nexus/shared-types';
 
 export function useFavorites() {
   return useQuery({

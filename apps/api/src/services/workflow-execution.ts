@@ -4,14 +4,14 @@ import {
   WorkflowRunStep,
   WorkflowResult,
   ResultSection,
-} from '@meridian-nexus/shared-types';
+} from '@nexus/shared-types';
 import { WorkflowRepository, RunRepository } from '../repositories/interfaces';
 import { createModelProvider } from '../providers/model/factory';
 import { createSettlementProvider } from '../providers/settlement/factory';
 import { generateId } from '../utils/id';
 import { getIsoTimestamp } from '../utils/time';
 import { ValidationError, AppError } from '../utils/errors';
-import { createDynamicInputSchema } from '@meridian-nexus/validation';
+import { createDynamicInputSchema } from '@nexus/validation';
 import { Bindings } from '../types';
 import { verifyTypedData } from 'viem';
 

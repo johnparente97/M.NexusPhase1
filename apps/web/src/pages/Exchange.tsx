@@ -9,7 +9,7 @@ import { useWorkflows } from '../hooks/useWorkflows';
 import { useDebounce } from '../hooks/useDebounce';
 import { Compass, Filter, LayoutGrid, List, X, Sparkles, CheckCircle2, ShieldCheck, RotateCcw, Search, TrendingUp, HelpCircle, ArrowUpRight } from 'lucide-react';
 import { Button } from '../components/ui/Button';
-import { Workflow } from '@meridian-nexus/shared-types';
+import { Workflow } from '@nexus/shared-types';
 import { CATEGORY_LABELS } from '../utils/constants';
 import WorkflowCard from '../components/marketplace/WorkflowCard';
 

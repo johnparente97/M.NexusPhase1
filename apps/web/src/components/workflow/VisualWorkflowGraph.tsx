@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Workflow, WorkflowRunStep } from '@meridian-nexus/shared-types';
+import { Workflow, WorkflowRunStep } from '@nexus/shared-types';
 import { Sparkles, ShieldCheck, Zap, CreditCard, Cpu, ArrowRight, CheckCircle2, Clock, Play } from 'lucide-react';
 import { Badge } from '../ui/Badge';
 import { formatCurrency } from '../../utils/format';

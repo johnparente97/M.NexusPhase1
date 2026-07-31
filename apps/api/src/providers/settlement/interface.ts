@@ -5,7 +5,7 @@ import {
   SettlementReceipt,
   RefundRequest,
   RefundResult,
-} from '@meridian-nexus/shared-types';
+} from '@nexus/shared-types';
 
 export interface SettlementProvider {
   createAuthorization(input: PaymentAuthorizationInput): Promise<PaymentVerification>;

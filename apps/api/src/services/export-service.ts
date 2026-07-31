@@ -1,4 +1,4 @@
-import { WorkflowResult, ResultSection } from '@meridian-nexus/shared-types';
+import { WorkflowResult, ResultSection } from '@nexus/shared-types';
 
 export class ExportService {
   static toMarkdown(result: WorkflowResult, workflowName: string): string {

@@ -1,4 +1,4 @@
-import { ModelGenerationRequest, ModelGenerationResult, ResultSection } from '@meridian-nexus/shared-types';
+import { ModelGenerationRequest, ModelGenerationResult, ResultSection } from '@nexus/shared-types';
 import { ModelProvider } from './interface';
 
 export class DeterministicDemoModelProvider implements ModelProvider {

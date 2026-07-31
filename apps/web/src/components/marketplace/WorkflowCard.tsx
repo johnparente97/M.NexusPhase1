@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Bookmark, Clock, User, ArrowUpRight, Zap, Sparkles, Shield, Layers, Eye } from 'lucide-react';
-import { Workflow } from '@meridian-nexus/shared-types';
+import { Workflow } from '@nexus/shared-types';
 import { formatCurrency, formatDuration } from '../../utils/format';
 import { CATEGORY_LABELS, CATEGORY_ICONS } from '../../utils/constants';
 import { useToggleFavorite } from '../../hooks/useFavorites';

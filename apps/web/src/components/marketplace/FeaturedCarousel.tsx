@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button';
 import { ChevronLeft, ChevronRight, Play, Sparkles, Zap, ShieldCheck } from 'lucide-react';
-import { Workflow } from '@meridian-nexus/shared-types';
+import { Workflow } from '@nexus/shared-types';
 import { formatCurrency } from '../../utils/format';
 
 export interface FeaturedCarouselProps {

@@ -1,4 +1,4 @@
-import { ApiError } from '@meridian-nexus/shared-types';
+import { ApiError } from '@nexus/shared-types';
 import {
   mockGetWorkflows,
   mockGetWorkflow,

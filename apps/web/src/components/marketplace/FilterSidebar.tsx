@@ -1,7 +1,7 @@
 import React from 'react';
 import { Toggle } from '../ui/Toggle';
 import { Select } from '../ui/Select';
-import { WORKFLOW_CATEGORIES } from '@meridian-nexus/shared-types';
+import { WORKFLOW_CATEGORIES } from '@nexus/shared-types';
 import { Filter, RotateCcw, ShieldCheck, Sparkles } from 'lucide-react';
 import { Button } from '../ui/Button';
 

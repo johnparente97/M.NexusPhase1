@@ -1,5 +1,5 @@
 import { D1Database } from '@cloudflare/workers-types';
-import { CreatorMetrics } from '@meridian-nexus/shared-types';
+import { CreatorMetrics } from '@nexus/shared-types';
 import { CreatorRepository } from './interfaces';
 
 export class D1CreatorRepository implements CreatorRepository {

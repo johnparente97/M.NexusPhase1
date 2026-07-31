@@ -4,7 +4,7 @@ import { D1UserRepository } from '../repositories/user-repo';
 import { UsageService } from '../services/usage-service';
 import { requireAuth } from '../middleware/auth';
 import { zValidator } from '../middleware/validate';
-import { updateProfileSchema } from '@meridian-nexus/validation';
+import { updateProfileSchema } from '@nexus/validation';
 import { NotFoundError } from '../utils/errors';
 
 const router = new Hono<AppEnv>();

@@ -1,4 +1,4 @@
-import { ModelGenerationRequest, ModelGenerationResult, ModelProviderHealth } from '@meridian-nexus/shared-types';
+import { ModelGenerationRequest, ModelGenerationResult, ModelProviderHealth } from '@nexus/shared-types';
 import { ModelProvider } from './interface';
 
 export class GeminiModelProvider implements ModelProvider {

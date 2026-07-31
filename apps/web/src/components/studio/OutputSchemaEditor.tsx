@@ -1,5 +1,5 @@
 import React from 'react';
-import { WorkflowOutputDefinition } from '@meridian-nexus/shared-types';
+import { WorkflowOutputDefinition } from '@nexus/shared-types';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';

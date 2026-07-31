@@ -10,7 +10,7 @@ import ResultRenderer from './ResultRenderer';
 import SettlementModal from './SettlementModal';
 import VisualWorkflowGraph from './VisualWorkflowGraph';
 import OutcomeReceiptModal from './OutcomeReceiptModal';
-import { Workflow, WorkflowRun } from '@meridian-nexus/shared-types';
+import { Workflow, WorkflowRun } from '@nexus/shared-types';
 import { formatCurrency, formatDuration } from '../../utils/format';
 import { ArrowLeft, ArrowRight, Play, CheckCircle2, FileText } from 'lucide-react';
 import { useExecuteWorkflow, useRun } from '../../hooks/useWorkflowRun';

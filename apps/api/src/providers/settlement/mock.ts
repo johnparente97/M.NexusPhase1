@@ -6,7 +6,7 @@ import {
   RefundRequest,
   RefundResult,
   SettlementStatus,
-} from '@meridian-nexus/shared-types';
+} from '@nexus/shared-types';
 import { SettlementProvider } from './interface';
 import { generateId } from '../../utils/id';
 import { getIsoTimestamp, addHours } from '../../utils/time';

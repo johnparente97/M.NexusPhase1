@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from '../services/api-client';
-import { CreatorMetrics, Workflow } from '@meridian-nexus/shared-types';
+import { CreatorMetrics, Workflow } from '@nexus/shared-types';
 
 export function useCreatorAnalytics() {
   return useQuery({

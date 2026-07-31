@@ -13,6 +13,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      '@nexus/shared-types': path.resolve(__dirname, '../../packages/shared-types/src/index.ts'),
+      '@nexus/validation': path.resolve(__dirname, '../../packages/validation/src/index.ts'),
     },
   },
   server: {

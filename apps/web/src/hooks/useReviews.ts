@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchApi } from '../services/api-client';
-import { Review } from '@meridian-nexus/shared-types';
+import { Review } from '@nexus/shared-types';
 
 export function useReviews(workflowId: string) {
   return useQuery({

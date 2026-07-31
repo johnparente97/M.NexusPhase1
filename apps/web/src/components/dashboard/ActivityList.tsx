@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { WorkflowRun } from '@meridian-nexus/shared-types';
+import { WorkflowRun } from '@nexus/shared-types';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
 import { Clock, PlayCircle, AlertTriangle, CheckCircle2, Circle } from 'lucide-react';

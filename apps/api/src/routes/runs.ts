@@ -6,7 +6,7 @@ import { WorkflowExecutionService } from '../services/workflow-execution';
 import { UsageService } from '../services/usage-service';
 import { requireAuth } from '../middleware/auth';
 import { zValidator } from '../middleware/validate';
-import { executeWorkflowSchema } from '@meridian-nexus/validation';
+import { executeWorkflowSchema } from '@nexus/validation';
 import { verifyTurnstileToken } from '../security/turnstile';
 import { NotFoundError, ValidationError, ForbiddenError } from '../utils/errors';
 import { runRateLimit } from '../middleware/rate-limit';

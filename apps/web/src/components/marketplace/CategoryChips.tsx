@@ -1,5 +1,5 @@
 import React from 'react';
-import { WORKFLOW_CATEGORIES } from '@meridian-nexus/shared-types';
+import { WORKFLOW_CATEGORIES } from '@nexus/shared-types';
 import { CATEGORY_ICONS } from '../../utils/constants';
 import { cn } from '../../utils/cn';
 import { Sparkles } from 'lucide-react';

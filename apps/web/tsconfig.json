@@ -17,10 +17,11 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
 
-    /* Paths */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@nexus/shared-types": ["../../packages/shared-types/src/index.ts"],
+      "@nexus/validation": ["../../packages/validation/src/index.ts"]
     }
   },
   "include": ["src"],

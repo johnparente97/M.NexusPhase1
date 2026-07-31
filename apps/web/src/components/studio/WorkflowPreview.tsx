@@ -1,7 +1,7 @@
 import React from 'react';
 import WorkflowCard from '../marketplace/WorkflowCard';
 import DynamicForm from '../workflow/DynamicForm';
-import { Workflow } from '@meridian-nexus/shared-types';
+import { Workflow } from '@nexus/shared-types';
 
 export interface WorkflowPreviewProps {
   workflow: any;

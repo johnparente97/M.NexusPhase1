@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { WorkflowRunStep } from '@meridian-nexus/shared-types';
+import { WorkflowRunStep } from '@nexus/shared-types';
 import { Loader2, CheckCircle2, Clock, AlertCircle, ShieldCheck, Cpu, Terminal, ArrowRight } from 'lucide-react';
 import { Progress } from '../ui/Progress';
 import { motion } from 'framer-motion';

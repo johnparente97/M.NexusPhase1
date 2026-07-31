@@ -1,5 +1,5 @@
 import { D1Database } from '@cloudflare/workers-types';
-import { WorkflowRun, WorkflowRunStep, WorkflowResult } from '@meridian-nexus/shared-types';
+import { WorkflowRun, WorkflowRunStep, WorkflowResult } from '@nexus/shared-types';
 import { RunRepository } from './interfaces';
 import { generateId } from '../utils/id';
 import { getIsoTimestamp } from '../utils/time';

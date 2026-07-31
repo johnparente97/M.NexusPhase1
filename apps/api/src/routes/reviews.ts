@@ -3,7 +3,7 @@ import { AppEnv } from '../types';
 import { D1ReviewRepository } from '../repositories/review-repo';
 import { requireAuth, optionalAuth } from '../middleware/auth';
 import { zValidator } from '../middleware/validate';
-import { submitReviewSchema } from '@meridian-nexus/validation';
+import { submitReviewSchema } from '@nexus/validation';
 import { ValidationError } from '../utils/errors';
 
 const router = new Hono<AppEnv>();
