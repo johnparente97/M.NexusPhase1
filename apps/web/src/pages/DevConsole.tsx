@@ -26,7 +26,7 @@ export default function DevConsole() {
           <Badge variant="info" className="text-[10px] font-mono">x402 UNIFIED API</Badge>
         </div>
         <p className="text-xs text-zinc-400">
-          Programmatic access to Meridian & Nexus inference router capabilities via REST, Model Context Protocol (MCP), and x402 authorization headers.
+          Programmatic access to Nexus inference router capabilities powered by Meridian REST APIs, Model Context Protocol (MCP), and x402 authorization headers.
         </p>
       </div>
 

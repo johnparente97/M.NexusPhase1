@@ -12,15 +12,15 @@ export default function Footer() {
             <NexusLogoMark className="h-8 w-8 object-contain" />
             <div className="flex flex-col">
               <span className="font-display font-bold text-lg tracking-tight text-white group-hover:text-emerald-400 transition-colors">
-                Meridian Nexus
+                Nexus
               </span>
-              <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest leading-none">
-                AI & Workflow Suite
+              <span className="text-[10px] font-mono text-emerald-400 font-semibold tracking-wider leading-none">
+                Powered by Meridian Protocol
               </span>
             </div>
           </Link>
           <p className="text-xs text-[#717171] leading-relaxed">
-            The official AI model inference & workflow orchestration platform for the Meridian Ecosystem. Pay per prompt at sub-penny rates with instant x402 Web3 settlement & 5% cashback rewards.
+            The open AI model inference & workflow orchestration platform powered by Meridian. Pay per prompt at sub-penny rates with instant x402 Web3 settlement & 5% cashback rewards.
           </p>
           <div className="flex items-center gap-2 text-xs font-mono text-emerald-400">
             <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />

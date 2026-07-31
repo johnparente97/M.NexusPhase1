@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import SearchBar from '../components/marketplace/SearchBar';
 import CategoryChips from '../components/marketplace/CategoryChips';
@@ -92,10 +92,14 @@ export default function Exchange() {
   const total = workflows.length;
   const hasActiveFilters = search || category || isFree || verified;
 
-  const featuredWorkflows = workflows.filter((w) => w.featuredOrder !== null)
-    .sort((a, b) => (a.featuredOrder || 99) - (b.featuredOrder || 99));
+  const featuredWorkflows = useMemo(() => {
+    return workflows.filter((w) => w.featuredOrder !== null)
+      .sort((a, b) => (a.featuredOrder || 99) - (b.featuredOrder || 99));
+  }, [workflows]);
 
-  const trendingWorkflows = workflows.slice(0, 3);
+  const trendingWorkflows = useMemo(() => {
+    return workflows.slice(0, 3);
+  }, [workflows]);
 
   // Suggested searches matching our seed agents
   const SUGGESTED_SEARCHES = [

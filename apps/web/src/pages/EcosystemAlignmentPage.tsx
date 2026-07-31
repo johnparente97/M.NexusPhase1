@@ -42,7 +42,7 @@ export default function EcosystemAlignmentPage() {
                 </span>
               </div>
               <p className="text-xs sm:text-sm text-zinc-300 max-w-3xl leading-relaxed">
-                Official specification detailing how <strong className="text-emerald-400">Meridian Nexus</strong> serves as the unified Intelligence, AI Inference, and Workflow Presentation Layer for the <strong className="text-white">Meridian Ecosystem (`mrdn.finance`)</strong>.
+                Official specification detailing how <strong className="text-emerald-400">Nexus</strong> serves as the unified Intelligence, AI Inference, and Workflow Presentation Layer <strong className="text-white">powered by the Meridian Ecosystem (`mrdn.finance`)</strong>.
               </p>
             </div>
           </div>

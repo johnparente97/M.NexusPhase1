@@ -1,9 +1,9 @@
 <p align="center">
-  <img src="apps/web/public/logo-symbol.png" alt="Meridian Nexus" width="80" />
+  <img src="apps/web/public/logo-symbol.png" alt="Nexus" width="80" />
 </p>
 
-<h1 align="center">Meridian Nexus</h1>
-<p align="center"><strong>The AI & Workflow Suite for the Meridian Ecosystem</strong></p>
+<h1 align="center">Nexus</h1>
+<p align="center"><strong>The AI & Workflow Suite — Powered by Meridian Protocol</strong></p>
 
 <p align="center">
   <a href="https://johnparente97.github.io/M.NexusPhase1/"><img src="https://img.shields.io/badge/Live_Demo-27F293?style=for-the-badge&logo=rocket&logoColor=000" alt="Live Demo" /></a>
@@ -13,14 +13,14 @@
 
 ---
 
-## What is Meridian Nexus?
+## What is Nexus?
 
-Meridian Nexus is the official intelligence and workflow layer for the [Meridian Protocol](https://mrdn.finance/). It provides a complete workspace for running AI models, building multi-step workflows, and settling payments — all connected to Meridian's on-chain infrastructure.
+Nexus is an open intelligence and workflow platform **powered by the [Meridian Protocol](https://mrdn.finance/)**. It provides a complete workspace for running AI models, building multi-step workflows, and settling payments — all connected to Meridian's on-chain infrastructure.
 
 | Layer | Responsibility |
 | :--- | :--- |
 | **Meridian Protocol** | Value, liquidity, payment routing, and Web3 settlement |
-| **Meridian Nexus** | Intelligence, AI model execution, workflow orchestration, and user experience |
+| **Nexus Layer** | Intelligence, AI model execution, workflow orchestration, and user experience |
 
 ---
 

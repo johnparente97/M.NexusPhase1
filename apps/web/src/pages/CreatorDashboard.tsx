@@ -5,9 +5,10 @@ import LoadingPage from '../components/common/LoadingPage';
 import EmptyState from '../components/ui/EmptyState';
 import { Card } from '../components/ui/Card';
 import { Award, Compass } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function CreatorDashboard() {
+  const navigate = useNavigate();
   const { data: metrics, isLoading: loadingMetrics } = useCreatorAnalytics();
   const { data: chartData, isLoading: loadingChart } = useCreatorChart();
 
@@ -21,7 +22,7 @@ export default function CreatorDashboard() {
           title="Not registered as a creator"
           description="Register your developer profile inside the studio settings to start building and tracking earnings."
           actionLabel="Open Studio"
-          onAction={() => {}}
+          onAction={() => navigate('/studio')}
         />
       </div>
     );

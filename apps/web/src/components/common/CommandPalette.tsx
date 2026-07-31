@@ -178,7 +178,8 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
               />
               <button
                 onClick={onClose}
-                className="text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 p-1.5 rounded-lg transition-colors"
+                className="text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 p-1.5 rounded-lg transition-colors cursor-pointer"
+                aria-label="Close command search"
               >
                 <X className="h-4 w-4" />
               </button>

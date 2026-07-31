@@ -23,14 +23,14 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<any, ButtonProps>(
   ({ className, variant = 'secondary', size = 'md', isLoading, leftIcon, rightIcon, to, children, ...props }, ref) => {
     const classes = cn(
-      'inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap decoration-none',
+      'inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400/50 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap decoration-none',
       {
-        // Primary = MRDN white pill (like "Connect Wallet")
-        'bg-white hover:bg-gray-100 text-zinc-950 font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.25)] rounded-full':
+        // Primary = Prismatic gradient pill
+        'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 hover:brightness-110 text-zinc-950 font-bold shadow-[0_4px_20px_rgba(168,85,247,0.35)] rounded-full border border-white/30':
           variant === 'primary',
 
-        // Emerald = MRDN brand color pill
-        'bg-emerald-500 hover:bg-emerald-600 text-white font-semibold shadow-[0_4px_16px_0_rgba(16,185,129,0.25)] rounded-full':
+        // Emerald / Prismatic = Purple to Cyan brand pill
+        'bg-gradient-to-r from-purple-600 via-indigo-500 to-cyan-400 hover:brightness-110 text-white font-semibold shadow-[0_4px_16px_0_rgba(168,85,247,0.3)] rounded-full':
           variant === 'emerald',
 
         // Secondary = dark card style (MRDN bg-[#171719] card)

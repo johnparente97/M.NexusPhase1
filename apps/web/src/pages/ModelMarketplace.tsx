@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ANTSEED_MODEL_CATALOG, AntSeedModel } from '../adapters/antseed/adapter';
 import { Card } from '../components/ui/Card';
@@ -63,19 +63,23 @@ export default function ModelMarketplace() {
     });
   };
 
-  const filteredModels = ANTSEED_MODEL_CATALOG.filter((model) => {
-    const matchesSearch =
-      model.name.toLowerCase().includes(search.toLowerCase()) ||
-      model.provider.toLowerCase().includes(search.toLowerCase()) ||
-      model.description.toLowerCase().includes(search.toLowerCase());
+  const filteredModels = useMemo(() => {
+    const searchLower = search.toLowerCase();
+    return ANTSEED_MODEL_CATALOG.filter((model) => {
+      const matchesSearch =
+        !searchLower ||
+        model.name.toLowerCase().includes(searchLower) ||
+        model.provider.toLowerCase().includes(searchLower) ||
+        model.description.toLowerCase().includes(searchLower);
 
-    const matchesCategory = selectedCategory === 'all' || model.category === selectedCategory;
-    const matchesHostType = selectedHostType === 'all' || model.hostType === selectedHostType;
-    const matchesFree = !onlyFree || model.isFree;
-    const matchesEnterprise = !onlyEnterprise || model.privacy === 'Encrypted Enterprise';
+      const matchesCategory = selectedCategory === 'all' || model.category === selectedCategory;
+      const matchesHostType = selectedHostType === 'all' || model.hostType === selectedHostType;
+      const matchesFree = !onlyFree || model.isFree;
+      const matchesEnterprise = !onlyEnterprise || model.privacy === 'Encrypted Enterprise';
 
-    return matchesSearch && matchesCategory && matchesHostType && matchesFree && matchesEnterprise;
-  });
+      return matchesSearch && matchesCategory && matchesHostType && matchesFree && matchesEnterprise;
+    });
+  }, [search, selectedCategory, selectedHostType, onlyFree, onlyEnterprise]);
 
   const categories = [
     { key: 'all', label: 'All Models', icon: LayoutGrid },
@@ -99,7 +103,9 @@ export default function ModelMarketplace() {
     return ANTSEED_MODEL_CATALOG.filter((m) => m.category === key).length;
   };
 
-  const comparedModels = ANTSEED_MODEL_CATALOG.filter((m) => comparedModelIds.includes(m.id));
+  const comparedModels = useMemo(() => {
+    return ANTSEED_MODEL_CATALOG.filter((m) => comparedModelIds.includes(m.id));
+  }, [comparedModelIds]);
 
   return (
     <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 gap-8 select-none pb-20">

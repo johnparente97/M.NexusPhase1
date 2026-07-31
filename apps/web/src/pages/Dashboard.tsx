@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useRuns } from '../hooks/useWorkflowRun';
@@ -15,10 +16,22 @@ export default function Dashboard() {
   const { data: runs } = useRuns();
   const { data: favorites } = useFavorites();
 
-  // Aggregate stats
+  // Aggregate stats using memoization
   const totalRuns = runs?.length ?? 0;
-  const completedRuns = runs?.filter((r) => r.status === 'completed').length ?? 0;
-  const totalSpent = runs?.reduce((acc, r) => acc + (r.status === 'completed' ? r.actualPrice : 0), 0) ?? 0;
+  
+  const { completedRuns, totalSpent } = useMemo(() => {
+    if (!runs) return { completedRuns: 0, totalSpent: 0 };
+    return runs.reduce(
+      (acc, r) => {
+        if (r.status === 'completed') {
+          acc.completedRuns += 1;
+          acc.totalSpent += r.actualPrice || 0;
+        }
+        return acc;
+      },
+      { completedRuns: 0, totalSpent: 0 }
+    );
+  }, [runs]);
 
   return (
     <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-6 py-6 gap-8 select-none pb-16">

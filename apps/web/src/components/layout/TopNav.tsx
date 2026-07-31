@@ -42,10 +42,15 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         </button>
 
         <Link to="/" className="flex items-center gap-2 group">
-          <NexusLogoMark className="h-6 w-6 text-emerald-400" />
-          <span className="font-display font-bold text-sm text-white tracking-tight">
-            Meridian <span className="text-emerald-400">Nexus</span>
-          </span>
+          <NexusLogoMark className="h-6 w-6 text-purple-400" />
+          <div className="flex items-baseline gap-1.5">
+            <span className="font-display font-bold text-sm text-white tracking-tight">
+              Nexus
+            </span>
+            <span className="text-[9px] font-mono prismatic-text font-bold hidden sm:inline">
+              Powered by Meridian
+            </span>
+          </div>
         </Link>
       </div>
 
@@ -53,21 +58,21 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
       <nav className="hidden lg:flex items-center gap-6 text-xs font-display">
         <Link
           to="/chat"
-          className="text-zinc-300 hover:text-white transition-colors font-medium"
+          className="text-zinc-300 hover:text-purple-300 transition-colors font-medium"
         >
           Inference
         </Link>
 
         <Link
           to="/exchange"
-          className="text-zinc-300 hover:text-white transition-colors font-medium"
+          className="text-zinc-300 hover:text-cyan-300 transition-colors font-medium"
         >
           Workflows
         </Link>
 
         <Link
           to="/marketplace/models"
-          className="text-zinc-300 hover:text-white transition-colors font-medium"
+          className="text-zinc-300 hover:text-emerald-300 transition-colors font-medium"
         >
           Models
         </Link>
@@ -83,7 +88,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
             className="inline-flex items-center gap-1 text-zinc-300 hover:text-white transition-colors font-medium cursor-pointer py-1"
           >
             <span>Payments</span>
-            <ChevronDown className={cn("h-3.5 w-3.5 text-emerald-400 transition-transform duration-200", isPaymentsOpen && "rotate-180")} />
+            <ChevronDown className={cn("h-3.5 w-3.5 text-purple-400 transition-transform duration-200", isPaymentsOpen && "rotate-180")} />
           </button>
 
           <AnimatePresence>
@@ -95,12 +100,12 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
                 transition={{ duration: 0.15 }}
                 className="absolute left-0 top-full pt-1 z-50 w-52"
               >
-                <div className="space-y-1 rounded-xl bg-[#1B1B1C] border border-zinc-800 p-2 text-white shadow-2xl shadow-black/80">
+                <div className="space-y-1 rounded-xl bg-[#121216] border border-purple-500/20 p-2 text-white shadow-2xl shadow-black/80">
                   <a
                     href="https://pay.mrdn.finance/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
+                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-purple-300 transition-colors hover:bg-purple-500/10"
                   >
                     <span className="font-bold">Mpay (Gasless)</span>
                     <ExternalLink className="h-3 w-3 opacity-60" />
@@ -109,7 +114,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
                     href="https://instant.mrdn.finance/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
+                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-cyan-300 transition-colors hover:bg-cyan-500/10"
                   >
                     <span>Instant x402</span>
                     <ExternalLink className="h-3 w-3 opacity-60" />
@@ -118,7 +123,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
                     href="https://nanopayments.mrdn.finance/"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
+                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-teal-300 transition-colors hover:bg-teal-500/10"
                   >
                     <span>Batched Nanopayments</span>
                     <ExternalLink className="h-3 w-3 opacity-60" />
@@ -128,7 +133,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
                     className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-zinc-200 transition-colors hover:bg-zinc-800"
                   >
                     <span>AI Vault & Top-Up</span>
-                    <Coins className="h-3 w-3 text-emerald-400" />
+                    <Coins className="h-3 w-3 text-purple-400" />
                   </Link>
                 </div>
               </motion.div>
@@ -139,9 +144,9 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         {/* Command Centre — Meridian Glowing Signature Link */}
         <Link
           to="/auth"
-          className="font-display font-medium text-[#F0F0F0] transition-colors hover:text-emerald-300"
+          className="font-display font-medium text-[#F0F0F0] transition-colors hover:text-purple-300"
           style={{
-            textShadow: '0 0 6px rgba(52, 211, 153, 0.45), 0 0 14px rgba(52, 211, 153, 0.25), 0 0 24px rgba(52, 211, 153, 0.12)',
+            textShadow: '0 0 6px rgba(168, 85, 247, 0.45), 0 0 14px rgba(56, 189, 248, 0.25)',
           }}
         >
           Command Centre
@@ -158,7 +163,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
             className={cn(
               "px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-all cursor-pointer",
               networkFamily === 'EVM'
-                ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 shadow-sm"
+                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30 shadow-sm"
                 : "text-zinc-400 hover:text-white"
             )}
           >
@@ -183,7 +188,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.97 }}
           onClick={onSearchClick}
-          className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 hover:text-zinc-200 bg-zinc-900/90 border border-zinc-800 hover:border-zinc-700 rounded-xl px-3 py-1.5 transition-colors cursor-pointer select-none shadow-sm"
+          className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 hover:text-zinc-200 bg-zinc-900/90 border border-zinc-800 hover:border-purple-500/40 rounded-xl px-3 py-1.5 transition-colors cursor-pointer select-none shadow-sm"
         >
           <Search className="h-3.5 w-3.5 text-zinc-500" />
           <span className="hidden md:inline">Spotlight</span>
@@ -193,10 +198,10 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         {/* AI Balance Quick Link */}
         <Link
           to="/balance"
-          className="flex items-center gap-1.5 bg-zinc-900/90 border border-zinc-800 hover:border-emerald-500/40 text-[11px] sm:text-xs font-mono text-emerald-400 px-2.5 sm:px-3 py-1.5 rounded-xl transition-colors shrink-0 shadow-sm"
+          className="flex items-center gap-1.5 bg-zinc-900/90 border border-purple-500/30 hover:border-purple-400/60 text-[11px] sm:text-xs font-mono text-purple-300 px-2.5 sm:px-3 py-1.5 rounded-xl transition-colors shrink-0 shadow-sm"
           title="Unified AI Balance"
         >
-          <Coins className="h-3.5 w-3.5 text-emerald-400" />
+          <Coins className="h-3.5 w-3.5 text-purple-400" />
           <span>${usdcBalance || '24.50'}</span>
         </Link>
 
@@ -211,10 +216,10 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
             Switch
           </motion.button>
         ) : isConnected ? (
-          <div className="flex items-center gap-1.5 bg-zinc-900 border border-zinc-800 rounded-xl p-1 px-2.5 sm:px-3 text-xs">
+          <div className="flex items-center gap-1.5 bg-zinc-900 border border-purple-500/30 rounded-xl p-1 px-2.5 sm:px-3 text-xs">
             <button
               onClick={() => { navigator.clipboard.writeText(walletAddress || ''); }}
-              className="font-mono text-zinc-300 hover:text-emerald-400 flex items-center gap-1.5 transition-colors cursor-pointer text-[11px] sm:text-xs"
+              className="font-mono text-zinc-300 hover:text-purple-300 flex items-center gap-1.5 transition-colors cursor-pointer text-[11px] sm:text-xs"
               title="Copy wallet address"
             >
               {walletAddress ? `${walletAddress.substring(0, 4)}...${walletAddress.substring(walletAddress.length - 3)}` : ''}
@@ -226,7 +231,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.97 }}
             onClick={signInWithEthereum}
-            className="flex items-center gap-1.5 bg-emerald-400 hover:bg-emerald-300 text-zinc-950 font-bold px-2.5 sm:px-3.5 py-1.5 rounded-xl text-[11px] sm:text-xs shadow-md transition-colors cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 hover:brightness-110 text-zinc-950 font-bold px-3 sm:px-4 py-1.5 rounded-xl text-[11px] sm:text-xs shadow-md transition-colors cursor-pointer shrink-0 border border-white/20"
           >
             <Wallet className="h-3.5 w-3.5 shrink-0" />
             <span className="hidden sm:inline">Connect Wallet</span>

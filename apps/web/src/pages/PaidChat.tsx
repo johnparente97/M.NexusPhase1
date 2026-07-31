@@ -299,7 +299,7 @@ export default function PaidChat() {
         } else if (response && response.reply) {
           completionText = response.reply;
         } else {
-          completionText = `Meridian Inference completed prompt processing using ${activeModel.name} (${selectedMode} mode). Output verified via x402 settlement protocol.`;
+          completionText = `Inference completed prompt processing using ${activeModel.name} (${selectedMode} mode). Output verified via Meridian x402 settlement protocol.`;
         }
 
         const inputTokenCount = Math.max(12, Math.round(textToSend.length / 4));

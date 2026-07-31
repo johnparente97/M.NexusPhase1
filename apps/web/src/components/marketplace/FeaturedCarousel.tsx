@@ -91,6 +91,7 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ workflows })
               onClick={handlePrev}
               className="p-2.5 rounded-xl bg-zinc-900/90 border border-zinc-700/80 text-zinc-300 hover:text-white hover:border-emerald-500/50 hover:bg-zinc-800 transition-all cursor-pointer shadow-lg"
               title="Previous capability"
+              aria-label="Previous capability"
             >
               <ChevronLeft className="h-4.5 w-4.5" />
             </button>
@@ -98,6 +99,7 @@ export const FeaturedCarousel: React.FC<FeaturedCarouselProps> = ({ workflows })
               onClick={handleNext}
               className="p-2.5 rounded-xl bg-zinc-900/90 border border-zinc-700/80 text-zinc-300 hover:text-white hover:border-emerald-500/50 hover:bg-zinc-800 transition-all cursor-pointer shadow-lg"
               title="Next capability"
+              aria-label="Next capability"
             >
               <ChevronRight className="h-4.5 w-4.5" />
             </button>

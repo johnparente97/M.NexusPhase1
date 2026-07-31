@@ -24,7 +24,7 @@ export const NexusLogoMark: React.FC<NexusLogoMarkProps> = ({
     <img
       src={logoSrc}
       alt={alt}
-      className={`object-contain select-none ${className}`}
+      className={`object-contain rounded-xl select-none ${className}`}
       style={style}
     />
   );

@@ -67,10 +67,10 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
             <NexusLogoMark className="h-7 w-7 text-emerald-400 shrink-0" />
             <div className="flex flex-col min-w-0">
               <span className="font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors truncate">
-                Meridian Nexus
+                Nexus
               </span>
-              <span className="text-[9px] font-mono text-zinc-400 uppercase tracking-widest leading-none">
-                AI & Workflow Suite
+              <span className="text-[9px] font-mono text-emerald-400 font-semibold tracking-wider leading-none">
+                Powered by Meridian
               </span>
             </div>
           </Link>
@@ -120,7 +120,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
                 cn(
                   'flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer group',
                   {
-                    'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-semibold shadow-sm': isActive,
+                    'bg-purple-500/15 text-purple-300 border border-purple-500/30 font-semibold shadow-sm': isActive,
                     'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/80': !isActive,
                     'justify-center px-0': isCollapsed,
                   }
@@ -130,11 +130,11 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
               {({ isActive }) => (
                 <>
                   <div className="flex items-center gap-3">
-                    <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-emerald-400' : 'text-zinc-400 group-hover:text-zinc-200')} />
+                    <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-purple-400' : 'text-zinc-400 group-hover:text-zinc-200')} />
                     {!isCollapsed && <span className="truncate">{item.label}</span>}
                   </div>
                   {!isCollapsed && item.tag && (
-                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-purple-500/10 text-purple-300 border border-purple-500/25">
                       {item.tag}
                     </span>
                   )}

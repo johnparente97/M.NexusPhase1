@@ -102,8 +102,8 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
               <div className="flex items-center gap-2.5">
                 <NexusLogoMark className="h-7 w-7 text-emerald-400" />
                 <div className="flex flex-col">
-                  <span className="font-display font-bold text-sm text-white tracking-tight">Meridian Nexus</span>
-                  <span className="text-[9px] font-mono text-zinc-400 uppercase">AI & Workflow Suite</span>
+                  <span className="font-display font-bold text-sm text-white tracking-tight">Nexus</span>
+                  <span className="text-[9px] font-mono text-emerald-400 font-semibold tracking-wider">Powered by Meridian</span>
                 </div>
               </div>
               <button

@@ -48,7 +48,7 @@ export default function AiCopilot() {
       const query = input.toLowerCase();
 
       if (query.includes('nexus') || query.includes('how does')) {
-        aiText = 'Meridian Nexus is an Intelligence Synthesis layer built above the Meridian payment protocol. Creators package skills or APIs into "Capabilities," and users combine them into "Workflows." Meridian handles non-custodial token settlements automatically.';
+        aiText = 'Nexus is an Intelligence Synthesis layer powered by the Meridian payment protocol. Creators package skills or APIs into "Capabilities," and users combine them into "Workflows." Meridian handles non-custodial token settlements automatically.';
       } else if (query.includes('mrdn') || query.includes('cashback') || query.includes('token')) {
         aiText = 'MRDN is the platform utility asset. Every workflow run settled via Meridian rails yields up to 2% cashback in MRDN. Holding MRDN unlocks premium tools, creator discounts, and elevated participation levels.';
       } else if (query.includes('receipt') || query.includes('outcome')) {

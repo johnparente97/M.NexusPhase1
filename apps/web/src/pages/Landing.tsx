@@ -91,13 +91,13 @@ export default function Landing() {
 
           {/* Live badge */}
           <motion.div variants={item}>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-semibold bg-emerald-500/10 border border-emerald-500/25 text-emerald-400 tracking-wide">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              Meridian AI Suite • Phase 1 Live
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-semibold bg-purple-500/10 border border-purple-500/30 text-purple-300 tracking-wide shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
+              Nexus AI Suite • Powered by Meridian Protocol
             </span>
           </motion.div>
 
-          {/* Hero heading — Funnel Display, MRDN style */}
+          {/* Hero heading — Funnel Display, Prismatic style */}
           <motion.h1
             variants={item}
             className="text-3xl sm:text-6xl lg:text-7xl font-display font-bold text-white tracking-tight leading-[1.1] sm:leading-[1.05] max-w-4xl"
@@ -107,8 +107,8 @@ export default function Landing() {
             Market Capabilities.{' '}
             <br className="hidden sm:block" />
             <span
-              className="text-emerald-400"
-              style={{ textShadow: '0 0 40px rgba(52, 211, 153, 0.4), 0 0 80px rgba(52, 211, 153, 0.2)' }}
+              className="prismatic-text"
+              style={{ textShadow: '0 0 40px rgba(168, 85, 247, 0.4), 0 0 80px rgba(56, 189, 248, 0.2)' }}
             >
               Synthesize Outcomes.
             </span>
@@ -116,7 +116,7 @@ export default function Landing() {
 
           {/* Sub-copy */}
           <motion.p variants={item} className="text-xs sm:text-base text-zinc-400 max-w-2xl leading-relaxed font-sans">
-            The open AI creation & workflow marketplace built on Meridian. Run open-weight models at sub-penny rates with zero subscriptions.{' '}
+            The open AI creation & workflow marketplace powered by Meridian. Run open-weight models at sub-penny rates with zero subscriptions.{' '}
             <span className="text-zinc-300 hidden sm:inline">Pay per run with instant Web3 settlement & 5% cashback.</span>
           </motion.p>
 
@@ -156,7 +156,7 @@ export default function Landing() {
             Built for Secure AI Operations
           </h2>
           <p className="text-sm text-zinc-500 max-w-md leading-relaxed">
-            Meridian Nexus abstracts complex parameter tuning, key exposure, and settlement orchestration into a clean, composable layer.
+            Nexus abstracts complex parameter tuning, key exposure, and settlement orchestration into a clean, composable layer.
           </p>
         </div>
 
