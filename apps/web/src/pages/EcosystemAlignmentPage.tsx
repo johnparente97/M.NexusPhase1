@@ -25,19 +25,19 @@ export default function EcosystemAlignmentPage() {
     <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12 gap-12 sm:gap-16 select-none pb-28 min-w-0">
       
       {/* Hero Brand Section */}
-      <div className="relative overflow-hidden rounded-3xl bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-950/50 via-[#121214] to-[#0b0b0c] border border-emerald-500/30 p-5 sm:p-10 shadow-2xl space-y-6 sm:space-y-8">
+      <div className="relative overflow-hidden rounded-3xl bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-950/40 via-[#121216] to-[#0B0B0F] border border-purple-500/30 p-5 sm:p-10 shadow-2xl space-y-6 sm:space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div className="flex items-start gap-4 min-w-0">
-            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 prismatic-glow shrink-0">
-              <NexusLogoMark className="h-6 w-6 sm:h-7 sm:w-7 text-[#27F293]" />
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-purple-500/15 border border-purple-500/40 flex items-center justify-center text-purple-300 prismatic-glow shrink-0">
+              <NexusLogoMark className="h-6 w-6 sm:h-7 sm:w-7 text-purple-300" />
             </div>
             <div className="space-y-2 min-w-0">
               <div className="flex items-center gap-2.5 flex-wrap">
                 <h1 className="text-xl sm:text-3xl font-display font-bold text-white tracking-tight truncate">
                   Ecosystem Alignment
                 </h1>
-                <span className="inline-flex items-center gap-1.5 bg-emerald-500/10 border border-emerald-500/30 px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold text-emerald-400 uppercase tracking-wider shrink-0">
-                  <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="inline-flex items-center gap-1.5 bg-purple-500/10 border border-purple-500/30 px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-mono font-bold text-purple-300 uppercase tracking-wider shrink-0 shadow-sm">
+                  <span className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-cyan-400 animate-pulse" />
                   100% Meridian Protocol Native
                 </span>
               </div>

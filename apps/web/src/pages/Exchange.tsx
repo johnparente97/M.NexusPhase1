@@ -120,8 +120,8 @@ export default function Exchange() {
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="flex flex-col gap-4 max-w-2xl relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-black tracking-widest bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 uppercase w-fit">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[10px] font-mono font-black tracking-widest bg-purple-500/10 border border-purple-500/30 text-purple-300 uppercase w-fit shadow-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
             Meridian Protocol Native
           </span>
           <h1 className="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-[1.1]">
@@ -286,12 +286,12 @@ export default function Exchange() {
             </span>
 
             {/* Segmented View Mode Toggle */}
-            <div className="flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-850">
+            <div className="flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-zinc-800">
               <button
                 onClick={() => setViewMode('list')}
                 className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer active:scale-95 ${
                   viewMode === 'list' 
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-zinc-950 shadow-md shadow-emerald-500/20' 
+                    ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 shadow-md shadow-purple-500/20' 
                     : 'text-zinc-500 hover:text-zinc-300'
                 }`}
               >
@@ -302,7 +302,7 @@ export default function Exchange() {
                 onClick={() => setViewMode('grid')}
                 className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer active:scale-95 ${
                   viewMode === 'grid' 
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-zinc-950 shadow-md shadow-emerald-500/20' 
+                    ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 shadow-md shadow-purple-500/20' 
                     : 'text-zinc-500 hover:text-zinc-300'
                 }`}
               >

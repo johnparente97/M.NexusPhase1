@@ -149,7 +149,7 @@ export default function UnifiedBalancePage() {
             onClick={() => setActivePaymentRail('topup')}
             className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activePaymentRail === 'topup'
-                ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md'
+                ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 font-bold shadow-md'
                 : 'text-zinc-400 hover:text-white'
             }`}
           >
@@ -162,7 +162,7 @@ export default function UnifiedBalancePage() {
             onClick={() => setActivePaymentRail('gateway')}
             className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activePaymentRail === 'gateway'
-                ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md'
+                ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 font-bold shadow-md'
                 : 'text-zinc-400 hover:text-white'
             }`}
           >
@@ -175,7 +175,7 @@ export default function UnifiedBalancePage() {
             onClick={() => setActivePaymentRail('mpay')}
             className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
               activePaymentRail === 'mpay'
-                ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md'
+                ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 font-bold shadow-md'
                 : 'text-zinc-400 hover:text-white'
             }`}
           >

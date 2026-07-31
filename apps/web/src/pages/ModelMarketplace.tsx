@@ -207,11 +207,11 @@ export default function ModelMarketplace() {
                     onClick={() => setSelectedCategory(cat.key)}
                     className={`px-3.5 py-2 rounded-2xl text-xs font-semibold whitespace-nowrap transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
                       isSelected
-                        ? 'bg-emerald-400 text-zinc-950 font-bold shadow-md prismatic-glow scale-[1.02]'
-                        : 'bg-zinc-950/90 border border-zinc-800/90 text-zinc-300 hover:text-white hover:border-zinc-700'
+                        ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 font-bold shadow-md scale-[1.02]'
+                        : 'bg-zinc-950/90 border border-zinc-800/90 text-zinc-300 hover:text-white hover:border-purple-500/30'
                     }`}
                   >
-                    <Icon className={`h-3.5 w-3.5 ${isSelected ? 'text-zinc-950' : 'text-emerald-400'}`} />
+                    <Icon className={`h-3.5 w-3.5 ${isSelected ? 'text-zinc-950' : 'text-purple-400'}`} />
                     <span>{cat.label}</span>
                     <span
                       className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full font-bold ${
