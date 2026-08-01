@@ -4,27 +4,30 @@
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-display: 'Funnel Display', 'Outfit', sans-serif;
 
-  --color-nx-bg: #05050A;
-  --color-nx-bg-subtle: #0A0A14;
-  --color-nx-surface-1: #0F0F1D;
-  --color-nx-surface-2: #161628;
-  --color-nx-surface-3: #1F1F38;
-  --color-nx-border: rgba(255, 255, 255, 0.08);
-  --color-nx-border-strong: rgba(168, 85, 247, 0.3);
-  --color-nx-text: #F8F9FE;
-  --color-nx-text-secondary: #A0A5C0;
-  --color-nx-text-muted: #646888;
-  --color-nx-violet: #A855F7;
-  --color-nx-magenta: #FF007F;
-  --color-nx-cyan: #00F5D4;
-  --color-nx-gold: #FFD700;
-  --color-nx-accent: #A855F7;
-  --color-nx-success: #10B981;
-  --color-nx-warning: #F59E0B;
-  --color-nx-error: #FF2E63;
+  --color-nx-bg: var(--nx-bg);
+  --color-nx-bg-subtle: var(--nx-bg-subtle);
+  --color-nx-surface-1: var(--nx-surface-1);
+  --color-nx-surface-2: var(--nx-surface-2);
+  --color-nx-surface-3: var(--nx-surface-3);
+  --color-nx-border: var(--nx-border);
+  --color-nx-border-strong: var(--nx-border-strong);
+  --color-nx-text: var(--nx-text);
+  --color-nx-text-secondary: var(--nx-text-secondary);
+  --color-nx-text-muted: var(--nx-text-muted);
+  --color-nx-violet: var(--nx-violet);
+  --color-nx-magenta: var(--nx-magenta);
+  --color-nx-cyan: var(--nx-cyan);
+  --color-nx-gold: var(--nx-gold);
+  --color-nx-accent: var(--nx-accent);
+  --color-nx-success: var(--nx-success);
+  --color-nx-warning: var(--nx-warning);
+  --color-nx-error: var(--nx-error);
 }
 
-:root {
+/* ── Night Mode Tokens (Default Cyber Obsidian) ── */
+:root,
+html[data-theme="night"],
+.theme-night {
   --nx-bg: #05050A;
   --nx-bg-subtle: #0A0A14;
   --nx-surface-1: #0F0F1D;
@@ -43,6 +46,31 @@
   --nx-success: #10B981;
   --nx-warning: #F59E0B;
   --nx-error: #FF2E63;
+  color-scheme: dark;
+}
+
+/* ── Day Mode Tokens (Cyber Solar White & Prism) ── */
+html[data-theme="day"],
+.theme-day {
+  --nx-bg: #F4F4F9;
+  --nx-bg-subtle: #EAEBF2;
+  --nx-surface-1: #FFFFFF;
+  --nx-surface-2: #F0F1F8;
+  --nx-surface-3: #E4E5F0;
+  --nx-border: rgba(15, 23, 42, 0.09);
+  --nx-border-strong: rgba(124, 58, 237, 0.35);
+  --nx-text: #0F172A;
+  --nx-text-secondary: #475569;
+  --nx-text-muted: #64748B;
+  --nx-violet: #7C3AED;
+  --nx-magenta: #E11D48;
+  --nx-cyan: #0284C7;
+  --nx-gold: #D97706;
+  --nx-accent: #7C3AED;
+  --nx-success: #059669;
+  --nx-warning: #D97706;
+  --nx-error: #E11D48;
+  color-scheme: light;
 }
 
 body {
@@ -53,6 +81,11 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html[data-theme="night"] body,
+body {
   background-image: 
     radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.12) 0%, transparent 70%),
     radial-gradient(circle at 100% 100%, rgba(0, 245, 212, 0.08) 0%, transparent 60%),
@@ -60,68 +93,62 @@ body {
   background-attachment: fixed;
 }
 
+html[data-theme="day"] body {
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 70%),
+    radial-gradient(circle at 100% 100%, rgba(2, 132, 199, 0.06) 0%, transparent 60%),
+    radial-gradient(circle at 0% 100%, rgba(225, 29, 72, 0.06) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
 /* Prismatic Cyberpunk & Cyber-Sigilism Utilities */
 .text-prismatic {
-  background: linear-gradient(135deg, #00F5D4 0%, #A855F7 50%, #FF007F 100%);
+  background: linear-gradient(135deg, var(--nx-cyan) 0%, var(--nx-violet) 50%, var(--nx-magenta) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.3));
+  filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.25));
 }
 
 .text-cyber-cyan {
-  color: #00F5D4;
-  text-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
+  color: var(--nx-cyan);
 }
 
 .text-cyber-magenta {
-  color: #FF007F;
-  text-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
+  color: var(--nx-magenta);
 }
 
 .cyber-panel {
-  background: rgba(15, 15, 29, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--nx-surface-1);
+  border: 1px solid var(--nx-border);
   backdrop-filter: blur(16px);
   border-radius: 1rem;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .cyber-panel:hover {
-  border-color: rgba(168, 85, 247, 0.4);
-  box-shadow: 0 0 30px -10px rgba(168, 85, 247, 0.3);
+  border-color: var(--nx-border-strong);
+  box-shadow: 0 0 30px -10px rgba(168, 85, 247, 0.25);
 }
 
 .cyber-button-prismatic {
-  background: linear-gradient(135deg, #A855F7 0%, #7B2CBF 50%, #FF007F 100%);
+  background: linear-gradient(135deg, var(--nx-violet) 0%, #7B2CBF 50%, var(--nx-magenta) 100%);
   color: #FFFFFF;
   font-weight: 700;
   border-radius: 0.75rem;
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.35), 0 0 40px rgba(255, 0, 127, 0.2);
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.35);
   transition: all 0.2s ease;
-}
-
-.cyber-button-prismatic:hover {
-  filter: brightness(1.15);
-  box-shadow: 0 0 25px rgba(168, 85, 247, 0.5), 0 0 50px rgba(0, 245, 212, 0.3);
-}
-
-.cyber-sigil-badge {
-  background: rgba(168, 85, 247, 0.1);
-  border: 1px solid rgba(168, 85, 247, 0.3);
-  color: #D8B4FE;
-  box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
 }
 
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--nx-bg), 0 0 0 4px #A855F7;
+  box-shadow: 0 0 0 2px var(--nx-bg), 0 0 0 4px var(--nx-violet);
 }
 
 .skip-to-content {
   position: absolute;
   top: -40px;
   left: 0;
-  background: #A855F7;
+  background: var(--nx-violet);
   color: white;
   padding: 8px;
   z-index: 100;

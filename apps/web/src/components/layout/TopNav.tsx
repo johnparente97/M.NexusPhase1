@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Wallet, Coins, Menu, Copy } from 'lucide-react';
 import { NexusLogoMark } from '../common/NexusLogoMark';
+import { ThemeToggle } from '../common/ThemeToggle';
 import { useWallet } from '../../hooks/useWallet';
 import { useSidebarStore } from '../../stores/sidebar-store';
 import { cn } from '../../utils/cn';
@@ -48,8 +49,10 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
 
       <div className="hidden lg:block flex-1" />
 
-      {/* Right Controls: Search, Balance, Wallet */}
+      {/* Right Controls: Search, Theme Toggle, Balance, Wallet */}
       <div className="flex items-center gap-2 sm:gap-2.5 ml-auto shrink-0">
+        <ThemeToggle />
+
         {/* Search Launcher */}
         <button
           onClick={onSearchClick}

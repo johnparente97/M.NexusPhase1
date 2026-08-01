@@ -13,7 +13,7 @@ import { User, Shield, Moon, Sun, Settings } from 'lucide-react';
 export default function Profile() {
   const { user, linkedWallets } = useAuth();
   const wallet = useWallet();
-  const { theme, setTheme } = useThemeStore();
+  const { activeTheme, mode, setMode } = useThemeStore();
   const { toast } = useToast();
 
   const { register, handleSubmit, control } = useForm({
@@ -23,13 +23,13 @@ export default function Profile() {
       company: '',
       website: '',
       location: '',
-      theme: theme,
+      theme: mode,
     },
   });
 
   const handleSave = (data: any) => {
-    if (data.theme) {
-      setTheme(data.theme);
+    if (data.theme && (data.theme === 'day' || data.theme === 'night' || data.theme === 'auto')) {
+      setMode(data.theme);
     }
     toast('Profile and theme preferences updated successfully!', 'success');
   };

@@ -1,5 +1,6 @@
 import { Outlet, Link } from 'react-router-dom';
 import { NexusLogoMark } from '../common/NexusLogoMark';
+import { ThemeToggle } from '../common/ThemeToggle';
 import { Button } from '../ui/Button';
 
 export default function PublicLayout() {
@@ -27,7 +28,8 @@ export default function PublicLayout() {
             </nav>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <ThemeToggle showLabel />
             <Link 
               to="/chat" 
               className="hidden sm:block text-xs font-semibold text-zinc-400 transition-colors hover:text-white"
