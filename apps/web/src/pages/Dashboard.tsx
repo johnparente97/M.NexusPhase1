@@ -49,7 +49,7 @@ export default function Dashboard() {
             Welcome back, {user?.displayName || 'Guest Operator'}
           </h2>
           <p className="text-xs text-zinc-400 leading-relaxed max-w-xl">
-            The Meridian network is active and performing at optimal latency. You have instant sub-penny access to all AI models and verified workflows on the Market.
+            The network is active and performing at optimal latency. You have instant sub-penny access to all AI models and verified workflows on the Market.
           </p>
         </div>
 
@@ -95,7 +95,7 @@ export default function Dashboard() {
           icon={Clock}
           title="Simulated Spent"
           value={formatCurrency(totalSpent)}
-          description="Meridian value movement"
+          description="Network value movement"
         />
       </div>
 

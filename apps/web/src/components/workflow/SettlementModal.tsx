@@ -71,7 +71,7 @@ export const SettlementModal: React.FC<SettlementModalProps> = ({ isOpen, onClos
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Authorize Payment (Powered by Meridian x402)" size="sm">
+    <Modal isOpen={isOpen} onClose={onClose} title="Authorize Payment" size="sm">
       <div className="flex flex-col gap-5 select-none">
         
         {/* Payment Summary Header */}

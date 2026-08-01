@@ -359,7 +359,7 @@ export default function PaidChat() {
         <Link to="/" className="flex items-center gap-2 group shrink-0">
           <NexusLogoMark className="h-6 w-6 sm:h-7 sm:w-7" />
           <span className="hidden md:inline font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors">
-            AI Playground
+            Chat
           </span>
         </Link>
 
@@ -446,7 +446,7 @@ export default function PaidChat() {
           {messages.length === 0 ? (
             /* Minimalist Empty State Prompt Canvas */
             <div className="flex-1 flex flex-col items-center justify-center text-center p-4 sm:p-8 gap-6 sm:gap-8 my-auto select-none max-w-4xl mx-auto w-full">
-              <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 prismatic-glow">
+              <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-3xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
                 <NexusLogoMark className="h-8 w-8 sm:h-10 sm:w-10" />
               </div>
 
@@ -495,7 +495,7 @@ export default function PaidChat() {
                   className={`h-8 w-8 sm:h-9 sm:w-9 rounded-2xl flex items-center justify-center shrink-0 text-xs font-bold shadow-md ${
                     msg.role === 'user'
                       ? 'bg-zinc-800 text-zinc-100 border border-zinc-700'
-                      : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 prismatic-glow'
+                      : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                   }`}
                 >
                   {msg.role === 'user' ? <User className="h-4 w-4 sm:h-4.5 sm:w-4.5" /> : <Bot className="h-4 w-4 sm:h-4.5 sm:w-4.5" />}
@@ -546,7 +546,7 @@ export default function PaidChat() {
       {/* Floating Input Composer Capsule (Mobile Safe Area Padded) */}
       <form
         onSubmit={(e) => { e.preventDefault(); handleSend(); }}
-        className="flex flex-col gap-1.5 bg-[#171719] border border-zinc-800/80 p-2.5 sm:p-3.5 rounded-3xl shrink-0 shadow-2xl prismatic-border mb-16 lg:mb-0"
+        className="flex flex-col gap-1.5 bg-[#171719] border border-zinc-800/80 p-2.5 sm:p-3.5 rounded-3xl shrink-0 shadow-2xl mb-16 lg:mb-0"
       >
         <div className="flex items-center gap-2 sm:gap-3">
           <input

@@ -25,11 +25,11 @@ export default function EcosystemAlignmentPage() {
     <div className="flex-1 flex flex-col max-w-6xl mx-auto w-full px-4 sm:px-6 py-8 sm:py-12 gap-12 sm:gap-16 select-none pb-28 min-w-0">
       
       {/* Hero Brand Section */}
-      <div className="relative overflow-hidden rounded-3xl bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-950/40 via-[#121216] to-[#0B0B0F] border border-purple-500/30 p-5 sm:p-10 shadow-2xl space-y-6 sm:space-y-8">
+      <div className="relative overflow-hidden rounded-3xl bg-[#141416]/90 border border-emerald-500/30 p-5 sm:p-10 shadow-2xl space-y-6 sm:space-y-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
           <div className="flex items-start gap-4 min-w-0">
-            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-purple-500/15 border border-purple-500/40 flex items-center justify-center text-purple-300 prismatic-glow shrink-0">
-              <NexusLogoMark className="h-6 w-6 sm:h-7 sm:w-7 text-purple-300" />
+            <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-2xl bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 shrink-0">
+              <NexusLogoMark className="h-6 w-6 sm:h-7 sm:w-7 text-emerald-400" />
             </div>
             <div className="space-y-2 min-w-0">
               <div className="flex items-center gap-2.5 flex-wrap">
@@ -129,7 +129,7 @@ export default function EcosystemAlignmentPage() {
             <h3 className="font-display font-bold text-base sm:text-lg text-emerald-400 flex items-center gap-2">
               <NexusLogoMark className="h-5 w-5 text-emerald-400" />
               <span>Nexus Intelligence Layer</span>
-              <span className="text-[10px] font-mono prismatic-text font-bold ml-auto">(Powered by Meridian)</span>
+              <span className="text-[10px] font-mono text-emerald-400/80 font-bold ml-auto">Execution Platform</span>
             </h3>
             <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed flex-1">
               Coordinates <strong className="text-zinc-200">intelligence, AI model execution, workflow orchestration, and user interaction</strong> powered by Meridian settlement:
@@ -171,7 +171,7 @@ export default function EcosystemAlignmentPage() {
               <span className="text-[10px] text-emerald-400 uppercase font-bold tracking-widest truncate">Presentation & Intelligence Suite</span>
               <span className="text-[10px] text-zinc-500 hidden sm:block">APPLICATION LAYER</span>
             </div>
-            <span className="text-sm sm:text-base font-bold text-white block">NEXUS SUITE <span className="text-xs prismatic-text font-normal">(POWERED BY MERIDIAN)</span></span>
+            <span className="text-sm sm:text-base font-bold text-white block">NEXUS SUITE <span className="text-xs text-emerald-400 font-normal">(INTELLIGENCE PLATFORM)</span></span>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 pt-1 text-[10px] sm:text-[11px]">
               <span className="bg-zinc-900/80 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl text-zinc-300 border border-zinc-800 text-center font-semibold truncate">Inference Hub</span>
               <span className="bg-zinc-900/80 px-2 sm:px-3 py-2 sm:py-2.5 rounded-xl text-zinc-300 border border-zinc-800 text-center font-semibold truncate">Workflow Market</span>

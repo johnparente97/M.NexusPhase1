@@ -12,7 +12,7 @@ export default function DevConsole() {
 
   const handleCopyKey = () => {
     navigator.clipboard.writeText(apiKey);
-    toast('Meridian API key copied to clipboard!', 'info');
+    toast('API key copied to clipboard!', 'info');
   };
 
   return (
@@ -26,7 +26,7 @@ export default function DevConsole() {
           <Badge variant="info" className="text-[10px] font-mono">x402 UNIFIED API</Badge>
         </div>
         <p className="text-xs text-zinc-400">
-          Programmatic access to Nexus inference router capabilities powered by Meridian REST APIs, Model Context Protocol (MCP), and x402 authorization headers.
+          Programmatic access to Nexus inference router capabilities powered by REST APIs, Model Context Protocol (MCP), and x402 authorization headers.
         </p>
       </div>
 
@@ -35,7 +35,7 @@ export default function DevConsole() {
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
             <Key className="h-4 w-4 text-[#27F293]" />
-            Meridian Protocol API Key
+            API Key
           </h3>
           <Badge variant="success" className="text-[9px]">x402 ENABLED</Badge>
         </div>
@@ -44,7 +44,7 @@ export default function DevConsole() {
         </p>
         <div className="flex items-center gap-3">
           <Input value={apiKey} readOnly className="font-mono text-xs text-zinc-300 flex-1 bg-zinc-950" />
-          <Button variant="outline" size="md" onClick={handleCopyKey} className="shrink-0 text-xs font-semibold flex items-center gap-1.5">
+          <Button variant="secondary" size="md" onClick={handleCopyKey} className="shrink-0 text-xs font-semibold flex items-center gap-1.5">
             <Copy className="h-3.5 w-3.5" />
             Copy Key
           </Button>
@@ -84,13 +84,13 @@ export default function DevConsole() {
         </Card>
       </div>
 
-      {/* Official Meridian x402 Reference Demos Card */}
+      {/* Official x402 Reference Demos Card */}
       <Card className="bg-gradient-to-br from-emerald-950/20 via-zinc-900 to-zinc-950 border-emerald-500/30 p-6 flex flex-col gap-4 shadow-xl">
         <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
           <div className="flex items-center gap-2">
             <Globe className="h-5 w-5 text-emerald-400" />
             <h3 className="text-sm font-bold text-zinc-100 font-display">
-              Meridian Official x402 Payment Reference Demos & Documentation
+              Official x402 Payment Reference Demos & Documentation
             </h3>
           </div>
           <a
@@ -149,12 +149,12 @@ export default function DevConsole() {
         </div>
       </Card>
 
-      {/* Canonical Meridian API Curl Request */}
+      {/* Canonical API Curl Request */}
       <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-4">
         <div className="flex items-center justify-between">
           <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
             <Code className="h-4 w-4 text-emerald-400" />
-            Canonical Meridian Inference API Request
+            Canonical Inference API Request
           </h3>
           <span className="text-[10px] font-mono text-emerald-400 font-bold">POST api.mrdn.finance/v1/inference</span>
         </div>

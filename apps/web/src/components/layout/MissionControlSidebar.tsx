@@ -15,7 +15,7 @@ import {
   BookOpen,
   Bot,
   LogOut,
-  ShieldCheck,
+  Globe,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { cn } from '../../utils/cn';
@@ -30,27 +30,39 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
   const { isCollapsed, toggleSidebar } = useSidebarStore();
   const { isSignedIn, user, signOut } = useAuth();
 
-  const navItems: Array<{
-    to: string;
-    label: string;
-    icon: React.ComponentType<{ className?: string }>;
-    requiresAuth?: boolean;
-    tag?: string;
-  }> = [
-    { to: '/chat', label: 'Inference Hub', icon: Bot, tag: 'Free' },
-    { to: '/marketplace/models', label: 'AI Marketplace', icon: Cpu },
-    { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
-    { to: '/storage', label: 'Storage Market', icon: Layers },
-    { to: '/compute', label: 'Compute Market', icon: Terminal },
-    { to: '/defi', label: 'DeFi Hub', icon: Coins },
-    { to: '/trust', label: 'Trust Center', icon: ShieldCheck, tag: 'Verified' },
-    { to: '/balance', label: 'AI Vault', icon: Coins, requiresAuth: true },
-    { to: '/studio', label: 'Workflow Studio', icon: Layers, requiresAuth: true },
-    { to: '/activity', label: 'Live Activity', icon: History, requiresAuth: true },
-    { to: '/dashboard', label: 'Mission Control', icon: LayoutDashboard, requiresAuth: true },
-    { to: '/organization', label: 'Team Workspace', icon: Building2, requiresAuth: true },
-    { to: '/developer', label: 'Dev Hub', icon: Terminal },
-    { to: '/docs', label: 'Docs', icon: BookOpen },
+  const navSections = [
+    {
+      title: 'Use AI',
+      items: [
+        { to: '/chat', label: 'Chat', icon: Bot },
+        { to: '/marketplace/models', label: 'Models', icon: Cpu },
+        { to: '/exchange', label: 'Workflows', icon: Compass },
+      ]
+    },
+    {
+      title: 'Build',
+      items: [
+        { to: '/studio', label: 'Workflow Studio', icon: Layers, requiresAuth: true },
+        { to: '/agents/new', label: 'Agent Builder', icon: Bot, requiresAuth: true },
+        { to: '/developer', label: 'Developer', icon: Terminal },
+      ]
+    },
+    {
+      title: 'Manage',
+      items: [
+        { to: '/activity', label: 'Activity', icon: History, requiresAuth: true },
+        { to: '/balance', label: 'Balance', icon: Coins, requiresAuth: true },
+        { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, requiresAuth: true },
+        { to: '/organization', label: 'Team', icon: Building2, requiresAuth: true },
+      ]
+    },
+    {
+      title: 'Resources',
+      items: [
+        { to: '/ecosystem', label: 'Ecosystem', icon: Globe },
+        { to: '/docs', label: 'Documentation', icon: BookOpen },
+      ]
+    }
   ];
 
   return (
@@ -72,13 +84,10 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
               <span className="font-display font-bold text-sm text-white tracking-tight group-hover:text-emerald-300 transition-colors truncate">
                 Nexus
               </span>
-              <span className="text-[9px] font-mono text-emerald-400 font-semibold tracking-wider leading-none">
-                Powered by Meridian
-              </span>
             </div>
           </Link>
         ) : (
-          <Link to="/" className="mx-auto" title="Nexus • Powered by Meridian">
+          <Link to="/" className="mx-auto" title="Nexus">
             <NexusLogoMark className="h-7 w-7 text-emerald-400" />
           </Link>
         )}
@@ -109,41 +118,52 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
       </div>
 
       {/* ── Navigation Links List ── */}
-      <div className="flex-1 overflow-y-auto p-2 space-y-1 no-scrollbar">
-        {navItems.map((item) => {
-          if (item.requiresAuth && !isSignedIn) return null;
-          const Icon = item.icon;
+      <div className="flex-1 overflow-y-auto p-2 space-y-4 no-scrollbar pb-6">
+        {navSections.map((section, idx) => {
+          const visibleItems = section.items.filter(item => !item.requiresAuth || isSignedIn);
+          if (visibleItems.length === 0) return null;
 
           return (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              title={isCollapsed ? item.label : undefined}
-              className={({ isActive }) =>
-                cn(
-                  'flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer group',
-                  {
-                    'bg-purple-500/15 text-purple-300 border border-purple-500/30 font-semibold shadow-sm': isActive,
-                    'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/80': !isActive,
-                    'justify-center px-0': isCollapsed,
-                  }
-                )
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <div className="flex items-center gap-3">
-                    <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-purple-400' : 'text-zinc-400 group-hover:text-zinc-200')} />
-                    {!isCollapsed && <span className="truncate">{item.label}</span>}
-                  </div>
-                  {!isCollapsed && item.tag && (
-                    <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-purple-500/10 text-purple-300 border border-purple-500/25">
-                      {item.tag}
-                    </span>
-                  )}
-                </>
+            <div key={idx} className="space-y-1">
+              {!isCollapsed && (
+                <h4 className="text-[10px] font-mono font-bold uppercase tracking-wider text-zinc-500 px-3 mb-2 mt-2">
+                  {section.title}
+                </h4>
               )}
-            </NavLink>
+              {visibleItems.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    title={isCollapsed ? item.label : undefined}
+                    className={({ isActive }) =>
+                      cn(
+                        'flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all cursor-pointer group relative',
+                        {
+                          'bg-emerald-500/8 text-emerald-400': isActive,
+                          'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/80': !isActive,
+                          'justify-center px-0': isCollapsed,
+                        }
+                      )
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        {isActive && (
+                          <div className={cn("absolute left-2 top-2 bottom-2 w-0.5 bg-emerald-500 rounded-full", isCollapsed && "left-1")} />
+                        )}
+                        <div className={cn("flex items-center gap-3", isActive && !isCollapsed && "ml-3")}>
+                          <Icon className={cn('h-4 w-4 shrink-0 transition-colors', isActive ? 'text-emerald-400' : 'text-zinc-400 group-hover:text-zinc-200')} />
+                          {!isCollapsed && <span className="truncate">{item.label}</span>}
+                        </div>
+                      </>
+                    )}
+                  </NavLink>
+                );
+              })}
+            </div>
           );
         })}
       </div>

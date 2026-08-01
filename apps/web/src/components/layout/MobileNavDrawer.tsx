@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { cn } from '../../utils/cn';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
@@ -18,6 +19,7 @@ import {
   Wallet,
   ShieldCheck,
   Zap,
+  Globe,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { useWallet } from '../../hooks/useWallet';
@@ -34,7 +36,6 @@ interface NavDrawerItem {
   label: string;
   icon: React.ComponentType<{ className?: string }>;
   requiresAuth?: boolean;
-  tag?: string;
 }
 
 export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClose }) => {
@@ -49,31 +50,37 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
     items: NavDrawerItem[];
   }> = [
     {
-      title: 'AI & Automations',
+      title: 'Use AI',
       items: [
-        { to: '/chat', label: 'Inference Hub', icon: Bot, tag: 'Free' },
-        { to: '/marketplace/models', label: 'Model Hub', icon: Cpu },
-        { to: '/exchange', label: 'Workflow Market', icon: Compass },
-      ],
+        { to: '/chat', label: 'Chat', icon: Bot },
+        { to: '/marketplace/models', label: 'Models', icon: Cpu },
+        { to: '/exchange', label: 'Workflows', icon: Compass },
+      ]
     },
     {
-      title: 'Workspace & Balance',
+      title: 'Build',
       items: [
-        { to: '/balance', label: 'AI Vault', icon: Coins },
-        { to: '/studio', label: 'Workflow Builder', icon: Layers, requiresAuth: true },
-        { to: '/activity', label: 'Live Activity', icon: History, requiresAuth: true },
-        { to: '/dashboard', label: 'Mission Control', icon: LayoutDashboard, requiresAuth: true },
-      ],
+        { to: '/studio', label: 'Workflow Studio', icon: Layers, requiresAuth: true },
+        { to: '/agents/new', label: 'Agent Builder', icon: Bot, requiresAuth: true },
+        { to: '/developer', label: 'Developer', icon: Terminal },
+      ]
     },
     {
-      title: 'Developers & Alignment',
+      title: 'Manage',
       items: [
-        { to: '/alignment', label: 'Ecosystem Alignment', icon: ShieldCheck, tag: 'Spec' },
-        { to: '/developer', label: 'Dev Hub', icon: Terminal },
-        { to: '/organization', label: 'Team Workspace', icon: Building2, requiresAuth: true },
-        { to: '/docs', label: 'Docs', icon: BookOpen },
-      ],
+        { to: '/activity', label: 'Activity', icon: History, requiresAuth: true },
+        { to: '/balance', label: 'Balance', icon: Coins, requiresAuth: true },
+        { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, requiresAuth: true },
+        { to: '/organization', label: 'Team', icon: Building2, requiresAuth: true },
+      ]
     },
+    {
+      title: 'Resources',
+      items: [
+        { to: '/ecosystem', label: 'Ecosystem', icon: Globe },
+        { to: '/docs', label: 'Documentation', icon: BookOpen },
+      ]
+    }
   ];
 
   return (
@@ -103,7 +110,6 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
                 <NexusLogoMark className="h-7 w-7 text-emerald-400" />
                 <div className="flex flex-col">
                   <span className="font-display font-bold text-sm text-white tracking-tight">Nexus</span>
-                  <span className="text-[9px] font-mono text-emerald-400 font-semibold tracking-wider">Powered by Meridian</span>
                 </div>
               </div>
               <button
@@ -123,7 +129,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2 text-xs font-semibold text-zinc-300">
                     <Coins className="h-4 w-4 text-emerald-400" />
-                    <span>AI Vault</span>
+                    <span>Balance</span>
                   </div>
                   <span className="text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/30 px-2 py-0.5 rounded-full">
                     {balanceDisplay}
@@ -137,49 +143,55 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
                   className="w-full text-xs font-semibold py-2 justify-center"
                 >
                   <Zap className="h-3.5 w-3.5 mr-1.5" />
-                  Top Up AI Balance
+                  Top Up Balance
                 </Button>
               </div>
 
               {/* Categorized Navigation Sections */}
-              {mainSections.map((section) => (
-                <div key={section.title} className="space-y-2">
-                  <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 px-2">
-                    {section.title}
-                  </h4>
-                  <div className="space-y-1">
-                    {section.items.map((item) => {
-                      if (item.requiresAuth && !isSignedIn) return null;
-                      const Icon = item.icon;
+              {mainSections.map((section) => {
+                const visibleItems = section.items.filter(item => !item.requiresAuth || isSignedIn);
+                if (visibleItems.length === 0) return null;
 
-                      return (
-                        <NavLink
-                          key={item.to}
-                          to={item.to}
-                          onClick={onClose}
-                          className={({ isActive }) =>
-                            `flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                              isActive
-                                ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold'
-                                : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
-                            }`
-                          }
-                        >
-                          <div className="flex items-center gap-3">
-                            <Icon className="h-4 w-4 shrink-0 text-emerald-400" />
-                            <span>{item.label}</span>
-                          </div>
-                          {item.tag && (
-                            <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded-md bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
-                              {item.tag}
-                            </span>
-                          )}
-                        </NavLink>
-                      );
-                    })}
+                return (
+                  <div key={section.title} className="space-y-2">
+                    <h4 className="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-500 px-2">
+                      {section.title}
+                    </h4>
+                    <div className="space-y-1">
+                      {visibleItems.map((item) => {
+                        const Icon = item.icon;
+
+                        return (
+                          <NavLink
+                            key={item.to}
+                            to={item.to}
+                            onClick={onClose}
+                            className={({ isActive }) =>
+                              `flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-medium transition-all relative ${
+                                isActive
+                                  ? 'bg-emerald-500/8 text-emerald-400'
+                                  : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900/60'
+                              }`
+                            }
+                          >
+                            {({ isActive }) => (
+                              <>
+                                {isActive && (
+                                  <div className="absolute left-2 top-2 bottom-2 w-0.5 bg-emerald-500 rounded-full" />
+                                )}
+                                <div className={cn("flex items-center gap-3", isActive && "ml-3")}>
+                                  <Icon className="h-4 w-4 shrink-0 text-emerald-400" />
+                                  <span>{item.label}</span>
+                                </div>
+                              </>
+                            )}
+                          </NavLink>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
 
               {/* Wallet Status Card */}
               <div className="p-3.5 rounded-2xl bg-zinc-900/80 border border-zinc-800 space-y-2.5">
@@ -204,7 +216,7 @@ export const MobileNavDrawer: React.FC<MobileNavDrawerProps> = ({ isOpen, onClos
                 ) : (
                   <button
                     onClick={() => { signInWithEthereum(); onClose(); }}
-                    className="w-full py-2 bg-emerald-400 hover:bg-emerald-300 text-zinc-950 font-bold rounded-xl text-xs transition-colors cursor-pointer shadow-md flex items-center justify-center gap-2"
+                    className="w-full py-2 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-bold rounded-xl text-xs transition-colors cursor-pointer shadow-md flex items-center justify-center gap-2"
                   >
                     <Wallet className="h-3.5 w-3.5" />
                     Connect Wallet

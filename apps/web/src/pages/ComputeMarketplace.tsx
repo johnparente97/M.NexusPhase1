@@ -352,7 +352,7 @@ export default function ComputeMarketplace() {
                   </div>
                   <div className="flex justify-between text-zinc-400">
                     <span>x402 Facilitator:</span>
-                    <span className="text-cyan-300">Meridian x402 Protocol</span>
+                    <span className="text-cyan-300">x402 Protocol</span>
                   </div>
                 </div>
 

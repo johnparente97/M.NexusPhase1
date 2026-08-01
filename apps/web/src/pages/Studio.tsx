@@ -127,7 +127,7 @@ export default function Studio() {
 
                   {w.status === 'draft' ? (
                     <Button
-                      variant="outline"
+                      variant="secondary"
                       size="sm"
                       onClick={(e) => handlePublish(w.id, e)}
                       className="font-semibold border-emerald-900/30 text-emerald-400 hover:bg-emerald-950/10"

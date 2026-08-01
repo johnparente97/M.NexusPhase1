@@ -1,10 +1,9 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { cn } from '../../utils/cn';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline' | 'emerald';
+  variant?: 'primary' | 'secondary' | 'ghost' | 'danger';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
@@ -12,47 +11,33 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   to?: string;
 }
 
-// MRDN brand button system
-// primary = white pill (mrdn.finance CTA style)
-// emerald = emerald-500 pill (MRDN token accent)
-// secondary = dark rounded card button
-// outline = ghost bordered
-// ghost = transparent
-// danger = rose destructive
-
 export const Button = React.forwardRef<any, ButtonProps>(
   ({ className, variant = 'secondary', size = 'md', isLoading, leftIcon, rightIcon, to, children, ...props }, ref) => {
     const classes = cn(
-      'inline-flex items-center justify-center font-medium transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-400/50 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer whitespace-nowrap decoration-none',
+      'inline-flex items-center justify-center font-medium transition-colors duration-150 select-none cursor-pointer whitespace-nowrap rounded-lg',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0A0A0E]',
+      'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
       {
-        // Primary = Prismatic gradient pill
-        'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 hover:brightness-110 text-zinc-950 font-bold shadow-[0_4px_20px_rgba(168,85,247,0.35)] rounded-full border border-white/30':
+        // Primary — solid Nexus accent
+        'bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-semibold shadow-sm':
           variant === 'primary',
 
-        // Emerald / Prismatic = Purple to Cyan brand pill
-        'bg-gradient-to-r from-purple-600 via-indigo-500 to-cyan-400 hover:brightness-110 text-white font-semibold shadow-[0_4px_16px_0_rgba(168,85,247,0.3)] rounded-full':
-          variant === 'emerald',
-
-        // Secondary = dark card style (MRDN bg-[#171719] card)
-        'bg-[#171719] hover:bg-[#1E1E20] text-zinc-100 border border-zinc-800 hover:border-zinc-700 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.04)] rounded-xl':
+        // Secondary — dark surface
+        'bg-[#1A1A20] hover:bg-[#222228] text-zinc-100 border border-white/[0.08] hover:border-white/[0.14]':
           variant === 'secondary',
 
-        // Outline = ghost with border
-        'border border-zinc-800 hover:border-zinc-600 bg-transparent text-zinc-300 hover:text-zinc-100 rounded-xl':
-          variant === 'outline',
-
-        // Ghost = minimal, no border
-        'hover:bg-zinc-900/50 text-zinc-400 hover:text-zinc-100 rounded-xl':
+        // Ghost — minimal
+        'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]':
           variant === 'ghost',
 
-        // Danger = destructive
-        'bg-rose-950/20 border border-rose-900/30 hover:bg-rose-950/40 text-rose-400 rounded-xl':
+        // Danger — destructive
+        'bg-red-500/10 hover:bg-red-500/15 text-red-400 border border-red-500/20':
           variant === 'danger',
 
         // Sizes
-        'px-3.5 py-1.5 text-xs gap-1.5': size === 'sm',
-        'px-5 py-2 text-sm gap-2': size === 'md',
-        'px-7 py-3 text-base gap-2.5': size === 'lg',
+        'h-8 px-3 text-xs gap-1.5': size === 'sm',
+        'h-9 px-4 text-sm gap-2': size === 'md',
+        'h-11 px-6 text-base gap-2.5': size === 'lg',
 
         // Loading
         'relative !text-transparent pointer-events-none': isLoading,
@@ -75,7 +60,7 @@ export const Button = React.forwardRef<any, ButtonProps>(
           </span>
         )}
         {leftIcon && <span className="inline-flex shrink-0">{leftIcon}</span>}
-        <span className="inline-flex items-center gap-1.5 whitespace-nowrap">{children}</span>
+        <span>{children}</span>
         {rightIcon && <span className="inline-flex shrink-0">{rightIcon}</span>}
       </>
     );
@@ -89,17 +74,14 @@ export const Button = React.forwardRef<any, ButtonProps>(
     }
 
     return (
-      <motion.button
+      <button
         ref={ref}
-        whileHover={{ scale: 1.02, y: -1 }}
-        whileTap={{ scale: 0.97 }}
-        transition={{ type: 'spring', stiffness: 500, damping: 18 }}
         className={classes}
         disabled={isLoading || props.disabled}
-        {...(props as any)}
+        {...props}
       >
         {content}
-      </motion.button>
+      </button>
     );
   }
 );

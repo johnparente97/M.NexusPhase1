@@ -52,7 +52,7 @@ export default function RunDetail() {
             <Badge variant={statusColors[run.status]}>{run.status}</Badge>
             {run.status === 'completed' && (
               <Button
-                variant="outline"
+                variant="secondary"
                 size="sm"
                 onClick={() => setShowReceiptModal(true)}
                 className="text-xs font-semibold flex items-center gap-1.5"

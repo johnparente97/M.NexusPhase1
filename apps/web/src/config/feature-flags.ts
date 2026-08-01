@@ -1,4 +1,4 @@
-// ─── Nexus — Feature Flags & Integration Configuration (Powered by Meridian) ───────
+// ─── Nexus — Feature Flags & Integration Configuration ───────
 // Centralized configuration for backend service boundaries, mock modes, & feature flags.
 // ─────────────────────────────────────────────────────────────────────
 

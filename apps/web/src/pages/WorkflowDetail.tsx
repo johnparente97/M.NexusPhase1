@@ -109,7 +109,7 @@ export default function WorkflowDetail() {
             </Link>
             {isSignedIn && (
               <Button
-                variant={isFav ? 'outline' : 'secondary'}
+                variant={isFav ? 'ghost' : 'secondary'}
                 size="md"
                 onClick={() => toggleFav.mutate(workflow.id)}
                 disabled={toggleFav.isPending}

@@ -238,7 +238,7 @@ export default function TrustCenter() {
                   1. <strong>Scope of Service:</strong> Nexus provides an intelligent operating application for discovering, building, paying for, and managing digital capabilities.
                 </p>
                 <p>
-                  2. <strong>Settlement Mechanics:</strong> Multichain micro-settlement functions via Meridian x402 protocols and self-custody wallet authorizations.
+                  2. <strong>Settlement Mechanics:</strong> Multichain micro-settlement functions via x402 micropayment protocols and self-custody wallet authorizations.
                 </p>
                 <p>
                   3. <strong>Data Retention & Deletion:</strong> User zero-knowledge files and workflow outputs may be permanently exported or scheduled for automated deletion at user discretion.

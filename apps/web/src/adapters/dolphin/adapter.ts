@@ -136,7 +136,7 @@ export class DolphinAdapter {
           body: JSON.stringify({
             messages: messages.map((m) => ({ role: m.role, content: m.content })),
             modelId: selectedModel.id,
-            systemPrompt: `You are ${selectedModel.name}, a free open-weights AI model host on Nexus (Powered by Meridian). Answer clearly, accurately, and thoroughly.`,
+            systemPrompt: `You are ${selectedModel.name}, a free open-weights AI model available on Nexus. Answer clearly, accurately, and thoroughly.`,
           }),
           signal,
         }
@@ -164,11 +164,11 @@ export class DolphinAdapter {
 
       // Customized Model Response Formatting based on active free model
       if (selectedModel.id === 'deepseek-r1-free') {
-        reply = `<thought>\nAnalyzing prompt: "${messages[messages.length - 1]?.content}"\n- Identifying core requirements and logical constraints\n- Synthesizing verified response\n</thought>\n\n### DeepSeek R1 Step-by-Step Reasoning\n\n1. **Core Concept**: Nexus (Powered by Meridian) coordinates decentralized AI capabilities and outcome workflows.\n2. **Analysis**: You are using **${selectedModel.name}** via the Free Multi-LLM Hub.\n3. **Key Capability**: Open-weights deep reasoning with zero subscription fees.\n\nHow else can I assist with your logic or coding requirements?`;
+        reply = `<thought>\nAnalyzing prompt: "${messages[messages.length - 1]?.content}"\n- Identifying core requirements and logical constraints\n- Synthesizing verified response\n</thought>\n\n### DeepSeek R1 Step-by-Step Reasoning\n\n1. **Core Concept**: Nexus coordinates AI capabilities and outcome workflows.\n2. **Analysis**: You are using **${selectedModel.name}** via the Free Multi-LLM Hub.\n3. **Key Capability**: Open-weights deep reasoning with zero subscription fees.\n\nHow else can I assist with your logic or coding requirements?`;
       } else if (selectedModel.id === 'qwen-2-5-72b-free') {
         reply = `\`\`\`typescript\n// Qwen 2.5 72B Code & Multilingual Synthesis\ninterface NexusInferenceRequest {\n  modelId: "${selectedModel.id}";\n  pricing: "Free Tier ($0.00)";\n  status: "Settled via x402 Protocol";\n}\n\nfunction processInference(req: NexusInferenceRequest) {\n  console.log(\`[Qwen 2.5] Executed request using \${req.modelId}\`);\n  return { success: true, cost: 0.00 };\n}\n\`\`\`\n\nI am **Qwen 2.5 72B**, specialized in high-performance coding, API design, and multilingual synthesis. Feel free to send code snippets or technical architecture questions!`;
       } else if (selectedModel.id === 'llama-3-3-70b-free') {
-        reply = `Greetings! I am **Llama 3.3 70B Instruct**, Meta's flagship open-weights model hosted on the Nexus decentralized network (Powered by Meridian).\n\nI offer general intelligence, analytical writing, complex summarization, and strategic planning without requiring any subscriptions or KYC. How can I help with your current project?`;
+        reply = `Greetings! I am **Llama 3.3 70B Instruct**, Meta's flagship open-weights model available on Nexus.\n\nI offer general intelligence, analytical writing, complex summarization, and strategic planning without requiring any subscriptions or KYC. How can I help with your current project?`;
       } else if (selectedModel.id === 'nous-hermes-3-free') {
         reply = `### Nous Hermes 3 Agentic Executive\n\n- **Agent Mode**: Active\n- **Tool Support**: Function calling & workflow execution\n- **Host Network**: Decentralized AntSeed Node Network\n\nI can help design multi-step agentic workflows, format structured JSON specifications, or draft custom tools for Nexus Studio. What goal are we executing today?`;
       } else if (selectedModel.id === 'mistral-7b-free') {
@@ -176,11 +176,11 @@ export class DolphinAdapter {
       } else {
         // Default Dolphin 8x7B response
         if (lastMsg.includes('hello') || lastMsg.includes('hi') || lastMsg.includes('hey')) {
-          reply = `Hello! Welcome to Nexus Free Multi-LLM Hub (Powered by Meridian). I'm **Dolphin 8x7B**, your uncensored open-weights AI assistant.\n\nYou can switch between Dolphin 8x7B, DeepSeek R1, Llama 3.3 70B, Qwen 2.5 72B, Mistral 7B, and Nous Hermes 3 anytime using the model selector above! What would you like to explore?`;
+          reply = `Hello! Welcome to Nexus. I'm **Dolphin 8x7B**, your uncensored open-weights AI assistant.\n\nYou can switch between Dolphin 8x7B, DeepSeek R1, Llama 3.3 70B, Qwen 2.5 72B, Mistral 7B, and Nous Hermes 3 anytime using the model selector above! What would you like to explore?`;
         } else if (lastMsg.includes('workflow') || lastMsg.includes('exchange')) {
           reply = `**Workflow Exchange** — Explore 15+ pre-built AI outcome workflows:\n\n• Company Intelligence Brief ($4.99)\n• Marketing Campaign Builder ($6.99)\n• Sales Outreach Generator ($3.99)\n• Vendor Comparison Analyst ($7.99)\n\nClick **Workflow Exchange** in the sidebar to get started!`;
         } else {
-          reply = `I am **Dolphin 8x7B (Free)** on Nexus (Powered by Meridian).\n\nYou have access to the full suite of free open-weights LLMs. Use the top bar selector to switch between models for reasoning, coding, writing, or agentic tool use!`;
+          reply = `I am **Dolphin 8x7B (Free)** on Nexus.\n\nYou have access to the full suite of free open-weights LLMs. Use the top bar selector to switch between models for reasoning, coding, writing, or agentic tool use!`;
         }
       }
 

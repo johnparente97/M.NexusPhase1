@@ -7,7 +7,7 @@ export interface NexusLogoMarkProps {
 }
 
 /**
- * NexusLogoMark — Official Meridian Protocol Pinwheel Logo Mark
+ * NexusLogoMark — Official Nexus Logo Mark
  * Renders the exact pixel-perfect logo image asset (logo-symbol.png).
  * DO NOT ALTER ART.
  */

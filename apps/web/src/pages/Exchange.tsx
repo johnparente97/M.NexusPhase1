@@ -117,18 +117,14 @@ export default function Exchange() {
         
         {/* Glow meshes */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-indigo-500/5 rounded-full blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
 
         <div className="flex flex-col gap-4 max-w-2xl relative z-10">
-          <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[10px] font-mono font-black tracking-widest bg-purple-500/10 border border-purple-500/30 text-purple-300 uppercase w-fit shadow-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
-            Meridian Protocol Native
-          </span>
           <h1 className="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-white tracking-tight leading-[1.1]">
-            Workflow Market
+            Workflows
           </h1>
           <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed max-w-xl font-normal">
-            Discover and execute verified AI workflows powered by Meridian. Pay per execution with sub-penny rates, zero monthly commitments, and 5% MRDN cashback.
+            Discover and execute verified AI workflows. Pay per execution with sub-penny rates, zero monthly commitments, and 5% MRDN cashback.
           </p>
 
           {/* Natural Language Suggested Searches */}
@@ -182,7 +178,7 @@ export default function Exchange() {
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between">
             <h2 className="font-display font-black text-sm text-zinc-300 uppercase tracking-widest flex items-center gap-2">
-              <TrendingUp className="h-4 w-4 text-indigo-400 animate-pulse" />
+              <TrendingUp className="h-4 w-4 text-emerald-400 animate-pulse" />
               Trending Today
             </h2>
           </div>
@@ -264,7 +260,7 @@ export default function Exchange() {
                   </span>
                 )}
                 {search && (
-                  <span className="inline-flex items-center gap-1.5 text-xs bg-indigo-500/15 text-indigo-300 border border-indigo-500/40 px-3 py-1 rounded-xl font-extrabold shadow-sm">
+                  <span className="inline-flex items-center gap-1.5 text-xs bg-emerald-500/15 text-emerald-300 border border-emerald-500/40 px-3 py-1 rounded-xl font-extrabold shadow-sm">
                     "{search}"
                     <X className="h-3.5 w-3.5 cursor-pointer hover:text-white" onClick={() => setSearch('')} />
                   </span>
@@ -291,7 +287,7 @@ export default function Exchange() {
                 onClick={() => setViewMode('list')}
                 className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer active:scale-95 ${
                   viewMode === 'list' 
-                    ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 shadow-md shadow-purple-500/20' 
+                    ? 'bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/20' 
                     : 'text-zinc-500 hover:text-zinc-300'
                 }`}
               >
@@ -302,7 +298,7 @@ export default function Exchange() {
                 onClick={() => setViewMode('grid')}
                 className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-black transition-all cursor-pointer active:scale-95 ${
                   viewMode === 'grid' 
-                    ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 shadow-md shadow-purple-500/20' 
+                    ? 'bg-emerald-500 text-zinc-950 shadow-md shadow-emerald-500/20' 
                     : 'text-zinc-500 hover:text-zinc-300'
                 }`}
               >

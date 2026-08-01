@@ -150,7 +150,7 @@ export const OutcomeReceiptModal: React.FC<OutcomeReceiptModalProps> = ({
           {/* Actions Footer */}
           <div className="flex items-center justify-between border-t border-zinc-800 pt-4 mt-2">
             <Button
-              variant="outline"
+              variant="secondary"
               size="sm"
               onClick={handleCopyReceiptJson}
               className="text-xs font-semibold flex items-center gap-1.5"
