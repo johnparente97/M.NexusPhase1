@@ -5,7 +5,7 @@ import WorkspaceLayout from '../components/layout/WorkspaceLayout';
 import LoadingPage from '../components/common/LoadingPage';
 import PageTransition from '../components/common/PageTransition';
 
-// Standard resilient chunk loader to catch bundle hash updates and reload the client
+// Resilient chunk loader to recover gracefully from deployment asset updates
 const lazyWithRetry = (componentImport: () => Promise<any>) => {
   return lazy(async () => {
     const hasRetried = window.sessionStorage.getItem('retry-lazy-load');
@@ -16,7 +16,7 @@ const lazyWithRetry = (componentImport: () => Promise<any>) => {
     } catch (error) {
       if (!hasRetried) {
         window.sessionStorage.setItem('retry-lazy-load', 'true');
-        console.warn("Failed to load chunk asset. Performing hard reload...");
+        console.warn('Failed to load chunk asset. Performing hard reload...');
         window.location.reload();
       }
       throw error;
@@ -24,9 +24,10 @@ const lazyWithRetry = (componentImport: () => Promise<any>) => {
   });
 };
 
-// Lazy load all pages using the resilient chunk loader
+// Lazy loaded page components
 const Landing = lazyWithRetry(() => import('../pages/Landing'));
-const Exchange = lazyWithRetry(() => import('../pages/Exchange'));
+const ExplorePage = lazyWithRetry(() => import('../pages/ExplorePage'));
+const NexusCloudPage = lazyWithRetry(() => import('../pages/NexusCloudPage'));
 const WorkflowDetail = lazyWithRetry(() => import('../pages/WorkflowDetail'));
 const WorkflowRunner = lazyWithRetry(() => import('../pages/WorkflowRunner'));
 const Studio = lazyWithRetry(() => import('../pages/Studio'));
@@ -65,14 +66,12 @@ export const router = createHashRouter([
     element: <PublicLayout />,
     children: [
       { path: '', element: suspenseWrapper(Landing) },
-      // The prompt asks for public routes: /suite, /integrations, /trust, /developers, /docs, /legal
-      // Fallbacks to NotFoundPage if pages don't exist yet, to ensure valid router
-      { path: 'suite', element: suspenseWrapper(NotFoundPage) },
-      { path: 'integrations', element: suspenseWrapper(NotFoundPage) },
+      { path: 'suite', element: suspenseWrapper(ExplorePage) },
+      { path: 'integrations', element: suspenseWrapper(EcosystemAlignmentPage) },
       { path: 'trust', element: suspenseWrapper(TrustCenter) },
-      { path: 'developers', element: suspenseWrapper(NotFoundPage) },
+      { path: 'developers', element: suspenseWrapper(DevConsole) },
       { path: 'docs', element: suspenseWrapper(DocsPage) },
-      { path: 'legal', element: suspenseWrapper(NotFoundPage) },
+      { path: 'legal', element: suspenseWrapper(TrustCenter) },
     ],
   },
   {
@@ -84,14 +83,14 @@ export const router = createHashRouter([
       { path: 'balance', element: <Navigate to="/payments" replace /> },
       { path: 'storage', element: <Navigate to="/cloud" replace /> },
       
-      // Workspace Routes as specified
+      // Workspace Routes
       { path: 'chat', element: suspenseWrapper(PaidChat) },
       { path: 'chat/free', element: suspenseWrapper(PaidChat) },
       { path: 'chat/paid', element: suspenseWrapper(PaidChat) },
       
-      { path: 'explore', element: suspenseWrapper(Exchange) },
+      { path: 'explore', element: suspenseWrapper(ExplorePage) },
       
-      { path: 'workflows', element: suspenseWrapper(Dashboard) }, // Fallback mappings for what they asked vs existing
+      { path: 'workflows', element: suspenseWrapper(Dashboard) },
       { path: 'workflows/:id', element: suspenseWrapper(WorkflowDetail) },
       { path: 'workflows/:id/run', element: suspenseWrapper(WorkflowRunner) },
       
@@ -102,7 +101,7 @@ export const router = createHashRouter([
       { path: 'agents', element: suspenseWrapper(ModelMarketplace) },
       { path: 'agents/new', element: suspenseWrapper(AgentBuilder) },
       
-      { path: 'cloud', element: suspenseWrapper(StorageMarketplace) },
+      { path: 'cloud', element: suspenseWrapper(NexusCloudPage) },
       { path: 'compute', element: suspenseWrapper(ComputeMarketplace) },
       { path: 'payments', element: suspenseWrapper(UnifiedBalancePage) },
       
@@ -110,13 +109,11 @@ export const router = createHashRouter([
       { path: 'activity/:id', element: suspenseWrapper(RunDetail) },
       
       { path: 'teams', element: suspenseWrapper(OrgDashboard) },
-      
-      { path: 'provide', element: suspenseWrapper(CreatorDashboard) }, // e.g. mapping provide to creator dashboard for now
-      
+      { path: 'provide', element: suspenseWrapper(CreatorDashboard) },
       { path: 'developer', element: suspenseWrapper(DevConsole) },
       { path: 'settings', element: suspenseWrapper(Profile) },
       
-      // Other existing paths moved to workspace layout
+      // Additional workspace routes
       { path: 'dashboard', element: suspenseWrapper(Dashboard) },
       { path: 'creator', element: suspenseWrapper(CreatorDashboard) },
       { path: 'profile', element: suspenseWrapper(Profile) },
@@ -127,7 +124,7 @@ export const router = createHashRouter([
       { path: 'alignment', element: suspenseWrapper(EcosystemAlignmentPage) },
       { path: 'ecosystem', element: suspenseWrapper(EcosystemAlignmentPage) },
 
-      // Not found catch-all inside workspace
+      // Fallback
       { path: '*', element: suspenseWrapper(NotFoundPage) },
     ],
   },
