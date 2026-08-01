@@ -1,6 +1,7 @@
 import { createHashRouter, Navigate } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
-import AppShell from '../components/layout/AppShell';
+import PublicLayout from '../components/layout/PublicLayout';
+import WorkspaceLayout from '../components/layout/WorkspaceLayout';
 import LoadingPage from '../components/common/LoadingPage';
 import PageTransition from '../components/common/PageTransition';
 
@@ -61,41 +62,72 @@ const suspenseWrapper = (Component: React.ComponentType) => (
 export const router = createHashRouter([
   {
     path: '/',
-    element: <AppShell />,
+    element: <PublicLayout />,
     children: [
       { path: '', element: suspenseWrapper(Landing) },
-      { path: 'exchange', element: suspenseWrapper(Exchange) },
-      { path: 'exchange/:id', element: suspenseWrapper(WorkflowDetail) },
-      { path: 'exchange/:id/run', element: suspenseWrapper(WorkflowRunner) },
-      { path: 'workflows/:id/run', element: <Navigate to="/exchange/:id/run" replace /> },
-      { path: 'workflows/:id', element: <Navigate to="/exchange/:id" replace /> },
-      { path: 'studio', element: suspenseWrapper(Studio) },
-      { path: 'studio/new', element: suspenseWrapper(StudioEditor) },
-      { path: 'studio/:id/edit', element: suspenseWrapper(StudioEditor) },
-      { path: 'dashboard', element: suspenseWrapper(Dashboard) },
-      { path: 'activity', element: suspenseWrapper(Activity) },
-      { path: 'activity/:id', element: suspenseWrapper(RunDetail) },
-      { path: 'creator', element: suspenseWrapper(CreatorDashboard) },
-      { path: 'profile', element: suspenseWrapper(Profile) },
-      { path: 'saved', element: suspenseWrapper(SavedWorkflows) },
+      // The prompt asks for public routes: /suite, /integrations, /trust, /developers, /docs, /legal
+      // Fallbacks to NotFoundPage if pages don't exist yet, to ensure valid router
+      { path: 'suite', element: suspenseWrapper(NotFoundPage) },
+      { path: 'integrations', element: suspenseWrapper(NotFoundPage) },
+      { path: 'trust', element: suspenseWrapper(TrustCenter) },
+      { path: 'developers', element: suspenseWrapper(NotFoundPage) },
+      { path: 'docs', element: suspenseWrapper(DocsPage) },
+      { path: 'legal', element: suspenseWrapper(NotFoundPage) },
+    ],
+  },
+  {
+    path: '/',
+    element: <WorkspaceLayout />,
+    children: [
+      // Compatibility redirects
+      { path: 'exchange', element: <Navigate to="/explore" replace /> },
+      { path: 'balance', element: <Navigate to="/payments" replace /> },
+      { path: 'storage', element: <Navigate to="/cloud" replace /> },
       
-      // Unified Chat & Capabilities Routes
+      // Workspace Routes as specified
       { path: 'chat', element: suspenseWrapper(PaidChat) },
       { path: 'chat/free', element: suspenseWrapper(PaidChat) },
       { path: 'chat/paid', element: suspenseWrapper(PaidChat) },
-      { path: 'marketplace/models', element: suspenseWrapper(ModelMarketplace) },
-      { path: 'storage', element: suspenseWrapper(StorageMarketplace) },
-      { path: 'compute', element: suspenseWrapper(ComputeMarketplace) },
-      { path: 'defi', element: suspenseWrapper(DeFiHub) },
-      { path: 'trust', element: suspenseWrapper(TrustCenter) },
-      { path: 'balance', element: suspenseWrapper(UnifiedBalancePage) },
+      
+      { path: 'explore', element: suspenseWrapper(Exchange) },
+      
+      { path: 'workflows', element: suspenseWrapper(Dashboard) }, // Fallback mappings for what they asked vs existing
+      { path: 'workflows/:id', element: suspenseWrapper(WorkflowDetail) },
+      { path: 'workflows/:id/run', element: suspenseWrapper(WorkflowRunner) },
+      
+      { path: 'studio', element: suspenseWrapper(Studio) },
+      { path: 'studio/new', element: suspenseWrapper(StudioEditor) },
+      { path: 'studio/:id/edit', element: suspenseWrapper(StudioEditor) },
+      
+      { path: 'agents', element: suspenseWrapper(ModelMarketplace) },
       { path: 'agents/new', element: suspenseWrapper(AgentBuilder) },
-      { path: 'organization', element: suspenseWrapper(OrgDashboard) },
+      
+      { path: 'cloud', element: suspenseWrapper(StorageMarketplace) },
+      { path: 'compute', element: suspenseWrapper(ComputeMarketplace) },
+      { path: 'payments', element: suspenseWrapper(UnifiedBalancePage) },
+      
+      { path: 'activity', element: suspenseWrapper(Activity) },
+      { path: 'activity/:id', element: suspenseWrapper(RunDetail) },
+      
+      { path: 'teams', element: suspenseWrapper(OrgDashboard) },
+      
+      { path: 'provide', element: suspenseWrapper(CreatorDashboard) }, // e.g. mapping provide to creator dashboard for now
+      
       { path: 'developer', element: suspenseWrapper(DevConsole) },
+      { path: 'settings', element: suspenseWrapper(Profile) },
+      
+      // Other existing paths moved to workspace layout
+      { path: 'dashboard', element: suspenseWrapper(Dashboard) },
+      { path: 'creator', element: suspenseWrapper(CreatorDashboard) },
+      { path: 'profile', element: suspenseWrapper(Profile) },
+      { path: 'saved', element: suspenseWrapper(SavedWorkflows) },
+      { path: 'marketplace/models', element: suspenseWrapper(ModelMarketplace) },
+      { path: 'defi', element: suspenseWrapper(DeFiHub) },
+      { path: 'organization', element: suspenseWrapper(OrgDashboard) },
       { path: 'alignment', element: suspenseWrapper(EcosystemAlignmentPage) },
       { path: 'ecosystem', element: suspenseWrapper(EcosystemAlignmentPage) },
-      { path: 'docs', element: suspenseWrapper(DocsPage) },
 
+      // Not found catch-all inside workspace
       { path: '*', element: suspenseWrapper(NotFoundPage) },
     ],
   },

@@ -1,187 +1,82 @@
-@import url('https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', sans-serif;
-  --font-display: 'Funnel Display', 'Outfit', sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Funnel Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 
-  --color-zinc-950: #1B1B1C;
-  --color-zinc-900: #171719;
-  --color-zinc-800: #272729;
+  --color-nx-bg: var(--nx-bg);
+  --color-nx-bg-subtle: var(--nx-bg-subtle);
+  --color-nx-surface-1: var(--nx-surface-1);
+  --color-nx-surface-2: var(--nx-surface-2);
+  --color-nx-surface-3: var(--nx-surface-3);
+  --color-nx-border: var(--nx-border);
+  --color-nx-border-strong: var(--nx-border-strong);
+  --color-nx-text: var(--nx-text);
+  --color-nx-text-secondary: var(--nx-text-secondary);
+  --color-nx-text-muted: var(--nx-text-muted);
+  --color-nx-violet: var(--nx-violet);
+  --color-nx-indigo: var(--nx-indigo);
+  --color-nx-cyan: var(--nx-cyan);
+  --color-nx-accent: var(--nx-accent);
+  --color-nx-accent-hover: var(--nx-accent-hover);
+  --color-nx-success: var(--nx-success);
+  --color-nx-warning: var(--nx-warning);
+  --color-nx-error: var(--nx-error);
 }
 
 :root {
-  /* App backgrounds */
-  --nx-bg: #0A0A0E;
-  --nx-bg-subtle: #0F0F13;
-  
-  /* Surfaces */
-  --nx-surface-1: #131318;
-  --nx-surface-2: #1A1A20;
-  --nx-surface-3: #222228;
-  
-  /* Borders */
-  --nx-border: rgba(255, 255, 255, 0.08);
-  --nx-border-subtle: rgba(255, 255, 255, 0.05);
+  --nx-bg: #08080C;
+  --nx-bg-subtle: #0E0E14;
+  --nx-surface-1: #14141E;
+  --nx-surface-2: #1A1A26;
+  --nx-surface-3: #222234;
+  --nx-border: rgba(255, 255, 255, 0.07);
   --nx-border-strong: rgba(255, 255, 255, 0.14);
-  
-  /* Text */
-  --nx-text: #F0F0F2;
-  --nx-text-secondary: #A0A0A8;
-  --nx-text-muted: #606068;
-  --nx-text-inverse: #0A0A0E;
-  
-  /* Nexus accent (emerald-based) */
-  --nx-accent: #10B981;
-  --nx-accent-hover: #34D399;
-  --nx-accent-subtle: rgba(16, 185, 129, 0.12);
-  --nx-accent-muted: rgba(16, 185, 129, 0.06);
-  
-  /* Semantic */
+  --nx-text: #F3F3F7;
+  --nx-text-secondary: #9E9EA9;
+  --nx-text-muted: #636370;
+  --nx-violet: #8B5CF6;
+  --nx-indigo: #6366F1;
+  --nx-cyan: #06B6D4;
+  --nx-accent: #8B5CF6;
+  --nx-accent-hover: #A78BFA;
   --nx-success: #10B981;
   --nx-warning: #F59E0B;
-  --nx-error: #EF4444;
-  --nx-info: #3B82F6;
-  
-  /* Focus */
-  --nx-focus-ring: 0 0 0 2px var(--nx-bg), 0 0 0 4px var(--nx-accent);
-  
-  /* Radii */
-  --nx-radius-sm: 6px;
-  --nx-radius-md: 10px;
-  --nx-radius-lg: 14px;
-  --nx-radius-xl: 20px;
-  
-  /* Shadows */
-  --nx-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --nx-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --nx-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --nx-shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
-  
-  /* Layout */
-  --nx-header-h: 56px;
-  --nx-sidebar-w: 256px;
-  --nx-sidebar-w-collapsed: 64px;
-  --nx-container-max: 1200px;
-  --nx-mobile-nav-h: 64px;
-  
-  /* Motion */
-  --nx-duration-fast: 100ms;
-  --nx-duration-normal: 200ms;
-  --nx-duration-slow: 350ms;
-  --nx-ease: cubic-bezier(0.16, 1, 0.3, 1);
-  
-  /* Z-index layers */
-  --z-base: 0;
-  --z-sticky: 10;
-  --z-header: 20;
-  --z-dropdown: 30;
-  --z-drawer-backdrop: 40;
-  --z-drawer: 45;
-  --z-modal-backdrop: 50;
-  --z-modal: 55;
-  --z-toast: 60;
+  --nx-error: #F43F5E;
 }
 
-/* Layering Tokens Utilities */
-.z-layer-base { z-index: var(--z-base); }
-.z-layer-sticky { z-index: var(--z-sticky); }
-.z-layer-header { z-index: var(--z-header); }
-.z-layer-dropdown { z-index: var(--z-dropdown); }
-.z-layer-drawer-backdrop { z-index: var(--z-drawer-backdrop); }
-.z-layer-drawer { z-index: var(--z-drawer); }
-.z-layer-modal-backdrop { z-index: var(--z-modal-backdrop); }
-.z-layer-modal { z-index: var(--z-modal); }
-.z-layer-toast { z-index: var(--z-toast); }
-
-/* Custom base resets */
 body {
   background-color: var(--nx-bg);
   color: var(--nx-text);
   font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
 }
 
-/* Text selection accessibility */
-::selection {
-  background-color: rgba(16, 185, 129, 0.35);
-  color: #ffffff;
-}
-
-.selectable-text {
-  user-select: text !important;
-  -webkit-user-select: text !important;
-}
-
-/* Scrollbar customization */
-::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-::-webkit-scrollbar-track {
-  background: var(--nx-bg);
-}
-::-webkit-scrollbar-thumb {
-  background: #2a2a2d;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--nx-accent);
-}
-
-/* Glassmorphism utility */
-.glass-panel {
-  background: rgba(19, 19, 24, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--nx-border);
-}
-
-/* Premium card hover */
-.premium-card {
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.premium-card:hover {
-  border-color: rgba(16, 185, 129, 0.25);
-  box-shadow: var(--nx-shadow-lg);
-}
-
-/* Input styles */
-input, textarea, select {
+:focus-visible {
   outline: none;
-  transition: all 0.15s ease-in-out;
-}
-input:focus-visible, textarea:focus-visible, select:focus-visible {
-  box-shadow: var(--nx-focus-ring);
+  box-shadow: 0 0 0 2px var(--nx-bg), 0 0 0 4px var(--nx-violet);
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-/* Skip to content */
 .skip-to-content {
   position: absolute;
-  left: -9999px;
-  top: 0;
-  z-index: 100;
-  padding: 8px 16px;
-  background: var(--nx-accent);
-  color: var(--nx-text-inverse);
-  font-weight: 600;
-  font-size: 14px;
-  border-radius: 0 0 var(--nx-radius-md) 0;
-}
-.skip-to-content:focus {
+  top: -40px;
   left: 0;
+  background: var(--nx-violet);
+  color: white;
+  padding: 8px;
+  z-index: 100;
+  transition: top 0.2s;
 }
 
-/* Reduced motion */
+.skip-to-content:focus {
+  top: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  * {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
