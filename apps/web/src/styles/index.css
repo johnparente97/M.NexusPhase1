@@ -24,7 +24,7 @@
   --color-nx-error: var(--nx-error);
 }
 
-/* ── Night Mode Tokens (Default Cyber Obsidian) ── */
+/* ── Night Mode Tokens (Cyber Obsidian - Deep Dark Theme) ── */
 :root,
 html[data-theme="night"],
 .theme-night {
@@ -34,7 +34,7 @@ html[data-theme="night"],
   --nx-surface-2: #161628;
   --nx-surface-3: #1F1F38;
   --nx-border: rgba(255, 255, 255, 0.08);
-  --nx-border-strong: rgba(168, 85, 247, 0.3);
+  --nx-border-strong: rgba(168, 85, 247, 0.35);
   --nx-text: #F8F9FE;
   --nx-text-secondary: #A0A5C0;
   --nx-text-muted: #646888;
@@ -49,27 +49,27 @@ html[data-theme="night"],
   color-scheme: dark;
 }
 
-/* ── Day Mode Tokens (Cyber Solar White & Prism) ── */
+/* ── Day Mode Tokens (High-Contrast Cyber Solar - Ultra Crisp Light Theme) ── */
 html[data-theme="day"],
 .theme-day {
-  --nx-bg: #F4F4F9;
-  --nx-bg-subtle: #EAEBF2;
+  --nx-bg: #F8FAFC;
+  --nx-bg-subtle: #F1F5F9;
   --nx-surface-1: #FFFFFF;
-  --nx-surface-2: #F0F1F8;
-  --nx-surface-3: #E4E5F0;
-  --nx-border: rgba(15, 23, 42, 0.09);
-  --nx-border-strong: rgba(124, 58, 237, 0.35);
+  --nx-surface-2: #F8FAFC;
+  --nx-surface-3: #E2E8F0;
+  --nx-border: #E2E8F0;
+  --nx-border-strong: #6D28D9;
   --nx-text: #0F172A;
-  --nx-text-secondary: #475569;
+  --nx-text-secondary: #334155;
   --nx-text-muted: #64748B;
-  --nx-violet: #7C3AED;
-  --nx-magenta: #E11D48;
+  --nx-violet: #6D28D9;
+  --nx-magenta: #BE123C;
   --nx-cyan: #0284C7;
-  --nx-gold: #D97706;
-  --nx-accent: #7C3AED;
-  --nx-success: #059669;
-  --nx-warning: #D97706;
-  --nx-error: #E11D48;
+  --nx-gold: #B45309;
+  --nx-accent: #6D28D9;
+  --nx-success: #047857;
+  --nx-warning: #B45309;
+  --nx-error: #BE123C;
   color-scheme: light;
 }
 
@@ -81,7 +81,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 html[data-theme="night"] body,
@@ -95,10 +95,54 @@ body {
 
 html[data-theme="day"] body {
   background-image: 
-    radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.08) 0%, transparent 70%),
-    radial-gradient(circle at 100% 100%, rgba(2, 132, 199, 0.06) 0%, transparent 60%),
-    radial-gradient(circle at 0% 100%, rgba(225, 29, 72, 0.06) 0%, transparent 60%);
+    radial-gradient(circle at 50% 0%, rgba(109, 40, 217, 0.06) 0%, transparent 70%),
+    radial-gradient(circle at 100% 100%, rgba(2, 132, 199, 0.05) 0%, transparent 60%),
+    radial-gradient(circle at 0% 100%, rgba(190, 18, 60, 0.05) 0%, transparent 60%);
   background-attachment: fixed;
+}
+
+/* Day Mode Text & Element Overrides for High Contrast Legibility */
+html[data-theme="day"] .text-white {
+  color: #0F172A !important;
+}
+
+html[data-theme="day"] .text-zinc-100,
+html[data-theme="day"] .text-zinc-200,
+html[data-theme="day"] .text-zinc-300 {
+  color: #1E293B !important;
+}
+
+html[data-theme="day"] .text-zinc-400 {
+  color: #334155 !important;
+}
+
+html[data-theme="day"] .text-zinc-500 {
+  color: #64748B !important;
+}
+
+html[data-theme="day"] header,
+html[data-theme="day"] aside,
+html[data-theme="day"] footer {
+  background-color: rgba(255, 255, 255, 0.94) !important;
+  border-color: #E2E8F0 !important;
+}
+
+html[data-theme="day"] .cyber-panel {
+  background: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06) !important;
+}
+
+html[data-theme="day"] .cyber-panel:hover {
+  border-color: #6D28D9 !important;
+  box-shadow: 0 8px 30px -4px rgba(109, 40, 217, 0.15) !important;
+}
+
+html[data-theme="day"] .text-prismatic {
+  background: linear-gradient(135deg, #0284C7 0%, #6D28D9 50%, #BE123C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 4px rgba(109, 40, 217, 0.15));
 }
 
 /* Prismatic Cyberpunk & Cyber-Sigilism Utilities */
