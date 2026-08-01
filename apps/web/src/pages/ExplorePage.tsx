@@ -189,11 +189,11 @@ export default function ExplorePage() {
                 className={cn(
                   "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap cursor-pointer",
                   isActive
-                    ? "bg-violet-600 text-white font-semibold shadow-md shadow-violet-600/25"
-                    : "bg-[#14141E] border border-white/[0.08] text-zinc-400 hover:text-white hover:border-violet-500/40"
+                    ? "bg-gradient-to-r from-[#00F5D4] via-[#A855F7] to-[#FF007F] text-zinc-950 font-extrabold shadow-lg shadow-purple-500/25"
+                    : "bg-[#0F0F1D] border border-white/[0.08] text-zinc-400 hover:text-white hover:border-[#00F5D4]/40"
                 )}
               >
-                <Icon className={cn("h-4 w-4", isActive ? "text-white" : "text-zinc-500")} />
+                <Icon className={cn("h-4 w-4", isActive ? "text-zinc-950" : "text-[#00F5D4]")} />
                 {cat.label}
               </button>
             );

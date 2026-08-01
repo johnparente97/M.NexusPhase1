@@ -1,48 +1,48 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-display: 'Funnel Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Funnel Display', 'Outfit', sans-serif;
 
-  --color-nx-bg: var(--nx-bg);
-  --color-nx-bg-subtle: var(--nx-bg-subtle);
-  --color-nx-surface-1: var(--nx-surface-1);
-  --color-nx-surface-2: var(--nx-surface-2);
-  --color-nx-surface-3: var(--nx-surface-3);
-  --color-nx-border: var(--nx-border);
-  --color-nx-border-strong: var(--nx-border-strong);
-  --color-nx-text: var(--nx-text);
-  --color-nx-text-secondary: var(--nx-text-secondary);
-  --color-nx-text-muted: var(--nx-text-muted);
-  --color-nx-violet: var(--nx-violet);
-  --color-nx-indigo: var(--nx-indigo);
-  --color-nx-cyan: var(--nx-cyan);
-  --color-nx-accent: var(--nx-accent);
-  --color-nx-accent-hover: var(--nx-accent-hover);
-  --color-nx-success: var(--nx-success);
-  --color-nx-warning: var(--nx-warning);
-  --color-nx-error: var(--nx-error);
+  --color-nx-bg: #05050A;
+  --color-nx-bg-subtle: #0A0A14;
+  --color-nx-surface-1: #0F0F1D;
+  --color-nx-surface-2: #161628;
+  --color-nx-surface-3: #1F1F38;
+  --color-nx-border: rgba(255, 255, 255, 0.08);
+  --color-nx-border-strong: rgba(168, 85, 247, 0.3);
+  --color-nx-text: #F8F9FE;
+  --color-nx-text-secondary: #A0A5C0;
+  --color-nx-text-muted: #646888;
+  --color-nx-violet: #A855F7;
+  --color-nx-magenta: #FF007F;
+  --color-nx-cyan: #00F5D4;
+  --color-nx-gold: #FFD700;
+  --color-nx-accent: #A855F7;
+  --color-nx-success: #10B981;
+  --color-nx-warning: #F59E0B;
+  --color-nx-error: #FF2E63;
 }
 
 :root {
-  --nx-bg: #08080C;
-  --nx-bg-subtle: #0E0E14;
-  --nx-surface-1: #14141E;
-  --nx-surface-2: #1A1A26;
-  --nx-surface-3: #222234;
-  --nx-border: rgba(255, 255, 255, 0.07);
-  --nx-border-strong: rgba(255, 255, 255, 0.14);
-  --nx-text: #F3F3F7;
-  --nx-text-secondary: #9E9EA9;
-  --nx-text-muted: #636370;
-  --nx-violet: #8B5CF6;
-  --nx-indigo: #6366F1;
-  --nx-cyan: #06B6D4;
-  --nx-accent: #8B5CF6;
-  --nx-accent-hover: #A78BFA;
+  --nx-bg: #05050A;
+  --nx-bg-subtle: #0A0A14;
+  --nx-surface-1: #0F0F1D;
+  --nx-surface-2: #161628;
+  --nx-surface-3: #1F1F38;
+  --nx-border: rgba(255, 255, 255, 0.08);
+  --nx-border-strong: rgba(168, 85, 247, 0.3);
+  --nx-text: #F8F9FE;
+  --nx-text-secondary: #A0A5C0;
+  --nx-text-muted: #646888;
+  --nx-violet: #A855F7;
+  --nx-magenta: #FF007F;
+  --nx-cyan: #00F5D4;
+  --nx-gold: #FFD700;
+  --nx-accent: #A855F7;
   --nx-success: #10B981;
   --nx-warning: #F59E0B;
-  --nx-error: #F43F5E;
+  --nx-error: #FF2E63;
 }
 
 body {
@@ -53,18 +53,75 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.12) 0%, transparent 70%),
+    radial-gradient(circle at 100% 100%, rgba(0, 245, 212, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 0% 100%, rgba(255, 0, 127, 0.08) 0%, transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Prismatic Cyberpunk & Cyber-Sigilism Utilities */
+.text-prismatic {
+  background: linear-gradient(135deg, #00F5D4 0%, #A855F7 50%, #FF007F 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.3));
+}
+
+.text-cyber-cyan {
+  color: #00F5D4;
+  text-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
+}
+
+.text-cyber-magenta {
+  color: #FF007F;
+  text-shadow: 0 0 10px rgba(255, 0, 127, 0.4);
+}
+
+.cyber-panel {
+  background: rgba(15, 15, 29, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px);
+  border-radius: 1rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cyber-panel:hover {
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 30px -10px rgba(168, 85, 247, 0.3);
+}
+
+.cyber-button-prismatic {
+  background: linear-gradient(135deg, #A855F7 0%, #7B2CBF 50%, #FF007F 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.35), 0 0 40px rgba(255, 0, 127, 0.2);
+  transition: all 0.2s ease;
+}
+
+.cyber-button-prismatic:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 25px rgba(168, 85, 247, 0.5), 0 0 50px rgba(0, 245, 212, 0.3);
+}
+
+.cyber-sigil-badge {
+  background: rgba(168, 85, 247, 0.1);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  color: #D8B4FE;
+  box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
 }
 
 :focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px var(--nx-bg), 0 0 0 4px var(--nx-violet);
+  box-shadow: 0 0 0 2px var(--nx-bg), 0 0 0 4px #A855F7;
 }
 
 .skip-to-content {
   position: absolute;
   top: -40px;
   left: 0;
-  background: var(--nx-violet);
+  background: #A855F7;
   color: white;
   padding: 8px;
   z-index: 100;

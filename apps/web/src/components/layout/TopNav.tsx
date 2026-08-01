@@ -19,7 +19,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 h-14 bg-[#08080C]/90 backdrop-blur-xl border-b border-white/[0.07] px-3 sm:px-6 flex items-center justify-between z-layer-header transition-all duration-200 left-0',
+        'fixed top-0 right-0 h-14 bg-[#05050A]/90 backdrop-blur-2xl border-b border-white/[0.08] px-3 sm:px-6 flex items-center justify-between z-layer-header transition-all duration-200 left-0',
         {
           'lg:left-64': !isCollapsed,
           'lg:left-16': isCollapsed,
@@ -37,9 +37,9 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         </button>
 
         <Link to="/" className="flex items-center gap-2 group">
-          <NexusLogoMark className="h-6 w-6 text-violet-400" />
+          <NexusLogoMark className="h-6 w-6" />
           <div className="flex items-baseline gap-1.5">
-            <span className="font-display font-bold text-sm text-white tracking-tight">
+            <span className="font-display font-extrabold text-sm text-white tracking-tight group-hover:text-prismatic transition-all">
               Nexus
             </span>
           </div>
@@ -53,20 +53,20 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         {/* Search Launcher */}
         <button
           onClick={onSearchClick}
-          className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 hover:text-zinc-200 bg-[#14141E] border border-white/[0.08] hover:border-violet-500/40 rounded-xl px-3 py-1.5 transition-colors cursor-pointer select-none shadow-sm"
+          className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 hover:text-white bg-[#0F0F1D] border border-white/[0.08] hover:border-[#00F5D4]/40 rounded-xl px-3 py-1.5 transition-all cursor-pointer select-none shadow-sm"
         >
-          <Search className="h-3.5 w-3.5 text-zinc-500" />
-          <span className="hidden md:inline">Search</span>
-          <kbd className="text-[9px] text-zinc-500 bg-[#0E0E14] border border-white/[0.08] px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
+          <Search className="h-3.5 w-3.5 text-[#00F5D4]" />
+          <span className="hidden md:inline font-medium">Search</span>
+          <kbd className="text-[9px] text-zinc-500 bg-[#05050A] border border-white/[0.08] px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
         </button>
 
         {/* Balance Quick Link */}
         <Link
           to="/payments"
-          className="flex items-center gap-1.5 bg-[#14141E] border border-violet-500/30 hover:border-violet-400/60 text-[11px] sm:text-xs font-mono text-violet-300 px-2.5 sm:px-3 py-1.5 rounded-xl transition-colors shrink-0 shadow-sm"
+          className="flex items-center gap-1.5 bg-[#0F0F1D] border border-[#00F5D4]/30 hover:border-[#00F5D4]/60 text-[11px] sm:text-xs font-mono text-[#00F5D4] px-2.5 sm:px-3 py-1.5 rounded-xl transition-all shrink-0 shadow-[0_0_10px_rgba(0,245,212,0.15)] font-bold"
           title="Payments & Balance"
         >
-          <Coins className="h-3.5 w-3.5 text-violet-400" />
+          <Coins className="h-3.5 w-3.5 text-[#00F5D4]" />
           <span>${usdcBalance || '24.50'}</span>
         </Link>
 
@@ -79,10 +79,10 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
             Switch
           </button>
         ) : isConnected ? (
-          <div className="flex items-center gap-1.5 bg-[#14141E] border border-violet-500/30 rounded-lg p-1 px-2.5 sm:px-3 text-xs">
+          <div className="flex items-center gap-1.5 bg-[#0F0F1D] border border-[#A855F7]/30 rounded-lg p-1 px-2.5 sm:px-3 text-xs">
             <button
               onClick={() => { navigator.clipboard.writeText(walletAddress || ''); }}
-              className="font-mono text-zinc-300 hover:text-violet-300 flex items-center gap-1.5 transition-colors cursor-pointer text-[11px] sm:text-xs"
+              className="font-mono text-zinc-300 hover:text-[#00F5D4] flex items-center gap-1.5 transition-colors cursor-pointer text-[11px] sm:text-xs font-bold"
               title="Copy wallet address"
             >
               {walletAddress ? `${walletAddress.substring(0, 4)}...${walletAddress.substring(walletAddress.length - 3)}` : ''}
@@ -92,7 +92,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
         ) : (
           <button
             onClick={signInWithEthereum}
-            className="flex items-center gap-1.5 bg-violet-600 hover:bg-violet-500 text-white font-semibold px-3 sm:px-4 py-1.5 rounded-lg text-[11px] sm:text-xs shadow-md shadow-violet-600/20 transition-colors cursor-pointer shrink-0"
+            className="flex items-center gap-1.5 bg-gradient-to-r from-[#A855F7] to-[#FF007F] hover:brightness-110 text-white font-extrabold px-3.5 sm:px-4 py-1.5 rounded-xl text-[11px] sm:text-xs shadow-lg shadow-purple-600/25 transition-all cursor-pointer shrink-0 border border-purple-400/30"
           >
             <Wallet className="h-3.5 w-3.5 shrink-0" />
             <span className="hidden sm:inline">Connect Wallet</span>

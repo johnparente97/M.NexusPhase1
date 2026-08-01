@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { cn } from '../../utils/cn';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost' | 'danger' | 'outline';
+  variant?: 'primary' | 'secondary' | 'cyan' | 'magenta' | 'ghost' | 'danger' | 'outline';
   size?: 'sm' | 'md' | 'lg';
   isLoading?: boolean;
   leftIcon?: React.ReactNode;
@@ -14,28 +14,36 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 export const Button = React.forwardRef<any, ButtonProps>(
   ({ className, variant = 'secondary', size = 'md', isLoading, leftIcon, rightIcon, to, children, ...props }, ref) => {
     const classes = cn(
-      'inline-flex items-center justify-center font-medium transition-colors duration-150 select-none cursor-pointer whitespace-nowrap rounded-xl',
-      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#08080C]',
+      'inline-flex items-center justify-center font-semibold transition-all duration-200 select-none cursor-pointer whitespace-nowrap rounded-xl',
+      'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#A855F7]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#05050A]',
       'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
       {
-        // Primary — solid Electric Violet background
-        'bg-violet-600 hover:bg-violet-500 text-white font-semibold shadow-sm':
+        // Primary — Prismatic Mecha Cyberpunk Gradient
+        'bg-gradient-to-r from-[#A855F7] via-[#7B2CBF] to-[#FF007F] hover:brightness-110 text-white font-bold shadow-lg shadow-purple-600/25 border border-purple-400/30':
           variant === 'primary',
 
-        // Secondary — Dark Graphite surface
-        'bg-[#1A1A26] hover:bg-[#222234] text-zinc-100 border border-white/[0.08] hover:border-white/[0.14]':
+        // Secondary — Cyber Obsidian Surface
+        'bg-[#0F0F1D] hover:bg-[#161628] text-zinc-100 border border-white/[0.08] hover:border-[#A855F7]/40 shadow-sm':
           variant === 'secondary',
 
+        // Cyan — Hyper Iridescent Cyan
+        'bg-[#00F5D4] hover:bg-[#33F7DD] text-zinc-950 font-bold shadow-lg shadow-cyan-500/25 border border-cyan-300/40':
+          variant === 'cyan',
+
+        // Magenta — Neon Cyber Magenta
+        'bg-[#FF007F] hover:bg-[#FF3399] text-white font-bold shadow-lg shadow-pink-600/25 border border-pink-400/30':
+          variant === 'magenta',
+
         // Ghost — Minimal transparent
-        'text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.04]':
+        'text-zinc-400 hover:text-white hover:bg-white/[0.05]':
           variant === 'ghost',
 
         // Danger — Red destructive
-        'bg-rose-500/10 hover:bg-rose-500/15 text-rose-400 border border-rose-500/20':
+        'bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30':
           variant === 'danger',
 
-        // Outline — Border style
-        'border border-violet-500/30 hover:border-violet-500/60 text-violet-300 bg-violet-500/5':
+        // Outline — Cyber Sigil Outline
+        'border border-[#A855F7]/40 hover:border-[#00F5D4]/80 text-[#D8B4FE] hover:text-[#00F5D4] bg-[#A855F7]/10 shadow-sm':
           variant === 'outline',
 
         // Sizes
