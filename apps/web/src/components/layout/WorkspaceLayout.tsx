@@ -10,6 +10,7 @@ import { useAuth } from '../../hooks/useAuth';
 import LoadingPage from '../common/LoadingPage';
 import CommandPalette from '../common/CommandPalette';
 import AiCopilot from '../common/AiCopilot';
+import { QuickDock } from '../common/QuickDock';
 import { useSidebarStore } from '../../stores/sidebar-store';
 import { cn } from '../../utils/cn';
 
@@ -41,9 +42,9 @@ export default function WorkspaceLayout() {
 
   return (
     <ToastProvider>
-      <div className="min-h-screen bg-zinc-950 flex antialiased selection:bg-emerald-400/30 selection:text-white overflow-x-hidden">
+      <div className="min-h-screen bg-[var(--nx-bg)] flex antialiased selection:bg-[#00F5D4]/30 selection:text-white overflow-x-hidden">
         
-        {/* Full-Height Left Sidebar (OpenAI / Claude Style) */}
+        {/* Full-Height Left Sidebar */}
         <MissionControlSidebar onSearchClick={() => setShowPalette(true)} />
 
         {/* Workspace Container with Adaptive Padding for Sidebar Width */}
@@ -62,13 +63,13 @@ export default function WorkspaceLayout() {
             onMobileMenuClick={() => setIsMobileDrawerOpen(true)}
           />
 
-          {/* Main Canvas View (pt-14 accounts for h-14 TopNav) */}
+          {/* Main Canvas View */}
           <main
             className={cn(
               'flex-1 flex flex-col min-w-0 pt-14 w-full max-w-7xl mx-auto px-2 sm:px-5',
               {
                 'pb-0 h-[calc(100vh-3.5rem)] max-h-[calc(100vh-3.5rem)] overflow-hidden': isChat,
-                'pb-16 md:pb-8': !isChat,
+                'pb-24 md:pb-16': !isChat,
               }
             )}
           >
@@ -86,7 +87,8 @@ export default function WorkspaceLayout() {
         />
         <MobileNav />
 
-        {/* Floating Intelligence Assistant & Spotlight Search */}
+        {/* Floating Quick Dock, Intelligence Assistant & Spotlight Search */}
+        {!isChat && <QuickDock onSearchClick={() => setShowPalette(true)} />}
         {!isChat && <AiCopilot />}
         <CommandPalette isOpen={showPalette} onClose={() => setShowPalette(false)} />
       </div>

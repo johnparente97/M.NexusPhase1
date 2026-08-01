@@ -1,293 +1,324 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Search, Sparkles, Box, Cpu, Database, Network, Server, ArrowRight, Play, Eye, FileText, Blocks, Cloud } from 'lucide-react';
-import { useDebounce } from '../hooks/useDebounce';
-import { Input } from '../components/ui/Input';
-import { Button } from '../components/ui/Button';
-import { TruthStateBadge } from '../components/common/TruthStateBadge';
+import {
+  Search,
+  MessageSquare,
+  Zap,
+  HardDrive,
+  Cpu,
+  Layers,
+  ArrowRight,
+  Sparkles,
+  LayoutGrid,
+  List as ListIcon,
+  SlidersHorizontal,
+} from 'lucide-react';
 import { cn } from '../utils/cn';
+import { TruthStateBadge, TruthState } from '../components/common/TruthStateBadge';
+import { Button } from '../components/ui/Button';
 
-type Category = 'All' | 'Models' | 'Agents' | 'Workflows' | 'Storage' | 'Compute' | 'APIs';
-
-interface Capability {
+interface CapabilityItem {
   id: string;
   title: string;
-  category: Category;
-  provider: string;
+  category: string;
   description: string;
+  provider: string;
   pricing: string;
-  status: 'live' | 'connected' | 'demo' | 'planned';
-  action: 'Run' | 'View details';
-  icon: React.ElementType;
+  status: TruthState;
+  route: string;
+  icon: any;
 }
 
-const CATEGORIES: { label: Category; icon: React.ElementType }[] = [
-  { label: 'All', icon: Blocks },
-  { label: 'Models', icon: Network },
-  { label: 'Agents', icon: Sparkles },
-  { label: 'Workflows', icon: FileText },
-  { label: 'Storage', icon: Database },
-  { label: 'Compute', icon: Server },
-  { label: 'APIs', icon: Cloud },
+const CATEGORIES = [
+  { label: 'All', icon: Sparkles },
+  { label: 'Models', icon: MessageSquare },
+  { label: 'Workflows', icon: Layers },
+  { label: 'Storage', icon: HardDrive },
+  { label: 'Compute', icon: Cpu },
 ];
 
-const CAPABILITIES: Capability[] = [
+const CAPABILITIES: CapabilityItem[] = [
   {
-    id: 'llama-3-70b',
-    title: 'Llama 3 70B Instruct',
+    id: 'cap-1',
+    title: 'DeepSeek R1 Reasoning',
     category: 'Models',
-    provider: 'Meta',
-    description: 'Highly capable open-source large language model optimized for dialogue and instruction following.',
-    pricing: '$0.0008 / 1K tokens',
+    description: 'High-speed chain-of-thought reasoning AI model for complex logic, math, and code architecture.',
+    provider: 'DeepSeek / AntSeed',
+    pricing: '$0.00012 / request',
     status: 'live',
-    action: 'Run',
-    icon: Network,
+    route: '/chat?model=deepseek-r1',
+    icon: MessageSquare,
   },
   {
-    id: 'research-agent',
-    title: 'Research Analyst Agent',
-    category: 'Agents',
-    provider: 'Nexus Native',
-    description: 'Autonomous agent that scours the web to compile comprehensive research reports with citations.',
-    pricing: '$0.05 / run',
-    status: 'live',
-    action: 'Run',
-    icon: Sparkles,
-  },
-  {
-    id: 'video-gen-workflow',
-    title: 'Text-to-Video Generator',
-    category: 'Workflows',
-    provider: 'SoraLabs',
-    description: 'End-to-end workflow that converts a text prompt into a highly realistic 10-second video clip.',
-    pricing: '$0.20 / run',
-    status: 'demo',
-    action: 'View details',
-    icon: FileText,
-  },
-  {
-    id: 's3-compatible-storage',
-    title: 'Distributed Object Storage',
-    category: 'Storage',
-    provider: 'Filecoin Network',
-    description: 'Decentralized, S3-compatible object storage with high durability and low latency.',
-    pricing: '$0.001 / GB / month',
+    id: 'cap-2',
+    title: 'Dolphin 8x7B Inference',
+    category: 'Models',
+    description: 'Uncensored high-throughput open-weights AI inference engine for creative and agentic workflows.',
+    provider: 'Dolphin Host',
+    pricing: 'Free ($0.00)',
     status: 'connected',
-    action: 'View details',
-    icon: Database,
+    route: '/chat?model=dolphin-mixtral-8x7b-free',
+    icon: MessageSquare,
   },
   {
-    id: 'h100-cluster',
-    title: 'H100 GPU Cluster',
-    category: 'Compute',
-    provider: 'Akash Network',
-    description: 'High-performance NVIDIA H100 instances for demanding AI training and inference workloads.',
-    pricing: '$2.50 / hour',
-    status: 'planned',
-    action: 'View details',
-    icon: Server,
-  },
-  {
-    id: 'dex-aggregator-api',
-    title: 'DEX Aggregator API',
-    category: 'APIs',
-    provider: '1inch',
-    description: 'Real-time routing and execution API for optimal decentralized exchange token swaps.',
-    pricing: 'Free tier available',
+    id: 'cap-3',
+    title: 'Financial Data Summarizer',
+    category: 'Workflows',
+    description: 'Multi-step autonomous workflow retrieving quarterly filings, calculating metrics, and rendering charts.',
+    provider: 'Nexus Labs',
+    pricing: '$0.00050 / run',
     status: 'live',
-    action: 'View details',
-    icon: Cloud,
-  }
+    route: '/workflows/wf-finance/run',
+    icon: Layers,
+  },
+  {
+    id: 'cap-4',
+    title: 'Filecoin Distributed Backup',
+    category: 'Storage',
+    description: 'Zero-knowledge end-to-end encrypted object backup with verifiable Filecoin 10x storage proofs.',
+    provider: 'Filecoin Network',
+    pricing: '$0.00001 / GB / mo',
+    status: 'connected',
+    route: '/cloud',
+    icon: HardDrive,
+  },
+  {
+    id: 'cap-5',
+    title: 'NVIDIA H100 GPU Cluster',
+    category: 'Compute',
+    description: 'On-demand GPU compute instance allocation for model fine-tuning and heavy batch processing.',
+    provider: 'Decentralized Compute Pool',
+    pricing: '$2.50 / hr (x402)',
+    status: 'planned',
+    route: '/compute',
+    icon: Cpu,
+  },
+  {
+    id: 'cap-6',
+    title: 'Arweave Blockweave Storage',
+    category: 'Storage',
+    description: 'Permanent immutable cloud storage for agent knowledge bases and critical execution logs.',
+    provider: 'Arweave Protocol',
+    pricing: '$0.005 / MB flat',
+    status: 'connected',
+    route: '/cloud',
+    icon: HardDrive,
+  },
 ];
 
 export default function ExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  
-  const searchParam = searchParams.get('q') || '';
-  const categoryParam = (searchParams.get('category') as Category) || 'All';
-  
-  const [searchInput, setSearchInput] = useState(searchParam);
-  const debouncedSearch = useDebounce(searchInput, 300);
 
-  // Sync search state to URL
-  React.useEffect(() => {
-    const next = new URLSearchParams(searchParams);
-    if (debouncedSearch) {
-      next.set('q', debouncedSearch);
-    } else {
-      next.delete('q');
-    }
-    setSearchParams(next, { replace: true });
-  }, [debouncedSearch, setSearchParams]);
+  const categoryParam = searchParams.get('category') || 'All';
+  const searchQueryParam = searchParams.get('q') || '';
 
-  const handleCategoryChange = (cat: Category) => {
-    const next = new URLSearchParams(searchParams);
-    if (cat === 'All') {
-      next.delete('category');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [sortBy, setSortBy] = useState<'popular' | 'newest'>('popular');
+
+  const handleCategoryChange = (label: string) => {
+    const nextParams = new URLSearchParams(searchParams);
+    if (label === 'All') {
+      nextParams.delete('category');
     } else {
-      next.set('category', cat);
+      nextParams.set('category', label);
     }
-    setSearchParams(next);
+    setSearchParams(nextParams);
   };
 
-  const filteredCapabilities = useMemo(() => {
-    return CAPABILITIES.filter((cap) => {
-      const matchesSearch = cap.title.toLowerCase().includes(debouncedSearch.toLowerCase()) || 
-                            cap.description.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-                            cap.provider.toLowerCase().includes(debouncedSearch.toLowerCase());
-      const matchesCategory = categoryParam === 'All' || cap.category === categoryParam;
-      return matchesSearch && matchesCategory;
-    });
-  }, [debouncedSearch, categoryParam]);
-
-  const handleActionClick = (cap: Capability) => {
-    if (cap.action === 'Run') {
-      navigate(`/exchange/${cap.id}/run`);
+  const handleSearchChange = (val: string) => {
+    const nextParams = new URLSearchParams(searchParams);
+    if (val) {
+      nextParams.set('q', val);
     } else {
-      navigate(`/exchange/${cap.id}`);
+      nextParams.delete('q');
     }
+    setSearchParams(nextParams);
+  };
+
+  const filteredCapabilities = CAPABILITIES.filter((cap) => {
+    const matchesCategory = categoryParam === 'All' || cap.category === categoryParam;
+    const matchesSearch =
+      cap.title.toLowerCase().includes(searchQueryParam.toLowerCase()) ||
+      cap.description.toLowerCase().includes(searchQueryParam.toLowerCase()) ||
+      cap.provider.toLowerCase().includes(searchQueryParam.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
+
+  const handleActionClick = (cap: CapabilityItem) => {
+    navigate(cap.route);
   };
 
   return (
-    <div className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 flex flex-col gap-10 select-none pb-20">
+    <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 gap-8 select-none">
       
-      {/* Header Section */}
-      <section className="flex flex-col gap-4">
-        <h1 className="font-display text-4xl sm:text-5xl font-bold text-white tracking-tight">
-          Explore Capabilities
+      {/* ── Header Banner ── */}
+      <div className="space-y-3">
+        <div className="inline-flex items-center gap-2">
+          <TruthStateBadge status="live" text="Registry Active" />
+        </div>
+        <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
+          Explore <span className="text-prismatic">Digital Capabilities</span>
         </h1>
-        <p className="text-zinc-400 text-sm sm:text-base max-w-2xl">
-          Browse verified AI models, workflows, agents, storage, compute, and APIs.
+        <p className="text-sm text-[var(--nx-text-secondary)] max-w-2xl leading-relaxed">
+          Discover verified AI models, multi-step workflows, zero-knowledge cloud storage, and compute pools.
         </p>
-      </section>
+      </div>
 
-      {/* Search and Filters */}
-      <section className="flex flex-col gap-6">
-        <div className="relative max-w-xl w-full">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-zinc-500" />
-          </div>
-          <Input
+      {/* ── Filter & Search Toolbar ── */}
+      <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 bg-[var(--nx-surface-1)] border border-[var(--nx-border)] p-4 rounded-2xl shadow-xl">
+        
+        {/* Search Input */}
+        <div className="relative flex-1">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-[#00F5D4]" />
+          <input
             type="text"
-            className="pl-10 h-12 bg-[#121214] border-zinc-800 text-white rounded-xl focus:ring-emerald-500 focus:border-emerald-500 w-full transition-all shadow-sm"
-            placeholder="Search capabilities by name, provider, or keyword..."
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
+            value={searchQueryParam}
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder="Search AI models, workflows, or cloud storage..."
+            className="w-full bg-[var(--nx-bg)] border border-[var(--nx-border)] rounded-xl pl-10 pr-4 py-2.5 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#00F5D4] transition-all font-mono"
           />
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide">
-          {CATEGORIES.map((cat) => {
-            const Icon = cat.icon;
-            const isActive = categoryParam === cat.label;
-            return (
-              <button
-                key={cat.label}
-                onClick={() => handleCategoryChange(cat.label)}
-                className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all whitespace-nowrap cursor-pointer",
-                  isActive
-                    ? "bg-gradient-to-r from-[#00F5D4] via-[#A855F7] to-[#FF007F] text-zinc-950 font-extrabold shadow-lg shadow-purple-500/25"
-                    : "bg-[#0F0F1D] border border-white/[0.08] text-zinc-400 hover:text-white hover:border-[#00F5D4]/40"
-                )}
-              >
-                <Icon className={cn("h-4 w-4", isActive ? "text-zinc-950" : "text-[#00F5D4]")} />
-                {cat.label}
-              </button>
-            );
-          })}
-        </div>
-      </section>
+        {/* View Mode & Sort Controls */}
+        <div className="flex items-center gap-3 shrink-0">
+          
+          <div className="flex items-center gap-1 bg-[var(--nx-bg)] p-1 rounded-xl border border-[var(--nx-border)]">
+            <button
+              onClick={() => setViewMode('grid')}
+              className={cn(
+                'p-1.5 rounded-lg transition-all cursor-pointer',
+                viewMode === 'grid' ? 'bg-[#00F5D4] text-zinc-950 font-bold' : 'text-zinc-400 hover:text-white'
+              )}
+              title="Grid View"
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </button>
 
-      {/* Results Grid */}
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredCapabilities.length > 0 ? (
-          filteredCapabilities.map((cap) => {
+            <button
+              onClick={() => setViewMode('list')}
+              className={cn(
+                'p-1.5 rounded-lg transition-all cursor-pointer',
+                viewMode === 'list' ? 'bg-[#00F5D4] text-zinc-950 font-bold' : 'text-zinc-400 hover:text-white'
+              )}
+              title="List View"
+            >
+              <ListIcon className="h-4 w-4" />
+            </button>
+          </div>
+
+          <div className="flex items-center gap-1.5 bg-[var(--nx-bg)] border border-[var(--nx-border)] px-3 py-2 rounded-xl text-xs font-mono text-zinc-400">
+            <SlidersHorizontal className="h-3.5 w-3.5 text-[#00F5D4]" />
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as any)}
+              className="bg-transparent text-white focus:outline-none cursor-pointer"
+            >
+              <option value="popular" className="bg-[#05050A]">Popular</option>
+              <option value="newest" className="bg-[#05050A]">Newest</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      {/* ── Category Tabs ── */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+        {CATEGORIES.map((cat) => {
+          const Icon = cat.icon;
+          const isActive = categoryParam === cat.label;
+          return (
+            <button
+              key={cat.label}
+              onClick={() => handleCategoryChange(cat.label)}
+              className={cn(
+                'flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all whitespace-nowrap cursor-pointer border',
+                isActive
+                  ? 'bg-gradient-to-r from-[#00F5D4] via-[#A855F7] to-[#FF007F] text-zinc-950 border-transparent shadow-lg shadow-purple-500/20'
+                  : 'bg-[var(--nx-surface-1)] border-[var(--nx-border)] text-zinc-400 hover:text-white hover:border-[#00F5D4]/40'
+              )}
+            >
+              <Icon className={cn('h-3.5 w-3.5', isActive ? 'text-zinc-950' : 'text-[#00F5D4]')} />
+              {cat.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ── Results Container ── */}
+      {viewMode === 'grid' ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredCapabilities.map((cap) => {
             const Icon = cap.icon;
             return (
               <div
                 key={cap.id}
                 onClick={() => handleActionClick(cap)}
-                className="group flex flex-col justify-between h-full bg-[#111113] border border-zinc-800/80 rounded-2xl p-5 relative overflow-hidden transition-all duration-300 hover:border-zinc-700 hover:shadow-xl hover:shadow-black/60 hover:-translate-y-1 cursor-pointer"
+                className="group flex flex-col justify-between p-6 rounded-2xl bg-[var(--nx-surface-1)] border border-[var(--nx-border)] hover:border-[#00F5D4]/50 transition-all duration-300 shadow-xl hover:shadow-[0_0_30px_rgba(0,245,212,0.15)] cursor-pointer"
               >
-                <div className="flex flex-col gap-4 relative z-10 h-full">
-                  
-                  {/* Card Header */}
-                  <div className="flex items-start justify-between gap-4">
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-emerald-400 shrink-0">
+                      <div className="h-10 w-10 rounded-xl bg-[#A855F7]/15 border border-[#A855F7]/30 flex items-center justify-center text-[#00F5D4]">
                         <Icon className="h-5 w-5" />
                       </div>
-                      <div className="flex flex-col">
-                        <h3 className="font-display font-bold text-base text-white group-hover:text-emerald-300 transition-colors">
+                      <div>
+                        <h3 className="font-display font-extrabold text-base text-white group-hover:text-prismatic transition-all">
                           {cap.title}
                         </h3>
-                        <span className="text-xs font-medium text-zinc-500">
-                          by {cap.provider}
-                        </span>
+                        <span className="text-[11px] text-zinc-500 font-mono">by {cap.provider}</span>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Badges */}
-                  <div className="flex items-center gap-2 flex-wrap">
                     <TruthStateBadge status={cap.status} />
-                    <span className="px-2 py-0.5 text-[10px] font-mono font-bold uppercase tracking-wider rounded bg-zinc-900 text-zinc-400 border border-zinc-800">
-                      {cap.category}
-                    </span>
                   </div>
 
-                  {/* Description */}
-                  <p className="text-sm text-zinc-400 leading-relaxed font-sans mt-2 flex-1">
+                  <p className="text-xs text-zinc-400 leading-relaxed font-sans">
                     {cap.description}
                   </p>
+                </div>
 
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-4 border-t border-zinc-800/80 mt-2">
-                    <span className="text-xs font-mono font-bold text-zinc-300">
-                      {cap.pricing}
-                    </span>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleActionClick(cap);
-                      }}
-                      className={cn(
-                        "inline-flex items-center justify-center gap-1.5 text-[11px] font-bold px-3 py-1.5 rounded-lg transition-all",
-                        cap.action === 'Run' 
-                          ? "bg-emerald-400 hover:bg-emerald-300 text-zinc-950 shadow-sm shadow-emerald-500/20" 
-                          : "bg-zinc-800 hover:bg-zinc-700 text-white"
-                      )}
-                    >
-                      {cap.action === 'Run' ? <Play className="h-3 w-3 fill-zinc-950" /> : <Eye className="h-3.5 w-3.5" />}
-                      <span>{cap.action}</span>
-                    </button>
-                  </div>
-
+                <div className="flex items-center justify-between pt-4 border-t border-[var(--nx-border)] mt-4 text-xs font-mono">
+                  <span className="text-[#00F5D4] font-bold">{cap.pricing}</span>
+                  <span className="text-zinc-400 group-hover:text-white flex items-center gap-1 font-bold">
+                    Execute <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform text-[#00F5D4]" />
+                  </span>
                 </div>
               </div>
             );
-          })
-        ) : (
-          <div className="col-span-full py-12 flex flex-col items-center justify-center border border-dashed border-zinc-800 rounded-2xl bg-[#111113]">
-            <Search className="h-8 w-8 text-zinc-600 mb-3" />
-            <h3 className="text-zinc-300 font-bold mb-1">No capabilities found</h3>
-            <p className="text-zinc-500 text-sm">Try adjusting your search or filters to find what you're looking for.</p>
-            <Button 
-              variant="outline" 
-              className="mt-4"
-              onClick={() => {
-                setSearchInput('');
-                handleCategoryChange('All');
-              }}
-            >
-              Clear filters
-            </Button>
-          </div>
-        )}
-      </section>
+          })}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {filteredCapabilities.map((cap) => {
+            const Icon = cap.icon;
+            return (
+              <div
+                key={cap.id}
+                onClick={() => handleActionClick(cap)}
+                className="group p-4 rounded-xl bg-[var(--nx-surface-1)] border border-[var(--nx-border)] hover:border-[#00F5D4]/50 transition-all flex items-center justify-between gap-4 cursor-pointer"
+              >
+                <div className="flex items-center gap-4 min-w-0">
+                  <div className="h-10 w-10 rounded-xl bg-[#A855F7]/15 border border-[#A855F7]/30 flex items-center justify-center text-[#00F5D4] shrink-0">
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <div className="min-w-0">
+                    <h3 className="font-display font-bold text-sm text-white group-hover:text-prismatic transition-all truncate">
+                      {cap.title}
+                    </h3>
+                    <p className="text-xs text-zinc-400 truncate">{cap.description}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-4 shrink-0 font-mono text-xs">
+                  <span className="text-[#00F5D4] font-bold">{cap.pricing}</span>
+                  <TruthStateBadge status={cap.status} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
     </div>
   );
 }

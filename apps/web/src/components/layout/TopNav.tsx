@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Search, Wallet, Coins, Menu, Copy } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Search, Wallet, Coins, Menu, Copy, ChevronRight, Sparkles } from 'lucide-react';
 import { NexusLogoMark } from '../common/NexusLogoMark';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { useWallet } from '../../hooks/useWallet';
@@ -12,10 +12,29 @@ interface TopNavProps {
   onMobileMenuClick: () => void;
 }
 
+const ROUTE_TITLES: Record<string, string> = {
+  '/chat': 'AI Chat & Inference',
+  '/explore': 'Marketplace & Explore',
+  '/workflows': 'Workflows Library',
+  '/studio': 'Workflow Studio',
+  '/cloud': 'Nexus Cloud Storage',
+  '/data': 'Data & Memory',
+  '/activity': 'Activity & Receipts',
+  '/payments': 'Payments & Prepaid Vault',
+  '/dashboard': 'Organization Dashboard',
+  '/developer': 'Developer Console',
+  '/docs': 'Documentation',
+  '/integrations': 'Ecosystem Alignment',
+  '/trust': 'Trust & Legal',
+};
+
 export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps) {
+  const location = useLocation();
   const { isCollapsed } = useSidebarStore();
   const { isConnected, walletAddress, chainId, usdcBalance, signInWithEthereum, switchNetwork } = useWallet();
   const isWrongNetwork = isConnected && chainId !== null && chainId !== 84532;
+
+  const currentTitle = ROUTE_TITLES[location.pathname] || 'Workspace';
 
   return (
     <header
@@ -45,6 +64,18 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
             </span>
           </div>
         </Link>
+      </div>
+
+      {/* Desktop Left: Breadcrumb Location Indicator */}
+      <div className="hidden lg:flex items-center gap-2 text-xs font-mono select-none">
+        <Link to="/" className="text-zinc-400 hover:text-[#00F5D4] transition-colors flex items-center gap-1 font-bold">
+          <Sparkles className="h-3.5 w-3.5 text-[#00F5D4]" />
+          <span>Nexus</span>
+        </Link>
+        <ChevronRight className="h-3.5 w-3.5 text-zinc-600" />
+        <span className="text-white font-semibold truncate max-w-[200px]">
+          {currentTitle}
+        </span>
       </div>
 
       <div className="hidden lg:block flex-1" />
