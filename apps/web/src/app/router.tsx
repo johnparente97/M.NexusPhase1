@@ -44,6 +44,10 @@ const OrgDashboard = lazyWithRetry(() => import('../pages/OrgDashboard'));
 const DevConsole = lazyWithRetry(() => import('../pages/DevConsole'));
 const DocsPage = lazyWithRetry(() => import('../pages/DocsPage'));
 const EcosystemAlignmentPage = lazyWithRetry(() => import('../pages/EcosystemAlignmentPage'));
+const StorageMarketplace = lazyWithRetry(() => import('../pages/StorageMarketplace'));
+const ComputeMarketplace = lazyWithRetry(() => import('../pages/ComputeMarketplace'));
+const DeFiHub = lazyWithRetry(() => import('../pages/DeFiHub'));
+const TrustCenter = lazyWithRetry(() => import('../pages/TrustCenter'));
 const NotFoundPage = lazyWithRetry(() => import('../pages/NotFoundPage'));
 
 const suspenseWrapper = (Component: React.ComponentType) => (
@@ -80,6 +84,10 @@ export const router = createHashRouter([
       { path: 'chat/free', element: suspenseWrapper(PaidChat) },
       { path: 'chat/paid', element: suspenseWrapper(PaidChat) },
       { path: 'marketplace/models', element: suspenseWrapper(ModelMarketplace) },
+      { path: 'storage', element: suspenseWrapper(StorageMarketplace) },
+      { path: 'compute', element: suspenseWrapper(ComputeMarketplace) },
+      { path: 'defi', element: suspenseWrapper(DeFiHub) },
+      { path: 'trust', element: suspenseWrapper(TrustCenter) },
       { path: 'balance', element: suspenseWrapper(UnifiedBalancePage) },
       { path: 'agents/new', element: suspenseWrapper(AgentBuilder) },
       { path: 'organization', element: suspenseWrapper(OrgDashboard) },

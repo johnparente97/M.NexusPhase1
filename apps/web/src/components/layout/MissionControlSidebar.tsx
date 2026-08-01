@@ -38,14 +38,17 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
     tag?: string;
   }> = [
     { to: '/chat', label: 'Inference Hub', icon: Bot, tag: 'Free' },
-    { to: '/marketplace/models', label: 'Model Hub', icon: Cpu },
-    { to: '/exchange', label: 'Workflow Market', icon: Compass },
+    { to: '/marketplace/models', label: 'AI Marketplace', icon: Cpu },
+    { to: '/exchange', label: 'Workflow Exchange', icon: Compass },
+    { to: '/storage', label: 'Storage Market', icon: Layers },
+    { to: '/compute', label: 'Compute Market', icon: Terminal },
+    { to: '/defi', label: 'DeFi Hub', icon: Coins },
+    { to: '/trust', label: 'Trust Center', icon: ShieldCheck, tag: 'Verified' },
     { to: '/balance', label: 'AI Vault', icon: Coins, requiresAuth: true },
-    { to: '/studio', label: 'Workflow Builder', icon: Layers, requiresAuth: true },
+    { to: '/studio', label: 'Workflow Studio', icon: Layers, requiresAuth: true },
     { to: '/activity', label: 'Live Activity', icon: History, requiresAuth: true },
     { to: '/dashboard', label: 'Mission Control', icon: LayoutDashboard, requiresAuth: true },
     { to: '/organization', label: 'Team Workspace', icon: Building2, requiresAuth: true },
-    { to: '/alignment', label: 'Ecosystem Alignment', icon: ShieldCheck, tag: 'Spec' },
     { to: '/developer', label: 'Dev Hub', icon: Terminal },
     { to: '/docs', label: 'Docs', icon: BookOpen },
   ];

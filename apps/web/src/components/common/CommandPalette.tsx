@@ -92,7 +92,12 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
   const commands = [
     // Core Navigation
     { id: 'exchange', label: 'Discover Capability Exchange', category: 'Navigation', icon: Compass, action: () => handleNavigate('/exchange') },
+    { id: 'models', label: 'AI Models & Agents Marketplace', category: 'Navigation', icon: Sparkles, action: () => handleNavigate('/marketplace/models') },
     { id: 'studio', label: 'Nexus Studio Workflow Builder', category: 'Navigation', icon: Layers, action: () => handleNavigate('/studio') },
+    { id: 'storage', label: 'Programmable Storage Marketplace', category: 'Navigation', icon: Compass, action: () => handleNavigate('/storage') },
+    { id: 'compute', label: 'Decentralized Compute Marketplace', category: 'Navigation', icon: Zap, action: () => handleNavigate('/compute') },
+    { id: 'defi', label: 'Curated DeFi Hub & Asset Balances', category: 'Navigation', icon: Coins, action: () => handleNavigate('/defi') },
+    { id: 'trust', label: 'Trust & Compliance Center', category: 'Navigation', icon: ShieldCheck, action: () => handleNavigate('/trust') },
     { id: 'activity', label: 'View Execution History & Activity', category: 'Navigation', icon: History, action: () => handleNavigate('/activity') },
     { id: 'dashboard', label: 'Open Workspace Dashboard', category: 'Navigation', icon: User, action: () => handleNavigate('/dashboard') },
     { id: 'creator', label: 'Open Creator Portal Analytics', category: 'Navigation', icon: Award, action: () => handleNavigate('/creator') },
