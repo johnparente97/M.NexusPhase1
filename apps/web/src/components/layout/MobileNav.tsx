@@ -30,7 +30,7 @@ export default function MobileNav({ onOpenMenu }: MobileNavProps) {
                   cn(
                     'flex flex-col items-center justify-center gap-0.5 py-1 rounded-xl transition-all w-full cursor-pointer',
                     isActive
-                      ? 'text-emerald-400 font-semibold'
+                      ? 'text-violet-400 font-semibold'
                       : 'text-zinc-500 hover:text-zinc-300'
                   )
                 }
@@ -39,18 +39,18 @@ export default function MobileNav({ onOpenMenu }: MobileNavProps) {
                   <>
                     <div className={cn(
                       'p-1.5 rounded-xl transition-all duration-200',
-                      isActive ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' : 'bg-transparent'
+                      isActive ? 'bg-violet-500/15 text-violet-400 border border-violet-500/30' : 'bg-transparent'
                     )}>
                       <Icon className="h-6 w-6" />
                     </div>
                     <span className={cn(
                       'text-[10px] tracking-tight transition-colors leading-none',
-                      isActive ? 'text-emerald-400 font-bold' : 'text-zinc-500'
+                      isActive ? 'text-violet-400 font-bold' : 'text-zinc-500'
                     )}>
                       {label}
                     </span>
                     {isActive && (
-                      <div className="h-1 w-1 rounded-full bg-emerald-400 mt-0.5" />
+                      <div className="h-1 w-1 rounded-full bg-violet-400 mt-0.5" />
                     )}
                   </>
                 )}
