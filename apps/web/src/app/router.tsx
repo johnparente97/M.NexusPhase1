@@ -46,7 +46,6 @@ const OrgDashboard = lazyWithRetry(() => import('../pages/OrgDashboard'));
 const DevConsole = lazyWithRetry(() => import('../pages/DevConsole'));
 const DocsPage = lazyWithRetry(() => import('../pages/DocsPage'));
 const EcosystemAlignmentPage = lazyWithRetry(() => import('../pages/EcosystemAlignmentPage'));
-const StorageMarketplace = lazyWithRetry(() => import('../pages/StorageMarketplace'));
 const ComputeMarketplace = lazyWithRetry(() => import('../pages/ComputeMarketplace'));
 const DeFiHub = lazyWithRetry(() => import('../pages/DeFiHub'));
 const TrustCenter = lazyWithRetry(() => import('../pages/TrustCenter'));
@@ -72,6 +71,9 @@ export const router = createHashRouter([
       { path: 'developers', element: suspenseWrapper(DevConsole) },
       { path: 'docs', element: suspenseWrapper(DocsPage) },
       { path: 'legal', element: suspenseWrapper(TrustCenter) },
+      { path: 'about', element: suspenseWrapper(Landing) },
+      { path: 'terms', element: suspenseWrapper(TrustCenter) },
+      { path: 'privacy', element: suspenseWrapper(TrustCenter) },
     ],
   },
   {
@@ -83,16 +85,19 @@ export const router = createHashRouter([
       { path: 'balance', element: <Navigate to="/payments" replace /> },
       { path: 'storage', element: <Navigate to="/cloud" replace /> },
       
-      // Workspace Routes
+      // Core Workspace Routes
       { path: 'chat', element: suspenseWrapper(PaidChat) },
       { path: 'chat/free', element: suspenseWrapper(PaidChat) },
       { path: 'chat/paid', element: suspenseWrapper(PaidChat) },
       
       { path: 'explore', element: suspenseWrapper(ExplorePage) },
+      { path: 'missions', element: suspenseWrapper(Dashboard) },
+      { path: 'data', element: suspenseWrapper(NexusCloudPage) },
       
       { path: 'workflows', element: suspenseWrapper(Dashboard) },
       { path: 'workflows/:id', element: suspenseWrapper(WorkflowDetail) },
       { path: 'workflows/:id/run', element: suspenseWrapper(WorkflowRunner) },
+      { path: 'exchange/:id/run', element: suspenseWrapper(WorkflowRunner) },
       
       { path: 'studio', element: suspenseWrapper(Studio) },
       { path: 'studio/new', element: suspenseWrapper(StudioEditor) },
@@ -113,7 +118,7 @@ export const router = createHashRouter([
       { path: 'developer', element: suspenseWrapper(DevConsole) },
       { path: 'settings', element: suspenseWrapper(Profile) },
       
-      // Additional workspace routes
+      // Additional aliases & features
       { path: 'dashboard', element: suspenseWrapper(Dashboard) },
       { path: 'creator', element: suspenseWrapper(CreatorDashboard) },
       { path: 'profile', element: suspenseWrapper(Profile) },
