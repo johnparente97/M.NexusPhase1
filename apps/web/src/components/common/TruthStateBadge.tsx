@@ -24,7 +24,7 @@ const statusConfig: Record<TruthState, { defaultLabel: string; className: string
     className: 'bg-[#FFD700]/10 text-[#FFD700] border-[#FFD700]/30 shadow-[0_0_10px_rgba(255,215,0,0.2)]'
   },
   planned: {
-    defaultLabel: 'Planned Sigil',
+    defaultLabel: 'Planned',
     className: 'bg-[#A855F7]/10 text-[#D8B4FE] border-[#A855F7]/30 shadow-[0_0_10px_rgba(168,85,247,0.2)]'
   },
   external: {
