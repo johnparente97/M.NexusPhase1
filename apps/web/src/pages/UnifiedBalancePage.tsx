@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { SUPPORTED_CHAINS, SupportedToken, STANDARD_TOP_UP_FEE_BPS, MRDN_TOP_UP_FEE_BPS } from '../config/chain-config';
-import { MeridianRouterAdapter, TopUpCalculation } from '../adapters/meridian/router';
 import { Card } from '../components/ui/Card';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
-import { CircleGatewayWidget } from '../components/common/CircleGatewayWidget';
-import { MpayWidget } from '../components/common/MpayWidget';
 import {
   Coins,
   ShieldCheck,
@@ -20,331 +16,247 @@ import {
   Clock,
   Layers,
   Sparkles,
-  Info,
-  Send,
-  Globe,
+  Award,
+  Lock,
 } from 'lucide-react';
-import { formatCurrency } from '../utils/format';
+import { formatAtomicCurrency, computePriceBreakdownAtomic } from '../utils/currency';
 import { useWallet } from '../hooks/useWallet';
 import { useToast } from '../components/ui/Toast';
+import { TruthStateBadge } from '../components/common/TruthStateBadge';
 
 export default function UnifiedBalancePage() {
   const { walletAddress, chainId, isConnected } = useWallet();
   const { toast } = useToast();
 
-  const [availableBalance, setAvailableBalance] = useState(24.50);
-  const [lifetimeUsage, setLifetimeUsage] = useState(14.20);
-  const [sessionSpend, setSessionSpend] = useState(1.45);
-  const [cashbackEarned, setCashbackEarned] = useState(1.22);
-  const [showAdvancedTech, setShowAdvancedTech] = useState(false);
-  const [activePaymentRail, setActivePaymentRail] = useState<'topup' | 'gateway' | 'mpay'>('topup');
+  const [availableBalanceAtomic, setAvailableBalanceAtomic] = useState('24500000'); // $24.50
+  const [nexusCreditsAtomic, setNexusCreditsAtomic] = useState('10000000');        // $10.00 Nexus Credits
+  const [membershipTier, setMembershipTier] = useState<'explorer' | 'builder' | 'creator' | 'studio'>('builder');
+  const [topUpAmount, setTopUpAmount] = useState<number>(25);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showTechDetails, setShowTechDetails] = useState(false);
 
-  // Top-Up Form State
-  const [selectedChainId, setSelectedChainId] = useState<string>('84532');
-  const [depositAmount, setDepositAmount] = useState<number>(25);
-  const [selectedTokenIndex, setSelectedTokenIndex] = useState<number>(0);
-  const [isProcessingTopUp, setIsProcessingTopUp] = useState(false);
+  const membershipTiers = [
+    {
+      id: 'explorer',
+      name: 'Explorer',
+      price: 'Free',
+      nexRequirement: '0 NEX',
+      feeDiscount: '0%',
+      features: ['Standard marketplace access', 'Fixed-price agent runs', 'Standard result retention'],
+    },
+    {
+      id: 'builder',
+      name: 'Builder',
+      price: 'Optional NEX Lock',
+      nexRequirement: '1,000 NEX (Testnet)',
+      feeDiscount: '25% off Nexus fee',
+      features: ['Higher concurrent run limits', 'Extended result history', '25% discount on Nexus fees'],
+    },
+    {
+      id: 'creator',
+      name: 'Creator',
+      price: 'Optional NEX Lock',
+      nexRequirement: '5,000 NEX (Testnet)',
+      feeDiscount: '50% off Nexus fee',
+      features: ['Advanced creator analytics', 'Unlimited agent listings', '50% discount on Nexus fees'],
+    },
+    {
+      id: 'studio',
+      name: 'Studio',
+      price: 'Optional NEX Lock',
+      nexRequirement: '25,000 NEX (Testnet)',
+      feeDiscount: '75% off Nexus fee',
+      features: ['Team organization tools', 'Priority execution queues', 'Dedicated API routing'],
+    },
+  ];
 
-  const activeChain = SUPPORTED_CHAINS[selectedChainId] || SUPPORTED_CHAINS['84532']!;
-  const activeToken = activeChain.tokens[selectedTokenIndex] || activeChain.tokens[0]!;
-  const calculation: TopUpCalculation = MeridianRouterAdapter.calculateTopUp(
-    depositAmount,
-    activeToken,
-    activeChain.id
-  );
-
-  const handleExecuteTopUp = () => {
-    setIsProcessingTopUp(true);
+  const handleTopUp = () => {
+    setIsProcessing(true);
     setTimeout(() => {
-      setAvailableBalance((prev) => parseFloat((prev + calculation.netCreditedUsdc).toFixed(2)));
-      setIsProcessingTopUp(false);
-      toast(
-        `Successfully credited $${calculation.netCreditedUsdc.toFixed(2)} USDC to your Unified AI Balance! ${
-          calculation.isMrdnZeroFeeBenefit ? '(0% Fee MRDN Benefit Applied)' : '(1% Top-Up Fee)'
-        }`,
-        'success'
-      );
-    }, 1200);
+      const addedAtomic = BigInt(topUpAmount * 1000000);
+      setAvailableBalanceAtomic((prev) => (BigInt(prev) + addedAtomic).toString());
+      setIsProcessing(false);
+      toast(`Successfully added $${topUpAmount}.00 USDC balance via MRDN x402 facilitator!`, 'success');
+    }, 1000);
   };
 
   return (
-    <div className="flex-1 flex flex-col max-w-5xl mx-auto w-full px-4 sm:px-6 py-6 gap-8 select-none pb-20">
+    <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 gap-8 select-none pb-20">
       
-      {/* Header */}
-      <div className="flex flex-col gap-1.5 border-b border-zinc-900 pb-6">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-display font-bold text-zinc-100">AI Vault & Payment Suite</h1>
-          <Badge variant="success" className="text-[10px] font-mono">x402 NATIVE</Badge>
+      {/* ── Top Header ── */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="text-[10px] font-mono font-bold text-[#00F5D4] bg-[#00F5D4]/10 border border-[#00F5D4]/20 px-2 py-0.5 rounded-full uppercase">
+              Workspace Payments & Membership
+            </span>
+            <TruthStateBadge status="production" text="x402 Facilitator Connected" />
+          </div>
+          <h1 className="font-display font-extrabold text-2xl sm:text-4xl text-white tracking-tight">
+            Payments, Credits & <span className="text-prismatic">NEX Membership</span>
+          </h1>
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+            Manage your USDC balance, nontransferable Nexus Credits, and optional NEX membership benefits.
+          </p>
         </div>
-        <p className="text-xs text-zinc-400 max-w-2xl leading-relaxed">
-          Your Web3 AI funds & credit reserve. Manage multichain deposits via Circle Gateway, send gasless payments via Mpay, enjoy 0% MRDN deposit fees, and earn 5% cashback rewards.
-        </p>
       </div>
 
-      {/* Main Dollar Balance Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-gradient-to-br from-emerald-950/20 to-zinc-900 border-zinc-800 p-5 flex flex-col gap-2 shadow-lg">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Available Balance</span>
-          <span className="text-3xl font-display font-bold text-[#27F293]">
-            {formatCurrency(availableBalance)}
-          </span>
-          <span className="text-[10px] text-zinc-400 mt-1 font-mono">
-            ~{Math.round(availableBalance / 0.002)} prompts remaining
-          </span>
-        </Card>
-
-        <Card className="bg-zinc-900 border-zinc-800 p-5 flex flex-col gap-2">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">5% MRDN Cashback Earned</span>
-          <span className="text-2xl font-display font-bold text-emerald-400">
-            +${cashbackEarned.toFixed(2)} MRDN
-          </span>
-          <span className="text-[10px] text-emerald-400 font-mono">Auto-Credited to Wallet</span>
-        </Card>
-
-        <Card className="bg-zinc-900 border-zinc-800 p-5 flex flex-col gap-2">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Lifetime AI Spend</span>
-          <span className="text-2xl font-display font-bold text-zinc-200">
-            {formatCurrency(lifetimeUsage)}
-          </span>
-          <span className="text-[10px] text-zinc-500 font-mono">14 Completed Runs</span>
-        </Card>
-
-        <Card className="bg-zinc-900 border-zinc-800 p-5 flex flex-col gap-2">
-          <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">MRDN Fee Benefit</span>
-          <span className="text-2xl font-display font-bold text-emerald-400">
-            0% Top-Up Fee
-          </span>
-          <span className="text-[10px] text-zinc-400 font-mono">USDC / Other Assets: 0.5% Fee</span>
-        </Card>
-      </div>
-
-      {/* Transparent Fee & Cost-Effectiveness Banner */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-emerald-950/20 border border-emerald-500/30 rounded-2xl p-4 flex items-start gap-3 text-xs text-zinc-300">
-          <Sparkles className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
-          <div className="flex flex-col gap-1">
-            <span className="font-bold text-white text-xs">Cost-Effective Guarantee</span>
-            <p className="text-[11px] text-zinc-400 leading-relaxed">
-              No monthly subscriptions or minimum balances. Pay only for what you use via x402 headers at sub-penny rates (<strong className="text-emerald-400">90%+ cheaper than OpenAI/Anthropic APIs</strong>) plus <strong className="text-emerald-400">5% MRDN cashback rewards</strong>.
-            </p>
+      {/* ── Balance & Credit KPI Cards ── */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        
+        {/* Available USDC Balance */}
+        <div className="p-5 rounded-2xl bg-gradient-to-br from-[#00F5D4]/15 via-[#00F5D4]/5 to-transparent border border-[#00F5D4]/40 space-y-2 shadow-lg">
+          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+            <span>Available USDC Balance</span>
+            <Coins className="h-4 w-4 text-[#00F5D4]" />
+          </div>
+          <div className="font-display font-extrabold text-3xl text-white">
+            {formatAtomicCurrency(availableBalanceAtomic)}
+          </div>
+          <div className="text-[10px] font-mono text-[#00F5D4] font-bold">
+            Settlement Facilitator: MRDN x402
           </div>
         </div>
 
-        <div className="bg-zinc-900/60 border border-zinc-800 rounded-2xl p-4 flex items-start gap-3 text-xs text-zinc-300">
-          <Coins className="h-5 w-5 text-emerald-400 shrink-0 mt-0.5" />
-          <div className="flex flex-col gap-1">
-            <span className="font-bold text-white text-xs">0% MRDN Deposit Benefit</span>
-            <p className="text-[11px] text-zinc-400 leading-relaxed">
-              Deposit using <strong className="text-emerald-400">MRDN for 0% top-up fees</strong>, or standard USDC for a 0.5% protocol fee. You can top up any amount with zero long-term commitment.
-            </p>
+        {/* Nexus Service Credits */}
+        <div className="p-5 rounded-2xl bg-[var(--nx-surface-1)] border border-white/[0.08] space-y-2">
+          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+            <span>Nexus Service Credits</span>
+            <Sparkles className="h-4 w-4 text-[#A855F7]" />
+          </div>
+          <div className="font-display font-extrabold text-2xl text-white">
+            {formatAtomicCurrency(nexusCreditsAtomic)}
+          </div>
+          <div className="text-[10px] font-mono text-zinc-500">
+            Nontransferable promotional credits
+          </div>
+        </div>
+
+        {/* Current NEX Membership Tier */}
+        <div className="p-5 rounded-2xl bg-[var(--nx-surface-1)] border border-white/[0.08] space-y-2">
+          <div className="flex items-center justify-between text-xs font-mono text-zinc-400">
+            <span>NEX Membership Tier</span>
+            <Award className="h-4 w-4 text-[#FFD700]" />
+          </div>
+          <div className="font-display font-extrabold text-2xl text-[#FFD700] capitalize">
+            {membershipTier} Tier
+          </div>
+          <div className="text-[10px] font-mono text-zinc-500">
+            25% discount on Nexus marketplace fees
+          </div>
+        </div>
+
+      </div>
+
+      {/* ── Top-Up & Balance Management ── */}
+      <div className="p-6 rounded-2xl bg-[var(--nx-surface-1)] border border-white/[0.08] space-y-5">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+          <h2 className="font-display font-extrabold text-base text-white flex items-center gap-2">
+            <Coins className="h-4 w-4 text-[#00F5D4]" />
+            <span>USDC Balance Top-Up</span>
+          </h2>
+          <span className="text-[11px] font-mono text-zinc-400">x402 Facilitator: MRDN</span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-mono text-zinc-400 uppercase">Currency Asset</label>
+            <input
+              type="text"
+              disabled
+              value="USDC (Standard Market Asset)"
+              className="bg-[var(--nx-bg)] border border-white/[0.08] text-xs font-mono text-zinc-300 p-3 rounded-xl"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] font-mono text-zinc-400 uppercase">Top-Up Amount (USD)</label>
+            <input
+              type="number"
+              min={5}
+              value={topUpAmount}
+              onChange={(e) => setTopUpAmount(Math.max(5, Number(e.target.value)))}
+              className="bg-[var(--nx-bg)] border border-white/[0.08] text-xs font-mono text-white p-3 rounded-xl focus:outline-none focus:border-[#00F5D4]"
+            />
+          </div>
+
+          <div className="flex items-end">
+            <Button
+              onClick={handleTopUp}
+              isLoading={isProcessing}
+              variant="primary"
+              size="md"
+              className="w-full font-bold"
+              rightIcon={<ArrowUpRight className="h-4 w-4" />}
+            >
+              Add USDC Balance
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* Multi-Rail Payment Interface Navigation Tabs */}
-      <div className="space-y-4">
-        <div className="flex bg-zinc-900 p-1.5 rounded-2xl border border-zinc-800 flex-wrap sm:flex-nowrap gap-1">
-          <button
-            type="button"
-            onClick={() => setActivePaymentRail('topup')}
-            className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-              activePaymentRail === 'topup'
-                ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 font-bold shadow-md'
-                : 'text-zinc-400 hover:text-white'
-            }`}
-          >
-            <Coins className="h-4 w-4" />
-            <span>Multichain Top-Up</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActivePaymentRail('gateway')}
-            className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-              activePaymentRail === 'gateway'
-                ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 font-bold shadow-md'
-                : 'text-zinc-400 hover:text-white'
-            }`}
-          >
-            <Globe className="h-4 w-4" />
-            <span>Circle Gateway (Batched)</span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActivePaymentRail('mpay')}
-            className={`flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-              activePaymentRail === 'mpay'
-                ? 'bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 text-zinc-950 font-bold shadow-md'
-                : 'text-zinc-400 hover:text-white'
-            }`}
-          >
-            <Send className="h-4 w-4" />
-            <span>Mpay (Gasless)</span>
-          </button>
+      {/* ── NEX Membership Tiers Section ── */}
+      <div className="space-y-6">
+        <div>
+          <h2 className="font-display font-extrabold text-xl sm:text-2xl text-white tracking-tight">
+            Optional NEX <span className="text-prismatic">Membership Tiers</span>
+          </h2>
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+            NEX is optional and never required to buy, sell, or execute agents. Lock testnet NEX for platform fee discounts.
+          </p>
         </div>
 
-        {/* Tab 1: Multichain AI Balance Top-Up */}
-        {activePaymentRail === 'topup' && (
-          <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-6 shadow-xl">
-            <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
-              <div className="flex items-center gap-2">
-                <Coins className="h-5 w-5 text-[#27F293]" />
-                <h2 className="text-base font-display font-bold text-zinc-100">
-                  Multichain AI Balance Top-Up
-                </h2>
-              </div>
-              <span className="text-[10px] font-mono text-zinc-400 bg-zinc-950 px-2.5 py-1 rounded-full border border-zinc-800">
-                Fee Rate: <span className={calculation.isMrdnZeroFeeBenefit ? 'text-emerald-400 font-bold' : 'text-amber-400 font-bold'}>{calculation.feePercentageDisplay}</span>
-              </span>
-            </div>
-
-            {/* Input Controls */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {/* Select Chain */}
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono text-zinc-400 uppercase">1. Source Network</label>
-                <select
-                  value={selectedChainId}
-                  onChange={(e) => {
-                    setSelectedChainId(e.target.value);
-                    setSelectedTokenIndex(0);
-                  }}
-                  className="bg-zinc-950 border border-zinc-800 text-xs font-semibold text-zinc-100 p-3 rounded-xl focus:outline-none cursor-pointer"
-                >
-                  {Object.values(SUPPORTED_CHAINS).map((chain) => (
-                    <option key={chain.id} value={String(chain.id)} disabled={!chain.supported}>
-                      {chain.name} {!chain.supported ? '(Coming Soon)' : ''}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Select Token */}
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono text-zinc-400 uppercase">2. Deposited Token</label>
-                <select
-                  value={selectedTokenIndex}
-                  onChange={(e) => setSelectedTokenIndex(Number(e.target.value))}
-                  className="bg-zinc-950 border border-zinc-800 text-xs font-semibold text-zinc-100 p-3 rounded-xl focus:outline-none cursor-pointer"
-                >
-                  {activeChain.tokens.map((tok, idx) => (
-                    <option key={tok.symbol} value={idx}>
-                      {tok.symbol} — {tok.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/* Deposit Amount */}
-              <div className="flex flex-col gap-1.5">
-                <label className="text-[10px] font-mono text-zinc-400 uppercase">3. Deposit Amount</label>
-                <input
-                  type="number"
-                  min={1}
-                  value={depositAmount}
-                  onChange={(e) => setDepositAmount(Math.max(1, Number(e.target.value)))}
-                  className="bg-zinc-950 border border-zinc-800 text-xs font-semibold text-zinc-100 p-3 rounded-xl focus:outline-none font-mono"
-                />
-              </div>
-            </div>
-
-            {/* Top-Up Fee & Conversion Breakdown Box */}
-            <div className="bg-zinc-950 border border-zinc-800 rounded-xl p-4.5 flex flex-col gap-2.5 text-xs font-mono">
-              <div className="flex justify-between text-zinc-400 border-b border-zinc-900 pb-2">
-                <span>Gross Deposit Value:</span>
-                <span className="text-zinc-200 font-semibold">{formatCurrency(calculation.grossUsdValue)}</span>
-              </div>
-              <div className="flex justify-between text-zinc-400 border-b border-zinc-900 pb-2">
-                <span>Top-Up Fee Rate:</span>
-                {calculation.isMrdnZeroFeeBenefit ? (
-                  <span className="text-emerald-400 font-bold flex items-center gap-1">
-                    <Badge variant="success" className="text-[9px] py-0">0% MRDN BENEFIT</Badge>
-                    $0.00
-                  </span>
-                ) : (
-                  <span className="text-amber-400 font-semibold">
-                    -${calculation.meridianTopUpFeeUsd.toFixed(2)} (0.5%)
-                  </span>
-                )}
-              </div>
-              <div className="flex justify-between text-zinc-400 border-b border-zinc-900 pb-2">
-                <span>Estimated Network Gas & Slippage:</span>
-                <span className="text-zinc-400">-${(calculation.estimatedNetworkFeeUsd + calculation.slippageUsd).toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-[#27F293] font-bold text-sm pt-1">
-                <span>Net Credited AI Balance:</span>
-                <span>+{formatCurrency(calculation.netCreditedUsdc)}</span>
-              </div>
-            </div>
-
-            {/* Execute Top-Up Button */}
-            <div className="flex items-center justify-between pt-2 flex-wrap gap-3">
-              <div className="text-[11px] text-zinc-500 font-mono flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                <span>x402 Transfer-With-Authorization (Demo Simulation)</span>
-              </div>
-              <Button
-                variant="primary"
-                size="md"
-                onClick={handleExecuteTopUp}
-                isLoading={isProcessingTopUp}
-                className="font-bold px-6 text-xs flex items-center gap-2"
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+          {membershipTiers.map((tier) => {
+            const isCurrent = membershipTier === tier.id;
+            return (
+              <div
+                key={tier.id}
+                className={`p-6 rounded-2xl border flex flex-col justify-between space-y-6 transition-all ${
+                  isCurrent
+                    ? 'bg-[#00F5D4]/10 border-[#00F5D4] shadow-lg shadow-[#00F5D4]/15'
+                    : 'bg-[var(--nx-surface-1)] border-white/[0.08] hover:border-white/[0.2]'
+                }`}
               >
-                Simulate Demo Top-Up
-                <ArrowUpRight className="h-4 w-4" />
-              </Button>
-            </div>
-          </Card>
-        )}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-display font-extrabold text-lg text-white">{tier.name}</h3>
+                    {isCurrent && (
+                      <span className="text-[10px] font-mono font-bold text-zinc-950 bg-[#00F5D4] px-2 py-0.5 rounded-full">
+                        ACTIVE
+                      </span>
+                    )}
+                  </div>
 
-        {/* Tab 2: Circle Gateway Batched Nanopayments Widget */}
-        {activePaymentRail === 'gateway' && <CircleGatewayWidget />}
+                  <div className="space-y-1 font-mono text-xs">
+                    <span className="text-[#00F5D4] font-bold block">{tier.feeDiscount}</span>
+                    <span className="text-zinc-400 block text-[11px]">{tier.nexRequirement}</span>
+                  </div>
 
-        {/* Tab 3: Mpay Gasless Keypad Widget */}
-        {activePaymentRail === 'mpay' && <MpayWidget />}
-      </div>
+                  <ul className="space-y-2 text-xs text-zinc-400 font-sans">
+                    {tier.features.map((feat) => (
+                      <li key={feat} className="flex items-center gap-2">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-[#00F5D4] shrink-0" />
+                        <span>{feat}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
 
-      {/* Advanced Technical Blockchain View Drawer */}
-      <div className="flex flex-col gap-4 border-t border-zinc-900 pt-6">
-        <button
-          onClick={() => setShowAdvancedTech((prev) => !prev)}
-          className="flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-zinc-200 cursor-pointer w-fit"
-        >
-          {showAdvancedTech ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
-          <span>{showAdvancedTech ? 'Hide Technical Architecture View' : 'Show Technical Architecture View'}</span>
-        </button>
-
-        {showAdvancedTech && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            className="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 flex flex-col gap-3 text-xs font-mono text-zinc-400"
-          >
-            <h3 className="text-xs font-bold text-zinc-200">Onchain Settlement Architecture</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-[11px]">
-              <div className="bg-zinc-900/60 p-3 rounded-lg flex justify-between">
-                <span>Source CAIP-2 Chain:</span>
-                <span className="text-zinc-200">{activeChain.caip2Id}</span>
+                <Button
+                  onClick={() => setMembershipTier(tier.id as any)}
+                  variant={isCurrent ? 'cyan' : 'outline'}
+                  size="sm"
+                  className="w-full font-bold"
+                >
+                  {isCurrent ? 'Current Tier' : `Switch to ${tier.name}`}
+                </Button>
               </div>
-              <div className="bg-zinc-900/60 p-3 rounded-lg flex justify-between">
-                <span>Contract Address:</span>
-                <span className="text-zinc-200 truncate max-w-[140px]">{activeToken.address}</span>
-              </div>
-              <div className="bg-zinc-900/60 p-3 rounded-lg flex justify-between">
-                <span>Payment Facilitator:</span>
-                <span className="text-[#27F293]">Meridian Facilitator Proxy</span>
-              </div>
-              <div className="bg-zinc-900/60 p-3 rounded-lg flex justify-between">
-                <span>Settlement Protocol:</span>
-                <span className="text-zinc-200">x402 (EIP-3009 Transfer-With-Authorization)</span>
-              </div>
-            </div>
-          </motion.div>
-        )}
+            );
+          })}
+        </div>
       </div>
 
     </div>
   );
 }
-

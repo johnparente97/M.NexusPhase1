@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Wallet, Coins, Menu, Copy, ChevronDown, ExternalLink } from 'lucide-react';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Search, Wallet, Coins, Menu, Copy, ChevronRight, Sparkles } from 'lucide-react';
 import { NexusLogoMark } from '../common/NexusLogoMark';
-import DemoLabel from '../common/DemoLabel';
+import { ThemeToggle } from '../common/ThemeToggle';
 import { useWallet } from '../../hooks/useWallet';
 import { useSidebarStore } from '../../stores/sidebar-store';
 import { cn } from '../../utils/cn';
@@ -13,18 +12,36 @@ interface TopNavProps {
   onMobileMenuClick: () => void;
 }
 
+const ROUTE_TITLES: Record<string, string> = {
+  '/': 'Home',
+  '/explore': 'Explore Marketplace',
+  '/compose': 'Build Agent',
+  '/build': 'Build Agent',
+  '/activity': 'Activity & Runs',
+  '/library': 'Library',
+  '/dashboard': 'Workspace Overview',
+  '/workspace': 'Workspace Overview',
+  '/creator': 'Creator Console',
+  '/payments': 'Payments & Billing',
+  '/chat': 'AI Agent Chat',
+  '/cloud': 'Files & Knowledge',
+  '/developer': 'Developer Console',
+  '/docs': 'Documentation',
+  '/trust': 'Trust Center',
+};
+
 export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps) {
+  const location = useLocation();
   const { isCollapsed } = useSidebarStore();
   const { isConnected, walletAddress, chainId, usdcBalance, signInWithEthereum, switchNetwork } = useWallet();
   const isWrongNetwork = isConnected && chainId !== null && chainId !== 84532;
-  
-  const [networkFamily, setNetworkFamily] = useState<'EVM' | 'Solana'>('EVM');
-  const [isPaymentsOpen, setIsPaymentsOpen] = useState(false);
+
+  const currentTitle = ROUTE_TITLES[location.pathname] || 'Workspace';
 
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 h-14 bg-[#171719]/90 backdrop-blur-xl border-b border-zinc-800/80 px-3 sm:px-6 flex items-center justify-between z-layer-header transition-all duration-200 left-0',
+        'fixed top-0 right-0 h-14 bg-[var(--nx-bg)]/90 backdrop-blur-2xl border-b border-[var(--nx-border)] px-3 sm:px-6 flex items-center justify-between z-layer-header transition-all duration-200 left-0',
         {
           'lg:left-64': !isCollapsed,
           'lg:left-16': isCollapsed,
@@ -35,191 +52,73 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
       <div className="flex items-center gap-2.5 lg:hidden shrink-0">
         <button
           onClick={onMobileMenuClick}
-          className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-zinc-800/60 transition-colors cursor-pointer"
+          className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.05] transition-colors cursor-pointer"
           aria-label="Open Navigation Menu"
         >
           <Menu className="h-5 w-5" />
         </button>
 
         <Link to="/" className="flex items-center gap-2 group">
-          <NexusLogoMark className="h-6 w-6 text-purple-400" />
+          <NexusLogoMark className="h-6 w-6" />
           <div className="flex items-baseline gap-1.5">
-            <span className="font-display font-bold text-sm text-white tracking-tight">
+            <span className="font-display font-extrabold text-sm text-white tracking-tight group-hover:text-prismatic transition-all">
               Nexus
-            </span>
-            <span className="text-[9px] font-mono prismatic-text font-bold hidden sm:inline">
-              Powered by Meridian
             </span>
           </div>
         </Link>
       </div>
 
-      {/* Desktop Navigation Links — Essential Meridian Product Suite Navigation */}
-      <nav className="hidden lg:flex items-center gap-6 text-xs font-display">
-        <Link
-          to="/chat"
-          className="text-zinc-300 hover:text-purple-300 transition-colors font-medium"
-        >
-          Inference
+      {/* Desktop Left: Breadcrumb Location Indicator */}
+      <div className="hidden lg:flex items-center gap-2 text-xs font-mono select-none">
+        <Link to="/" className="text-zinc-400 hover:text-[#00F5D4] transition-colors flex items-center gap-1 font-bold">
+          <Sparkles className="h-3.5 w-3.5 text-[#00F5D4]" />
+          <span>Nexus</span>
         </Link>
+        <ChevronRight className="h-3.5 w-3.5 text-zinc-600" />
+        <span className="text-white font-semibold truncate max-w-[200px]">
+          {currentTitle}
+        </span>
+      </div>
 
-        <Link
-          to="/exchange"
-          className="text-zinc-300 hover:text-cyan-300 transition-colors font-medium"
-        >
-          Workflows
-        </Link>
+      <div className="hidden lg:block flex-1" />
 
-        <Link
-          to="/marketplace/models"
-          className="text-zinc-300 hover:text-emerald-300 transition-colors font-medium"
-        >
-          Models
-        </Link>
-
-        {/* Payments Dropdown */}
-        <div
-          className="relative"
-          onMouseEnter={() => setIsPaymentsOpen(true)}
-          onMouseLeave={() => setIsPaymentsOpen(false)}
-        >
-          <button
-            type="button"
-            className="inline-flex items-center gap-1 text-zinc-300 hover:text-white transition-colors font-medium cursor-pointer py-1"
-          >
-            <span>Payments</span>
-            <ChevronDown className={cn("h-3.5 w-3.5 text-purple-400 transition-transform duration-200", isPaymentsOpen && "rotate-180")} />
-          </button>
-
-          <AnimatePresence>
-            {isPaymentsOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 6 }}
-                transition={{ duration: 0.15 }}
-                className="absolute left-0 top-full pt-1 z-50 w-52"
-              >
-                <div className="space-y-1 rounded-xl bg-[#121216] border border-purple-500/20 p-2 text-white shadow-2xl shadow-black/80">
-                  <a
-                    href="https://pay.mrdn.finance/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-purple-300 transition-colors hover:bg-purple-500/10"
-                  >
-                    <span className="font-bold">Mpay (Gasless)</span>
-                    <ExternalLink className="h-3 w-3 opacity-60" />
-                  </a>
-                  <a
-                    href="https://instant.mrdn.finance/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-cyan-300 transition-colors hover:bg-cyan-500/10"
-                  >
-                    <span>Instant x402</span>
-                    <ExternalLink className="h-3 w-3 opacity-60" />
-                  </a>
-                  <a
-                    href="https://nanopayments.mrdn.finance/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-teal-300 transition-colors hover:bg-teal-500/10"
-                  >
-                    <span>Batched Nanopayments</span>
-                    <ExternalLink className="h-3 w-3 opacity-60" />
-                  </a>
-                  <Link
-                    to="/balance"
-                    className="flex items-center justify-between rounded-lg px-3 py-2 text-xs font-medium text-zinc-200 transition-colors hover:bg-zinc-800"
-                  >
-                    <span>AI Vault & Top-Up</span>
-                    <Coins className="h-3 w-3 text-purple-400" />
-                  </Link>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-
-        {/* Command Centre — Meridian Glowing Signature Link */}
-        <Link
-          to="/auth"
-          className="font-display font-medium text-[#F0F0F0] transition-colors hover:text-purple-300"
-          style={{
-            textShadow: '0 0 6px rgba(168, 85, 247, 0.45), 0 0 14px rgba(56, 189, 248, 0.25)',
-          }}
-        >
-          Command Centre
-        </Link>
-      </nav>
-
-      {/* Right Controls: Network Toggle, Spotlight Search, AI Balance, Wallet */}
+      {/* Right Controls: Search, Theme Toggle, Balance, Wallet */}
       <div className="flex items-center gap-2 sm:gap-2.5 ml-auto shrink-0">
-        {/* Network Family Switcher (EVM vs Solana) */}
-        <div className="hidden xl:flex items-center rounded-full bg-zinc-900 p-0.5 border border-zinc-800">
-          <button
-            type="button"
-            onClick={() => setNetworkFamily('EVM')}
-            className={cn(
-              "px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-all cursor-pointer",
-              networkFamily === 'EVM'
-                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30 shadow-sm"
-                : "text-zinc-400 hover:text-white"
-            )}
-          >
-            EVM
-          </button>
-          <button
-            type="button"
-            onClick={() => setNetworkFamily('Solana')}
-            className={cn(
-              "px-2.5 py-1 text-[10px] font-mono font-bold rounded-full transition-all cursor-pointer",
-              networkFamily === 'Solana'
-                ? "bg-purple-500/20 text-purple-300 border border-purple-500/30 shadow-sm"
-                : "text-zinc-400 hover:text-white"
-            )}
-          >
-            Solana
-          </button>
-        </div>
+        <ThemeToggle />
 
-        {/* Spotlight Search Launcher */}
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.97 }}
+        {/* Search Launcher */}
+        <button
           onClick={onSearchClick}
-          className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 hover:text-zinc-200 bg-zinc-900/90 border border-zinc-800 hover:border-purple-500/40 rounded-xl px-3 py-1.5 transition-colors cursor-pointer select-none shadow-sm"
+          className="hidden sm:flex items-center gap-2 text-xs text-zinc-400 hover:text-white bg-[#0F0F1D] border border-white/[0.08] hover:border-[#00F5D4]/40 rounded-xl px-3 py-1.5 transition-all cursor-pointer select-none shadow-sm"
         >
-          <Search className="h-3.5 w-3.5 text-zinc-500" />
-          <span className="hidden md:inline">Spotlight</span>
-          <kbd className="text-[9px] text-zinc-500 bg-zinc-950 border border-zinc-800 px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
-        </motion.button>
+          <Search className="h-3.5 w-3.5 text-[#00F5D4]" />
+          <span className="hidden md:inline font-medium">Search</span>
+          <kbd className="text-[9px] text-zinc-500 bg-[#05050A] border border-white/[0.08] px-1.5 py-0.5 rounded font-mono">⌘K</kbd>
+        </button>
 
-        {/* AI Balance Quick Link */}
+        {/* Balance Quick Link */}
         <Link
-          to="/balance"
-          className="flex items-center gap-1.5 bg-zinc-900/90 border border-purple-500/30 hover:border-purple-400/60 text-[11px] sm:text-xs font-mono text-purple-300 px-2.5 sm:px-3 py-1.5 rounded-xl transition-colors shrink-0 shadow-sm"
-          title="Unified AI Balance"
+          to="/payments"
+          className="flex items-center gap-1.5 bg-[#0F0F1D] border border-[#00F5D4]/30 hover:border-[#00F5D4]/60 text-[11px] sm:text-xs font-mono text-[#00F5D4] px-2.5 sm:px-3 py-1.5 rounded-xl transition-all shrink-0 shadow-[0_0_10px_rgba(0,245,212,0.15)] font-bold"
+          title="Payments & Balance"
         >
-          <Coins className="h-3.5 w-3.5 text-purple-400" />
+          <Coins className="h-3.5 w-3.5 text-[#00F5D4]" />
           <span>${usdcBalance || '24.50'}</span>
         </Link>
 
         {/* Wallet Button */}
         {isWrongNetwork ? (
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+          <button
             onClick={switchNetwork}
-            className="text-[11px] sm:text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-2.5 sm:px-3 py-1.5 rounded-xl transition-colors cursor-pointer font-semibold"
+            className="text-[11px] sm:text-xs bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 px-2.5 sm:px-3 py-1.5 rounded-lg transition-colors cursor-pointer font-semibold"
           >
             Switch
-          </motion.button>
+          </button>
         ) : isConnected ? (
-          <div className="flex items-center gap-1.5 bg-zinc-900 border border-purple-500/30 rounded-xl p-1 px-2.5 sm:px-3 text-xs">
+          <div className="flex items-center gap-1.5 bg-[#0F0F1D] border border-[#A855F7]/30 rounded-lg p-1 px-2.5 sm:px-3 text-xs">
             <button
               onClick={() => { navigator.clipboard.writeText(walletAddress || ''); }}
-              className="font-mono text-zinc-300 hover:text-purple-300 flex items-center gap-1.5 transition-colors cursor-pointer text-[11px] sm:text-xs"
+              className="font-mono text-zinc-300 hover:text-[#00F5D4] flex items-center gap-1.5 transition-colors cursor-pointer text-[11px] sm:text-xs font-bold"
               title="Copy wallet address"
             >
               {walletAddress ? `${walletAddress.substring(0, 4)}...${walletAddress.substring(walletAddress.length - 3)}` : ''}
@@ -227,19 +126,16 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
             </button>
           </div>
         ) : (
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
+          <button
             onClick={signInWithEthereum}
-            className="flex items-center gap-1.5 bg-gradient-to-r from-purple-500 via-cyan-400 to-emerald-400 hover:brightness-110 text-zinc-950 font-bold px-3 sm:px-4 py-1.5 rounded-xl text-[11px] sm:text-xs shadow-md transition-colors cursor-pointer shrink-0 border border-white/20"
+            className="flex items-center gap-1.5 bg-gradient-to-r from-[#A855F7] to-[#FF007F] hover:brightness-110 text-white font-extrabold px-3.5 sm:px-4 py-1.5 rounded-xl text-[11px] sm:text-xs shadow-lg shadow-purple-600/25 transition-all cursor-pointer shrink-0 border border-purple-400/30"
           >
             <Wallet className="h-3.5 w-3.5 shrink-0" />
             <span className="hidden sm:inline">Connect Wallet</span>
             <span className="sm:hidden">Connect</span>
-          </motion.button>
+          </button>
         )}
       </div>
     </header>
   );
 }
-

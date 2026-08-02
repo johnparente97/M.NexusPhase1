@@ -1,4 +1,4 @@
-// ─── Nexus — Multichain & Token Configuration (Powered by Meridian) ──────────────
+// ─── Nexus — Multichain & Token Configuration ──────────────
 // Centralized configuration for EVM chains, tokens, and top-up fee rules.
 // Utility Model:
 // - Top-up using MRDN: 0% top-up fee

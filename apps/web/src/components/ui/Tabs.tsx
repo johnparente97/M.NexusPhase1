@@ -27,7 +27,7 @@ export const Tabs: React.FC<TabsProps> = ({ options, activeKey, onChange, classN
             className={cn(
               'flex items-center gap-2 pb-3.5 text-xs font-semibold text-zinc-400 border-b-2 border-transparent transition-all duration-200 select-none hover:text-zinc-200 whitespace-nowrap',
               {
-                'text-emerald-400 border-emerald-500 font-bold': isActive,
+                'text-violet-400 border-violet-500 font-bold': isActive,
               }
             )}
           >
@@ -37,7 +37,7 @@ export const Tabs: React.FC<TabsProps> = ({ options, activeKey, onChange, classN
               <span
                 className={cn(
                   'px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-zinc-800 text-zinc-400',
-                  { 'bg-emerald-500/10 text-emerald-400': isActive }
+                  { 'bg-violet-500/10 text-violet-300': isActive }
                 )}
               >
                 {opt.count}

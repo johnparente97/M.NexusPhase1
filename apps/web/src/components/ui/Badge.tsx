@@ -2,7 +2,7 @@ import React from 'react';
 import { cn } from '../../utils/cn';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  variant?: 'default' | 'success' | 'warning' | 'error' | 'info' | 'outline';
+  variant?: 'default' | 'secondary' | 'success' | 'warning' | 'danger' | 'error' | 'info' | 'outline';
 }
 
 export const Badge: React.FC<BadgeProps> = ({ className, variant = 'default', children, ...props }) => {
@@ -11,12 +11,13 @@ export const Badge: React.FC<BadgeProps> = ({ className, variant = 'default', ch
       className={cn(
         'inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold tracking-wide border select-none uppercase',
         {
-          'bg-zinc-800 text-zinc-300 border-zinc-700': variant === 'default',
-          'bg-purple-950/40 text-purple-300 border-purple-800/40': variant === 'success',
-          'bg-amber-950/40 text-amber-400 border-amber-900/30': variant === 'warning',
-          'bg-rose-950/40 text-rose-400 border-rose-900/30': variant === 'error',
-          'bg-cyan-950/40 text-cyan-300 border-cyan-800/40': variant === 'info',
-          'border-zinc-700 text-zinc-400': variant === 'outline',
+          'bg-violet-500/10 text-violet-400 border-violet-500/20': variant === 'default',
+          'bg-[#1A1A26] text-zinc-300 border-white/[0.08]': variant === 'secondary',
+          'bg-emerald-500/10 text-emerald-400 border-emerald-500/20': variant === 'success',
+          'bg-amber-500/10 text-amber-400 border-amber-500/20': variant === 'warning',
+          'bg-rose-500/10 text-rose-400 border-rose-500/20': variant === 'danger' || variant === 'error',
+          'bg-cyan-500/10 text-cyan-400 border-cyan-500/20': variant === 'info',
+          'border-white/[0.12] text-zinc-400 bg-transparent': variant === 'outline',
         },
         className
       )}

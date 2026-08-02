@@ -10,7 +10,7 @@ import { Button } from '../components/ui/Button';
 import { formatDate, formatCurrency, formatDuration } from '../utils/format';
 import { ArrowLeft, Clock, ShieldCheck, CheckCircle2, XCircle, FileText, Share2 } from 'lucide-react';
 import DemoLabel from '../components/common/DemoLabel';
-import OutcomeReceiptModal from '../components/workflow/OutcomeReceiptModal';
+import ReceiptModal from '../components/common/ReceiptModal';
 
 export default function RunDetail() {
   const { id } = useParams<{ id: string }>();
@@ -30,6 +30,25 @@ export default function RunDetail() {
     cancelled: 'default',
   } as const;
 
+  const mockReceiptData = {
+    id: run.settlement?.receiptIdentifier || `rcpt_nexus_${run.id.slice(0, 8)}`,
+    runId: run.id,
+    capabilityTitle: run.workflow?.name || 'Execution Capability',
+    creator: 'Nexus Creator',
+    user: 'Connected User',
+    modelCost: '$0.18',
+    toolCost: '$0.05',
+    creatorEarnings: formatCurrency((run.actualPrice || 0.5) * 0.70),
+    nexusFee: formatCurrency((run.actualPrice || 0.5) * 0.10),
+    settlementCost: '$0.01',
+    totalAmount: formatCurrency(run.actualPrice || 0.5),
+    facilitator: 'MRDN',
+    network: 'Base Sepolia',
+    settlementStatus: 'Settled (x402)',
+    transactionReference: run.settlement?.transactionReference || '0x71a...998b',
+    settledAt: formatDate(run.completedAt || run.createdAt),
+  };
+
   return (
     <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full px-6 py-6 gap-8 select-none pb-16">
       
@@ -40,8 +59,8 @@ export default function RunDetail() {
       </Link>
 
       {/* Main Execution summary card */}
-      <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-6">
-        <div className="flex items-center justify-between gap-4 border-b border-zinc-800 pb-4">
+      <Card className="bg-[var(--nx-surface-1)] border-[var(--nx-border)] p-6 flex flex-col gap-6">
+        <div className="flex items-center justify-between gap-4 border-b border-[var(--nx-border)] pb-4">
           <div className="flex flex-col gap-1">
             <h2 className="text-base font-semibold text-zinc-200">{run.workflow?.name || 'Execution Run'}</h2>
             <span className="text-[10px] text-zinc-500">
@@ -52,20 +71,20 @@ export default function RunDetail() {
             <Badge variant={statusColors[run.status]}>{run.status}</Badge>
             {run.status === 'completed' && (
               <Button
-                variant="outline"
+                variant="secondary"
                 size="sm"
                 onClick={() => setShowReceiptModal(true)}
                 className="text-xs font-semibold flex items-center gap-1.5"
               >
-                <FileText className="h-3.5 w-3.5 text-[#27F293]" />
-                View Machine Receipt
+                <FileText className="h-3.5 w-3.5 text-emerald-400" />
+                View Receipt
               </Button>
             )}
           </div>
         </div>
 
         {/* Timelines grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs font-mono">
           <div className="flex flex-col gap-1">
             <span className="text-[9px] text-zinc-500 font-semibold uppercase">Created At</span>
             <span className="text-zinc-300 font-semibold">{formatDate(run.createdAt)}</span>
@@ -77,25 +96,14 @@ export default function RunDetail() {
             </span>
           </div>
           <div className="flex flex-col gap-1">
-            <span className="text-[9px] text-zinc-500 font-semibold uppercase">Est Price</span>
+            <span className="text-[9px] text-zinc-500 font-semibold uppercase">Quote</span>
             <span className="text-zinc-300 font-semibold">{run.estimatedPrice === 0 ? 'Free' : formatCurrency(run.estimatedPrice)}</span>
           </div>
           <div className="flex flex-col gap-1">
-            <span className="text-[9px] text-zinc-500 font-semibold uppercase">Actual Payout</span>
-            <span className="text-zinc-300 font-semibold">{run.actualPrice === 0 ? 'Free' : formatCurrency(run.actualPrice)}</span>
+            <span className="text-[9px] text-zinc-500 font-semibold uppercase">Total Settled</span>
+            <span className="text-emerald-400 font-semibold">{run.actualPrice === 0 ? 'Free' : formatCurrency(run.actualPrice)}</span>
           </div>
         </div>
-
-        {/* Failed error messages */}
-        {run.status === 'failed' && run.errorMessage && (
-          <div className="border border-rose-950/20 bg-rose-950/5 p-4 rounded-xl flex items-start gap-3">
-            <XCircle className="h-4.5 w-4.5 text-rose-400 shrink-0 mt-0.5" />
-            <div className="flex flex-col gap-1 text-xs">
-              <span className="font-semibold text-rose-300">Execution Error: {run.errorCode}</span>
-              <p className="text-zinc-400 leading-normal">{run.errorMessage}</p>
-            </div>
-          </div>
-        )}
       </Card>
 
       {/* Result Display */}
@@ -105,63 +113,12 @@ export default function RunDetail() {
         run.status === 'running' && <LoadingPage />
       )}
 
-      {/* Settlement Receipt Details Card */}
-      {run.status === 'completed' && run.settlement && (
-        <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-5">
-          <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
-            <h3 className="font-semibold text-sm text-zinc-200 flex items-center gap-1.5">
-              <ShieldCheck className="h-4.5 w-4.5 text-[#27F293]" />
-              Outcome Receipt Summary
-            </h3>
-            <DemoLabel />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs leading-normal">
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Transaction Ref:</span>
-              <span className="font-mono text-zinc-300">{run.settlement.transactionReference}</span>
-            </div>
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Receipt Identifier:</span>
-              <span className="font-mono text-zinc-300">{run.settlement.receiptIdentifier}</span>
-            </div>
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Authorization Ref:</span>
-              <span className="font-mono text-zinc-300">{run.settlement.authorizationId}</span>
-            </div>
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Settled Amount:</span>
-              <span className="text-zinc-300 font-semibold">{formatCurrency(run.settlement.amount)}</span>
-            </div>
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Creator Earnings Split (99%):</span>
-              <span className="text-emerald-400 font-semibold">
-                {run.settlement.creatorEarnings !== undefined
-                  ? formatCurrency(run.settlement.creatorEarnings)
-                  : formatCurrency(run.settlement.amount * 0.99)}
-              </span>
-            </div>
-            <div className="flex justify-between border-b border-zinc-800 pb-2">
-              <span className="text-zinc-500">Platform Protocol Fee (1%):</span>
-              <span className="text-zinc-300 font-semibold">
-                {run.settlement.protocolFee !== undefined
-                  ? formatCurrency(run.settlement.protocolFee)
-                  : formatCurrency(run.settlement.amount * 0.01)}
-              </span>
-            </div>
-          </div>
-        </Card>
-      )}
-
-      {/* Outcome Receipt Modal */}
-      {run && (
-        <OutcomeReceiptModal
-          isOpen={showReceiptModal}
-          onClose={() => setShowReceiptModal(false)}
-          runRecord={run}
-          settlement={run.settlement}
-        />
-      )}
+      {/* Receipt Modal */}
+      <ReceiptModal
+        isOpen={showReceiptModal}
+        onClose={() => setShowReceiptModal(false)}
+        receipt={mockReceiptData}
+      />
     </div>
   );
 }

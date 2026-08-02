@@ -309,7 +309,7 @@ export const useWalletInternal = (): WalletState => {
 
       const finalAddress = activeAddress;
       const { nonce } = await fetchApi<{ nonce: string }>('/api/auth/web3/nonce');
-      const message = `mrdn.finance wants you to sign in with your Ethereum account:\n${finalAddress}\n\nI accept the Nexus Terms of Service and Privacy Policy (Powered by Meridian).\n\nURI: https://mrdn.finance\nVersion: 1\nChain ID: ${chainId || BASE_SEPOLIA_CONFIG.chainId}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
+      const message = `Nexus wants you to sign in with your Ethereum account:\n${finalAddress}\n\nI accept the Nexus Terms of Service and Privacy Policy.\n\nURI: https://nexus.app\nVersion: 1\nChain ID: ${chainId || BASE_SEPOLIA_CONFIG.chainId}\nNonce: ${nonce}\nIssued At: ${new Date().toISOString()}`;
 
       const signature = await ethereum.request({
         method: 'personal_sign',

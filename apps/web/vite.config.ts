@@ -4,8 +4,9 @@ import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  base: '/M.NexusPhase1/', // Explicit GitHub Pages repository path
+export default defineConfig(({ command }) => ({
+  // Base path adapts automatically: '/' in local dev mode, '/M.NexusPhase1/' for production GitHub Pages build
+  base: command === 'build' ? '/M.NexusPhase1/' : '/',
   plugins: [
     react(),
     tailwindcss(),
@@ -19,6 +20,7 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    host: true,
     proxy: {
       '/api': {
         target: 'http://localhost:8787',
@@ -28,22 +30,17 @@ export default defineConfig({
     },
   },
   build: {
-    chunkSizeWarningLimit: 600,
+    chunkSizeWarningLimit: 800,
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vendor: core React ecosystem
           'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          // Vendor: UI / animation
           'vendor-ui': ['framer-motion', 'lucide-react'],
-          // Vendor: data fetching
           'vendor-query': ['@tanstack/react-query'],
-          // Vendor: forms
           'vendor-forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          // Vendor: charts
           'vendor-charts': ['recharts'],
         },
       },
     },
   },
-});
+}));

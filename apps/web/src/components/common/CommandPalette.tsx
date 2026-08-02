@@ -91,25 +91,25 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
 
   const commands = [
     // Core Navigation
-    { id: 'exchange', label: 'Discover Capability Exchange', category: 'Navigation', icon: Compass, action: () => handleNavigate('/exchange') },
-    { id: 'models', label: 'AI Models & Agents Marketplace', category: 'Navigation', icon: Sparkles, action: () => handleNavigate('/marketplace/models') },
+    { id: 'explore', label: 'Explore Capabilities Marketplace', category: 'Navigation', icon: Compass, action: () => handleNavigate('/explore') },
+    { id: 'chat', label: 'Nexus AI Chat & Reasoning Workspace', category: 'Navigation', icon: Sparkles, action: () => handleNavigate('/chat') },
     { id: 'studio', label: 'Nexus Studio Workflow Builder', category: 'Navigation', icon: Layers, action: () => handleNavigate('/studio') },
-    { id: 'storage', label: 'Programmable Storage Marketplace', category: 'Navigation', icon: Compass, action: () => handleNavigate('/storage') },
+    { id: 'cloud', label: 'Nexus Cloud (Files, AI Memory, Backups)', category: 'Navigation', icon: Compass, action: () => handleNavigate('/cloud') },
     { id: 'compute', label: 'Decentralized Compute Marketplace', category: 'Navigation', icon: Zap, action: () => handleNavigate('/compute') },
-    { id: 'defi', label: 'Curated DeFi Hub & Asset Balances', category: 'Navigation', icon: Coins, action: () => handleNavigate('/defi') },
+    { id: 'payments', label: 'Payments & Prepaid Balance Vault', category: 'Navigation', icon: Coins, action: () => handleNavigate('/payments') },
     { id: 'trust', label: 'Trust & Compliance Center', category: 'Navigation', icon: ShieldCheck, action: () => handleNavigate('/trust') },
-    { id: 'activity', label: 'View Execution History & Activity', category: 'Navigation', icon: History, action: () => handleNavigate('/activity') },
+    { id: 'activity', label: 'View Execution History & Receipts', category: 'Navigation', icon: History, action: () => handleNavigate('/activity') },
     { id: 'dashboard', label: 'Open Workspace Dashboard', category: 'Navigation', icon: User, action: () => handleNavigate('/dashboard') },
-    { id: 'creator', label: 'Open Creator Portal Analytics', category: 'Navigation', icon: Award, action: () => handleNavigate('/creator') },
+    { id: 'developer', label: 'Developer Console & API Keys', category: 'Navigation', icon: Award, action: () => handleNavigate('/developer') },
 
     // Instant Workflows Actions
-    { id: 'run-bi', label: 'Execute: Business Intelligence Mission', category: 'Quick Action', icon: Play, action: () => handleNavigate('/exchange/business-intelligence-mission/run') },
-    { id: 'run-audit', label: 'Execute: Financial Model Auditor', category: 'Quick Action', icon: Play, action: () => handleNavigate('/exchange/financial-model-auditor/run') },
-    { id: 'run-competitor', label: 'Execute: Autonomous Competitor Tracker', category: 'Quick Action', icon: Play, action: () => handleNavigate('/exchange/autonomous-competitor-tracker/run') },
+    { id: 'run-bi', label: 'Execute: Business Intelligence Mission', category: 'Quick Action', icon: Play, action: () => handleNavigate('/workflows/business-intelligence-mission/run') },
+    { id: 'run-audit', label: 'Execute: Financial Model Auditor', category: 'Quick Action', icon: Play, action: () => handleNavigate('/workflows/financial-model-auditor/run') },
+    { id: 'run-competitor', label: 'Execute: Autonomous Competitor Tracker', category: 'Quick Action', icon: Play, action: () => handleNavigate('/workflows/autonomous-competitor-tracker/run') },
 
     // Spotlight Natural Language Shortcuts
-    { id: 'filter-free', label: 'Filter: Show Workflows Under $2', category: 'Filter', icon: DollarSign, action: () => handleNavigate('/exchange?maxPrice=2') },
-    { id: 'filter-[#27F293]', label: 'Filter: Show Verified Workflows', category: 'Filter', icon: ShieldCheck, action: () => handleNavigate('/exchange?verified=true') },
+    { id: 'filter-free', label: 'Filter: Show Workflows Under $2', category: 'Filter', icon: DollarSign, action: () => handleNavigate('/explore?maxPrice=2') },
+    { id: 'filter-verified', label: 'Filter: Show Verified Workflows', category: 'Filter', icon: ShieldCheck, action: () => handleNavigate('/explore?verified=true') },
 
     // Wallet & Web3 Actions
     ...(isConnected

@@ -1,6 +1,6 @@
-// ─── Nexus — Shared Types (Powered by Meridian) ───────────────────
+// ─── Nexus — Shared Types ─────────────────────────────────────────────
 // All types shared between @nexus/web and @nexus/api.
-// These types define the contract between frontend and backend.
+// Defines contracts for core marketplace, execution, creator, and x402 facilitator.
 // ─────────────────────────────────────────────────────────────────────
 
 // ── Enums ──
@@ -608,3 +608,223 @@ export const EXECUTION_STEPS = [
   { key: 'save', label: 'Saving execution history', durationMs: 300 },
   { key: 'finalize', label: 'Finalizing result', durationMs: 300 },
 ] as const;
+
+// ── Canonical Domain Entities & Provider Adapter Interfaces ──
+
+export type IntegrationMaturity =
+  | 'mock'
+  | 'sandbox'
+  | 'testnet'
+  | 'beta'
+  | 'production'
+  | 'degraded'
+  | 'unavailable';
+
+export type CapabilityType =
+  | 'model'
+  | 'workflow'
+  | 'storage'
+  | 'compute'
+  | 'agent'
+  | 'mcp'
+  | 'a2a'
+  | 'api';
+
+export interface HealthSnapshot {
+  available: boolean;
+  providerId: string;
+  latencyMs: number;
+  uptimePercent: number;
+  lastCheckedAt: string;
+  message?: string;
+}
+
+export interface QuoteRequest {
+  capabilityId: string;
+  providerId: string;
+  unitsRequested: number;
+  accountRef?: string;
+  networkRef?: string;
+}
+
+export interface Quote {
+  id: string;
+  capabilityId: string;
+  providerId: string;
+  currency: string;
+  subtotalAtomic: string;
+  protocolFeeAtomic: string;
+  networkFeeAtomic?: string;
+  discountAtomic?: string;
+  totalAtomic: string;
+  expiresAt: string;
+  assumptions: string[];
+}
+
+export interface ExecutionHandle {
+  runId: string;
+  providerExecutionId: string;
+  startedAt: string;
+}
+
+export interface EvidenceRecord {
+  id: string;
+  type: string;
+  issuer: string;
+  subject: string;
+  source: string;
+  payloadHash: string;
+  storageUri?: string;
+  attestationUid?: string;
+  issuedAt: string;
+  expiresAt?: string;
+}
+
+export interface StakePosition {
+  id: string;
+  owner: string;
+  purpose: 'access' | 'provider-bond' | 'curation' | 'governance';
+  amountAtomic: string;
+  lockStartedAt: string;
+  unlockAt: string;
+  status: 'active' | 'unbonding' | 'unlocked';
+}
+
+export interface LedgerEntry {
+  id: string;
+  journalId: string;
+  account: string;
+  debitAtomic: string;
+  creditAtomic: string;
+  currency: string;
+  referenceId: string;
+  timestamp: string;
+}
+
+export interface AdapterMetadata {
+  id: string;
+  name: string;
+  version: string;
+  maturity: IntegrationMaturity;
+  supportedCapabilities: CapabilityType[];
+}
+
+// ── Creator & Pricing Core Entities ──
+
+export interface ExecutionQuote {
+  id: string;
+  listingId: string;
+  creatorId: string;
+  currency: 'USDC';
+  providerCostAtomic: string;
+  creatorEarningsAtomic: string;
+  nexusFeeAtomic: string;
+  settlementCostAtomic: string;
+  discountAtomic: string;
+  totalAtomic: string;
+  expiresAt: string;
+}
+
+export interface CreatorEarningRecord {
+  id: string;
+  creatorId: string;
+  listingId: string;
+  runId: string;
+  grossAtomic: string;
+  providerCostAtomic: string;
+  nexusFeeAtomic: string;
+  refundAtomic: string;
+  netAtomic: string;
+  status:
+    | 'estimated'
+    | 'pending'
+    | 'settlement_pending'
+    | 'settled'
+    | 'refunded'
+    | 'disputed';
+  createdAt: string;
+}
+
+export interface NexusMembership {
+  id: string;
+  ownerId: string;
+  tier: 'explorer' | 'builder' | 'creator' | 'studio';
+  source: 'subscription' | 'nex_lock' | 'promotion';
+  startedAt: string;
+  expiresAt?: string;
+  status: 'active' | 'expired' | 'unlocking';
+}
+
+export interface NexusCreditBalance {
+  ownerId: string;
+  availableAtomic: string;
+  expiringAtomic: string;
+  nextExpirationAt?: string;
+}
+
+// ── Facilitator Adapter Contract ──
+
+export interface FacilitatorCapabilities {
+  supportedCurrencies: string[];
+  supportsSplitSettlement: boolean;
+  supportsAsyncSettlement: boolean;
+}
+
+export interface PaymentRequirementRequest {
+  runId: string;
+  listingId: string;
+  amountAtomic: string;
+  currency: string;
+  creatorAddress?: string;
+}
+
+export interface PaymentRequirements {
+  paymentId: string;
+  facilitatorAddress: string;
+  amountAtomic: string;
+  currency: string;
+  expiresAt: string;
+}
+
+export interface PaymentAuthorization {
+  authorizationId: string;
+  paymentId: string;
+  payerAddress: string;
+  signature: string;
+  amountAtomic: string;
+  currency: string;
+}
+
+export interface VerificationResult {
+  valid: boolean;
+  authorizationId: string;
+  errorMessage?: string;
+}
+
+export interface SettlementResult {
+  success: boolean;
+  settlementId: string;
+  transactionHash: string;
+  settledAt: string;
+  errorMessage?: string;
+}
+
+export interface FacilitatorReceipt {
+  settlementId: string;
+  authorizationId: string;
+  transactionHash: string;
+  facilitatorName: string;
+  settledAt: string;
+  status: 'settled' | 'failed' | 'pending';
+}
+
+export interface X402FacilitatorAdapter {
+  getCapabilities(): Promise<FacilitatorCapabilities>;
+  createPaymentRequirements(request: PaymentRequirementRequest): Promise<PaymentRequirements>;
+  verifyAuthorization(authorization: PaymentAuthorization): Promise<VerificationResult>;
+  settle(authorization: PaymentAuthorization): Promise<SettlementResult>;
+  getSettlementStatus(settlementId: string): Promise<'pending' | 'settled' | 'failed'>;
+  getReceipt(settlementId: string): Promise<FacilitatorReceipt>;
+}
+
+

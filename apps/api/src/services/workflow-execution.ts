@@ -262,31 +262,13 @@ export class WorkflowExecutionService {
           currency: 'USDC',
         });
 
-        // Enforce compliance rules (self-payment exclusion, reward-value cap, and network decay)
-        const isSelfPayment = workflow.creatorId === userId;
-        const totalRunsRes = await this.env.DB.prepare(
-          "SELECT COUNT(*) as count FROM workflow_runs WHERE status = 'completed'"
-        ).first<{ count: number }>();
-        const completedRunsCount = totalRunsRes?.count || 0;
+        // Itemize creator earnings and Nexus fee breakdown
+        const price = workflow.pricePerRun;
+        const nexusFee = price > 0 ? Number((price * 0.10).toFixed(4)) : 0;
+        const creatorEarnings = price > 0 ? Number((price * 0.85).toFixed(4)) : 0;
 
-        let mrdnCashbackEligible = !isSelfPayment && workflow.pricePerRun > 0;
-        let mrdnCashbackAmount = 0;
-
-        if (mrdnCashbackEligible) {
-          // Decay rate beginning at 2% decaying over time based on completed runs count
-          const decayRate = 0.02 * Math.exp(-completedRunsCount / 1000); // 1000 runs half-life for demo scaling
-          mrdnCashbackAmount = workflow.pricePerRun * decayRate;
-          
-          // Apply $5 cap per transaction
-          if (mrdnCashbackAmount > 5.0) {
-            mrdnCashbackAmount = 5.0;
-          }
-          mrdnCashbackAmount = Number(mrdnCashbackAmount.toFixed(4));
-        }
-
-        // Attach verified compliance parameters to the receipt structure
-        receipt.mrdnCashbackEligible = mrdnCashbackEligible;
-        receipt.mrdnCashbackAmount = mrdnCashbackAmount;
+        receipt.creatorEarnings = creatorEarnings;
+        receipt.protocolFee = nexusFee;
 
         await this.runRepo.createSettlementReceipt(receipt);
 
