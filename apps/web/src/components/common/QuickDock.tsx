@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { MessageSquare, Terminal, Cloud, Search, Coins, Plus } from 'lucide-react';
+import { Compass, Terminal, Activity, ShieldCheck, Search, Coins } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 interface QuickDockProps {
@@ -12,8 +12,8 @@ export const QuickDock: React.FC<QuickDockProps> = ({ onSearchClick }) => {
     <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 hidden md:flex items-center gap-1 p-1.5 rounded-2xl bg-[var(--nx-surface-1)]/90 border border-[var(--nx-border)] backdrop-blur-2xl shadow-[0_10px_30px_rgba(0,0,0,0.35)] select-none">
       
       <NavLink
-        to="/chat"
-        title="AI Chat"
+        to="/explore"
+        title="Explore Marketplace"
         className={({ isActive }) =>
           cn(
             'p-2.5 rounded-xl transition-all flex items-center justify-center text-xs font-semibold gap-1.5',
@@ -23,13 +23,13 @@ export const QuickDock: React.FC<QuickDockProps> = ({ onSearchClick }) => {
           )
         }
       >
-        <MessageSquare className="h-4 w-4" />
-        <span className="text-[11px]">Chat</span>
+        <Compass className="h-4 w-4" />
+        <span className="text-[11px]">Explore</span>
       </NavLink>
 
       <NavLink
-        to="/studio"
-        title="Workflow Studio"
+        to="/compose"
+        title="Compose Studio & Agents"
         className={({ isActive }) =>
           cn(
             'p-2.5 rounded-xl transition-all flex items-center justify-center text-xs font-semibold gap-1.5',
@@ -40,12 +40,12 @@ export const QuickDock: React.FC<QuickDockProps> = ({ onSearchClick }) => {
         }
       >
         <Terminal className="h-4 w-4" />
-        <span className="text-[11px]">Studio</span>
+        <span className="text-[11px]">Compose</span>
       </NavLink>
 
       <NavLink
-        to="/cloud"
-        title="Nexus Cloud Storage"
+        to="/operate"
+        title="Operate Command Center"
         className={({ isActive }) =>
           cn(
             'p-2.5 rounded-xl transition-all flex items-center justify-center text-xs font-semibold gap-1.5',
@@ -55,8 +55,24 @@ export const QuickDock: React.FC<QuickDockProps> = ({ onSearchClick }) => {
           )
         }
       >
-        <Cloud className="h-4 w-4" />
-        <span className="text-[11px]">Cloud</span>
+        <Activity className="h-4 w-4" />
+        <span className="text-[11px]">Operate</span>
+      </NavLink>
+
+      <NavLink
+        to="/network"
+        title="Network & Staking"
+        className={({ isActive }) =>
+          cn(
+            'p-2.5 rounded-xl transition-all flex items-center justify-center text-xs font-semibold gap-1.5',
+            isActive
+              ? 'bg-[#FFD700] text-zinc-950 shadow-[0_0_15px_rgba(255,215,0,0.4)] font-bold'
+              : 'text-zinc-400 hover:text-white hover:bg-white/[0.08]'
+          )
+        }
+      >
+        <ShieldCheck className="h-4 w-4" />
+        <span className="text-[11px]">Network</span>
       </NavLink>
 
       <div className="h-5 w-[1px] bg-white/[0.1] mx-1" />

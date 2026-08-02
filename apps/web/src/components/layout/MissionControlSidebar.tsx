@@ -2,23 +2,21 @@ import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import {
   MessageSquare,
-  Target,
   Compass,
   Layers,
   Terminal,
   Bot,
   Cloud,
-  Database,
-  History,
   Coins,
-  LayoutDashboard,
-  Building2,
+  Activity,
   Server,
   BookOpen,
   Search,
   ChevronLeft,
   ChevronRight,
   LogOut,
+  ShieldCheck,
+  Award,
 } from 'lucide-react';
 import { useAuth } from '../../hooks/useAuth';
 import { cn } from '../../utils/cn';
@@ -35,53 +33,40 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
 
   const navSections = [
     {
-      title: 'Use',
-      items: [
-        { to: '/chat', label: 'Chat', icon: MessageSquare },
-        { to: '/missions', label: 'Missions', icon: Target },
-      ]
-    },
-    {
       title: 'Explore',
       items: [
-        { to: '/explore', label: 'Explore', icon: Compass },
-        { to: '/workflows', label: 'Workflows', icon: Layers },
+        { to: '/explore', label: 'Explore Marketplace', icon: Compass },
+        { to: '/chat', label: 'AI Chat & Inference', icon: MessageSquare },
       ]
     },
     {
-      title: 'Build',
+      title: 'Compose',
       items: [
-        { to: '/studio', label: 'Studio', icon: Terminal, requiresAuth: true },
-        { to: '/agents/new', label: 'Agent Builder', icon: Bot, requiresAuth: true },
+        { to: '/compose', label: 'Studio & Builder', icon: Terminal },
+        { to: '/studio', label: 'Graph Canvas', icon: Layers },
       ]
     },
     {
-      title: 'Cloud',
+      title: 'Operate',
       items: [
-        { to: '/cloud', label: 'Nexus Cloud', icon: Cloud },
-        { to: '/data', label: 'Data', icon: Database },
+        { to: '/operate', label: 'Command Center', icon: Activity },
+        { to: '/cloud', label: 'Files & AI Memory', icon: Cloud },
+        { to: '/payments', label: 'Vault & Receipts', icon: Coins },
       ]
     },
     {
-      title: 'Manage',
+      title: 'Earn & Govern',
       items: [
-        { to: '/activity', label: 'Activity', icon: History, requiresAuth: true },
-        { to: '/payments', label: 'Payments', icon: Coins, requiresAuth: true },
-        { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, requiresAuth: true },
-        { to: '/teams', label: 'Teams', icon: Building2, requiresAuth: true },
-      ]
-    },
-    {
-      title: 'Provide',
-      items: [
+        { to: '/network', label: 'Network & Staking', icon: ShieldCheck },
         { to: '/provide', label: 'Provider Hub', icon: Server },
       ]
     },
     {
-      title: 'Developers',
+      title: 'Supporting Utilities',
       items: [
         { to: '/developer', label: 'Dev Console', icon: Terminal },
-        { to: '/docs', label: 'Docs', icon: BookOpen },
+        { to: '/docs', label: 'Documentation', icon: BookOpen },
+        { to: '/trust', label: 'Trust Center', icon: Award },
       ]
     }
   ];
@@ -143,7 +128,7 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
       {/* ── Navigation Links List ── */}
       <div className="flex-1 overflow-y-auto space-y-2 no-scrollbar pb-6 pt-2">
         {navSections.map((section, idx) => {
-          const visibleItems = section.items.filter(item => !(item as any).requiresAuth || isSignedIn);
+          const visibleItems = section.items;
           if (visibleItems.length === 0) return null;
 
           return (

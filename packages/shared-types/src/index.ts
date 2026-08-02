@@ -608,3 +608,104 @@ export const EXECUTION_STEPS = [
   { key: 'save', label: 'Saving execution history', durationMs: 300 },
   { key: 'finalize', label: 'Finalizing result', durationMs: 300 },
 ] as const;
+
+// ── Canonical Domain Entities & Provider Adapter Interfaces ──
+
+export type IntegrationMaturity =
+  | 'mock'
+  | 'sandbox'
+  | 'testnet'
+  | 'beta'
+  | 'production'
+  | 'degraded'
+  | 'unavailable';
+
+export type CapabilityType =
+  | 'model'
+  | 'workflow'
+  | 'storage'
+  | 'compute'
+  | 'agent'
+  | 'mcp'
+  | 'a2a'
+  | 'api';
+
+export interface HealthSnapshot {
+  available: boolean;
+  providerId: string;
+  latencyMs: number;
+  uptimePercent: number;
+  lastCheckedAt: string;
+  message?: string;
+}
+
+export interface QuoteRequest {
+  capabilityId: string;
+  providerId: string;
+  unitsRequested: number;
+  accountRef?: string;
+  networkRef?: string;
+}
+
+export interface Quote {
+  id: string;
+  capabilityId: string;
+  providerId: string;
+  currency: string;
+  subtotalAtomic: string;
+  protocolFeeAtomic: string;
+  networkFeeAtomic?: string;
+  discountAtomic?: string;
+  totalAtomic: string;
+  expiresAt: string;
+  assumptions: string[];
+}
+
+export interface ExecutionHandle {
+  runId: string;
+  providerExecutionId: string;
+  startedAt: string;
+}
+
+export interface EvidenceRecord {
+  id: string;
+  type: string;
+  issuer: string;
+  subject: string;
+  source: string;
+  payloadHash: string;
+  storageUri?: string;
+  attestationUid?: string;
+  issuedAt: string;
+  expiresAt?: string;
+}
+
+export interface StakePosition {
+  id: string;
+  owner: string;
+  purpose: 'access' | 'provider-bond' | 'curation' | 'governance';
+  amountAtomic: string;
+  lockStartedAt: string;
+  unlockAt: string;
+  status: 'active' | 'unbonding' | 'unlocked';
+}
+
+export interface LedgerEntry {
+  id: string;
+  journalId: string;
+  account: string;
+  debitAtomic: string;
+  creditAtomic: string;
+  currency: string;
+  referenceId: string;
+  timestamp: string;
+}
+
+export interface AdapterMetadata {
+  id: string;
+  name: string;
+  version: string;
+  maturity: IntegrationMaturity;
+  supportedCapabilities: CapabilityType[];
+}
+

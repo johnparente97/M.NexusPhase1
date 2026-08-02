@@ -27,6 +27,10 @@ const lazyWithRetry = (componentImport: () => Promise<any>) => {
 // Lazy loaded page components
 const Landing = lazyWithRetry(() => import('../pages/Landing'));
 const ExplorePage = lazyWithRetry(() => import('../pages/ExplorePage'));
+const ComposePage = lazyWithRetry(() => import('../pages/ComposePage'));
+const OperateCenter = lazyWithRetry(() => import('../pages/OperateCenter'));
+const EarnGovernPage = lazyWithRetry(() => import('../pages/EarnGovernPage'));
+
 const NexusCloudPage = lazyWithRetry(() => import('../pages/NexusCloudPage'));
 const WorkflowDetail = lazyWithRetry(() => import('../pages/WorkflowDetail'));
 const WorkflowRunner = lazyWithRetry(() => import('../pages/WorkflowRunner'));
@@ -85,12 +89,17 @@ export const router = createHashRouter([
       { path: 'balance', element: <Navigate to="/payments" replace /> },
       { path: 'storage', element: <Navigate to="/cloud" replace /> },
       
-      // Core Workspace Routes
+      // 4 Principal Consolidated Surfaces
+      { path: 'explore', element: suspenseWrapper(ExplorePage) },
+      { path: 'compose', element: suspenseWrapper(ComposePage) },
+      { path: 'operate', element: suspenseWrapper(OperateCenter) },
+      { path: 'network', element: suspenseWrapper(EarnGovernPage) },
+
+      // Sub-Surface Routes & Compatibility Aliases
       { path: 'chat', element: suspenseWrapper(PaidChat) },
       { path: 'chat/free', element: suspenseWrapper(PaidChat) },
       { path: 'chat/paid', element: suspenseWrapper(PaidChat) },
       
-      { path: 'explore', element: suspenseWrapper(ExplorePage) },
       { path: 'missions', element: suspenseWrapper(Dashboard) },
       { path: 'data', element: suspenseWrapper(NexusCloudPage) },
       
@@ -118,7 +127,7 @@ export const router = createHashRouter([
       { path: 'developer', element: suspenseWrapper(DevConsole) },
       { path: 'settings', element: suspenseWrapper(Profile) },
       
-      // Additional aliases & features
+      // Supporting Utilities & Additional aliases
       { path: 'dashboard', element: suspenseWrapper(Dashboard) },
       { path: 'creator', element: suspenseWrapper(CreatorDashboard) },
       { path: 'profile', element: suspenseWrapper(Profile) },

@@ -13,8 +13,11 @@ interface TopNavProps {
 }
 
 const ROUTE_TITLES: Record<string, string> = {
+  '/explore': 'Explore Marketplace',
+  '/compose': 'Compose Studio & Agents',
+  '/operate': 'Operate Command Center',
+  '/network': 'Earn & Govern Network',
   '/chat': 'AI Chat & Inference',
-  '/explore': 'Marketplace & Explore',
   '/workflows': 'Workflows Library',
   '/studio': 'Workflow Studio',
   '/cloud': 'Nexus Cloud Storage',
