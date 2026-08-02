@@ -24,28 +24,28 @@
   --color-nx-error: var(--nx-error);
 }
 
-/* ── Night Mode Tokens (Cyber Obsidian - Deep Dark Theme) ── */
+/* ── Night Mode Tokens (Nexus Deep Midnight - Deep Dark Theme) ── */
 :root,
 html[data-theme="night"],
 .theme-night {
-  --nx-bg: #05050A;
-  --nx-bg-subtle: #0A0A14;
-  --nx-surface-1: #0F0F1D;
-  --nx-surface-2: #161628;
-  --nx-surface-3: #1F1F38;
+  --nx-bg: #0B0F19;
+  --nx-bg-subtle: #111827;
+  --nx-surface-1: #1F2937;
+  --nx-surface-2: #374151;
+  --nx-surface-3: #4B5563;
   --nx-border: rgba(255, 255, 255, 0.08);
-  --nx-border-strong: rgba(168, 85, 247, 0.35);
-  --nx-text: #F8F9FE;
-  --nx-text-secondary: #A0A5C0;
-  --nx-text-muted: #646888;
-  --nx-violet: #A855F7;
-  --nx-magenta: #FF007F;
-  --nx-cyan: #00F5D4;
-  --nx-gold: #FFD700;
-  --nx-accent: #A855F7;
+  --nx-border-strong: rgba(99, 102, 241, 0.4);
+  --nx-text: #F9FAFB;
+  --nx-text-secondary: #9CA3AF;
+  --nx-text-muted: #6B7280;
+  --nx-violet: #8B5CF6;
+  --nx-magenta: #EC4899;
+  --nx-cyan: #06B6D4;
+  --nx-gold: #F59E0B;
+  --nx-accent: #6366F1;
   --nx-success: #10B981;
   --nx-warning: #F59E0B;
-  --nx-error: #FF2E63;
+  --nx-error: #EF4444;
   color-scheme: dark;
 }
 
@@ -63,13 +63,13 @@ html[data-theme="day"],
   --nx-text-secondary: #334155;
   --nx-text-muted: #64748B;
   --nx-violet: #6366F1;
-  --nx-magenta: #E11D48;
-  --nx-cyan: #0284C7;
+  --nx-magenta: #DB2777;
+  --nx-cyan: #0891B2;
   --nx-gold: #D97706;
   --nx-accent: #6366F1;
-  --nx-success: #059669;
+  --nx-success: #10B981;
   --nx-warning: #D97706;
-  --nx-error: #E11D48;
+  --nx-error: #EF4444;
   color-scheme: light;
 }
 

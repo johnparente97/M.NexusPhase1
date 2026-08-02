@@ -22,103 +22,163 @@ interface CapabilityItem {
   title: string;
   category: string;
   description: string;
+  creator: string;
   provider: string;
+  version: string;
   pricing: string;
   status: TruthState;
+  maturity: 'production' | 'beta' | 'demo';
+  permissions: string[];
+  exampleInput: string;
+  exampleOutput: string;
+  evidence: {
+    totalRuns: number;
+    completionRate: string;
+    refundRate: string;
+    repeatUsers: number;
+  };
   route: string;
   icon: any;
 }
 
 const CATEGORIES = [
-  { label: 'All', icon: Sparkles },
-  { label: 'Models', icon: MessageSquare },
+  { label: 'Agents', icon: Sparkles },
   { label: 'Workflows', icon: Layers },
+  { label: 'Templates', icon: Zap },
+  { label: 'Models', icon: MessageSquare },
+  { label: 'Tools', icon: SlidersHorizontal },
+  { label: 'Data', icon: Layers },
   { label: 'Storage', icon: HardDrive },
   { label: 'Compute', icon: Cpu },
 ];
 
 const CAPABILITIES: CapabilityItem[] = [
   {
-    id: 'cap-1',
-    title: 'DeepSeek R1 Reasoning',
-    category: 'Models',
-    description: 'High-speed chain-of-thought reasoning AI model for complex logic, math, and code architecture.',
-    provider: 'DeepSeek / AntSeed',
-    pricing: '$0.00012 / request',
+    id: 'cap-sec-analyst',
+    title: 'SEC Financial Analyst Agent',
+    category: 'Agents',
+    description: 'Reads company 10-K filings, extracts key financial numbers, and creates clear summary reports.',
+    creator: 'Nexus Core Labs',
+    provider: 'Gemini 2.5 Flash',
+    version: '1.4.0',
+    pricing: '$0.50 / run',
     status: 'live',
-    route: '/chat?model=deepseek-r1',
-    icon: MessageSquare,
+    maturity: 'production',
+    permissions: ['Read 10-K SEC Filings', 'Generate Financial Tables'],
+    exampleInput: 'Ticker: AAPL, Fiscal Year: 2025',
+    exampleOutput: 'Structured JSON summary with revenue breakdowns and liquidity ratios.',
+    evidence: { totalRuns: 1420, completionRate: '99.2%', refundRate: '0.4%', repeatUsers: 340 },
+    route: '/chat?agent=sec-analyst',
+    icon: Sparkles,
   },
   {
-    id: 'cap-2',
-    title: 'Dolphin 8x7B Inference',
-    category: 'Models',
-    description: 'Uncensored high-throughput open-weights AI inference engine for creative and agentic workflows.',
-    provider: 'Dolphin Host',
-    pricing: 'Free ($0.00)',
+    id: 'cap-vulnerability-auditor',
+    title: 'Code Vulnerability Auditor Agent',
+    category: 'Agents',
+    description: 'Scans code repositories for OWASP security flaws, exposed tokens, and recommends verified fixes.',
+    creator: 'CyberGuard Labs',
+    provider: 'DeepSeek R1 Engine',
+    version: '2.1.0',
+    pricing: '$0.75 / run',
+    status: 'live',
+    maturity: 'production',
+    permissions: ['Read Source Files', 'Execute Static Analysis AST'],
+    exampleInput: 'GitHub Repository URL: github.com/example/api',
+    exampleOutput: 'Itemized vulnerability audit report with line-level diff recommendations.',
+    evidence: { totalRuns: 890, completionRate: '98.5%', refundRate: '0.8%', repeatUsers: 210 },
+    route: '/chat?agent=code-auditor',
+    icon: Sparkles,
+  },
+  {
+    id: 'cap-[#06B6D4]-rag',
+    title: 'Document Insight Vector RAG Agent',
+    category: 'Agents',
+    description: 'Parses PDFs and documents into searchable vector knowledge for AI questions.',
+    creator: 'DataMesh Studio',
+    provider: 'R2 + Vectorize',
+    version: '1.0.2',
+    pricing: '$0.25 / run',
     status: 'connected',
-    route: '/chat?model=dolphin-mixtral-8x7b-free',
-    icon: MessageSquare,
+    maturity: 'production',
+    permissions: ['Read Uploaded PDFs', 'Create Vector Embeddings'],
+    exampleInput: 'Upload Policy Document (PDF)',
+    exampleOutput: 'Interactive Q&A capability bound to document citations.',
+    evidence: { totalRuns: 2150, completionRate: '99.6%', refundRate: '0.2%', repeatUsers: 580 },
+    route: '/chat?agent=document-rag',
+    icon: Sparkles,
   },
   {
-    id: 'cap-3',
-    title: 'Financial Data Summarizer',
+    id: 'cap-workflow-fin-summarizer',
+    title: 'Financial Data Summarizer Workflow',
     category: 'Workflows',
     description: 'Multi-step autonomous workflow retrieving quarterly filings, calculating metrics, and rendering charts.',
-    provider: 'Nexus Labs',
-    pricing: '$0.00050 / run',
+    creator: 'Nexus Studio',
+    provider: 'Multi-Model Pipeline',
+    version: '1.2.0',
+    pricing: '$0.50 / run',
     status: 'live',
+    maturity: 'production',
+    permissions: ['Fetch Financial API', 'Render Recharts Visualization'],
+    exampleInput: 'Company Name & Historical Range',
+    exampleOutput: 'Full interactive report with SVG revenue charts and risk audit.',
+    evidence: { totalRuns: 640, completionRate: '97.8%', refundRate: '1.0%', repeatUsers: 145 },
     route: '/workflows/wf-finance/run',
     icon: Layers,
   },
   {
-    id: 'cap-4',
-    title: 'Filecoin Distributed Backup',
+    id: 'cap-deepseek-model',
+    title: 'DeepSeek R1 Reasoning Model',
+    category: 'Models',
+    description: 'High-speed chain-of-thought reasoning AI model for complex logic, math, and code architecture.',
+    creator: 'DeepSeek AI',
+    provider: 'Cloudflare Gateway',
+    version: 'R1-V3',
+    pricing: '$0.00012 / request',
+    status: 'live',
+    maturity: 'production',
+    permissions: ['Model Context Execution'],
+    exampleInput: 'Mathematical Proof or Algorithm Specification',
+    exampleOutput: 'Stepped reasoning trace and optimized solution code.',
+    evidence: { totalRuns: 15400, completionRate: '99.9%', refundRate: '0.01%', repeatUsers: 4200 },
+    route: '/chat?model=deepseek-r1',
+    icon: MessageSquare,
+  },
+  {
+    id: 'cap-storage-filecoin',
+    title: 'Filecoin Distributed Storage',
     category: 'Storage',
-    description: 'Zero-knowledge end-to-end encrypted object backup with verifiable Filecoin 10x storage proofs.',
-    provider: 'Filecoin Network',
+    description: 'Zero-knowledge end-to-end encrypted object backup with verifiable storage proofs.',
+    creator: 'Filecoin Network',
+    provider: 'IPFS / Filecoin Bridge',
+    version: 'v4.0',
     pricing: '$0.00001 / GB / mo',
     status: 'connected',
-    route: '/cloud',
-    icon: HardDrive,
-  },
-  {
-    id: 'cap-5',
-    title: 'NVIDIA H100 GPU Cluster',
-    category: 'Compute',
-    description: 'On-demand GPU compute instance allocation for model fine-tuning and heavy batch processing.',
-    provider: 'Decentralized Compute Pool',
-    pricing: '$2.50 / hr (x402)',
-    status: 'planned',
-    route: '/compute',
-    icon: Cpu,
-  },
-  {
-    id: 'cap-6',
-    title: 'Arweave Blockweave Storage',
-    category: 'Storage',
-    description: 'Permanent immutable cloud storage for agent knowledge bases and critical execution logs.',
-    provider: 'Arweave Protocol',
-    pricing: '$0.005 / MB flat',
-    status: 'connected',
+    maturity: 'beta',
+    permissions: ['Write Immutable Storage Payload'],
+    exampleInput: 'Encrypted Artifact Buffer',
+    exampleOutput: 'CID Content Address Hash & Verification Receipt',
+    evidence: { totalRuns: 310, completionRate: '96.5%', refundRate: '1.2%', repeatUsers: 85 },
     route: '/cloud',
     icon: HardDrive,
   },
 ];
 
+import { AgentDetailModal } from '../components/explore/AgentDetailModal';
+
 export default function ExplorePage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const categoryParam = searchParams.get('category') || 'All';
+  const categoryParam = searchParams.get('category') || 'Agents';
   const searchQueryParam = searchParams.get('q') || '';
 
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'popular' | 'newest'>('popular');
+  const [selectedAgent, setSelectedAgent] = useState<CapabilityItem | null>(null);
 
   const handleCategoryChange = (label: string) => {
     const nextParams = new URLSearchParams(searchParams);
-    if (label === 'All') {
+    if (label === 'Agents') {
       nextParams.delete('category');
     } else {
       nextParams.set('category', label);
@@ -146,7 +206,7 @@ export default function ExplorePage() {
   });
 
   const handleActionClick = (cap: CapabilityItem) => {
-    navigate(cap.route);
+    setSelectedAgent(cap);
   };
 
   return (
@@ -318,6 +378,12 @@ export default function ExplorePage() {
           })}
         </div>
       )}
+
+      {/* Agent Detail Modal */}
+      <AgentDetailModal
+        agent={selectedAgent}
+        onClose={() => setSelectedAgent(null)}
+      />
 
     </div>
   );

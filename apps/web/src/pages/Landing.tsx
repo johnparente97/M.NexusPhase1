@@ -20,6 +20,7 @@ import { TruthStateBadge } from '../components/common/TruthStateBadge';
 import { CyberSigilMark } from '../components/common/CyberSigilIcon';
 import { Button } from '../components/ui/Button';
 import { useAuth } from '../hooks/useAuth';
+import { OutcomeCommandBar } from '../components/common/OutcomeCommandBar';
 
 const FEATURED_AGENTS = [
   {
@@ -95,28 +96,8 @@ export default function Landing() {
           </p>
         </div>
 
-        {/* Search Input */}
-        <form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto w-full relative">
-          <div className="relative flex items-center bg-[var(--nx-surface-1)]/90 border border-violet-500/40 focus-within:border-cyan-400 rounded-2xl shadow-2xl p-2 transition-all backdrop-blur-2xl">
-            <Search className="h-5 w-5 text-cyan-400 ml-3 shrink-0" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="What do you want to build or run today? (e.g. Audit code, summarize reports...)"
-              className="w-full bg-transparent px-3 py-2 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none font-sans"
-            />
-            <Button
-              type="submit"
-              variant="primary"
-              size="sm"
-              className="shrink-0 font-bold px-5 bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 shadow-lg shadow-violet-600/30"
-              rightIcon={<ArrowRight className="h-4 w-4" />}
-            >
-              Search
-            </Button>
-          </div>
-        </form>
+        {/* Natural Language Outcome Command Bar */}
+        <OutcomeCommandBar placeholder="What would you like Nexus to help you accomplish? (e.g. Audit code, analyze report...)" />
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center justify-center gap-4 pt-2">

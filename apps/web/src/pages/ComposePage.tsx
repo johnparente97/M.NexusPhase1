@@ -118,9 +118,9 @@ export default function ComposePage() {
                 className="w-full h-28 bg-[var(--nx-bg)] border border-[var(--nx-border)] rounded-2xl p-4 text-xs text-white placeholder-zinc-500 focus:outline-none focus:border-[#6366F1] transition-all font-sans"
               />
 
-              {/* Disclosed Plain Language Permissions */}
+              {/* Disclosed Plain Language Permissions & Earnings Designer */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-                <div className="p-4 rounded-2xl bg-[var(--nx-bg)] border border-[var(--nx-border)] space-y-2">
+                <div className="p-4 rounded-2xl bg-[var(--nx-bg)] border border-[var(--nx-border)] space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-white flex items-center gap-2">
                       <FileText className="h-4 w-4 text-[#6366F1]" /> File Access Disclosure
@@ -137,12 +137,12 @@ export default function ComposePage() {
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-[var(--nx-bg)] border border-[var(--nx-border)] space-y-2">
+                <div className="p-4 rounded-2xl bg-[var(--nx-bg)] border border-[var(--nx-border)] space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-white flex items-center gap-2">
-                      <DollarSign className="h-4 w-4 text-[#00F5D4]" /> Cost Budget Ceiling
+                      <DollarSign className="h-4 w-4 text-emerald-400" /> Cost Budget Ceiling
                     </span>
-                    <span className="text-xs font-mono font-bold text-[#00F5D4]">${costCeiling}</span>
+                    <span className="text-xs font-mono font-bold text-emerald-400">${costCeiling}</span>
                   </div>
                   <p className="text-[11px] text-zinc-400 font-sans">
                     "Stop this run immediately if underlying provider & tool costs exceed ${costCeiling}."
@@ -150,7 +150,39 @@ export default function ComposePage() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 pt-4">
+              {/* Nexus Earnings Designer */}
+              <div className="p-5 rounded-2xl bg-[var(--nx-bg-subtle)] border border-[#6366F1]/30 space-y-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold text-[#6366F1] uppercase flex items-center gap-1.5">
+                    <DollarSign className="h-4 w-4 text-emerald-400" /> Nexus Earnings & Pricing Designer
+                  </span>
+                  <span className="text-[10px] text-zinc-400 font-mono">Atomic USDC Quotes</span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+                  <div className="p-3 rounded-xl bg-[var(--nx-surface-1)] border border-[var(--nx-border)] space-y-1">
+                    <span className="text-[10px] text-zinc-500 block">Model & Tools Cost</span>
+                    <span className="text-white font-bold">$0.18</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-[var(--nx-surface-1)] border border-[var(--nx-border)] space-y-1">
+                    <span className="text-[10px] text-emerald-400 block">Creator Margin</span>
+                    <span className="text-emerald-400 font-bold">$0.42</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-[var(--nx-surface-1)] border border-[var(--nx-border)] space-y-1">
+                    <span className="text-[10px] text-zinc-500 block">Nexus Fee (10%)</span>
+                    <span className="text-white font-bold">$0.06</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-[var(--nx-surface-1)] border border-[#6366F1]/50 space-y-1 bg-[#6366F1]/10">
+                    <span className="text-[10px] text-[#06B6D4] block">Max Customer Price</span>
+                    <span className="text-[#06B6D4] font-bold text-sm">$0.66 / run</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 pt-2">
                 <Button
                   onClick={() => navigate(`/studio/new?goal=${encodeURIComponent(agentGoal)}`)}
                   variant="primary"
