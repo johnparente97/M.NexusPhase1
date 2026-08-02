@@ -5,9 +5,9 @@ import { Button } from '../ui/Button';
 
 export default function PublicLayout() {
   return (
-    <div className="min-h-screen bg-[#05050A] text-[#F8F9FE] flex flex-col antialiased selection:bg-[#FF007F]/30 selection:text-white">
-      {/* Top Cyber Header Bar */}
-      <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#05050A]/90 backdrop-blur-2xl">
+    <div className="min-h-screen bg-[var(--nx-bg)] text-[var(--nx-text)] flex flex-col antialiased selection:bg-[#FF007F]/30 selection:text-white">
+      {/* Top Header Bar */}
+      <header className="sticky top-0 z-50 w-full border-b border-[var(--nx-border)] bg-[var(--nx-bg)]/90 backdrop-blur-2xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-8">
             <Link to="/" className="flex items-center gap-3 group">
@@ -52,8 +52,8 @@ export default function PublicLayout() {
         <Outlet />
       </main>
 
-      {/* Cyber-Sigil Public Footer */}
-      <footer className="border-t border-white/[0.08] bg-[#0A0A14] pt-16 pb-8">
+      {/* Public Footer */}
+      <footer className="border-t border-[var(--nx-border)] bg-[var(--nx-bg-subtle)] pt-16 pb-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4 lg:grid-cols-6 mb-12 text-xs">
             <div className="col-span-2 lg:col-span-2 space-y-3">

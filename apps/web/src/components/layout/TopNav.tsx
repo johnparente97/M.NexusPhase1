@@ -41,7 +41,7 @@ export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps
   return (
     <header
       className={cn(
-        'fixed top-0 right-0 h-14 bg-[#05050A]/90 backdrop-blur-2xl border-b border-white/[0.08] px-3 sm:px-6 flex items-center justify-between z-layer-header transition-all duration-200 left-0',
+        'fixed top-0 right-0 h-14 bg-[var(--nx-bg)]/90 backdrop-blur-2xl border-b border-[var(--nx-border)] px-3 sm:px-6 flex items-center justify-between z-layer-header transition-all duration-200 left-0',
         {
           'lg:left-64': !isCollapsed,
           'lg:left-16': isCollapsed,

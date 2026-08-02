@@ -70,7 +70,7 @@ export default function DevConsole() {
             <Badge variant="success" className="text-[9px]">100% COMPATIBLE</Badge>
           </div>
           <p className="text-[11px] text-zinc-400">
-            Drop-in replacement for OpenAI endpoints (`api.mrdn.finance/v1/inference`).
+            Drop-in replacement for OpenAI endpoints (`api.nexus.app/v1/inference`).
           </p>
         </Card>
 

@@ -67,7 +67,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="flex-1 flex flex-col items-center w-full select-none overflow-hidden bg-[#05050A]">
+    <div className="flex-1 flex flex-col items-center w-full select-none overflow-hidden bg-[var(--nx-bg)] text-[var(--nx-text)]">
       
       {/* ── HERO SECTION ── */}
       <section className="relative w-full max-w-5xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-20 text-center space-y-8">
@@ -97,7 +97,7 @@ export default function Landing() {
 
         {/* Search Input */}
         <form onSubmit={handleSearchSubmit} className="max-w-2xl mx-auto w-full relative">
-          <div className="relative flex items-center bg-[#0F0F1D]/90 border border-violet-500/40 focus-within:border-cyan-400 rounded-2xl shadow-2xl p-2 transition-all backdrop-blur-2xl">
+          <div className="relative flex items-center bg-[var(--nx-surface-1)]/90 border border-violet-500/40 focus-within:border-cyan-400 rounded-2xl shadow-2xl p-2 transition-all backdrop-blur-2xl">
             <Search className="h-5 w-5 text-cyan-400 ml-3 shrink-0" />
             <input
               type="text"
@@ -145,7 +145,7 @@ export default function Landing() {
 
       {/* ── SIGNED-IN FEED ── */}
       {isSignedIn && (
-        <section className="w-full bg-[#0A0A14] border-y border-violet-500/20 py-10">
+        <section className="w-full bg-[var(--nx-bg-subtle)] border-y border-violet-500/20 py-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
@@ -166,7 +166,7 @@ export default function Landing() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
-              <div className="p-4 rounded-2xl bg-[#0F0F1D] border border-violet-500/20 space-y-2">
+              <div className="p-4 rounded-2xl bg-[var(--nx-surface-1)] border border-violet-500/20 space-y-2">
                 <span className="text-cyan-400 text-[10px] uppercase font-bold">Active Run</span>
                 <div className="flex items-center justify-between text-white font-bold">
                   <span>SEC Financial Analyst</span>
@@ -175,13 +175,13 @@ export default function Landing() {
                 <p className="text-[11px] text-zinc-400 font-sans">Analyzing quarterly filing metrics...</p>
               </div>
 
-              <div className="p-4 rounded-2xl bg-[#0F0F1D] border border-violet-500/20 space-y-2">
+              <div className="p-4 rounded-2xl bg-[var(--nx-surface-1)] border border-violet-500/20 space-y-2">
                 <span className="text-violet-400 text-[10px] uppercase font-bold">Saved Items</span>
                 <div className="text-white font-bold text-base">5 Items in Library</div>
                 <Link to="/library" className="text-cyan-400 hover:underline text-[11px] block">Open Library →</Link>
               </div>
 
-              <div className="p-4 rounded-2xl bg-[#0F0F1D] border border-violet-500/20 space-y-2">
+              <div className="p-4 rounded-2xl bg-[var(--nx-surface-1)] border border-violet-500/20 space-y-2">
                 <span className="text-emerald-400 text-[10px] uppercase font-bold">Pending Approvals</span>
                 <div className="text-white font-bold text-base">0 Approvals Needed</div>
                 <span className="text-zinc-500 text-[11px] block font-sans">All runs ready</span>
@@ -205,7 +205,7 @@ export default function Landing() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Link
             to="/explore"
-            className="group p-6 rounded-2xl bg-[#0F0F1D] border border-violet-500/20 hover:border-violet-500/60 transition-all flex flex-col justify-between space-y-4 shadow-xl"
+            className="group p-6 rounded-2xl bg-[var(--nx-surface-1)] border border-violet-500/20 hover:border-violet-500/60 transition-all flex flex-col justify-between space-y-4 shadow-xl"
           >
             <div className="space-y-3">
               <div className="h-10 w-10 rounded-xl bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
@@ -225,7 +225,7 @@ export default function Landing() {
 
           <Link
             to="/compose"
-            className="group p-6 rounded-2xl bg-[#0F0F1D] border border-violet-500/20 hover:border-violet-500/60 transition-all flex flex-col justify-between space-y-4 shadow-xl"
+            className="group p-6 rounded-2xl bg-[var(--nx-surface-1)] border border-violet-500/20 hover:border-violet-500/60 transition-all flex flex-col justify-between space-y-4 shadow-xl"
           >
             <div className="space-y-3">
               <div className="h-10 w-10 rounded-xl bg-violet-500/15 border border-violet-500/30 flex items-center justify-center text-violet-400">
@@ -245,7 +245,7 @@ export default function Landing() {
 
           <Link
             to="/activity"
-            className="group p-6 rounded-2xl bg-[#0F0F1D] border border-violet-500/20 hover:border-violet-500/60 transition-all flex flex-col justify-between space-y-4 shadow-xl"
+            className="group p-6 rounded-2xl bg-[var(--nx-surface-1)] border border-violet-500/20 hover:border-violet-500/60 transition-all flex flex-col justify-between space-y-4 shadow-xl"
           >
             <div className="space-y-3">
               <div className="h-10 w-10 rounded-xl bg-fuchsia-500/15 border border-fuchsia-500/30 flex items-center justify-center text-fuchsia-400">
@@ -265,7 +265,7 @@ export default function Landing() {
 
           <Link
             to="/creator"
-            className="group p-6 rounded-2xl bg-[#0F0F1D] border border-violet-500/20 hover:border-violet-500/60 transition-all flex flex-col justify-between space-y-4 shadow-xl"
+            className="group p-6 rounded-2xl bg-[var(--nx-surface-1)] border border-violet-500/20 hover:border-violet-500/60 transition-all flex flex-col justify-between space-y-4 shadow-xl"
           >
             <div className="space-y-3">
               <div className="h-10 w-10 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
@@ -286,7 +286,7 @@ export default function Landing() {
       </section>
 
       {/* ── FEATURED AGENTS ── */}
-      <section className="w-full bg-[#0A0A14] border-t border-violet-500/20 py-16">
+      <section className="w-full bg-[var(--nx-bg-subtle)] border-t border-violet-500/20 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-6">
             <div>
@@ -307,7 +307,7 @@ export default function Landing() {
               <Link
                 key={agent.id}
                 to={agent.route}
-                className="group p-6 rounded-2xl bg-[#0F0F1D] border border-violet-500/20 hover:border-cyan-400/50 transition-all flex flex-col justify-between space-y-6 shadow-xl cursor-pointer"
+                className="group p-6 rounded-2xl bg-[var(--nx-surface-1)] border border-violet-500/20 hover:border-cyan-400/50 transition-all flex flex-col justify-between space-y-6 shadow-xl cursor-pointer"
               >
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
