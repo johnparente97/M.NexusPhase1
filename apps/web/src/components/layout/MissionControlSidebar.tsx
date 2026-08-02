@@ -33,40 +33,40 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
 
   const navSections = [
     {
-      title: 'Explore',
+      title: 'Marketplace & Suite',
       items: [
         { to: '/explore', label: 'Explore Marketplace', icon: Compass },
-        { to: '/chat', label: 'AI Chat & Inference', icon: MessageSquare },
+        { to: '/chat', label: 'AI Chat & Agents', icon: MessageSquare },
       ]
     },
     {
-      title: 'Compose',
+      title: 'Build & Compose',
       items: [
-        { to: '/compose', label: 'Studio & Builder', icon: Terminal },
-        { to: '/studio', label: 'Graph Canvas', icon: Layers },
+        { to: '/compose', label: 'Build Agent / Workflow', icon: Terminal },
+        { to: '/studio', label: 'Visual Graph Studio', icon: Layers },
       ]
     },
     {
-      title: 'Operate',
+      title: 'Run & Operate',
       items: [
-        { to: '/operate', label: 'Command Center', icon: Activity },
-        { to: '/cloud', label: 'Files & AI Memory', icon: Cloud },
-        { to: '/payments', label: 'Vault & Receipts', icon: Coins },
+        { to: '/activity', label: 'Activity & Receipts', icon: Activity },
+        { to: '/cloud', label: 'Workspace Files & Memory', icon: Cloud },
       ]
     },
     {
-      title: 'Earn & Govern',
+      title: 'Workspace & Creator',
       items: [
-        { to: '/network', label: 'Network & Staking', icon: ShieldCheck },
-        { to: '/provide', label: 'Provider Hub', icon: Server },
+        { to: '/dashboard', label: 'Workspace Overview', icon: Bot },
+        { to: '/creator', label: 'Creator Console & Earnings', icon: Coins },
+        { to: '/payments', label: 'Membership & Credits', icon: Award },
       ]
     },
     {
-      title: 'Supporting Utilities',
+      title: 'Developer & Trust',
       items: [
-        { to: '/developer', label: 'Dev Console', icon: Terminal },
+        { to: '/developer', label: 'Developer Console', icon: Terminal },
         { to: '/docs', label: 'Documentation', icon: BookOpen },
-        { to: '/trust', label: 'Trust Center', icon: Award },
+        { to: '/trust', label: 'Trust Center', icon: ShieldCheck },
       ]
     }
   ];
