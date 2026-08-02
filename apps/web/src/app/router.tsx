@@ -38,20 +38,17 @@ const Studio = lazyWithRetry(() => import('../pages/Studio'));
 const StudioEditor = lazyWithRetry(() => import('../pages/StudioEditor'));
 const Dashboard = lazyWithRetry(() => import('../pages/Dashboard'));
 const Activity = lazyWithRetry(() => import('../pages/Activity'));
+const LibraryPage = lazyWithRetry(() => import('../pages/LibraryPage'));
 const RunDetail = lazyWithRetry(() => import('../pages/RunDetail'));
 const CreatorDashboard = lazyWithRetry(() => import('../pages/CreatorDashboard'));
 const Profile = lazyWithRetry(() => import('../pages/Profile'));
 const SavedWorkflows = lazyWithRetry(() => import('../pages/SavedWorkflows'));
 const PaidChat = lazyWithRetry(() => import('../pages/PaidChat'));
-const ModelMarketplace = lazyWithRetry(() => import('../pages/ModelMarketplace'));
 const UnifiedBalancePage = lazyWithRetry(() => import('../pages/UnifiedBalancePage'));
 const AgentBuilder = lazyWithRetry(() => import('../pages/AgentBuilder'));
 const OrgDashboard = lazyWithRetry(() => import('../pages/OrgDashboard'));
 const DevConsole = lazyWithRetry(() => import('../pages/DevConsole'));
 const DocsPage = lazyWithRetry(() => import('../pages/DocsPage'));
-const EcosystemAlignmentPage = lazyWithRetry(() => import('../pages/EcosystemAlignmentPage'));
-const ComputeMarketplace = lazyWithRetry(() => import('../pages/ComputeMarketplace'));
-const DeFiHub = lazyWithRetry(() => import('../pages/DeFiHub'));
 const TrustCenter = lazyWithRetry(() => import('../pages/TrustCenter'));
 const NotFoundPage = lazyWithRetry(() => import('../pages/NotFoundPage'));
 
@@ -70,7 +67,7 @@ export const router = createHashRouter([
     children: [
       { path: '', element: suspenseWrapper(Landing) },
       { path: 'suite', element: suspenseWrapper(ExplorePage) },
-      { path: 'integrations', element: suspenseWrapper(EcosystemAlignmentPage) },
+      { path: 'integrations', element: <Navigate to="/trust" replace /> },
       { path: 'trust', element: suspenseWrapper(TrustCenter) },
       { path: 'developers', element: suspenseWrapper(DevConsole) },
       { path: 'docs', element: suspenseWrapper(DocsPage) },
@@ -99,6 +96,7 @@ export const router = createHashRouter([
       { path: 'compose', element: suspenseWrapper(ComposePage) },
       { path: 'build', element: suspenseWrapper(ComposePage) },
       { path: 'activity', element: suspenseWrapper(Activity) },
+      { path: 'library', element: suspenseWrapper(LibraryPage) },
       { path: 'dashboard', element: suspenseWrapper(Dashboard) },
       { path: 'workspace', element: suspenseWrapper(Dashboard) },
 

@@ -13,10 +13,12 @@ interface TopNavProps {
 }
 
 const ROUTE_TITLES: Record<string, string> = {
+  '/': 'Home Command Center',
   '/explore': 'Explore Marketplace',
   '/compose': 'Build Agent / Workflow',
   '/build': 'Build Agent / Workflow',
   '/activity': 'Activity & Receipts',
+  '/library': 'Library & Workspace Assets',
   '/dashboard': 'Workspace Overview',
   '/workspace': 'Workspace Overview',
   '/creator': 'Creator Console',

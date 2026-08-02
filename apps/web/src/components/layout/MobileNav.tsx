@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
-import { Compass, Cpu, Home, Menu, Bot } from 'lucide-react';
+import { Compass, Terminal, Activity as ActivityIcon, Home, Menu, Folder } from 'lucide-react';
 import { cn } from '../../utils/cn';
 
 interface MobileNavProps {
@@ -12,9 +12,10 @@ export default function MobileNav({ onOpenMenu }: MobileNavProps) {
 
   const items = [
     { to: '/', icon: Home, label: 'Home' },
-    { to: '/chat', icon: Bot, label: 'Chat' },
-    { to: '/exchange', icon: Compass, label: 'Workflows' },
-    { to: '/marketplace/models', icon: Cpu, label: 'Models' },
+    { to: '/explore', icon: Compass, label: 'Explore' },
+    { to: '/compose', icon: Terminal, label: 'Build' },
+    { to: '/activity', icon: ActivityIcon, label: 'Activity' },
+    { to: '/library', icon: Folder, label: 'Library' },
   ];
 
   return (

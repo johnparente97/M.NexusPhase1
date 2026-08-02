@@ -162,6 +162,11 @@ html[data-theme="day"] .text-prismatic {
   color: var(--nx-magenta);
 }
 
+.bg-radial-glow {
+  background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.25) 0%, rgba(0, 245, 212, 0.15) 45%, transparent 75%);
+  filter: blur(80px);
+}
+
 .cyber-panel {
   background: var(--nx-surface-1);
   border: 1px solid var(--nx-border);
