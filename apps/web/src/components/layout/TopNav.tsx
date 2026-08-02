@@ -14,21 +14,18 @@ interface TopNavProps {
 
 const ROUTE_TITLES: Record<string, string> = {
   '/explore': 'Explore Marketplace',
-  '/compose': 'Compose Studio & Agents',
-  '/operate': 'Operate Command Center',
-  '/network': 'Earn & Govern Network',
-  '/chat': 'AI Chat & Inference',
-  '/workflows': 'Workflows Library',
-  '/studio': 'Workflow Studio',
-  '/cloud': 'Nexus Cloud Storage',
-  '/data': 'Data & Memory',
+  '/compose': 'Build Agent / Workflow',
+  '/build': 'Build Agent / Workflow',
   '/activity': 'Activity & Receipts',
-  '/payments': 'Payments & Prepaid Vault',
-  '/dashboard': 'Organization Dashboard',
+  '/dashboard': 'Workspace Overview',
+  '/workspace': 'Workspace Overview',
+  '/creator': 'Creator Console',
+  '/payments': 'Payments & Membership',
+  '/chat': 'AI Agent Chat',
+  '/cloud': 'Workspace Files & Memory',
   '/developer': 'Developer Console',
   '/docs': 'Documentation',
-  '/integrations': 'Ecosystem Alignment',
-  '/trust': 'Trust & Legal',
+  '/trust': 'Trust Center',
 };
 
 export default function TopNav({ onSearchClick, onMobileMenuClick }: TopNavProps) {

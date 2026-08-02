@@ -84,59 +84,54 @@ export const router = createHashRouter([
     path: '/',
     element: <WorkspaceLayout />,
     children: [
-      // Compatibility redirects
+      // Compatibility redirects & decommissioned page aliases
       { path: 'exchange', element: <Navigate to="/explore" replace /> },
+      { path: 'defi', element: <Navigate to="/payments" replace /> },
+      { path: 'storage', element: <Navigate to="/explore?category=Storage" replace /> },
+      { path: 'compute', element: <Navigate to="/explore?category=Compute" replace /> },
+      { path: 'alignment', element: <Navigate to="/trust" replace /> },
+      { path: 'ecosystem', element: <Navigate to="/trust" replace /> },
+      { path: 'network', element: <Navigate to="/payments" replace /> },
       { path: 'balance', element: <Navigate to="/payments" replace /> },
-      { path: 'storage', element: <Navigate to="/cloud" replace /> },
       
-      // 4 Principal Consolidated Surfaces
+      // 5 Principal Consolidated Destinations
       { path: 'explore', element: suspenseWrapper(ExplorePage) },
       { path: 'compose', element: suspenseWrapper(ComposePage) },
-      { path: 'operate', element: suspenseWrapper(OperateCenter) },
-      { path: 'network', element: suspenseWrapper(EarnGovernPage) },
+      { path: 'build', element: suspenseWrapper(ComposePage) },
+      { path: 'activity', element: suspenseWrapper(Activity) },
+      { path: 'dashboard', element: suspenseWrapper(Dashboard) },
+      { path: 'workspace', element: suspenseWrapper(Dashboard) },
 
-      // Sub-Surface Routes & Compatibility Aliases
+      // Sub-Surface Routes & Workflow Execution
       { path: 'chat', element: suspenseWrapper(PaidChat) },
       { path: 'chat/free', element: suspenseWrapper(PaidChat) },
       { path: 'chat/paid', element: suspenseWrapper(PaidChat) },
       
-      { path: 'missions', element: suspenseWrapper(Dashboard) },
-      { path: 'data', element: suspenseWrapper(NexusCloudPage) },
-      
-      { path: 'workflows', element: suspenseWrapper(Dashboard) },
+      { path: 'workflows', element: suspenseWrapper(ExplorePage) },
       { path: 'workflows/:id', element: suspenseWrapper(WorkflowDetail) },
       { path: 'workflows/:id/run', element: suspenseWrapper(WorkflowRunner) },
-      { path: 'exchange/:id/run', element: suspenseWrapper(WorkflowRunner) },
       
       { path: 'studio', element: suspenseWrapper(Studio) },
       { path: 'studio/new', element: suspenseWrapper(StudioEditor) },
       { path: 'studio/:id/edit', element: suspenseWrapper(StudioEditor) },
       
-      { path: 'agents', element: suspenseWrapper(ModelMarketplace) },
+      { path: 'agents', element: suspenseWrapper(ExplorePage) },
       { path: 'agents/new', element: suspenseWrapper(AgentBuilder) },
       
       { path: 'cloud', element: suspenseWrapper(NexusCloudPage) },
-      { path: 'compute', element: suspenseWrapper(ComputeMarketplace) },
+      { path: 'data', element: suspenseWrapper(NexusCloudPage) },
       { path: 'payments', element: suspenseWrapper(UnifiedBalancePage) },
       
-      { path: 'activity', element: suspenseWrapper(Activity) },
       { path: 'activity/:id', element: suspenseWrapper(RunDetail) },
       
       { path: 'teams', element: suspenseWrapper(OrgDashboard) },
+      { path: 'organization', element: suspenseWrapper(OrgDashboard) },
+      { path: 'creator', element: suspenseWrapper(CreatorDashboard) },
       { path: 'provide', element: suspenseWrapper(CreatorDashboard) },
       { path: 'developer', element: suspenseWrapper(DevConsole) },
       { path: 'settings', element: suspenseWrapper(Profile) },
-      
-      // Supporting Utilities & Additional aliases
-      { path: 'dashboard', element: suspenseWrapper(Dashboard) },
-      { path: 'creator', element: suspenseWrapper(CreatorDashboard) },
       { path: 'profile', element: suspenseWrapper(Profile) },
       { path: 'saved', element: suspenseWrapper(SavedWorkflows) },
-      { path: 'marketplace/models', element: suspenseWrapper(ModelMarketplace) },
-      { path: 'defi', element: suspenseWrapper(DeFiHub) },
-      { path: 'organization', element: suspenseWrapper(OrgDashboard) },
-      { path: 'alignment', element: suspenseWrapper(EcosystemAlignmentPage) },
-      { path: 'ecosystem', element: suspenseWrapper(EcosystemAlignmentPage) },
 
       // Fallback
       { path: '*', element: suspenseWrapper(NotFoundPage) },
