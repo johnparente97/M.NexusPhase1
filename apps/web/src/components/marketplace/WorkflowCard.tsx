@@ -45,7 +45,7 @@ export const WorkflowCard: React.FC<WorkflowCardProps> = ({ workflow, isFavorite
     navigate(`/exchange/${workflow.id}`);
   };
 
-  const creatorName = workflow.creator?.displayName || 'Meridian Creator';
+  const creatorName = workflow.creator?.displayName || 'Nexus Creator';
   const displayPrice = workflow.isFree ? 'FREE DEMO' : formatCurrency(workflow.pricePerRun);
   const displayDuration = formatDuration(workflow.estimatedDurationSeconds);
   const CategoryIcon = CATEGORY_ICONS[workflow.category] || Sparkles;

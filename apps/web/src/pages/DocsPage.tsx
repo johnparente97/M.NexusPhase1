@@ -13,7 +13,7 @@ export default function DocsPage() {
           <h1 className="text-xl font-display font-bold text-zinc-100">Docs</h1>
         </div>
         <p className="text-xs text-zinc-400">
-          Learn how Meridian coordinates value movement and how Nexus coordinates AI capabilities and verified outcomes.
+          Learn how Nexus coordinates AI capabilities, agent execution, and verified outcomes.
         </p>
       </div>
 
@@ -41,10 +41,10 @@ export default function DocsPage() {
         <Card className="bg-zinc-900 border-zinc-800 p-6 flex flex-col gap-3">
           <h3 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
             <Coins className="h-4 w-4 text-[#27F293]" />
-            Multichain Top-Up & 1% Fee
+            Multichain Top-Up & Balance
           </h3>
           <p className="text-xs text-zinc-400 leading-relaxed">
-            Fund your universal dollar balance from Base, Ethereum, Arbitrum, Polygon, and more. A configurable 1% Meridian Top-Up Fee applies to converted deposits.
+            Fund your USDC balance from Base, Ethereum, Arbitrum, Polygon, or card. Your balance is instantly available for running agents across the marketplace.
           </p>
         </Card>
 

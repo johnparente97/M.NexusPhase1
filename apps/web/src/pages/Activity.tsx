@@ -139,10 +139,10 @@ export default function Activity() {
             <TruthStateBadge status="production" text="Durable Workflows Active" />
           </div>
           <h1 className="font-display font-extrabold text-2xl sm:text-4xl text-white tracking-tight">
-            Activity & <span className="text-prismatic">Execution Receipts</span>
+            Activity & <span className="text-prismatic">Runs</span>
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            Track real-time agent execution timelines, human approvals, generated artifacts, and x402 financial receipts.
+            Track your active runs, completed tasks, outputs, and receipts.
           </p>
         </div>
       </div>

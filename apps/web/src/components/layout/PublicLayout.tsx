@@ -64,7 +64,7 @@ export default function PublicLayout() {
                 <span className="font-display font-extrabold text-lg text-white">Nexus</span>
               </Link>
               <p className="text-zinc-400 leading-relaxed max-w-xs text-[11px]">
-                The independent cyber-sigilic workspace for intelligent digital capabilities, AI inference, and autonomous orchestrations.
+                The simple workspace for discovering, building, and running AI agents and workflows.
               </p>
             </div>
             

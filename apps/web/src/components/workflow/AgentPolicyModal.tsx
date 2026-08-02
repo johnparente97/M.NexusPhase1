@@ -173,7 +173,7 @@ export const AgentPolicyModal: React.FC<AgentPolicyModalProps> = ({
             </div>
             <div className="flex justify-between text-zinc-400">
               <span>x402 Facilitator:</span>
-              <span className="text-emerald-400">Meridian Micro-settlement Protocol</span>
+              <span className="text-emerald-400">MRDN Facilitator</span>
             </div>
           </div>
 

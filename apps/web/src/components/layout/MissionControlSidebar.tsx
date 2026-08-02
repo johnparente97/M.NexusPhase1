@@ -32,20 +32,20 @@ export const MissionControlSidebar: React.FC<MissionControlSidebarProps> = ({ on
 
   const navSections = [
     {
-      title: 'Primary Operating OS',
+      title: 'Operating Workspace',
       items: [
-        { to: '/', label: 'Home Command', icon: HomeIcon },
-        { to: '/explore', label: 'Explore Marketplace', icon: Compass },
-        { to: '/compose', label: 'Build Agent / Workflow', icon: Terminal },
-        { to: '/activity', label: 'Activity & Receipts', icon: Activity },
+        { to: '/', label: 'Home', icon: HomeIcon },
+        { to: '/explore', label: 'Explore Agents', icon: Compass },
+        { to: '/compose', label: 'Build Agent', icon: Terminal },
+        { to: '/activity', label: 'Activity & Runs', icon: Activity },
         { to: '/library', label: 'Library & Assets', icon: Folder },
       ]
     },
     {
-      title: 'Secondary Workspace',
+      title: 'Creator & Settings',
       items: [
         { to: '/creator', label: 'Creator Console', icon: Coins },
-        { to: '/payments', label: 'Payments & Membership', icon: Award },
+        { to: '/payments', label: 'Payments & Billing', icon: Award },
         { to: '/developer', label: 'Developer Console', icon: Terminal },
         { to: '/docs', label: 'Documentation', icon: BookOpen },
         { to: '/trust', label: 'Trust Center', icon: ShieldCheck },

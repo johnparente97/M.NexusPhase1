@@ -69,7 +69,7 @@ export default function ComposePage() {
             <TruthStateBadge status="production" text="Build Suite v2" />
           </div>
           <p className="text-xs sm:text-sm text-[var(--nx-text-secondary)] mt-1">
-            Configure agent goals, tool permissions, spending limits, and model routing in plain language.
+            Create custom AI agents with simple rules, spending limits, and tool access.
           </p>
         </div>
 

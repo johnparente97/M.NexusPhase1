@@ -109,10 +109,10 @@ export default function CreatorDashboard() {
             <TruthStateBadge status="production" text="Verified Creator" />
           </div>
           <h1 className="font-display font-extrabold text-2xl sm:text-4xl text-white tracking-tight">
-            Creator Economy & <span className="text-prismatic">Revenue Analytics</span>
+            Creator <span className="text-prismatic">Console</span>
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            Track gross sales, underlying provider costs, Nexus fees, and itemized USDC settlements.
+            Track your published agents, sales, earnings, and payout settings.
           </p>
         </div>
 

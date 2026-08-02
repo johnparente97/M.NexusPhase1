@@ -48,11 +48,11 @@ export default function AiCopilot() {
       const query = input.toLowerCase();
 
       if (query.includes('nexus') || query.includes('how does')) {
-        aiText = 'Nexus is an Intelligence Synthesis layer powered by the Meridian payment protocol. Creators package skills or APIs into "Capabilities," and users combine them into "Workflows." Meridian handles non-custodial token settlements automatically.';
+        aiText = 'Nexus is a workspace and marketplace for AI agents and workflows. Creators publish agents, set prices per run, and earn USDC when useful work is completed.';
       } else if (query.includes('mrdn') || query.includes('cashback') || query.includes('token')) {
-        aiText = 'MRDN is the platform utility asset. Every workflow run settled via Meridian rails yields up to 2% cashback in MRDN. Holding MRDN unlocks premium tools, creator discounts, and elevated participation levels.';
+        aiText = 'MRDN acts as an x402 payment facilitator for settlement status verification. USDC is the primary payment asset for runs and creator earnings.';
       } else if (query.includes('receipt') || query.includes('outcome')) {
-        aiText = 'Outcome Receipts are verifiable, machine-readable audits generated after every run. They detail objective parameters, active models, exact US dollar costs, and a cryptographic trace of the result.';
+        aiText = 'Receipts are verifiable run logs generated after every execution. They detail exact dollar costs, active models, tool calls, and run parameters.';
       } else {
         aiText = 'That is a great question! I can help you compile custom templates, configure run properties, or troubleshoot active parameters. Let me know if you would like me to draft a new workflow outline!';
       }

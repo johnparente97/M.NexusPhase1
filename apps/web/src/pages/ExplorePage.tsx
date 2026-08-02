@@ -153,15 +153,15 @@ export default function ExplorePage() {
     <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 gap-8 select-none">
       
       {/* ── Header Banner ── */}
-      <div className="space-y-3">
+      <div className="space-y-2">
         <div className="inline-flex items-center gap-2">
-          <TruthStateBadge status="live" text="Registry Active" />
+          <TruthStateBadge status="live" text="Marketplace Online" />
         </div>
         <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-white tracking-tight">
-          Explore <span className="text-prismatic">Digital Capabilities</span>
+          Explore <span className="text-prismatic">AI Marketplace</span>
         </h1>
         <p className="text-sm text-[var(--nx-text-secondary)] max-w-2xl leading-relaxed">
-          Discover verified AI models, multi-step workflows, zero-knowledge cloud storage, and compute pools.
+          Discover agents, workflows, models, and tools for any task.
         </p>
       </div>
 

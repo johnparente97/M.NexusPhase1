@@ -154,7 +154,7 @@ export const SettlementModal: React.FC<SettlementModalProps> = ({ isOpen, onClos
             )}
 
             <p className="text-[10px] text-zinc-500 leading-relaxed text-center px-2 mt-2">
-              By confirming, you will sign a gasless EIP-712 TransferWithAuthorization payload. The Meridian facilitator will execute and settle the payment on-chain.
+              By confirming, you authorize the USDC run payment. The x402 facilitator will verify and settle the payment on-chain upon completion.
             </p>
           </div>
         )}

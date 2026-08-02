@@ -115,10 +115,10 @@ export default function LibraryPage() {
             <TruthStateBadge status="production" text="Cloud Storage R2 Synced" />
           </div>
           <h1 className="font-display font-extrabold text-2xl sm:text-4xl text-white tracking-tight">
-            Library & <span className="text-prismatic">Workspace Assets</span>
+            Library & <span className="text-prismatic">Assets</span>
           </h1>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            Consolidated repository for your saved agents, workflows, knowledge bases, generated artifacts, and tool connections.
+            Your saved agents, workflows, knowledge bases, and files in one place.
           </p>
         </div>
 
